@@ -7,7 +7,7 @@ const tierEl = document.getElementById("tier");
 const energyUsedEl = document.getElementById("energy-used");
 const energySavedEl = document.getElementById("energy-saved");
 
-const API_URL = "http://localhost:8080";
+const API_URL = "https://ecologic-production.up.railway.app";
 
 const formatEnergy = (value) => `${value.toFixed(1)} J`;
 
