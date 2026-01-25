@@ -35,10 +35,12 @@ const slideObserver = new IntersectionObserver((entries) => {
 revealElements.forEach((el) => observer.observe(el));
 slideElements.forEach((el) => slideObserver.observe(el));
 
-// Fallback: trigger hero animation on load
+// Trigger hero animation on load with slight delay
 window.addEventListener("load", () => {
-  const hero = document.querySelector(".hero");
+  const hero = document.querySelector(".hero.reveal-slide");
   if (hero) {
-    hero.classList.add("in-view");
+    setTimeout(() => {
+      hero.classList.add("in-view");
+    }, 200);
   }
 });
