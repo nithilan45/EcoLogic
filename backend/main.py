@@ -126,11 +126,14 @@ async def query_together(model: str, prompt: str) -> tuple[str, int]:
             },
             json={
                 "model": model,
-                "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": 1024,
+                "messages": [
+                    {"role": "system", "content": "Be concise and direct. Keep responses under 200 words unless more detail is specifically requested."},
+                    {"role": "user", "content": prompt}
+                ],
+                "max_tokens": 512,
                 "temperature": 0.7,
             },
-            timeout=60.0,
+            timeout=30.0,
         )
         
         if response.status_code != 200:
@@ -157,11 +160,14 @@ async def query_openai(model: str, prompt: str) -> tuple[str, int]:
             },
             json={
                 "model": model,
-                "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": 1024,
+                "messages": [
+                    {"role": "system", "content": "Be concise and direct. Keep responses under 200 words unless more detail is specifically requested."},
+                    {"role": "user", "content": prompt}
+                ],
+                "max_tokens": 512,
                 "temperature": 0.7,
             },
-            timeout=60.0,
+            timeout=30.0,
         )
         
         if response.status_code != 200:
