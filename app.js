@@ -30,10 +30,17 @@ const handleSend = async () => {
   setLoading(true);
   welcomeEl.setAttribute("hidden", "");
   responseEl.removeAttribute("hidden");
-  responseTextEl.textContent = "Thinking...";
+  responseTextEl.innerHTML = '<span class="typing-cursor"></span>';
+  
+  // Reset energy stats
+  tierEl.textContent = "-";
+  energyUsedEl.textContent = "-";
+  energySavedEl.textContent = "-";
+
+  let fullContent = "";
 
   try {
-    const response = await fetch(`${API_URL}/query`, {
+    const response = await fetch(`${API_URL}/query/stream`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,12 +52,39 @@ const handleSend = async () => {
       throw new Error(`API error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
 
-    responseTextEl.innerHTML = marked.parse(data.response);
-    tierEl.textContent = data.tier;
-    energyUsedEl.textContent = formatEnergy(data.energy_used);
-    energySavedEl.textContent = formatEnergy(data.energy_saved);
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split("\n");
+
+      for (const line of lines) {
+        if (line.startsWith("data: ")) {
+          try {
+            const data = JSON.parse(line.slice(6));
+            
+            if (data.type === "meta") {
+              tierEl.textContent = data.tier;
+            } else if (data.type === "content") {
+              fullContent += data.content;
+              responseTextEl.innerHTML = marked.parse(fullContent) + '<span class="typing-cursor"></span>';
+            } else if (data.type === "done") {
+              energyUsedEl.textContent = formatEnergy(data.energy_used);
+              energySavedEl.textContent = formatEnergy(data.energy_saved);
+            }
+          } catch (e) {
+            // Skip malformed JSON
+          }
+        }
+      }
+    }
+
+    // Final render without cursor
+    responseTextEl.innerHTML = marked.parse(fullContent);
   } catch (error) {
     console.error("Error:", error);
     responseTextEl.textContent = `Error: ${error.message}. Make sure the backend is running on ${API_URL}`;

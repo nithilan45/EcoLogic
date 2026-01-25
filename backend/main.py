@@ -2,10 +2,12 @@ import os
 import re
 import json
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
+import asyncio
 
 load_dotenv()
 
@@ -217,6 +219,141 @@ async def handle_query(request: QueryRequest):
         energy_used=round(energy_used, 2),
         energy_saved=round(max(0, energy_saved), 2),
         escalated=tier > 1,
+    )
+
+
+async def stream_together(model: str, prompt: str, tier: int, energy_per_1k: float):
+    """Stream response from Together AI API."""
+    full_content = ""
+    
+    async with httpx.AsyncClient() as client:
+        async with client.stream(
+            "POST",
+            "https://api.together.xyz/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {TOGETHER_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": "Be concise and direct. Keep responses under 200 words unless more detail is specifically requested."},
+                    {"role": "user", "content": prompt}
+                ],
+                "max_tokens": 512,
+                "temperature": 0.7,
+                "stream": True,
+            },
+            timeout=60.0,
+        ) as response:
+            # Send initial metadata
+            yield f"data: {json.dumps({'type': 'meta', 'tier': tier, 'model': model})}\n\n"
+            
+            async for line in response.aiter_lines():
+                if line.startswith("data: "):
+                    data_str = line[6:]
+                    if data_str.strip() == "[DONE]":
+                        break
+                    try:
+                        data = json.loads(data_str)
+                        delta = data.get("choices", [{}])[0].get("delta", {})
+                        content = delta.get("content", "")
+                        if content:
+                            full_content += content
+                            yield f"data: {json.dumps({'type': 'content', 'content': content})}\n\n"
+                    except json.JSONDecodeError:
+                        continue
+    
+    # Calculate and send final energy stats
+    tokens = int(len(full_content.split()) * 1.3)
+    energy_used = (tokens / 1000) * energy_per_1k
+    energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
+    energy_saved = max(0, energy_if_chatgpt - energy_used)
+    
+    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2)})}\n\n"
+
+
+async def stream_openai(model: str, prompt: str, tier: int, energy_per_1k: float):
+    """Stream response from OpenAI API."""
+    full_content = ""
+    
+    async with httpx.AsyncClient() as client:
+        async with client.stream(
+            "POST",
+            "https://api.openai.com/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENAI_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": "Be concise and direct. Keep responses under 200 words unless more detail is specifically requested."},
+                    {"role": "user", "content": prompt}
+                ],
+                "max_tokens": 512,
+                "temperature": 0.7,
+                "stream": True,
+            },
+            timeout=60.0,
+        ) as response:
+            # Send initial metadata
+            yield f"data: {json.dumps({'type': 'meta', 'tier': tier, 'model': model})}\n\n"
+            
+            async for line in response.aiter_lines():
+                if line.startswith("data: "):
+                    data_str = line[6:]
+                    if data_str.strip() == "[DONE]":
+                        break
+                    try:
+                        data = json.loads(data_str)
+                        delta = data.get("choices", [{}])[0].get("delta", {})
+                        content = delta.get("content", "")
+                        if content:
+                            full_content += content
+                            yield f"data: {json.dumps({'type': 'content', 'content': content})}\n\n"
+                    except json.JSONDecodeError:
+                        continue
+    
+    # Calculate and send final energy stats
+    tokens = int(len(full_content.split()) * 1.3)
+    energy_used = (tokens / 1000) * energy_per_1k
+    energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
+    energy_saved = max(0, energy_if_chatgpt - energy_used)
+    
+    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2)})}\n\n"
+
+
+@app.post("/query/stream")
+async def handle_query_stream(request: QueryRequest):
+    """Streaming endpoint: returns Server-Sent Events with response chunks."""
+    
+    prompt = request.prompt.strip()
+    if not prompt:
+        raise HTTPException(status_code=400, detail="Prompt cannot be empty")
+    
+    # Classify the prompt
+    classification = classify_prompt(prompt)
+    tier = classification.recommended_tier
+    tier_key = f"tier{tier}"
+    
+    model_config = MODELS[tier_key]
+    model_name = model_config["name"]
+    provider = model_config["provider"]
+    energy_per_1k = model_config["energy_per_1k_tokens"]
+    
+    if provider == "together":
+        generator = stream_together(model_name, prompt, tier, energy_per_1k)
+    else:
+        generator = stream_openai(model_name, prompt, tier, energy_per_1k)
+    
+    return StreamingResponse(
+        generator,
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+        }
     )
 
 
