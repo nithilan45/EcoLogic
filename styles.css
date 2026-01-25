@@ -392,6 +392,9 @@ a {
 
 .intro-cta {
   margin-top: 12px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .button-large {
