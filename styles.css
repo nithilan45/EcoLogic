@@ -798,6 +798,17 @@ a {
 
 /* Mobile animation adjustments */
 @media (max-width: 768px) {
+  .hero {
+    height: auto;
+    min-height: 60vh;
+    padding: 80px 20px;
+  }
+  
+  .slide {
+    min-height: auto;
+    padding: 60px 20px;
+  }
+  
   .reveal-slide .slide-headline,
   .hero.reveal-slide .hero-message {
     transform: translateY(80px) scale(0.95);
