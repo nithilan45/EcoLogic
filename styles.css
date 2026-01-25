@@ -390,11 +390,14 @@ a {
   line-height: 1.5;
 }
 
-.intro-cta {
+.cta-row.intro-cta {
   margin-top: 12px;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 12px;
+  text-align: center;
 }
 
 .button-large {
