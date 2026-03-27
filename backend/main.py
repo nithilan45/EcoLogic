@@ -27,14 +27,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # Model configuration - optimized for energy efficiency
 MODELS = {
     "tier1": {
-        "name": "meta-llama/Llama-3.2-3B-Instruct-Turbo",
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct-Lite",
         "provider": "together",
-        "energy_per_1k_tokens": 1,  # Joules (small, efficient 3B model)
+        "energy_per_1k_tokens": 1,  # Joules (small, efficient 8B Lite model - serverless)
     },
     "tier2": {
-        "name": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+        "name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
         "provider": "together",
-        "energy_per_1k_tokens": 4,
+        "energy_per_1k_tokens": 4,  # Joules (70B model for complex reasoning - serverless)
     },
     "tier3": {
         "name": "gpt-4o",

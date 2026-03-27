@@ -44,8 +44,8 @@ EcoLogic uses a **3-tier model selection system** powered by fast, keyword-based
 
 | Tier | Model | Provider | Energy Cost | Use Case |
 |------|-------|----------|-------------|----------|
-| **Tier 1** | Llama-3.2-3B-Instruct-Turbo | Together AI | 1 J/1k tokens | General questions, simple queries |
-| **Tier 2** | Meta-Llama-3.1-8B-Instruct-Turbo | Together AI | 4 J/1k tokens | Multi-step reasoning, comparisons |
+| **Tier 1** | Llama 3 8B Instruct Lite | Together AI (Meta) | 1 J/1k tokens | General questions, simple queries |
+| **Tier 2** | Llama 3.3 70B Instruct Turbo | Together AI (Meta) | 4 J/1k tokens | Multi-step reasoning, comparisons |
 | **Tier 3** | GPT-4o | OpenAI | 60 J/1k tokens | Code generation, debugging, specialized domains |
 
 *Energy baseline: GPT-4o uses 60 Joules per 1,000 tokens*
@@ -62,6 +62,8 @@ Triggers: Code-related terms or specialized domains
 - **Explicit Requests**: `gpt-4`, `best quality`
 
 **Example**: *"Write a Python function to parse JSON"* → **Tier 3** (contains "python" and "function")
+
+**Note:** Together AI's model offerings changed - the original Llama 3.2 3B and 3.1 8B "Turbo" models are now on-demand/dedicated only. The project now uses the "Lite" and serverless "Turbo" variants which maintain the same energy efficiency goals.
 
 #### 🔶 Tier 2 Keywords (Medium Complexity)
 Triggers: Multi-step reasoning or comparison queries
@@ -839,12 +841,12 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 MODELS = {
     "tier1": {
-        "name": "meta-llama/Llama-3.2-3B-Instruct-Turbo",
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct-Lite",
         "provider": "together",
         "energy_per_1k_tokens": 1,
     },
     "tier2": {
-        "name": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+        "name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
         "provider": "together",
         "energy_per_1k_tokens": 4,
     },
@@ -857,8 +859,8 @@ MODELS = {
 ```
 
 **Why These Models:**
-- **Tier 1 (3B)**: Extremely efficient, handles 80%+ of queries
-- **Tier 2 (8B)**: Better reasoning, still open-source and efficient
+- **Tier 1 (8B Lite)**: Extremely efficient, INT4 quantized, handles 80%+ of queries, serverless
+- **Tier 2 (70B Turbo)**: Better reasoning, FP8 quantized, still open-source and efficient, serverless
 - **Tier 3 (GPT-4o)**: Reserved for code and specialized domains
 
 #### 2. **Classification System** (Lines 70-117)
