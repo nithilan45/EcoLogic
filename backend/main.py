@@ -67,54 +67,76 @@ class ClassificationResult(BaseModel):
     reason: str
 
 
-# Keywords for fast classification (no API call needed)
-TIER3_KEYWORDS = [
-    r'\bcode\b', r'\bfunction\b', r'\bdebug\b', r'\bpython\b', r'\bjavascript\b',
-    r'\bjava\b', r'\bc\+\+\b', r'\btypescript\b', r'\brust\b', r'\bgo\b',
-    r'\bsql\b', r'\bhtml\b', r'\bcss\b', r'\bapi\b', r'\bscript\b',
-    r'\bprogram\b', r'\balgorithm\b', r'\bmedical\b', r'\blegal\b',
-    r'\bdiagnos', r'\bsymptom', r'\blawsuit\b', r'\bcontract\b',
-    r'\bgpt-4\b', r'\bbest quality\b', r'\bwrite.*code\b', r'\bfix.*bug\b',
-]
+async def classify_prompt_nlp(prompt: str) -> ClassificationResult:
+    """Advanced NLP-based classification using ultra-low-energy Gemma 3N model."""
+    classification_prompt = f"""Analyze this user query and classify it for AI model routing.
 
-TIER2_KEYWORDS = [
-    r'\bcompare\b.*\b(and|vs|versus|to)\b', r'\bcontrast\b',
-    r'\bstep.by.step\b', r'\bmulti.?step\b', r'\bchain.*logic\b',
-    r'\banalyze.*and.*then\b', r'\bfirst.*then.*finally\b',
-]
+Query: "{prompt}"
 
+Classify into ONE tier:
+- Tier 1: Simple factual questions, definitions, basic explanations (80% of queries)
+- Tier 2: Comparisons, multi-step reasoning, analysis requiring deeper thought
+- Tier 3: Code generation/debugging, medical/legal advice, technical implementation
 
-def classify_prompt(prompt: str) -> ClassificationResult:
-    """Fast keyword-based classification - no API call needed."""
-    lower = prompt.lower()
-    
-    # Check for Tier 3 keywords
-    for pattern in TIER3_KEYWORDS:
-        if re.search(pattern, lower):
+Respond in JSON format:
+{{"tier": 1, "reason": "brief explanation"}}
+
+Be conservative - default to Tier 1 unless clearly complex."""
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            "https://api.together.xyz/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {TOGETHER_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "google/gemma-3n-E4B-it",
+                "messages": [
+                    {"role": "user", "content": classification_prompt}
+                ],
+                "max_tokens": 100,
+                "temperature": 0.3,
+                "response_format": {"type": "json_object"}
+            },
+            timeout=10.0,
+        )
+        
+        if response.status_code != 200:
+            # Fallback to Tier 1 on error
             return ClassificationResult(
-                difficulty="hard",
-                risk="high",
-                recommended_tier=3,
-                reason="Code or specialized query"
-            )
-    
-    # Check for Tier 2 keywords
-    for pattern in TIER2_KEYWORDS:
-        if re.search(pattern, lower):
-            return ClassificationResult(
-                difficulty="medium",
+                difficulty="easy",
                 risk="low",
-                recommended_tier=2,
-                reason="Multi-step or comparison query"
+                recommended_tier=1,
+                reason="Classification fallback"
             )
-    
-    # Default to Tier 1 for everything else
-    return ClassificationResult(
-        difficulty="easy",
-        risk="low",
-        recommended_tier=1,
-        reason="General query"
-    )
+        
+        data = response.json()
+        content = data["choices"][0]["message"]["content"]
+        
+        try:
+            result = json.loads(content)
+            tier = result.get("tier", 1)
+            reason = result.get("reason", "NLP classification")
+            
+            # Map tier to difficulty
+            difficulty_map = {1: "easy", 2: "medium", 3: "hard"}
+            risk_map = {1: "low", 2: "low", 3: "high"}
+            
+            return ClassificationResult(
+                difficulty=difficulty_map.get(tier, "easy"),
+                risk=risk_map.get(tier, "low"),
+                recommended_tier=min(max(tier, 1), 3),
+                reason=reason
+            )
+        except json.JSONDecodeError:
+            # Fallback to Tier 1
+            return ClassificationResult(
+                difficulty="easy",
+                risk="low",
+                recommended_tier=1,
+                reason="Parse error - defaulting to Tier 1"
+            )
 
 
 async def query_together(model: str, prompt: str) -> tuple[str, int]:
@@ -190,8 +212,8 @@ async def handle_query(request: QueryRequest):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt cannot be empty")
     
-    # Step 1: Classify the prompt (instant - keyword-based)
-    classification = classify_prompt(prompt)
+    # Step 1: Classify the prompt using NLP (ultra-low energy Gemma 3N)
+    classification = await classify_prompt_nlp(prompt)
     tier = classification.recommended_tier
     tier_key = f"tier{tier}"
     
@@ -332,8 +354,8 @@ async def handle_query_stream(request: QueryRequest):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt cannot be empty")
     
-    # Classify the prompt
-    classification = classify_prompt(prompt)
+    # Classify the prompt using NLP
+    classification = await classify_prompt_nlp(prompt)
     tier = classification.recommended_tier
     tier_key = f"tier{tier}"
     
