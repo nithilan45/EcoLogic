@@ -6,6 +6,7 @@ const responseTextEl = document.getElementById("response-text");
 const tierEl = document.getElementById("tier");
 const energyUsedEl = document.getElementById("energy-used");
 const energySavedEl = document.getElementById("energy-saved");
+const energySavedGpt5El = document.getElementById("energy-saved-gpt5");
 
 const API_URL = "https://ecologic-production.up.railway.app";
 
@@ -36,6 +37,7 @@ const handleSend = async () => {
   tierEl.textContent = "-";
   energyUsedEl.textContent = "-";
   energySavedEl.textContent = "-";
+  energySavedGpt5El.textContent = "-";
 
   let fullContent = "";
 
@@ -75,6 +77,7 @@ const handleSend = async () => {
             } else if (data.type === "done") {
               energyUsedEl.textContent = formatEnergy(data.energy_used);
               energySavedEl.textContent = formatEnergy(data.energy_saved);
+              energySavedGpt5El.textContent = formatEnergy(data.energy_saved_vs_gpt5);
             }
           } catch (e) {
             // Skip malformed JSON

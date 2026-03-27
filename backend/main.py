@@ -8,6 +8,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import asyncio
+from typing import Set, List, Tuple
 
 load_dotenv()
 
@@ -44,6 +45,9 @@ MODELS = {
 }
 
 CHATGPT_ENERGY_PER_1K = 60  # Baseline for comparison (GPT-4o)
+# GPT-5 baseline: ~8.6x more energy than GPT-4 per query (URI AI Lab, 2025)
+# Conservative estimate applied to GPT-4o's 60 J/1k baseline
+GPT5_ENERGY_PER_1K = 500
 
 
 class QueryRequest(BaseModel):
@@ -57,6 +61,7 @@ class QueryResponse(BaseModel):
     tokens: int
     energy_used: float
     energy_saved: float
+    energy_saved_vs_gpt5: float
     escalated: bool
 
 
@@ -67,76 +72,187 @@ class ClassificationResult(BaseModel):
     reason: str
 
 
-async def classify_prompt_nlp(prompt: str) -> ClassificationResult:
-    """Advanced NLP-based classification using ultra-low-energy Gemma 3N model."""
-    classification_prompt = f"""Analyze this user query and classify it for AI model routing.
+# Programming language keywords for code detection
+PROGRAMMING_LANGS = {
+    'python', 'javascript', 'java', 'c++', 'cpp', 'typescript', 'rust', 'go', 
+    'golang', 'ruby', 'php', 'swift', 'kotlin', 'scala', 'r', 'matlab', 'perl',
+    'haskell', 'elixir', 'dart', 'lua', 'sql', 'html', 'css', 'react', 'vue',
+    'angular', 'node', 'django', 'flask', 'spring', 'bash', 'shell', 'powershell'
+}
 
-Query: "{prompt}"
+# Code action verbs (imperative)
+CODE_ACTIONS = {'write', 'code', 'implement', 'create', 'build', 'develop', 'program', 
+                'script', 'generate', 'make', 'design'}
+CODE_DEBUG = {'debug', 'fix', 'error', 'bug', 'issue', 'solve', 'troubleshoot', 'repair'}
+CODE_NOUNS = {'function', 'algorithm', 'api', 'class', 'method', 'module', 'library', 
+              'framework', 'package', 'application', 'app', 'script', 'program'}
 
-Classify into ONE tier:
-- Tier 1: Simple factual questions, definitions, basic explanations (80% of queries)
-- Tier 2: Comparisons, multi-step reasoning, analysis requiring deeper thought
-- Tier 3: Code generation/debugging, medical/legal advice, technical implementation
+# High-risk domain keywords
+HIGH_RISK_DOMAINS = {
+    'medical', 'legal', 'health', 'disease', 'diagnosis', 'symptom', 'medicine',
+    'drug', 'lawsuit', 'contract', 'sue', 'attorney', 'doctor', 'patient', 'treatment'
+}
+HIGH_RISK_ACTIONS = {'diagnose', 'treat', 'prescribe', 'advise', 'recommend', 'cure'}
 
-Respond in JSON format:
-{{"tier": 1, "reason": "brief explanation"}}
+# Comparison indicators
+COMPARISON_WORDS = {'compare', 'contrast', 'versus', 'vs', 'difference', 'differ', 
+                    'distinguish', 'similarities'}
+ANALYSIS_WORDS = {'analyze', 'evaluate', 'assess', 'examine', 'investigate', 'review',
+                  'critique', 'discuss'}
 
-Be conservative - default to Tier 1 unless clearly complex."""
+# Question starters (usually simple/Tier 1)
+SIMPLE_STARTERS = {'what is', 'who is', 'where is', 'when is', 'when was', 'who was',
+                   'what are', 'define', 'explain', 'describe', 'tell me about'}
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(
-            "https://api.together.xyz/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {TOGETHER_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": "google/gemma-3n-E4B-it",
-                "messages": [
-                    {"role": "user", "content": classification_prompt}
-                ],
-                "max_tokens": 100,
-                "temperature": 0.3,
-                "response_format": {"type": "json_object"}
-            },
-            timeout=10.0,
+
+def simple_tokenize(text: str) -> List[str]:
+    """Simple tokenization - split on spaces and punctuation."""
+    return re.findall(r'\b\w+\b', text.lower())
+
+
+def classify_prompt_local_nlp(prompt: str) -> ClassificationResult:
+    """
+    Advanced local NLP classification - no API calls, instant (<5ms), zero external energy.
+    Uses linguistic pattern analysis, intent detection, and contextual rules.
+    """
+    
+    prompt_lower = prompt.lower()
+    tokens = simple_tokenize(prompt)
+    words_set = set(tokens)
+    
+    # Analyze sentence structure
+    first_word = tokens[0] if tokens else ""
+    first_three = ' '.join(tokens[:3])
+    
+    # === TIER 3 DETECTION (Code, Medical, Legal) ===
+    
+    # 1. Code Implementation Detection
+    has_code_action = bool(CODE_ACTIONS & words_set)
+    has_code_debug = bool(CODE_DEBUG & words_set)
+    has_prog_lang = bool(PROGRAMMING_LANGS & words_set)
+    has_code_noun = bool(CODE_NOUNS & words_set)
+    
+    # Strong code signals: action + language
+    if has_code_action and has_prog_lang:
+        return ClassificationResult(
+            difficulty="hard",
+            risk="high",
+            recommended_tier=3,
+            reason="Code implementation request"
         )
-        
-        if response.status_code != 200:
-            # Fallback to Tier 1 on error
+    
+    # Debug requests
+    if has_code_debug and (has_prog_lang or has_code_noun):
+        return ClassificationResult(
+            difficulty="hard",
+            risk="high",
+            recommended_tier=3,
+            reason="Code debugging request"
+        )
+    
+    # Technical code queries (function, algorithm, etc. + language)
+    if has_code_noun and has_prog_lang:
+        return ClassificationResult(
+            difficulty="hard",
+            risk="high",
+            recommended_tier=3,
+            reason="Technical implementation query"
+        )
+    
+    # 2. High-Risk Domain Detection (Medical/Legal)
+    has_risk_domain = bool(HIGH_RISK_DOMAINS & words_set)
+    has_risk_action = bool(HIGH_RISK_ACTIONS & words_set)
+    
+    if has_risk_domain and has_risk_action:
+        return ClassificationResult(
+            difficulty="hard",
+            risk="high",
+            recommended_tier=3,
+            reason="High-risk domain advice"
+        )
+    
+    # === TIER 2 DETECTION (Comparisons, Analysis) ===
+    
+    # 1. Comparison Queries
+    has_comparison = bool(COMPARISON_WORDS & words_set)
+    
+    # Check if it's a genuine comparison (not "what is the difference")
+    if has_comparison:
+        # Definitional questions about differences → Tier 1
+        if any(starter in first_three for starter in ['what is', 'what are']):
+            pass  # Will fall to Tier 1 below
+        else:
+            # Genuine comparison request → Tier 2
             return ClassificationResult(
-                difficulty="easy",
+                difficulty="medium",
                 risk="low",
-                recommended_tier=1,
-                reason="Classification fallback"
+                recommended_tier=2,
+                reason="Comparative analysis"
             )
-        
-        data = response.json()
-        content = data["choices"][0]["message"]["content"]
-        
-        try:
-            result = json.loads(content)
-            tier = result.get("tier", 1)
-            reason = result.get("reason", "NLP classification")
-            
-            # Map tier to difficulty
-            difficulty_map = {1: "easy", 2: "medium", 3: "hard"}
-            risk_map = {1: "low", 2: "low", 3: "high"}
-            
-            return ClassificationResult(
-                difficulty=difficulty_map.get(tier, "easy"),
-                risk=risk_map.get(tier, "low"),
-                recommended_tier=min(max(tier, 1), 3),
-                reason=reason
-            )
-        except json.JSONDecodeError:
-            # Fallback to Tier 1
-            return ClassificationResult(
-                difficulty="easy",
-                risk="low",
-                recommended_tier=1,
-                reason="Parse error - defaulting to Tier 1"
-            )
+    
+    # 2. Analytical Queries
+    has_analysis = bool(ANALYSIS_WORDS & words_set)
+    
+    if has_analysis:
+        return ClassificationResult(
+            difficulty="medium",
+            risk="low",
+            recommended_tier=2,
+            reason="Analytical reasoning required"
+        )
+    
+    # 3. Multi-step indicators
+    multi_step_phrases = ['step by step', 'pros and cons', 'advantages and disadvantages',
+                          'first then', 'both', 'each']
+    if any(phrase in prompt_lower for phrase in multi_step_phrases):
+        return ClassificationResult(
+            difficulty="medium",
+            risk="low",
+            recommended_tier=2,
+            reason="Multi-step reasoning"
+        )
+    
+    # 4. Complexity heuristics
+    # Long, complex questions likely need more reasoning
+    word_count = len(tokens)
+    question_marks = prompt.count('?')
+    
+    if word_count > 25 and question_marks >= 2:
+        # Multiple complex questions
+        return ClassificationResult(
+            difficulty="medium",
+            risk="low",
+            recommended_tier=2,
+            reason="Multi-part complex query"
+        )
+    
+    # === TIER 1 DEFAULT (Simple factual queries) ===
+    
+    # Definitional questions (what/who/where/when/why)
+    if any(prompt_lower.startswith(starter) for starter in SIMPLE_STARTERS):
+        return ClassificationResult(
+            difficulty="easy",
+            risk="low",
+            recommended_tier=1,
+            reason="Factual question"
+        )
+    
+    # General knowledge (short, simple)
+    if word_count <= 10 and question_marks <= 1:
+        return ClassificationResult(
+            difficulty="easy",
+            risk="low",
+            recommended_tier=1,
+            reason="Simple query"
+        )
+    
+    # Default to Tier 1 (conservative approach)
+    return ClassificationResult(
+        difficulty="easy",
+        risk="low",
+        recommended_tier=1,
+        reason="General query"
+    )
 
 
 async def query_together(model: str, prompt: str) -> tuple[str, int]:
@@ -212,8 +328,8 @@ async def handle_query(request: QueryRequest):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt cannot be empty")
     
-    # Step 1: Classify the prompt using NLP (ultra-low energy Gemma 3N)
-    classification = await classify_prompt_nlp(prompt)
+    # Step 1: Classify the prompt using local NLP (instant, zero API calls)
+    classification = classify_prompt_local_nlp(prompt)
     tier = classification.recommended_tier
     tier_key = f"tier{tier}"
     
@@ -231,7 +347,9 @@ async def handle_query(request: QueryRequest):
     energy_per_1k = model_config["energy_per_1k_tokens"]
     energy_used = (tokens / 1000) * energy_per_1k
     energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
+    energy_if_gpt5 = (tokens / 1000) * GPT5_ENERGY_PER_1K
     energy_saved = energy_if_chatgpt - energy_used
+    energy_saved_gpt5 = energy_if_gpt5 - energy_used
     
     return QueryResponse(
         response=response_text,
@@ -240,6 +358,7 @@ async def handle_query(request: QueryRequest):
         tokens=tokens,
         energy_used=round(energy_used, 2),
         energy_saved=round(max(0, energy_saved), 2),
+        energy_saved_vs_gpt5=round(max(0, energy_saved_gpt5), 2),
         escalated=tier > 1,
     )
 
@@ -290,9 +409,11 @@ async def stream_together(model: str, prompt: str, tier: int, energy_per_1k: flo
     tokens = int(len(full_content.split()) * 1.3)
     energy_used = (tokens / 1000) * energy_per_1k
     energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
+    energy_if_gpt5 = (tokens / 1000) * GPT5_ENERGY_PER_1K
     energy_saved = max(0, energy_if_chatgpt - energy_used)
+    energy_saved_gpt5 = max(0, energy_if_gpt5 - energy_used)
     
-    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2)})}\n\n"
+    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2), 'energy_saved_vs_gpt5': round(energy_saved_gpt5, 2)})}\n\n"
 
 
 async def stream_openai(model: str, prompt: str, tier: int, energy_per_1k: float):
@@ -341,9 +462,11 @@ async def stream_openai(model: str, prompt: str, tier: int, energy_per_1k: float
     tokens = int(len(full_content.split()) * 1.3)
     energy_used = (tokens / 1000) * energy_per_1k
     energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
+    energy_if_gpt5 = (tokens / 1000) * GPT5_ENERGY_PER_1K
     energy_saved = max(0, energy_if_chatgpt - energy_used)
+    energy_saved_gpt5 = max(0, energy_if_gpt5 - energy_used)
     
-    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2)})}\n\n"
+    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2), 'energy_saved_vs_gpt5': round(energy_saved_gpt5, 2)})}\n\n"
 
 
 @app.post("/query/stream")
@@ -354,8 +477,8 @@ async def handle_query_stream(request: QueryRequest):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt cannot be empty")
     
-    # Classify the prompt using NLP
-    classification = await classify_prompt_nlp(prompt)
+    # Classify the prompt using local NLP
+    classification = classify_prompt_local_nlp(prompt)
     tier = classification.recommended_tier
     tier_key = f"tier{tier}"
     
