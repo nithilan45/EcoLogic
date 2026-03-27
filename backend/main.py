@@ -124,6 +124,17 @@ def classify_prompt_local_nlp(prompt: str) -> ClassificationResult:
     first_word = tokens[0] if tokens else ""
     first_three = ' '.join(tokens[:3])
     
+    # === TIER 1 PRIORITY CHECK (Definitional/Informational) ===
+    # Check this FIRST to avoid false positives with tech terms
+    
+    if any(prompt_lower.startswith(starter) for starter in SIMPLE_STARTERS):
+        return ClassificationResult(
+            difficulty="easy",
+            risk="low",
+            recommended_tier=1,
+            reason="Factual question"
+        )
+    
     # === TIER 3 DETECTION (Code, Medical, Legal) ===
     
     # 1. Code Implementation Detection
