@@ -408,15 +408,18 @@ async def stream_together(model: str, prompt: str, tier: int, energy_per_1k: flo
                             break
                         try:
                             data = json.loads(data_str)
-                            delta = data.get("choices", [{}])[0].get("delta", {})
+                            choices = data.get("choices", [])
+                            if not choices:
+                                continue
+                            delta = choices[0].get("delta", {})
                             content = delta.get("content", "")
                             if content:
                                 full_content += content
                                 yield f"data: {json.dumps({'type': 'content', 'content': content})}\n\n"
-                        except json.JSONDecodeError:
+                        except (json.JSONDecodeError, IndexError, KeyError):
                             continue
-    except Exception as e:
-        yield f"data: {json.dumps({'type': 'content', 'content': f'[Stream error: {str(e)}]'})}\n\n"
+    except Exception:
+        pass
     
     tokens = max(1, int(len(full_content.split()) * 1.3))
     energy_used = (tokens / 1000) * energy_per_1k
@@ -462,15 +465,18 @@ async def stream_openai(model: str, prompt: str, tier: int, energy_per_1k: float
                             break
                         try:
                             data = json.loads(data_str)
-                            delta = data.get("choices", [{}])[0].get("delta", {})
+                            choices = data.get("choices", [])
+                            if not choices:
+                                continue
+                            delta = choices[0].get("delta", {})
                             content = delta.get("content", "")
                             if content:
                                 full_content += content
                                 yield f"data: {json.dumps({'type': 'content', 'content': content})}\n\n"
-                        except json.JSONDecodeError:
+                        except (json.JSONDecodeError, IndexError, KeyError):
                             continue
-    except Exception as e:
-        yield f"data: {json.dumps({'type': 'content', 'content': f'[Stream error: {str(e)}]'})}\n\n"
+    except Exception:
+        pass
     
     tokens = max(1, int(len(full_content.split()) * 1.3))
     energy_used = (tokens / 1000) * energy_per_1k
