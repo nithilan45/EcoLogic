@@ -378,46 +378,47 @@ async def stream_together(model: str, prompt: str, tier: int, energy_per_1k: flo
     """Stream response from Together AI API."""
     full_content = ""
     
-    async with httpx.AsyncClient() as client:
-        async with client.stream(
-            "POST",
-            "https://api.together.xyz/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {TOGETHER_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": model,
-                "messages": [
-                    {"role": "system", "content": "Be concise and direct. Keep responses under 200 words unless more detail is specifically requested."},
-                    {"role": "user", "content": prompt}
-                ],
-                "max_tokens": 512,
-                "temperature": 0.7,
-                "stream": True,
-            },
-            timeout=60.0,
-        ) as response:
-            # Send initial metadata
-            yield f"data: {json.dumps({'type': 'meta', 'tier': tier, 'model': model})}\n\n"
-            
-            async for line in response.aiter_lines():
-                if line.startswith("data: "):
-                    data_str = line[6:]
-                    if data_str.strip() == "[DONE]":
-                        break
-                    try:
-                        data = json.loads(data_str)
-                        delta = data.get("choices", [{}])[0].get("delta", {})
-                        content = delta.get("content", "")
-                        if content:
-                            full_content += content
-                            yield f"data: {json.dumps({'type': 'content', 'content': content})}\n\n"
-                    except json.JSONDecodeError:
-                        continue
+    yield f"data: {json.dumps({'type': 'meta', 'tier': tier, 'model': model})}\n\n"
     
-    # Calculate and send final energy stats
-    tokens = int(len(full_content.split()) * 1.3)
+    try:
+        async with httpx.AsyncClient() as client:
+            async with client.stream(
+                "POST",
+                "https://api.together.xyz/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {TOGETHER_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": "Be concise and direct. Keep responses under 200 words unless more detail is specifically requested."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    "max_tokens": 512,
+                    "temperature": 0.7,
+                    "stream": True,
+                },
+                timeout=60.0,
+            ) as response:
+                async for line in response.aiter_lines():
+                    if line.startswith("data: "):
+                        data_str = line[6:]
+                        if data_str.strip() == "[DONE]":
+                            break
+                        try:
+                            data = json.loads(data_str)
+                            delta = data.get("choices", [{}])[0].get("delta", {})
+                            content = delta.get("content", "")
+                            if content:
+                                full_content += content
+                                yield f"data: {json.dumps({'type': 'content', 'content': content})}\n\n"
+                        except json.JSONDecodeError:
+                            continue
+    except Exception as e:
+        yield f"data: {json.dumps({'type': 'content', 'content': f'[Stream error: {str(e)}]'})}\n\n"
+    
+    tokens = max(1, int(len(full_content.split()) * 1.3))
     energy_used = (tokens / 1000) * energy_per_1k
     energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
     energy_if_gpt5 = (tokens / 1000) * GPT5_ENERGY_PER_1K
@@ -431,46 +432,47 @@ async def stream_openai(model: str, prompt: str, tier: int, energy_per_1k: float
     """Stream response from OpenAI API."""
     full_content = ""
     
-    async with httpx.AsyncClient() as client:
-        async with client.stream(
-            "POST",
-            "https://api.openai.com/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {OPENAI_API_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": model,
-                "messages": [
-                    {"role": "system", "content": "Be concise and direct. Keep responses under 200 words unless more detail is specifically requested."},
-                    {"role": "user", "content": prompt}
-                ],
-                "max_tokens": 512,
-                "temperature": 0.7,
-                "stream": True,
-            },
-            timeout=60.0,
-        ) as response:
-            # Send initial metadata
-            yield f"data: {json.dumps({'type': 'meta', 'tier': tier, 'model': model})}\n\n"
-            
-            async for line in response.aiter_lines():
-                if line.startswith("data: "):
-                    data_str = line[6:]
-                    if data_str.strip() == "[DONE]":
-                        break
-                    try:
-                        data = json.loads(data_str)
-                        delta = data.get("choices", [{}])[0].get("delta", {})
-                        content = delta.get("content", "")
-                        if content:
-                            full_content += content
-                            yield f"data: {json.dumps({'type': 'content', 'content': content})}\n\n"
-                    except json.JSONDecodeError:
-                        continue
+    yield f"data: {json.dumps({'type': 'meta', 'tier': tier, 'model': model})}\n\n"
     
-    # Calculate and send final energy stats
-    tokens = int(len(full_content.split()) * 1.3)
+    try:
+        async with httpx.AsyncClient() as client:
+            async with client.stream(
+                "POST",
+                "https://api.openai.com/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {OPENAI_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": "Be concise and direct. Keep responses under 200 words unless more detail is specifically requested."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    "max_tokens": 512,
+                    "temperature": 0.7,
+                    "stream": True,
+                },
+                timeout=60.0,
+            ) as response:
+                async for line in response.aiter_lines():
+                    if line.startswith("data: "):
+                        data_str = line[6:]
+                        if data_str.strip() == "[DONE]":
+                            break
+                        try:
+                            data = json.loads(data_str)
+                            delta = data.get("choices", [{}])[0].get("delta", {})
+                            content = delta.get("content", "")
+                            if content:
+                                full_content += content
+                                yield f"data: {json.dumps({'type': 'content', 'content': content})}\n\n"
+                        except json.JSONDecodeError:
+                            continue
+    except Exception as e:
+        yield f"data: {json.dumps({'type': 'content', 'content': f'[Stream error: {str(e)}]'})}\n\n"
+    
+    tokens = max(1, int(len(full_content.split()) * 1.3))
     energy_used = (tokens / 1000) * energy_per_1k
     energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
     energy_if_gpt5 = (tokens / 1000) * GPT5_ENERGY_PER_1K
