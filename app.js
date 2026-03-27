@@ -68,6 +68,7 @@ const handleSend = async () => {
         if (line.startsWith("data: ")) {
           try {
             const data = JSON.parse(line.slice(6));
+            console.log('Received data type:', data.type, 'Full data:', JSON.stringify(data)); // Debug log
             
             if (data.type === "meta") {
               tierEl.textContent = data.tier;
@@ -75,12 +76,13 @@ const handleSend = async () => {
               fullContent += data.content;
               responseTextEl.innerHTML = marked.parse(fullContent) + '<span class="typing-cursor"></span>';
             } else if (data.type === "done") {
+              console.log('✅ Done event received! Energy:', data.energy_used, 'Saved:', data.energy_saved); // Debug log
               energyUsedEl.textContent = formatEnergy(data.energy_used);
               energySavedEl.textContent = formatEnergy(data.energy_saved);
               energySavedGpt5El.textContent = formatEnergy(data.energy_saved_vs_gpt5);
             }
           } catch (e) {
-            // Skip malformed JSON
+            console.error('❌ JSON parse error:', e, 'Line:', line); // Better error logging
           }
         }
       }
