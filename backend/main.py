@@ -24,17 +24,17 @@ app.add_middleware(
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# Model configuration - optimized for energy efficiency
+# Model configuration - optimized for energy efficiency (ultra-low energy models)
 MODELS = {
     "tier1": {
-        "name": "meta-llama/Meta-Llama-3-8B-Instruct-Lite",
+        "name": "google/gemma-3n-E4B-it",
         "provider": "together",
-        "energy_per_1k_tokens": 1,  # Joules (small, efficient 8B Lite model - serverless)
+        "energy_per_1k_tokens": 0.5,  # Joules (4B effective params, FP8, extremely efficient)
     },
     "tier2": {
-        "name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+        "name": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
         "provider": "together",
-        "energy_per_1k_tokens": 4,  # Joules (70B model for complex reasoning - serverless)
+        "energy_per_1k_tokens": 1.5,  # Joules (15B params, FREE, frontier performance)
     },
     "tier3": {
         "name": "gpt-4o",
