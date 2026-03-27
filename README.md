@@ -42,23 +42,19 @@ EcoLogic uses a **3-tier model selection system** powered by fast, keyword-based
 
 ### The Three Tiers
 
-| Tier | Model | Provider | Energy Cost | Pricing | Use Case |
-|------|-------|----------|-------------|---------|----------|
-| **Tier 1** | Gemma 3N E4B | Together AI (Google) | 0.5 J/1k tokens | $0.02/$0.04 per 1M | General questions, simple queries |
-| **Tier 2** | Apriel 1.6 15B | Together AI (ServiceNow) | 1.5 J/1k tokens | **FREE** | Multi-step reasoning, comparisons |
-| **Tier 3** | GPT-4o | OpenAI | 60 J/1k tokens | $2.50 per 1M | Code generation, debugging, specialized domains |
+| Tier | Model | Provider | Rate (J/1k tokens) | ~J per query* | Pricing | Use Case |
+|------|-------|----------|---------------------|---------------|---------|----------|
+| **Tier 1** | Gemma 3N E4B | Together AI (Google) | 0.5 | ~0.1 J | $0.02/$0.04 per 1M | General questions, simple queries |
+| **Tier 2** | Apriel 1.6 15B | Together AI (ServiceNow) | 1.5 | ~0.3 J | **FREE** | Multi-step reasoning, comparisons |
+| **Tier 3** | GPT-4o | OpenAI | 60 | ~12 J | $2.50 per 1M | Code generation, debugging, specialized domains |
+| **GPT-5** | — | OpenAI | 500 | ~100 J | — | Baseline for comparison |
 
-*Energy baselines: GPT-4o uses 60 J per 1,000 tokens · GPT-5 uses ~500 J per 1,000 tokens*
+*\*Per-query estimates based on a typical 200-token response. Classification adds 0 J (local NLP).*
 
-**Energy Savings vs GPT-5 (URI AI Lab, 2025):**
-- Tier 1: **1,000× more efficient** — 99.9% energy reduction
-- Tier 2: **333× more efficient** — 99.7% energy reduction
-- GPT-5 consumes ~8.6× more energy per query than GPT-4 ([source](https://www.digitimes.com/news/a20250815PD238/openai-flagship-performance-cost-electricity.html))
-
-**Energy Savings vs GPT-4o:**
-- Tier 1: **120× more efficient** — 99.2% energy reduction
-- Tier 2: **40× more efficient** — 97.5% energy reduction
-- Tier 2 is also **completely free** to use!
+**Energy Savings vs GPT-5** (URI AI Lab, 2025 — GPT-5 consumes ~8.6× more energy per query than GPT-4, [source](https://www.digitimes.com/news/a20250815PD238/openai-flagship-performance-cost-electricity.html)):
+- Tier 1: ~0.1 J vs ~100 J → **1,000× less energy**
+- Tier 2: ~0.3 J vs ~100 J → **333× less energy** (and completely **free** to use!)
+- Tier 3: ~12 J vs ~100 J → **8× less energy**
 
 ### Classification Algorithm
 
@@ -150,61 +146,58 @@ Tier Selected (1, 2, or 3)
     └─ Tier 3: GPT-4o (60 J/1k)
     ↓
 [Energy Calculation]
-    ├─ Classification energy: ~0.01 J
-    ├─ Response energy: varies by tier
+    ├─ Classification energy: 0 J (local)
+    ├─ Response energy: (tokens / 1000) × tier rate
     ├─ Total energy used
-    ├─ Energy saved vs. GPT-4o baseline (60 J/1k)
     └─ Energy saved vs. GPT-5 baseline (500 J/1k)
     ↓
 Response + Energy Stats
 ```
 
 **Total API Calls Per Query:**
-- Classification: 1 call to Gemma 3N (~0.01 J)
-- Response: 1 call to selected tier (0.5-60 J/1k)
-- **Total: 2 API calls** (classification + response)
+- Classification: 0 (local NLP, 0 J, <5ms)
+- Response: 1 call to selected tier
+- **Total: 1 API call**
 
 ### Energy Calculation
 
 For each response, the system calculates:
 
-1. **Classification Energy**: **0 J** (runs locally on server CPU, <5ms)
-2. **Response Tokens**: Total tokens in the response (from API)
+1. **Classification Energy**: 0 J (local CPU, <5ms)
+2. **Response Tokens**: Total tokens in the response (from API usage data)
 3. **Response Energy**: `(tokens / 1000) × tier_energy_rate`
-4. **Total Energy**: Response energy only (classification is free)
-5. **Energy Saved vs GPT-4o**: `(tokens / 1000) × 60` - Total Energy
-6. **Energy Saved vs GPT-5**: `(tokens / 1000) × 500` - Total Energy
-   - GPT-4o baseline: 60 J/1k tokens
-   - GPT-5 baseline: ~500 J/1k tokens (derived from URI AI Lab finding of 8.6× GPT-4)
+4. **Total Energy Used**: Classification (0 J) + Response Energy
+5. **Energy Saved vs GPT-5**: `(tokens / 1000) × 500` − Total Energy
+   - GPT-5 baseline: 500 J/1k tokens (derived from URI AI Lab finding of ~8.6× GPT-4)
 
 **Example Calculation (Tier 1)**:
-- Query: "What is photosynthesis?" → Classified as Tier 1 (locally, <5ms, 0 J)
-- Classification: **0 J** (local CPU pattern analysis)
+- Query: "What is photosynthesis?" → Classified as Tier 1 (locally, 0 J)
 - Response: 180 tokens via Gemma 3N
-- Response Energy: `(180 / 1000) × 0.5 = 0.09 J`
-- Total Energy: **0.09 J**
-- Energy if GPT-4o: `(180 / 1000) × 60 = 10.8 J` → **Saved 10.71 J (99.2%)**
-- Energy if GPT-5: `(180 / 1000) × 500 = 90 J` → **Saved 89.91 J (99.9%)**
+- Classification energy: 0 J
+- Response energy: `(180 / 1000) × 0.5 = 0.09 J`
+- **Total energy: 0 + 0.09 = 0.09 J**
+- GPT-5 would use: `(180 / 1000) × 500 = 90 J`
+- **Saved: 89.91 J (1,000× less energy)**
 
 **Example Calculation (Tier 2)**:
-- Query: "Compare renewable vs fossil fuel energy" → Classified as Tier 2 (locally, <5ms, 0 J)
-- Classification: **0 J**
+- Query: "Compare renewable vs fossil fuel energy" → Classified as Tier 2 (locally, 0 J)
 - Response: 609 tokens via Apriel 15B
-- Response Energy: `(609 / 1000) × 1.5 = 0.91 J`
-- Total Energy: **0.91 J**
-- Energy if GPT-4o: `(609 / 1000) × 60 = 36.54 J` → **Saved 35.63 J (97.5%)**
-- Energy if GPT-5: `(609 / 1000) × 500 = 304.5 J` → **Saved 303.59 J (99.7%)**
+- Classification energy: 0 J
+- Response energy: `(609 / 1000) × 1.5 = 0.91 J`
+- **Total energy: 0 + 0.91 = 0.91 J**
+- GPT-5 would use: `(609 / 1000) × 500 = 304.5 J`
+- **Saved: 303.59 J (333× less energy)**
 
 **Example Calculation (Tier 3)**:
-- Query: "Write a Python sorting function" → Classified as Tier 3 (locally, <5ms, 0 J)
-- Classification: **0 J**
+- Query: "Write a Python sorting function" → Classified as Tier 3 (locally, 0 J)
 - Response: 316 tokens via GPT-4o
-- Response Energy: `(316 / 1000) × 60 = 18.96 J`
-- Total Energy: **18.96 J**
-- Energy if GPT-4o: Same (18.96 J) → **Saved 0 J**
-- Energy if GPT-5: `(316 / 1000) × 500 = 158 J` → **Saved 139.04 J (88.0%)**
+- Classification energy: 0 J
+- Response energy: `(316 / 1000) × 60 = 18.96 J`
+- **Total energy: 0 + 18.96 = 18.96 J**
+- GPT-5 would use: `(316 / 1000) × 500 = 158 J`
+- **Saved: 139.04 J (8× less energy)**
 
-**Key Insight:** Local classification = zero overhead! Tiers 1-2 save 97-99% vs GPT-4o, 99.7-99.9% vs GPT-5.
+**Key Insight:** Classification is local (0 J), so total query energy = response energy only. Even Tier 3 (GPT-4o) uses 8× less energy than GPT-5.
 
 ### API Endpoints
 
@@ -738,7 +731,7 @@ EcoLogic is built on four core principles:
 ## Key Features
 
 ✅ **Advanced NLP Classification**: Uses 4B Gemma model for context-aware routing (~0.01 J)  
-✅ **Ultra-Low Energy**: 0.5 J/1k tokens for Tier 1 (99.9% savings vs GPT-5, 99.2% vs GPT-4o)  
+✅ **Ultra-Low Energy**: ~0.1 J per query on Tier 1 (1,000× less than GPT-5's ~100 J)  
 ✅ **Free Tier 2**: Apriel 15B is completely free ($0.00 per 1M tokens)  
 ✅ **Transparent Energy Tracking**: Shows exact energy used vs. saved on every query  
 ✅ **Intelligent Routing**: Context-aware, not keyword-based  
