@@ -44,9 +44,7 @@ MODELS = {
     },
 }
 
-CHATGPT_ENERGY_PER_1K = 60  # Baseline for comparison (GPT-4o)
 # GPT-5 baseline: ~8.6x more energy than GPT-4 per query (URI AI Lab, 2025)
-# Conservative estimate applied to GPT-4o's 60 J/1k baseline
 GPT5_ENERGY_PER_1K = 500
 
 
@@ -61,7 +59,6 @@ class QueryResponse(BaseModel):
     tokens: int
     energy_used: float
     energy_saved: float
-    energy_saved_vs_gpt5: float
     escalated: bool
 
 
@@ -354,13 +351,11 @@ async def handle_query(request: QueryRequest):
     else:
         response_text, tokens = await query_openai(model_name, prompt)
     
-    # Step 3: Calculate energy
+    # Step 3: Calculate energy (compared to GPT-5 baseline)
     energy_per_1k = model_config["energy_per_1k_tokens"]
     energy_used = (tokens / 1000) * energy_per_1k
-    energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
     energy_if_gpt5 = (tokens / 1000) * GPT5_ENERGY_PER_1K
-    energy_saved = energy_if_chatgpt - energy_used
-    energy_saved_gpt5 = energy_if_gpt5 - energy_used
+    energy_saved = energy_if_gpt5 - energy_used
     
     return QueryResponse(
         response=response_text,
@@ -369,7 +364,6 @@ async def handle_query(request: QueryRequest):
         tokens=tokens,
         energy_used=round(energy_used, 2),
         energy_saved=round(max(0, energy_saved), 2),
-        energy_saved_vs_gpt5=round(max(0, energy_saved_gpt5), 2),
         escalated=tier > 1,
     )
 
@@ -423,12 +417,10 @@ async def stream_together(model: str, prompt: str, tier: int, energy_per_1k: flo
     
     tokens = max(1, int(len(full_content.split()) * 1.3))
     energy_used = (tokens / 1000) * energy_per_1k
-    energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
     energy_if_gpt5 = (tokens / 1000) * GPT5_ENERGY_PER_1K
-    energy_saved = max(0, energy_if_chatgpt - energy_used)
-    energy_saved_gpt5 = max(0, energy_if_gpt5 - energy_used)
+    energy_saved = max(0, energy_if_gpt5 - energy_used)
     
-    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2), 'energy_saved_vs_gpt5': round(energy_saved_gpt5, 2)})}\n\n"
+    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2)})}\n\n"
 
 
 async def stream_openai(model: str, prompt: str, tier: int, energy_per_1k: float):
@@ -480,12 +472,10 @@ async def stream_openai(model: str, prompt: str, tier: int, energy_per_1k: float
     
     tokens = max(1, int(len(full_content.split()) * 1.3))
     energy_used = (tokens / 1000) * energy_per_1k
-    energy_if_chatgpt = (tokens / 1000) * CHATGPT_ENERGY_PER_1K
     energy_if_gpt5 = (tokens / 1000) * GPT5_ENERGY_PER_1K
-    energy_saved = max(0, energy_if_chatgpt - energy_used)
-    energy_saved_gpt5 = max(0, energy_if_gpt5 - energy_used)
+    energy_saved = max(0, energy_if_gpt5 - energy_used)
     
-    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2), 'energy_saved_vs_gpt5': round(energy_saved_gpt5, 2)})}\n\n"
+    yield f"data: {json.dumps({'type': 'done', 'tokens': tokens, 'energy_used': round(energy_used, 2), 'energy_saved': round(energy_saved, 2)})}\n\n"
 
 
 @app.post("/query/stream")
