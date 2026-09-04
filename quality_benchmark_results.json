@@ -1,0 +1,25 @@
+{
+  "run_status": "aborted_before_any_inference",
+  "generated_at": "2026-09-04T03:13:38.199471+00:00",
+  "expected_calls": 72,
+  "successful_calls": 0,
+  "blockers": [
+    "TOGETHER_API_KEY is not set in this environment.",
+    "OPENAI_API_KEY is not set in this environment."
+  ],
+  "models": {
+    "1": {
+      "provider": "together",
+      "model": "google/gemma-3n-E4B-it"
+    },
+    "2": {
+      "provider": "together",
+      "model": "ServiceNow-AI/Apriel-1.6-15b-Thinker"
+    },
+    "3": {
+      "provider": "openai",
+      "model": "gpt-4o"
+    }
+  },
+  "responses": []
+}
