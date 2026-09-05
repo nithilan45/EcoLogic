@@ -1,5 +1,13 @@
 # EcoLogic matched-query quality benchmark
 
+> **Superseded by [`results_report.md`](results_report.md).** This report uses
+> 24 hand-written questions and an LLM judge for the reasoning and code
+> categories. The newer report replaces both with established benchmarks
+> (HumanEval executed against official tests, MMLU, GSM8K), runs the real
+> classifier in the loop against four routing policies, and reports Wilson
+> intervals, McNemar tests and an energy sensitivity band. Prefer it. This file
+> is kept for provenance.
+
 **Run status: 72/72 inference calls succeeded.** Judge: 48/48 reasoning+code rows scored 0/1 (MiniMax M3).
 
 This is **not** the paper’s original Together stack. Gemma 3N E4B and Apriel 1.6 15B are gone from Together serverless. Tiers 1–2 are energy-adjacent substitutes. **Tier 3 is GPT-4o** (OpenAI), after a billed retry.
