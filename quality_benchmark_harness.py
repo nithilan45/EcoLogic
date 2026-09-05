@@ -1,24 +1,18 @@
 """
 EcoLogic matched-query quality benchmark.
 
-This script is the runnable harness for a 24-question x 3-tier matched
-evaluation (72 inference calls). It will refuse to run if:
-
-- TOGETHER_API_KEY or OPENAI_API_KEY is missing
-- Either Together model slug is absent from GET /v1/models
-- A smoke-test call to any of the three tiers fails
-
-It will NOT silently substitute a different model. Together AI removed both
-EcoLogic Together slugs from serverless inference (see quality_benchmark_report.md).
+Original Together slugs (Gemma 3N E4B, Apriel 1.6 15B) are gone from serverless.
+This run uses energy-adjacent replacements the operator approved, plus Llama 3.3
+70B for Tier 3 because OPENAI_API_KEY is not available for gpt-4o.
 
 Usage:
     export TOGETHER_API_KEY=...
-    export OPENAI_API_KEY=...
     python3 quality_benchmark_harness.py
 """
 
 import os
 import json
+import re
 import sys
 import time
 import asyncio
@@ -34,32 +28,30 @@ TOGETHER_MODELS_URL = "https://api.together.xyz/v1/models"
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 OPENAI_MODELS_URL = "https://api.openai.com/v1/models"
 
-# Verified against Together deprecation history + EcoLogic production
-# (backend/main.py). Placeholder slugs in the original draft were wrong:
-#   "google/gemma-3n-e4b-it"  -> real id was "google/gemma-3n-E4B-it"
-#   "servicenow/apriel-15b"   -> real id was "ServiceNow-AI/Apriel-1.6-15b-Thinker"
-# Together then REMOVED both from serverless:
-#   google/gemma-3n-E4B-it              removed 2026-08-25 (dedicated: No)
-#   ServiceNow-AI/Apriel-1.6-15b-Thinker removed 2026-04-03 (dedicated: No)
-# gpt-4o remains the current OpenAI API alias (snapshots: gpt-4o-2024-11-20,
-# gpt-4o-2024-08-06, gpt-4o-2024-05-13).
+UA = "Mozilla/5.0 EcoLogicBenchmark/1.0"
+COMMON_HEADERS = {"User-Agent": UA, "Content-Type": "application/json"}
+
+MAX_TOKENS = 1024
+SMOKE_MAX_TOKENS = 256
+JUDGE_MODEL = "zai-org/GLM-5.3-Flash"
+
+# Energy-adjacent replacements (not the paper's original Together IDs).
+# Tier 3 is Llama 3.3 70B on Together because gpt-4o requires OPENAI_API_KEY.
 MODELS = {
-    1: {"provider": "together", "model": "google/gemma-3n-E4B-it"},
-    2: {"provider": "together", "model": "ServiceNow-AI/Apriel-1.6-15b-Thinker"},
-    3: {"provider": "openai", "model": "gpt-4o"},
+    1: {"provider": "together", "model": "Qwen/Qwen3.5-9B", "energy_per_1k_tokens": 1.1},
+    2: {"provider": "together", "model": "openai/gpt-oss-20b", "energy_per_1k_tokens": 2.0},
+    3: {"provider": "together", "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo", "energy_per_1k_tokens": 7.0},
 }
 
-# Fallback published rates used only if the API does not return a dollar cost.
-# Together changelog (historical, while Gemma 3N was live): $0.06 / $0.12 per 1M.
-# Apriel 1.6 was advertised as free. OpenAI GPT-4o (docs, 2026): $2.50 / $10 per 1M.
 FALLBACK_RATES_PER_MILLION = {
-    "google/gemma-3n-E4B-it": {"input": 0.06, "output": 0.12},
-    "ServiceNow-AI/Apriel-1.6-15b-Thinker": {"input": 0.00, "output": 0.00},
+    "Qwen/Qwen3.5-9B": {"input": 0.17, "output": 0.25},
+    "openai/gpt-oss-20b": {"input": 0.05, "output": 0.20},
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo": {"input": 1.04, "output": 1.04},
+    "zai-org/GLM-5.3-Flash": {"input": 0.15, "output": 0.50},
     "gpt-4o": {"input": 2.50, "output": 10.00},
 }
 
 QUESTIONS = [
-    # -- factual (auto-gradable via substring match) --
     {"id": "f1", "category": "factual", "prompt": "What is the capital of Australia?", "reference": "Canberra"},
     {"id": "f2", "category": "factual", "prompt": "Who wrote 'Pride and Prejudice'?", "reference": "Jane Austen"},
     {"id": "f3", "category": "factual", "prompt": "What is the atomic number of carbon?", "reference": "6"},
@@ -68,8 +60,6 @@ QUESTIONS = [
     {"id": "f6", "category": "factual", "prompt": "What is the chemical formula for table salt?", "reference": "NaCl"},
     {"id": "f7", "category": "factual", "prompt": "Who painted 'Starry Night'?", "reference": "Van Gogh"},
     {"id": "f8", "category": "factual", "prompt": "What is the smallest prime number?", "reference": "2"},
-
-    # -- reasoning/analysis (rubric-graded, e.g. by human or judge model) --
     {"id": "r1", "category": "reasoning", "prompt": "Compare the trade-offs of monolithic vs microservice architectures.", "reference": None},
     {"id": "r2", "category": "reasoning", "prompt": "Analyze the main causes of urban housing shortages.", "reference": None},
     {"id": "r3", "category": "reasoning", "prompt": "What are the pros and cons of universal basic income?", "reference": None},
@@ -78,8 +68,6 @@ QUESTIONS = [
     {"id": "r6", "category": "reasoning", "prompt": "Step by step, explain why inflation erodes purchasing power.", "reference": None},
     {"id": "r7", "category": "reasoning", "prompt": "Assess the risks of over-reliance on a single cloud provider.", "reference": None},
     {"id": "r8", "category": "reasoning", "prompt": "Compare federated learning and centralized training for privacy.", "reference": None},
-
-    # -- code (rubric-graded: does it run, does it solve the stated task) --
     {"id": "c1", "category": "code", "prompt": "Write a Python function that returns the nth Fibonacci number.", "reference": None},
     {"id": "c2", "category": "code", "prompt": "Write a JavaScript function that debounces another function.", "reference": None},
     {"id": "c3", "category": "code", "prompt": "Implement binary search in Java.", "reference": None},
@@ -91,9 +79,7 @@ QUESTIONS = [
 ]
 
 
-def _message_content(payload: dict) -> str:
-    msg = payload["choices"][0]["message"]
-    content = msg.get("content")
+def _stringify_content(content) -> str:
     if content is None:
         return ""
     if isinstance(content, list):
@@ -105,6 +91,13 @@ def _message_content(payload: dict) -> str:
                 parts.append(block)
         return "".join(parts)
     return str(content)
+
+
+def _message_fields(payload: dict) -> tuple[str, str]:
+    msg = payload["choices"][0]["message"]
+    content = _stringify_content(msg.get("content")).strip()
+    reasoning = _stringify_content(msg.get("reasoning")).strip()
+    return content, reasoning
 
 
 def _usage_and_cost(model: str, payload: dict) -> dict:
@@ -128,16 +121,23 @@ def _usage_and_cost(model: str, payload: dict) -> dict:
     }
 
 
+def _auth_headers(provider: str) -> dict:
+    headers = dict(COMMON_HEADERS)
+    if provider == "together":
+        headers["Authorization"] = f"Bearer {TOGETHER_API_KEY}"
+    else:
+        headers["Authorization"] = f"Bearer {OPENAI_API_KEY}"
+    return headers
+
+
 async def list_together_model_ids(client: httpx.AsyncClient) -> list[str]:
     resp = await client.get(
         TOGETHER_MODELS_URL,
-        headers={"Authorization": f"Bearer {TOGETHER_API_KEY}"},
+        headers=_auth_headers("together"),
         timeout=60,
     )
     if resp.status_code == 401:
-        raise SystemExit(
-            "Together /v1/models returned 401. TOGETHER_API_KEY is missing or invalid."
-        )
+        raise SystemExit("Together /v1/models returned 401. TOGETHER_API_KEY is missing or invalid.")
     resp.raise_for_status()
     data = resp.json()
     items = data if isinstance(data, list) else (data.get("data") or [])
@@ -155,56 +155,67 @@ async def list_together_model_ids(client: httpx.AsyncClient) -> list[str]:
 async def openai_model_exists(client: httpx.AsyncClient, model: str) -> bool:
     resp = await client.get(
         OPENAI_MODELS_URL,
-        headers={"Authorization": f"Bearer {OPENAI_API_KEY}"},
+        headers=_auth_headers("openai"),
         timeout=60,
     )
     if resp.status_code == 401:
-        raise SystemExit(
-            "OpenAI /v1/models returned 401. OPENAI_API_KEY is missing or invalid."
-        )
+        raise SystemExit("OpenAI /v1/models returned 401. OPENAI_API_KEY is missing or invalid.")
     resp.raise_for_status()
     data = resp.json()
     ids = {m.get("id") for m in data.get("data", []) if isinstance(m, dict)}
     return model in ids
 
 
-async def call_together(client: httpx.AsyncClient, model: str, prompt: str) -> dict:
+async def _post_chat(client: httpx.AsyncClient, provider: str, url: str, model: str, prompt: str, max_tokens: int) -> dict:
     last_err = None
-    for attempt in range(1, 4):
+    retries = 0
+    for attempt in range(1, 5):
         try:
             resp = await client.post(
-                TOGETHER_URL,
-                headers={"Authorization": f"Bearer {TOGETHER_API_KEY}"},
+                url,
+                headers=_auth_headers(provider),
                 json={
                     "model": model,
                     "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 512,
+                    "max_tokens": max_tokens,
                 },
-                timeout=60,
+                timeout=120,
             )
             if resp.status_code in (429, 500, 502, 503):
                 last_err = f"HTTP {resp.status_code}: {resp.text[:500]}"
+                retries += 1
                 await asyncio.sleep(2 ** attempt)
                 continue
             resp.raise_for_status()
             payload = resp.json()
+            content, reasoning = _message_fields(payload)
+            answer = content or reasoning
             return {
-                "answer": _message_content(payload),
+                "answer": answer,
+                "content": content,
+                "reasoning": reasoning,
                 "http_status": resp.status_code,
-                "retries": attempt - 1,
+                "retries": retries,
                 **_usage_and_cost(model, payload),
                 "error": None,
             }
         except httpx.HTTPStatusError as e:
             last_err = f"HTTP {e.response.status_code}: {e.response.text[:500]}"
+            if e.response.status_code in (429, 500, 502, 503) and attempt < 4:
+                retries += 1
+                await asyncio.sleep(2 ** attempt)
+                continue
             break
         except Exception as e:
             last_err = str(e)
+            retries += 1
             await asyncio.sleep(2 ** attempt)
     return {
         "answer": "",
+        "content": "",
+        "reasoning": "",
         "http_status": None,
-        "retries": 3,
+        "retries": retries,
         "prompt_tokens": 0,
         "completion_tokens": 0,
         "total_tokens": 0,
@@ -214,50 +225,10 @@ async def call_together(client: httpx.AsyncClient, model: str, prompt: str) -> d
     }
 
 
-async def call_openai(client: httpx.AsyncClient, model: str, prompt: str) -> dict:
-    last_err = None
-    for attempt in range(1, 4):
-        try:
-            resp = await client.post(
-                OPENAI_URL,
-                headers={"Authorization": f"Bearer {OPENAI_API_KEY}"},
-                json={
-                    "model": model,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 512,
-                },
-                timeout=60,
-            )
-            if resp.status_code in (429, 500, 502, 503):
-                last_err = f"HTTP {resp.status_code}: {resp.text[:500]}"
-                await asyncio.sleep(2 ** attempt)
-                continue
-            resp.raise_for_status()
-            payload = resp.json()
-            return {
-                "answer": _message_content(payload),
-                "http_status": resp.status_code,
-                "retries": attempt - 1,
-                **_usage_and_cost(model, payload),
-                "error": None,
-            }
-        except httpx.HTTPStatusError as e:
-            last_err = f"HTTP {e.response.status_code}: {e.response.text[:500]}"
-            break
-        except Exception as e:
-            last_err = str(e)
-            await asyncio.sleep(2 ** attempt)
-    return {
-        "answer": "",
-        "http_status": None,
-        "retries": 3,
-        "prompt_tokens": 0,
-        "completion_tokens": 0,
-        "total_tokens": 0,
-        "estimated_usd": None,
-        "usage_raw": {},
-        "error": last_err,
-    }
+async def call_model(client: httpx.AsyncClient, cfg: dict, prompt: str, max_tokens: int = MAX_TOKENS) -> dict:
+    if cfg["provider"] == "together":
+        return await _post_chat(client, "together", TOGETHER_URL, cfg["model"], prompt, max_tokens)
+    return await _post_chat(client, "openai", OPENAI_URL, cfg["model"], prompt, max_tokens)
 
 
 async def smoke_test(client: httpx.AsyncClient) -> None:
@@ -265,12 +236,13 @@ async def smoke_test(client: httpx.AsyncClient) -> None:
     prompt = "Reply with the single word: pong"
     for tier, cfg in MODELS.items():
         print(f"\n--- Tier {tier} ({cfg['provider']}: {cfg['model']}) ---")
-        if cfg["provider"] == "together":
-            result = await call_together(client, cfg["model"], prompt)
-        else:
-            result = await call_openai(client, cfg["model"], prompt)
+        result = await call_model(client, cfg, prompt, max_tokens=SMOKE_MAX_TOKENS)
+        printable = {k: v for k, v in result.items() if k != "usage_raw"}
+        printable["answer"] = (printable.get("answer") or "")[:500]
+        printable["content"] = (printable.get("content") or "")[:500]
+        printable["reasoning"] = (printable.get("reasoning") or "")[:500]
         print("RAW RESPONSE:")
-        print(json.dumps(result, indent=2)[:4000])
+        print(json.dumps(printable, indent=2)[:4000])
         if result.get("error") or not (result.get("answer") or "").strip():
             raise SystemExit(
                 f"Smoke test FAILED for Tier {tier} ({cfg['model']}): "
@@ -288,6 +260,7 @@ def write_aborted_results(blockers: list[str], extra: dict | None = None) -> Non
         "successful_calls": 0,
         "blockers": blockers,
         "models": MODELS,
+        "judge_model": JUDGE_MODEL,
         "responses": [],
     }
     if extra:
@@ -297,17 +270,103 @@ def write_aborted_results(blockers: list[str], extra: dict | None = None) -> Non
     print("Wrote quality_benchmark_results.json (0 inference calls).")
 
 
+def parse_judge_output(text: str) -> tuple[int | None, str]:
+    text = (text or "").strip()
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    blob = match.group(0) if match else text
+    try:
+        data = json.loads(blob)
+        score = data.get("score")
+        if score in (0, 1, "0", "1"):
+            return int(score), str(data.get("justification") or "").strip() or text[:300]
+    except Exception:
+        pass
+    return None, f"unparseable judge output: {text[:300]}"
+
+
+def judge_prompt(row: dict) -> str:
+    if row["category"] == "reasoning":
+        rubric = (
+            "Score 1 if the answer correctly addresses the actual trade-offs or "
+            "comparison asked for, without factual errors or dodging the question. "
+            "Score 0 otherwise."
+        )
+    else:
+        rubric = (
+            "Score 1 if the code would plausibly run and correctly solve the stated "
+            "task (check logic, not just that code-shaped text was produced). "
+            "Score 0 otherwise."
+        )
+    return (
+        "You are grading a model answer. Return ONLY JSON: "
+        '{"score": 0 or 1, "justification": "one sentence"}.\n'
+        f"Rubric: {rubric}\n\n"
+        f"Question: {row['prompt']}\n\n"
+        f"Answer:\n{row['answer']}"
+    )
+
+
+async def judge_rows(client: httpx.AsyncClient, results: list[dict]) -> dict:
+    judge_cfg = {"provider": "together", "model": JUDGE_MODEL}
+    judge_calls = 0
+    judge_errors = 0
+    judge_retries = 0
+    judge_cost = 0.0
+    for row in results:
+        if row["category"] not in ("reasoning", "code"):
+            continue
+        if row.get("error") or not (row.get("answer") or "").strip():
+            row["judge_score"] = 0
+            row["judge_justification"] = "No usable model answer to grade."
+            row["judge_model"] = JUDGE_MODEL
+            continue
+        call = await call_model(client, judge_cfg, judge_prompt(row), max_tokens=256)
+        judge_calls += 1
+        judge_retries += int(call.get("retries") or 0)
+        if call.get("estimated_usd"):
+            judge_cost += call["estimated_usd"]
+        if call.get("error"):
+            judge_errors += 1
+            row["judge_score"] = None
+            row["judge_justification"] = f"judge error: {call['error']}"
+            row["judge_model"] = JUDGE_MODEL
+            continue
+        score, why = parse_judge_output(call.get("answer") or "")
+        row["judge_score"] = score
+        row["judge_justification"] = why
+        row["judge_model"] = JUDGE_MODEL
+        await asyncio.sleep(0.15)
+    return {
+        "judge_model": JUDGE_MODEL,
+        "judge_calls": judge_calls,
+        "judge_errors": judge_errors,
+        "judge_retries": judge_retries,
+        "judge_estimated_usd": judge_cost,
+    }
+
+
+def save_results(payload: dict) -> None:
+    with open("quality_benchmark_results.json", "w") as f:
+        json.dump(payload, f, indent=2)
+
+
 async def run_all():
+    needs_together = any(c["provider"] == "together" for c in MODELS.values()) or True
+    needs_openai = any(c["provider"] == "openai" for c in MODELS.values())
     blockers = []
-    if not TOGETHER_API_KEY:
+    if needs_together and not TOGETHER_API_KEY:
         blockers.append("TOGETHER_API_KEY is not set in this environment.")
-    if not OPENAI_API_KEY:
+    if needs_openai and not OPENAI_API_KEY:
         blockers.append("OPENAI_API_KEY is not set in this environment.")
     if blockers:
         write_aborted_results(blockers)
-        raise SystemExit(
-            "Set TOGETHER_API_KEY and OPENAI_API_KEY before running. "
-            "This harness makes real, billed API calls. " + " ".join(blockers)
+        raise SystemExit(" ".join(blockers))
+
+    notes = []
+    if not OPENAI_API_KEY:
+        notes.append(
+            "OPENAI_API_KEY missing; Tier 3 is meta-llama/Llama-3.3-70B-Instruct-Turbo "
+            "on Together instead of gpt-4o."
         )
 
     async with httpx.AsyncClient() as client:
@@ -321,57 +380,36 @@ async def run_all():
             raise SystemExit(f"Together /v1/models request failed: {e}")
 
         missing = []
-        for tier in (1, 2):
-            slug = MODELS[tier]["model"]
-            if slug not in together_ids:
-                missing.append(slug)
+        for tier, cfg in MODELS.items():
+            if cfg["provider"] == "together" and cfg["model"] not in together_ids:
+                missing.append(cfg["model"])
+        if JUDGE_MODEL not in together_ids:
+            missing.append(JUDGE_MODEL)
 
         print(f"Together catalog returned {len(together_ids)} model ids.")
-        for needle in ("gemma-3n", "gemma-3n-E4B", "Apriel", "apriel"):
-            hits = [i for i in together_ids if needle.lower() in i.lower()]
-            print(f"  catalog matches for {needle!r}: {hits or '(none)'}")
+        for slug in [MODELS[t]["model"] for t in (1, 2, 3)] + [JUDGE_MODEL]:
+            print(f"  {slug}: {'YES' if slug in together_ids else 'NO'}")
 
         if missing:
-            msg = (
-                "Together AI catalog does not currently list the EcoLogic Together "
-                f"models: {missing}. Refusing to substitute a different model. "
-                "See Together deprecations: google/gemma-3n-E4B-it removed "
-                "2026-08-25; ServiceNow-AI/Apriel-1.6-15b-Thinker removed 2026-04-03."
-            )
-            write_aborted_results(
-                [msg],
-                extra={
-                    "together_catalog_size": len(together_ids),
-                    "together_catalog_matches": {
-                        "gemma-3n": [i for i in together_ids if "gemma-3n" in i.lower()],
-                        "apriel": [i for i in together_ids if "apriel" in i.lower()],
-                    },
-                },
-            )
+            msg = f"Together catalog missing required slugs: {missing}. Refusing to substitute."
+            write_aborted_results([msg], extra={"together_catalog_size": len(together_ids)})
             raise SystemExit(msg)
 
-        print("Querying OpenAI GET /v1/models ...")
-        try:
+        if needs_openai:
+            print("Querying OpenAI GET /v1/models ...")
             gpt4o_ok = await openai_model_exists(client, MODELS[3]["model"])
-        except SystemExit:
-            raise
-        except Exception as e:
-            write_aborted_results([f"OpenAI /v1/models request failed: {e}"])
-            raise SystemExit(f"OpenAI /v1/models request failed: {e}")
-        if not gpt4o_ok:
-            msg = "OpenAI catalog does not currently list gpt-4o."
-            write_aborted_results([msg])
-            raise SystemExit(msg)
+            if not gpt4o_ok:
+                msg = f"OpenAI catalog does not currently list {MODELS[3]['model']}."
+                write_aborted_results([msg])
+                raise SystemExit(msg)
 
         await smoke_test(client)
 
         results = []
         for tier, cfg in MODELS.items():
             for q in QUESTIONS:
-                if cfg["provider"] == "together":
-                    call = await call_together(client, cfg["model"], q["prompt"])
-                else:
-                    call = await call_openai(client, cfg["model"], q["prompt"])
+                print(f"Calling T{tier} {q['id']} ...", flush=True)
+                call = await call_model(client, cfg, q["prompt"])
                 answer = call.get("answer") or ""
                 results.append({
                     "tier": tier,
@@ -381,6 +419,7 @@ async def run_all():
                     "prompt": q["prompt"],
                     "reference": q["reference"],
                     "answer": answer,
+                    "reasoning": call.get("reasoning") or "",
                     "auto_correct": (
                         q["reference"].lower() in answer.lower()
                         if q["reference"] and answer else None
@@ -395,32 +434,50 @@ async def run_all():
                     "total_tokens": call.get("total_tokens"),
                     "estimated_usd": call.get("estimated_usd"),
                 })
-                time.sleep(0.15)
+                await asyncio.sleep(0.15)
 
-    successes = sum(1 for r in results if r.get("error") is None and (r.get("answer") or "").strip())
-    payload = {
-        "run_status": "complete" if successes == 72 else "incomplete",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "expected_calls": 72,
-        "successful_calls": successes,
-        "models": MODELS,
-        "responses": results,
-    }
-    with open("quality_benchmark_results.json", "w") as f:
-        json.dump(payload, f, indent=2)
-    print(f"Wrote {len(results)} responses to quality_benchmark_results.json "
-          f"({successes}/72 successful).")
+        successes = sum(
+            1 for r in results if r.get("error") is None and (r.get("answer") or "").strip()
+        )
+        payload = {
+            "run_status": "inference_done_pending_judge" if successes == 72 else "incomplete",
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "expected_calls": 72,
+            "successful_calls": successes,
+            "models": MODELS,
+            "notes": notes,
+            "responses": results,
+        }
+        save_results(payload)
+        print(f"Wrote {len(results)} responses ({successes}/72 successful). Starting judge...")
+
+        judge_meta = await judge_rows(client, results)
+        payload["run_status"] = "complete" if successes == 72 else "incomplete"
+        payload["judge"] = judge_meta
+        payload["generated_at"] = datetime.now(timezone.utc).isoformat()
+        payload["responses"] = results
+        save_results(payload)
+
+    print(f"Wrote quality_benchmark_results.json ({successes}/72 successful).")
     print("Factual (auto-graded) accuracy by tier:")
     for tier in (1, 2, 3):
         factual = [r for r in results if r["tier"] == tier and r["category"] == "factual"]
         graded = [r for r in factual if r["auto_correct"] is not None]
         if not graded:
-            print(f"  Tier {tier}: n/a (no auto-gradable answers)")
+            print(f"  Tier {tier}: n/a")
             continue
-        acc = sum(1 for r in graded if r["auto_correct"]) / len(graded)
-        print(f"  Tier {tier}: {acc:.1%} ({sum(1 for r in graded if r['auto_correct'])}/{len(graded)})")
-    print("\nReasoning/code responses need a rubric pass (human or judge-model) "
-          "before scoring -- see 'auto_correct: null' entries in the JSON.")
+        n = sum(1 for r in graded if r["auto_correct"])
+        print(f"  Tier {tier}: {n/len(graded):.1%} ({n}/{len(graded)})")
+    print("Judge-graded reasoning/code:")
+    for tier in (1, 2, 3):
+        for cat in ("reasoning", "code"):
+            rows = [r for r in results if r["tier"] == tier and r["category"] == cat]
+            scored = [r for r in rows if r.get("judge_score") in (0, 1)]
+            if not scored:
+                print(f"  Tier {tier} {cat}: n/a")
+                continue
+            n = sum(r["judge_score"] for r in scored)
+            print(f"  Tier {tier} {cat}: {n/len(scored):.1%} ({n}/{len(scored)})")
     if successes < 72:
         sys.exit(2)
 
