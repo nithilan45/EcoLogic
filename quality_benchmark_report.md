@@ -76,7 +76,17 @@ Smoke tests were extra (3 cheap `pong` calls, on the order of $0.0001) and are n
 
 On this 24-question matched set, the **mid Together model (`gpt-oss-20b`) matched or beat the 70B tier** on judge-graded reasoning and code, and the 9B Qwen tier was fine on short facts and most code but often failed to emit a finished reasoning answer.
 
-That is a result for **these substitutes**, not a measurement of Gemma 3N vs Apriel vs GPT-4o. To compare GPT-4o, add `OPENAI_API_KEY` and set Tier 3 back to `gpt-4o`.
+That is a result for **these substitutes**, not a measurement of Gemma 3N vs Apriel vs GPT-4o.
+
+## GPT-4o follow-up (2026-09-05, later)
+
+An OpenAI key was supplied. `GET https://api.openai.com/v1/models` returned **200** and listed `gpt-4o`. A smoke chat completion (`Reply with the single word: pong`, `max_tokens: 16`) returned **HTTP 429**:
+
+`You have no credits remaining. Add credits to continue using the API` (`code: credit_balance_exhausted`).
+
+**Zero GPT-4o eval calls were made.** The 72-row JSON is unchanged (Tier 3 remains Llama 3.3 70B). The harness now defaults Tier 3 to `gpt-4o` and supports `python3 quality_benchmark_harness.py --rerun-tier 3` after billing is added.
+
+Add credits at https://platform.openai.com/settings/organization/billing then rerun Tier 3. Rotate this key; it was pasted in chat.
 
 ## Files
 

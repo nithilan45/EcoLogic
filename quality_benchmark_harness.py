@@ -2,12 +2,13 @@
 EcoLogic matched-query quality benchmark.
 
 Original Together slugs (Gemma 3N E4B, Apriel 1.6 15B) are gone from serverless.
-This run uses energy-adjacent replacements the operator approved, plus Llama 3.3
-70B for Tier 3 because OPENAI_API_KEY is not available for gpt-4o.
+Tier 1/2 use energy-adjacent Together replacements. Tier 3 is gpt-4o.
 
 Usage:
     export TOGETHER_API_KEY=...
+    export OPENAI_API_KEY=...
     python3 quality_benchmark_harness.py
+    python3 quality_benchmark_harness.py --rerun-tier 3
 """
 
 import os
@@ -37,12 +38,11 @@ SMOKE_MAX_TOKENS = 256
 # reasoning_content and never emitted a grade; MiniMax M3 returns SCORE/WHY.
 JUDGE_MODEL = "MiniMaxAI/MiniMax-M3"
 
-# Energy-adjacent replacements (not the paper's original Together IDs).
-# Tier 3 is Llama 3.3 70B on Together because gpt-4o requires OPENAI_API_KEY.
+# Energy-adjacent replacements for retired Together IDs; Tier 3 is gpt-4o.
 MODELS = {
     1: {"provider": "together", "model": "Qwen/Qwen3.5-9B", "energy_per_1k_tokens": 1.1},
     2: {"provider": "together", "model": "openai/gpt-oss-20b", "energy_per_1k_tokens": 2.0},
-    3: {"provider": "together", "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo", "energy_per_1k_tokens": 7.0},
+    3: {"provider": "openai", "model": "gpt-4o", "energy_per_1k_tokens": 60},
 }
 
 FALLBACK_RATES_PER_MILLION = {
@@ -186,6 +186,15 @@ async def _post_chat(client: httpx.AsyncClient, provider: str, url: str, model: 
                 },
                 timeout=120,
             )
+            if resp.status_code == 429 and (
+                "insufficient_quota" in resp.text
+                or "credit_balance_exhausted" in resp.text
+            ):
+                raise SystemExit(
+                    f"{provider} {model} returned HTTP 429 insufficient_quota / "
+                    "credit_balance_exhausted. Add billing credits and retry. "
+                    f"Body: {resp.text[:400]}"
+                )
             if resp.status_code in (429, 500, 502, 503):
                 last_err = f"HTTP {resp.status_code}: {resp.text[:500]}"
                 retries += 1
@@ -322,13 +331,15 @@ def judge_prompt(row: dict) -> str:
     )
 
 
-async def judge_rows(client: httpx.AsyncClient, results: list[dict]) -> dict:
+async def judge_rows(client: httpx.AsyncClient, results: list[dict], tiers: set[int] | None = None) -> dict:
     judge_cfg = {"provider": "together", "model": JUDGE_MODEL}
     judge_calls = 0
     judge_errors = 0
     judge_retries = 0
     judge_cost = 0.0
     for row in results:
+        if tiers is not None and row["tier"] not in tiers:
+            continue
         if row["category"] not in ("reasoning", "code"):
             continue
         if row.get("error") or not (row.get("answer") or "").strip():
@@ -379,11 +390,6 @@ async def run_all():
         raise SystemExit(" ".join(blockers))
 
     notes = []
-    if not OPENAI_API_KEY:
-        notes.append(
-            "OPENAI_API_KEY missing; Tier 3 is meta-llama/Llama-3.3-70B-Instruct-Turbo "
-            "on Together instead of gpt-4o."
-        )
 
     async with httpx.AsyncClient() as client:
         print("Querying Together GET /v1/models ...")
@@ -524,8 +530,107 @@ async def judge_only() -> None:
         sys.exit(2)
 
 
+async def rerun_tier(tier: int) -> None:
+    cfg = MODELS[tier]
+    if cfg["provider"] == "together" and not TOGETHER_API_KEY:
+        raise SystemExit("TOGETHER_API_KEY is not set.")
+    if cfg["provider"] == "openai" and not OPENAI_API_KEY:
+        raise SystemExit("OPENAI_API_KEY is not set.")
+    if not TOGETHER_API_KEY:
+        raise SystemExit("TOGETHER_API_KEY is required for the MiniMax judge.")
+    with open("quality_benchmark_results.json") as f:
+        payload = json.load(f)
+    results = payload.get("responses") or []
+    if len(results) != 72:
+        raise SystemExit(f"Expected 72 existing responses, found {len(results)}.")
+
+    async with httpx.AsyncClient() as client:
+        if cfg["provider"] == "openai":
+            ok = await openai_model_exists(client, cfg["model"])
+            if not ok:
+                raise SystemExit(f"OpenAI catalog does not list {cfg['model']}.")
+        print(f"=== Smoke test Tier {tier} ({cfg['model']}) ===")
+        smoke = await call_model(
+            client, cfg, "Reply with the single word: pong", max_tokens=SMOKE_MAX_TOKENS
+        )
+        print(json.dumps({k: (v[:400] if isinstance(v, str) else v) for k, v in smoke.items() if k != "usage_raw"}, indent=2)[:2000])
+        if smoke.get("error") or not (smoke.get("answer") or "").strip():
+            raise SystemExit(
+                f"Smoke test FAILED for Tier {tier}: {smoke.get('error') or 'empty response'}"
+            )
+        print("Smoke test succeeded. Replacing existing Tier", tier, "rows...")
+
+        new_rows = []
+        for q in QUESTIONS:
+            print(f"Calling T{tier} {q['id']} ...", flush=True)
+            call = await call_model(client, cfg, q["prompt"])
+            answer = call.get("answer") or ""
+            new_rows.append({
+                "tier": tier,
+                "model": cfg["model"],
+                "question_id": q["id"],
+                "category": q["category"],
+                "prompt": q["prompt"],
+                "reference": q["reference"],
+                "answer": answer,
+                "reasoning": call.get("reasoning") or "",
+                "auto_correct": (
+                    q["reference"].lower() in answer.lower()
+                    if q["reference"] and answer else None
+                ),
+                "judge_score": None,
+                "judge_justification": None,
+                "http_status": call.get("http_status"),
+                "retries": call.get("retries"),
+                "error": call.get("error"),
+                "prompt_tokens": call.get("prompt_tokens"),
+                "completion_tokens": call.get("completion_tokens"),
+                "total_tokens": call.get("total_tokens"),
+                "estimated_usd": call.get("estimated_usd"),
+            })
+            await asyncio.sleep(0.15)
+
+        kept = [r for r in results if r["tier"] != tier]
+        results = kept + new_rows
+        results.sort(key=lambda r: (r["tier"], r["question_id"]))
+        payload["models"] = MODELS
+        payload["responses"] = results
+        payload["notes"] = list(payload.get("notes") or []) + [
+            f"Tier {tier} rerun with {cfg['model']} at {datetime.now(timezone.utc).isoformat()}"
+        ]
+        save_results(payload)
+
+        print(f"Judging Tier {tier} reasoning/code with {JUDGE_MODEL} ...")
+        extra = await judge_rows(client, results, tiers={tier})
+        old = payload.get("judge") or {}
+        payload["judge"] = {
+            "judge_model": JUDGE_MODEL,
+            "judge_calls": int(old.get("judge_calls") or 0) + extra["judge_calls"],
+            "judge_errors": int(old.get("judge_errors") or 0) + extra["judge_errors"],
+            "judge_retries": int(old.get("judge_retries") or 0) + extra["judge_retries"],
+            "judge_estimated_usd": float(old.get("judge_estimated_usd") or 0)
+            + float(extra["judge_estimated_usd"] or 0),
+            "last_rerun_tier": extra,
+        }
+
+    successes = sum(
+        1 for r in results if r.get("error") is None and (r.get("answer") or "").strip()
+    )
+    payload["run_status"] = "complete" if successes == 72 else "incomplete"
+    payload["successful_calls"] = successes
+    payload["generated_at"] = datetime.now(timezone.utc).isoformat()
+    payload["responses"] = results
+    save_results(payload)
+    print_summary(results, successes)
+    if successes < 72:
+        sys.exit(2)
+
+
 if __name__ == "__main__":
     if "--judge-only" in sys.argv:
         asyncio.run(judge_only())
+    elif "--rerun-tier" in sys.argv:
+        idx = sys.argv.index("--rerun-tier")
+        asyncio.run(rerun_tier(int(sys.argv[idx + 1])))
     else:
         asyncio.run(run_all())
