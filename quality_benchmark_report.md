@@ -1,25 +1,25 @@
 # EcoLogic matched-query quality benchmark
 
-**Run status: 72/72 inference calls succeeded.** Judge pass: 48/48 reasoning+code rows scored 0/1.
+**Run status: 72/72 inference calls succeeded.** Judge: 48/48 reasoning+code rows scored 0/1 (MiniMax M3).
 
-This is **not** the paper’s original stack. Gemma 3N E4B and Apriel 1.6 15B are gone from Together serverless. The operator approved energy-adjacent substitutes. **Tier 3 is not GPT-4o** (`OPENAI_API_KEY` was not provided).
+This is **not** the paper’s original Together stack. Gemma 3N E4B and Apriel 1.6 15B are gone from Together serverless. Tiers 1–2 are energy-adjacent substitutes. **Tier 3 is GPT-4o** (OpenAI), after a billed retry.
 
-Checked / generated: 2026-09-05T22:16:34Z.
+Generated: 2026-09-05T22:33:01Z.
 
 ## Models actually called
 
-| Tier | Role in EcoLogic | Model used | Provider | EcoLogic-style J/1k* | Catalog check |
-|------|------------------|------------|----------|----------------------|---------------|
-| 1 | small / cheap | `Qwen/Qwen3.5-9B` | Together | ~1.1 (was 0.5 for 4B) | Present; smoke `pong` |
-| 2 | mid | `openai/gpt-oss-20b` | Together | ~2.0 (was 1.5 for 15B) | Present; smoke `pong` |
-| 3 | large | `meta-llama/Llama-3.3-70B-Instruct-Turbo` | Together | ~7.0 (paper used GPT-4o at 60) | Present; smoke `pong` |
-| judge | not under test | `MiniMaxAI/MiniMax-M3` | Together | — | Present |
+| Tier | Role | Model | Provider | EcoLogic-style J/1k* | Smoke |
+|------|------|-------|----------|----------------------|-------|
+| 1 | small | `Qwen/Qwen3.5-9B` | Together | ~1.1 (paper 4B ≈ 0.5) | `pong` |
+| 2 | mid | `openai/gpt-oss-20b` | Together | ~2.0 (paper 15B ≈ 1.5) | `pong` |
+| 3 | large | `gpt-4o` (snapshot `gpt-4o-2024-08-06` on smoke) | OpenAI | 60 | `Pong` |
+| judge | not under test | `MiniMaxAI/MiniMax-M3` | Together | — | — |
 
-\*Same param-count scaling EcoLogic already uses. Not a lab joule meter.
+\*Param-count scaling, not a lab joule meter.
 
-Original IDs `google/gemma-3n-E4B-it` and `ServiceNow-AI/Apriel-1.6-15b-Thinker` were **absent** from Together `GET /v1/models` (275 ids). `google/gemma-4-E4B-it` is catalog-listed but **dedicated-only** (HTTP 400 `model_not_available` on serverless chat).
+Original IDs `google/gemma-3n-E4B-it` and `ServiceNow-AI/Apriel-1.6-15b-Thinker` were absent from Together `GET /v1/models`. `google/gemma-4-E4B-it` is dedicated-only (HTTP 400 on serverless).
 
-Smoke tests (prompt: `Reply with the single word: pong`) all returned `pong` before the 72-call batch.
+An earlier complete 72-call pass used `meta-llama/Llama-3.3-70B-Instruct-Turbo` for Tier 3 because OpenAI returned `credit_balance_exhausted`. After credits were added, **only Tier 3 was regenerated** with gpt-4o. Tiers 1–2 answers and MiniMax scores were not re-queried.
 
 ## Factual accuracy (auto-graded substring match)
 
@@ -29,67 +29,55 @@ Logic unchanged: `reference.lower() in answer.lower()`. 8 questions × 3 tiers.
 |------|-------|-------------|----------|
 | 1 | `Qwen/Qwen3.5-9B` | 8 / 8 | **100%** |
 | 2 | `openai/gpt-oss-20b` | 7 / 8 | **87.5%** |
-| 3 | `Llama-3.3-70B-Instruct-Turbo` | 8 / 8 | **100%** |
+| 3 | `gpt-4o` | 8 / 8 | **100%** |
 
-**Auto-grader miss, not a wrong painter:** Tier 2 f7 (*Who painted 'Starry Night'?*) said Vincent van Gogh, but used a Unicode narrow no-break space between `van` and `Gogh`, so `"van gogh"` did not match. Leave the scorer as-is; treat this 87.5% as a substring artifact. Semantically T2 also got Van Gogh.
+**Auto-grader miss, not a wrong painter:** Tier 2 f7 named Vincent van Gogh but used a Unicode narrow no-break space, so `"van gogh"` did not match. Semantically T2 also got Van Gogh.
 
 ## Judge-graded reasoning and code
 
-Judge: `MiniMaxAI/MiniMax-M3` (not T1/T2/T3). Rubric: reasoning = addresses the trade-off/comparison without factual errors or dodge; code = would plausibly run and solve the task.
+Same MiniMax M3 judge and rubric as Tiers 1–2. Reasoning: addresses the trade-off/comparison without factual errors or dodge. Code: would plausibly run and solve the task.
 
-First judge attempt used `zai-org/GLM-5.3-Flash`, which only filled `reasoning_content` and never emitted a grade (39/48 unparseable). Those scores were **discarded** and the 48 rows were re-graded with MiniMax. Inference answers were not re-generated.
-
-| Tier | Reasoning correct / 8 | Reasoning accuracy | Code correct / 8 | Code accuracy |
-|------|----------------------:|-------------------:|-----------------:|--------------:|
+| Tier | Reasoning / 8 | Reasoning accuracy | Code / 8 | Code accuracy |
+|------|--------------:|-------------------:|---------:|--------------:|
 | 1 | 3 / 8 | **37.5%** | 7 / 8 | **87.5%** |
 | 2 | 8 / 8 | **100%** | 8 / 8 | **100%** |
-| 3 | 7 / 8 | **87.5%** | 8 / 8 | **100%** |
+| 3 | 8 / 8 | **100%** | 7 / 8 | **87.5%** |
 
 ## Anomalies (not smoothed over)
 
-- **API errors:** none on the 72 eval calls. All HTTP 200. Retries: 0.
-- **Empty/refused completions:** 0 empty answers. Qwen often puts chain-of-thought in `reasoning` / `reasoning_content`; 7 Tier 1 answers were thinking-process dumps used as the visible answer because `content` was empty.
-- **Rate limits:** none observed.
-- **Tier 1 reasoning collapse:** 5/8 reasoning fails (`r2, r3, r4, r5, r6`) because Qwen returned outlines / “here's a thinking process” instead of the analysis, or truncated mid-sentence (`r4`). Code fail `c2`: debounce snippet truncated at `function debounce(func,`.
-- **Smaller tier beat larger — call these out:**
-  1. **T2 reasoning 100% vs T3 87.5%.** The 70B tier lost `r5` (nuclear vs solar): judge flagged a factual error (solar 10–20 vs nuclear 10–40 gCO2/kWh; IPCC-style figures go the other way). T2’s `r5` scored 1. T1 scored 0 on `r5` (truncated thinking dump).
-  2. **T1 and T3 both 100% factual vs T2 87.5%** on the auto-grader, driven only by f7’s Unicode space (see above). Not a real knowledge fail.
-- **Tier 3 is Llama 70B, not GPT-4o.** Do not read these numbers as “GPT-4o vs small models.”
-- **`gpt-oss-20b` is scheduled for Together serverless removal 2026-09-14.** This run was 2026-09-05.
+- **API errors on the 72 eval calls:** none. All HTTP 200. Retries: 0. OpenAI first attempt (pre-credits) was HTTP 429 `credit_balance_exhausted`; that call was **not** counted in the 72.
+- **Empty/refused:** 0. Seven Tier 1 answers were Qwen thinking-process dumps used as the visible answer because `content` was empty.
+- **Rate limits on the successful 72:** none.
+- **Tier 1 reasoning:** 5/8 fails (`r2`–`r6`) from outlines / truncated answers. Code fail `c2`: debounce cut off at `function debounce(func,`.
+- **Smaller tier judged better than GPT-4o:**
+  - **T2 code 100% vs T3 87.5%.** On `c5` (divide by zero), MiniMax scored T1 and T2 1, GPT-4o 0: GPT-4o’s fixes used undefined names (`some_value`, `denominator`) that would not run as written.
+  - **T2 reasoning 100% ties GPT-4o 100%** on this 8-item set.
+  - Factual auto-score T2 87.5% vs T1/T3 100% is the Unicode-space scorer miss on f7, not a knowledge fail.
+- **`gpt-oss-20b` Together serverless removal date:** 2026-09-14 (this run: 2026-09-05).
 
 ## Cost
 
-APIs did not return a billed dollar field. Cost below is **token usage × published per-1M rates**.
+No provider returned a billed-dollar field. Figures are token counts × published per-1M rates.
 
 | Stage | Tokens | Estimated USD |
 |-------|--------|---------------|
-| Tier 1 (24 calls) | 18,240 | $0.00452 |
-| Tier 2 (24 calls) | 17,752 | $0.00327 |
-| Tier 3 (24 calls) | 10,221 | $0.01063 |
-| Eval subtotal (72) | 46,213 | **$0.01842** |
-| Judge (48 MiniMax calls) | — | **$0.02614** |
-| **Total this run** | | **~$0.0446** |
+| Tier 1 (24, Qwen 9B) | 18,240 | $0.00452 |
+| Tier 2 (24, gpt-oss-20b) | 17,752 | $0.00327 |
+| Tier 3 (24, gpt-4o) | 8,290 | $0.07971 |
+| Eval subtotal (72) | 44,282 | **$0.08750** |
+| Judge (MiniMax; 48 original + 16 T3 regrade) | — | **$0.03262** |
+| **Total in results JSON** | | **~$0.120** |
 
-Smoke tests were extra (3 cheap `pong` calls, on the order of $0.0001) and are not in the 72-call JSON. The failed GLM-Flash judge pass (~$0.011) is also extra vs the MiniMax re-grade in `judge.judge_estimated_usd`.
+Extra, not in the 72-row usage: smoke `pong`/`Pong` calls; failed OpenAI quota smoke; discarded GLM-5.3-Flash judge pass; Llama 70B Tier 3 that was later replaced.
 
-## What this does and does not show
+## What this shows
 
-On this 24-question matched set, the **mid Together model (`gpt-oss-20b`) matched or beat the 70B tier** on judge-graded reasoning and code, and the 9B Qwen tier was fine on short facts and most code but often failed to emit a finished reasoning answer.
+On this 24-question matched set, **gpt-oss-20b matched GPT-4o on reasoning (8/8) and beat it on code (8/8 vs 7/8)**. Qwen 9B was perfect on short facts and most code, but often failed to emit a finished reasoning answer.
 
-That is a result for **these substitutes**, not a measurement of Gemma 3N vs Apriel vs GPT-4o.
-
-## GPT-4o follow-up (2026-09-05, later)
-
-An OpenAI key was supplied. `GET https://api.openai.com/v1/models` returned **200** and listed `gpt-4o`. A smoke chat completion (`Reply with the single word: pong`, `max_tokens: 16`) returned **HTTP 429**:
-
-`You have no credits remaining. Add credits to continue using the API` (`code: credit_balance_exhausted`).
-
-**Zero GPT-4o eval calls were made.** The 72-row JSON is unchanged (Tier 3 remains Llama 3.3 70B). The harness now defaults Tier 3 to `gpt-4o` and supports `python3 quality_benchmark_harness.py --rerun-tier 3` after billing is added.
-
-Add credits at https://platform.openai.com/settings/organization/billing then rerun Tier 3. Rotate this key; it was pasted in chat.
+This is still not Gemma 3N vs Apriel vs GPT-4o. It is Qwen 9B vs gpt-oss-20b vs GPT-4o.
 
 ## Files
 
-- `quality_benchmark_results.json` — all 72 prompt/response pairs plus `judge_score` / `judge_justification`
-- `quality_benchmark_harness.py` — slugs, catalog preflight, smoke tests, MiniMax judge
+- `quality_benchmark_results.json` — 72 prompt/response pairs; Tier 3 model field is `gpt-4o`
+- `quality_benchmark_harness.py` — `--rerun-tier 3` used for the GPT-4o replacement
 - `quality_benchmark_report.md` — this file
