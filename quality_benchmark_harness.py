@@ -33,7 +33,9 @@ COMMON_HEADERS = {"User-Agent": UA, "Content-Type": "application/json"}
 
 MAX_TOKENS = 1024
 SMOKE_MAX_TOKENS = 256
-JUDGE_MODEL = "zai-org/GLM-5.3-Flash"
+# Not one of the three tiers under test. GLM-5.3-Flash only wrote
+# reasoning_content and never emitted a grade; MiniMax M3 returns SCORE/WHY.
+JUDGE_MODEL = "MiniMaxAI/MiniMax-M3"
 
 # Energy-adjacent replacements (not the paper's original Together IDs).
 # Tier 3 is Llama 3.3 70B on Together because gpt-4o requires OPENAI_API_KEY.
@@ -48,6 +50,7 @@ FALLBACK_RATES_PER_MILLION = {
     "openai/gpt-oss-20b": {"input": 0.05, "output": 0.20},
     "meta-llama/Llama-3.3-70B-Instruct-Turbo": {"input": 1.04, "output": 1.04},
     "zai-org/GLM-5.3-Flash": {"input": 0.15, "output": 0.50},
+    "MiniMaxAI/MiniMax-M3": {"input": 0.30, "output": 1.20},
     "gpt-4o": {"input": 2.50, "output": 10.00},
 }
 
@@ -96,7 +99,9 @@ def _stringify_content(content) -> str:
 def _message_fields(payload: dict) -> tuple[str, str]:
     msg = payload["choices"][0]["message"]
     content = _stringify_content(msg.get("content")).strip()
-    reasoning = _stringify_content(msg.get("reasoning")).strip()
+    reasoning = _stringify_content(
+        msg.get("reasoning") or msg.get("reasoning_content")
+    ).strip()
     return content, reasoning
 
 
@@ -272,6 +277,13 @@ def write_aborted_results(blockers: list[str], extra: dict | None = None) -> Non
 
 def parse_judge_output(text: str) -> tuple[int | None, str]:
     text = (text or "").strip()
+    m = re.search(r"SCORE:\s*([01])\b", text, re.IGNORECASE)
+    if m:
+        why = ""
+        wm = re.search(r"WHY:\s*(.+)", text, re.IGNORECASE | re.DOTALL)
+        if wm:
+            why = wm.group(1).strip().splitlines()[0].strip()
+        return int(m.group(1)), why or text[:300]
     match = re.search(r"\{.*\}", text, re.DOTALL)
     blob = match.group(0) if match else text
     try:
@@ -281,6 +293,9 @@ def parse_judge_output(text: str) -> tuple[int | None, str]:
             return int(score), str(data.get("justification") or "").strip() or text[:300]
     except Exception:
         pass
+    m = re.search(r'"score"\s*:\s*([01])', text)
+    if m:
+        return int(m.group(1)), text[:300]
     return None, f"unparseable judge output: {text[:300]}"
 
 
@@ -298,8 +313,9 @@ def judge_prompt(row: dict) -> str:
             "Score 0 otherwise."
         )
     return (
-        "You are grading a model answer. Return ONLY JSON: "
-        '{"score": 0 or 1, "justification": "one sentence"}.\n'
+        "Grade the answer. Think briefly, then output exactly two lines:\n"
+        "SCORE: 0 or SCORE: 1\n"
+        "WHY: one sentence\n"
         f"Rubric: {rubric}\n\n"
         f"Question: {row['prompt']}\n\n"
         f"Answer:\n{row['answer']}"
@@ -320,7 +336,7 @@ async def judge_rows(client: httpx.AsyncClient, results: list[dict]) -> dict:
             row["judge_justification"] = "No usable model answer to grade."
             row["judge_model"] = JUDGE_MODEL
             continue
-        call = await call_model(client, judge_cfg, judge_prompt(row), max_tokens=256)
+        call = await call_model(client, judge_cfg, judge_prompt(row), max_tokens=700)
         judge_calls += 1
         judge_retries += int(call.get("retries") or 0)
         if call.get("estimated_usd"):
@@ -458,6 +474,7 @@ async def run_all():
         payload["responses"] = results
         save_results(payload)
 
+def print_summary(results: list[dict], successes: int) -> None:
     print(f"Wrote quality_benchmark_results.json ({successes}/72 successful).")
     print("Factual (auto-graded) accuracy by tier:")
     for tier in (1, 2, 3):
@@ -478,9 +495,37 @@ async def run_all():
                 continue
             n = sum(r["judge_score"] for r in scored)
             print(f"  Tier {tier} {cat}: {n/len(scored):.1%} ({n}/{len(scored)})")
+
+
+async def judge_only() -> None:
+    if not TOGETHER_API_KEY:
+        raise SystemExit("TOGETHER_API_KEY is not set.")
+    with open("quality_benchmark_results.json") as f:
+        payload = json.load(f)
+    results = payload.get("responses") or []
+    if len(results) != 72:
+        raise SystemExit(f"Expected 72 responses to re-judge, found {len(results)}.")
+    async with httpx.AsyncClient() as client:
+        together_ids = await list_together_model_ids(client)
+        if JUDGE_MODEL not in together_ids:
+            raise SystemExit(f"Judge model {JUDGE_MODEL} not in Together catalog.")
+        print(f"Re-judging 48 reasoning/code rows with {JUDGE_MODEL} ...")
+        judge_meta = await judge_rows(client, results)
+    successes = sum(
+        1 for r in results if r.get("error") is None and (r.get("answer") or "").strip()
+    )
+    payload["run_status"] = "complete" if successes == 72 else "incomplete"
+    payload["judge"] = judge_meta
+    payload["generated_at"] = datetime.now(timezone.utc).isoformat()
+    payload["responses"] = results
+    save_results(payload)
+    print_summary(results, successes)
     if successes < 72:
         sys.exit(2)
 
 
 if __name__ == "__main__":
-    asyncio.run(run_all())
+    if "--judge-only" in sys.argv:
+        asyncio.run(judge_only())
+    else:
+        asyncio.run(run_all())

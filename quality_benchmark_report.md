@@ -1,96 +1,85 @@
 # EcoLogic matched-query quality benchmark
 
-**Run status: DID NOT RUN. 0 of 72 inference calls succeeded.**
+**Run status: 72/72 inference calls succeeded.** Judge pass: 48/48 reasoning+code rows scored 0/1.
 
-This is not a quality comparison. No per-tier accuracy numbers exist because the three models were never called on the 24-question set. The tables below are explicit non-results, not estimates.
+This is **not** the paper’s original stack. Gemma 3N E4B and Apriel 1.6 15B are gone from Together serverless. The operator approved energy-adjacent substitutes. **Tier 3 is not GPT-4o** (`OPENAI_API_KEY` was not provided).
 
-Checked: 2026-09-04 (UTC). Sources: Together AI `GET https://api.together.xyz/v1/models` (unauthenticated), Together [serverless catalog](https://docs.together.ai/docs/serverless-models), Together [deprecations](https://docs.together.ai/docs/deprecations), OpenAI [GPT-4o model page](https://developers.openai.com/api/docs/models/gpt-4o), EcoLogic production slugs in `backend/main.py`.
+Checked / generated: 2026-09-05T22:16:34Z.
 
-## Why the batch was aborted
+## Models actually called
 
-Two independent blockers. Either one is enough to stop.
+| Tier | Role in EcoLogic | Model used | Provider | EcoLogic-style J/1k* | Catalog check |
+|------|------------------|------------|----------|----------------------|---------------|
+| 1 | small / cheap | `Qwen/Qwen3.5-9B` | Together | ~1.1 (was 0.5 for 4B) | Present; smoke `pong` |
+| 2 | mid | `openai/gpt-oss-20b` | Together | ~2.0 (was 1.5 for 15B) | Present; smoke `pong` |
+| 3 | large | `meta-llama/Llama-3.3-70B-Instruct-Turbo` | Together | ~7.0 (paper used GPT-4o at 60) | Present; smoke `pong` |
+| judge | not under test | `MiniMaxAI/MiniMax-M3` | Together | — | Present |
 
-### 1. Both Together AI EcoLogic models are gone from serverless
+\*Same param-count scaling EcoLogic already uses. Not a lab joule meter.
 
-The harness draft used **placeholder slugs that are not Together IDs**:
+Original IDs `google/gemma-3n-E4B-it` and `ServiceNow-AI/Apriel-1.6-15b-Thinker` were **absent** from Together `GET /v1/models` (275 ids). `google/gemma-4-E4B-it` is catalog-listed but **dedicated-only** (HTTP 400 `model_not_available` on serverless chat).
 
-| Tier | Placeholder in original harness | Real Together ID (production + docs) | Together serverless status on 2026-09-04 |
-|------|----------------------------------|--------------------------------------|------------------------------------------|
-| 1 | `google/gemma-3n-e4b-it` | `google/gemma-3n-E4B-it` | **Removed 2026-08-25.** Dedicated on-demand: No |
-| 2 | `servicenow/apriel-15b` | `ServiceNow-AI/Apriel-1.6-15b-Thinker` | **Removed 2026-04-03.** Dedicated on-demand: No |
-| 3 | `gpt-4o` | `gpt-4o` | Still listed as the OpenAI API alias |
-
-`quality_benchmark_harness.py` was updated to the real IDs (`google/gemma-3n-E4B-it`, `ServiceNow-AI/Apriel-1.6-15b-Thinker`, `gpt-4o`). It was **not** pointed at a substitute model. Together's current serverless chat catalog (docs, 2026-09-04) does not list any Gemma 3N or Apriel model. The closest Gemma name still mentioned in Together dedicated-endpoint examples is `google/gemma-4-E4B-it`, which is a **different model** and was not used.
-
-Together's deprecation page also says neither EcoLogic Together model is supported as an on-demand dedicated endpoint after removal.
-
-### 2. No provider credentials in this environment
-
-| Variable | Present? | Live check |
-|----------|----------|------------|
-| `TOGETHER_API_KEY` | **No** | `GET /v1/models` → HTTP 401 body `Missing API key` |
-| `OPENAI_API_KEY` | **No** | `GET /v1/models` → HTTP 401 |
-| `ANTHROPIC_API_KEY` (judge) | **No** | Not set; judge pass was never started |
-
-Together's `/v1/models` endpoint is **not public**. An unauthenticated request does not return the catalog; it returns 401. The live catalog confirmation therefore comes from Together's published serverless-models and deprecations pages, not from an authenticated `GET /v1/models` dump.
-
-Smoke tests (one cheap call per tier) were **not** issued. The harness aborts before billed calls when keys are missing or when Together no longer lists the two EcoLogic slugs.
+Smoke tests (prompt: `Reply with the single word: pong`) all returned `pong` before the 72-call batch.
 
 ## Factual accuracy (auto-graded substring match)
 
-Not computed. Would have been 8 questions × 3 tiers.
+Logic unchanged: `reference.lower() in answer.lower()`. 8 questions × 3 tiers.
 
 | Tier | Model | Correct / 8 | Accuracy |
 |------|-------|-------------|----------|
-| 1 | `google/gemma-3n-E4B-it` | — / 8 | **n/a — 0 calls** |
-| 2 | `ServiceNow-AI/Apriel-1.6-15b-Thinker` | — / 8 | **n/a — 0 calls** |
-| 3 | `gpt-4o` | — / 8 | **n/a — 0 calls** |
+| 1 | `Qwen/Qwen3.5-9B` | 8 / 8 | **100%** |
+| 2 | `openai/gpt-oss-20b` | 7 / 8 | **87.5%** |
+| 3 | `Llama-3.3-70B-Instruct-Turbo` | 8 / 8 | **100%** |
 
-Factual auto-scoring logic in the harness is unchanged: `reference.lower() in answer.lower()`. It was never applied to a model output.
+**Auto-grader miss, not a wrong painter:** Tier 2 f7 (*Who painted 'Starry Night'?*) said Vincent van Gogh, but used a Unicode narrow no-break space between `van` and `Gogh`, so `"van gogh"` did not match. Leave the scorer as-is; treat this 87.5% as a substring artifact. Semantically T2 also got Van Gogh.
 
-## Judge-graded accuracy (reasoning and code)
+## Judge-graded reasoning and code
 
-Not computed. Would have been 8 reasoning + 8 code questions × 3 tiers, scored 0/1 by a model that is **not** one of the three tiers (not GPT-4o). No judge model was called.
+Judge: `MiniMaxAI/MiniMax-M3` (not T1/T2/T3). Rubric: reasoning = addresses the trade-off/comparison without factual errors or dodge; code = would plausibly run and solve the task.
+
+First judge attempt used `zai-org/GLM-5.3-Flash`, which only filled `reasoning_content` and never emitted a grade (39/48 unparseable). Those scores were **discarded** and the 48 rows were re-graded with MiniMax. Inference answers were not re-generated.
 
 | Tier | Reasoning correct / 8 | Reasoning accuracy | Code correct / 8 | Code accuracy |
 |------|----------------------:|-------------------:|-----------------:|--------------:|
-| 1 | — | **n/a — 0 calls** | — | **n/a — 0 calls** |
-| 2 | — | **n/a — 0 calls** | — | **n/a — 0 calls** |
-| 3 | — | **n/a — 0 calls** | — | **n/a — 0 calls** |
+| 1 | 3 / 8 | **37.5%** | 7 / 8 | **87.5%** |
+| 2 | 8 / 8 | **100%** | 8 / 8 | **100%** |
+| 3 | 7 / 8 | **87.5%** | 8 / 8 | **100%** |
 
-No `judge_score` / `judge_justification` fields were filled, because there were no responses to grade.
+## Anomalies (not smoothed over)
 
-## Anomalies
-
-These are run-blocking failures, not evaluation findings:
-
-- **API auth errors:** Together `GET /v1/models` HTTP 401 `Missing API key`. OpenAI `GET /v1/models` HTTP 401. Together `POST /v1/chat/completions` without a key: HTTP 401 `missing_api_key`.
-- **Model slugs:** original harness placeholders were wrong; the real IDs match `backend/main.py` and Together's deprecation history, and both real Together IDs are **removed**.
-- **Empty / refused responses:** none. No completions were requested.
-- **Rate-limit retries:** none. No billed traffic.
-- **Smaller tier judged better than a larger tier:** **not observed**, because nothing was judged. Do not read this as "tiers are equal."
+- **API errors:** none on the 72 eval calls. All HTTP 200. Retries: 0.
+- **Empty/refused completions:** 0 empty answers. Qwen often puts chain-of-thought in `reasoning` / `reasoning_content`; 7 Tier 1 answers were thinking-process dumps used as the visible answer because `content` was empty.
+- **Rate limits:** none observed.
+- **Tier 1 reasoning collapse:** 5/8 reasoning fails (`r2, r3, r4, r5, r6`) because Qwen returned outlines / “here's a thinking process” instead of the analysis, or truncated mid-sentence (`r4`). Code fail `c2`: debounce snippet truncated at `function debounce(func,`.
+- **Smaller tier beat larger — call these out:**
+  1. **T2 reasoning 100% vs T3 87.5%.** The 70B tier lost `r5` (nuclear vs solar): judge flagged a factual error (solar 10–20 vs nuclear 10–40 gCO2/kWh; IPCC-style figures go the other way). T2’s `r5` scored 1. T1 scored 0 on `r5` (truncated thinking dump).
+  2. **T1 and T3 both 100% factual vs T2 87.5%** on the auto-grader, driven only by f7’s Unicode space (see above). Not a real knowledge fail.
+- **Tier 3 is Llama 70B, not GPT-4o.** Do not read these numbers as “GPT-4o vs small models.”
+- **`gpt-oss-20b` is scheduled for Together serverless removal 2026-09-14.** This run was 2026-09-05.
 
 ## Cost
 
-**$0.00 billed for this run.** Zero chat-completion requests were sent. There is no usage object to sum.
+APIs did not return a billed dollar field. Cost below is **token usage × published per-1M rates**.
 
-Published rates (for if this is re-run later, not incurred today):
+| Stage | Tokens | Estimated USD |
+|-------|--------|---------------|
+| Tier 1 (24 calls) | 18,240 | $0.00452 |
+| Tier 2 (24 calls) | 17,752 | $0.00327 |
+| Tier 3 (24 calls) | 10,221 | $0.01063 |
+| Eval subtotal (72) | 46,213 | **$0.01842** |
+| Judge (48 MiniMax calls) | — | **$0.02614** |
+| **Total this run** | | **~$0.0446** |
 
-- Gemma 3N E4B on Together, last published while live: $0.06 input / $0.12 output per 1M tokens (Together changelog; EcoLogic README still quotes the older $0.02 / $0.04).
-- Apriel 1.6 15B Thinker: advertised as $0 while it was a Together serverless model.
-- GPT-4o (OpenAI docs, 2026-09-04): $2.50 input / $10.00 output per 1M tokens. Alias `gpt-4o` is still documented, with snapshots `gpt-4o-2024-11-20`, `gpt-4o-2024-08-06`, and deprecated `gpt-4o-2024-05-13`. ChatGPT consumer retirement of GPT-4o does not by itself retire the API alias.
+Smoke tests were extra (3 cheap `pong` calls, on the order of $0.0001) and are not in the 72-call JSON. The failed GLM-Flash judge pass (~$0.011) is also extra vs the MiniMax re-grade in `judge.judge_estimated_usd`.
 
-## What would be required to actually produce the 72-call table
+## What this does and does not show
 
-1. A Together (or other) endpoint that still serves **exactly** `google/gemma-3n-E4B-it` and `ServiceNow-AI/Apriel-1.6-15b-Thinker`. Substituting Gemma 4, a Qwen, or any other "similar-size" model would not be an EcoLogic-tier evaluation.
-2. Working `TOGETHER_API_KEY` and `OPENAI_API_KEY`.
-3. Re-run `python3 quality_benchmark_harness.py` (smoke tests first, then 72 calls).
-4. A judge model that is not GPT-4o (and not Gemma 3N / Apriel) to fill `judge_score` and `judge_justification` on the 48 reasoning/code rows.
+On this 24-question matched set, the **mid Together model (`gpt-oss-20b`) matched or beat the 70B tier** on judge-graded reasoning and code, and the 9B Qwen tier was fine on short facts and most code but often failed to emit a finished reasoning answer.
 
-Until those exist, any numeric "Tier 1 vs Tier 2 vs Tier 3 quality" table for this design would be fabricated.
+That is a result for **these substitutes**, not a measurement of Gemma 3N vs Apriel vs GPT-4o. To compare GPT-4o, add `OPENAI_API_KEY` and set Tier 3 back to `gpt-4o`.
 
-## Files in this repo
+## Files
 
-- `quality_benchmark_harness.py` — ready to run; real slugs; aborts if keys or catalog membership fail.
-- `quality_benchmark_results.json` — machine output of this attempt: `successful_calls: 0`, `responses: []`.
-- `quality_benchmark_report.md` — this file.
+- `quality_benchmark_results.json` — all 72 prompt/response pairs plus `judge_score` / `judge_justification`
+- `quality_benchmark_harness.py` — slugs, catalog preflight, smoke tests, MiniMax judge
+- `quality_benchmark_report.md` — this file
