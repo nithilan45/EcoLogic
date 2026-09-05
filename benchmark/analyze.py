@@ -100,6 +100,9 @@ def build_policies(correct, tokens, items, routing, rates) -> dict:
 
     assign["ecologic"] = {i: routing[i][ROUTING_KEY]["tier"] for i in items}
     assign["frontier"] = {i: 3 for i in items}
+    # static single-tier baselines: a router must beat these to be worth having
+    assign["always_t1"] = {i: 1 for i in items}
+    assign["always_t2"] = {i: 2 for i in items}
 
     rng = random.Random(20260905)
     assign["random"] = {i: rng.choice(TIERS) for i in items}
@@ -274,9 +277,10 @@ def main():
     lines.append("| Policy | Accuracy [95% CI] | Total tokens | Energy (J) | Energy vs frontier | Tier mix (T1/T2/T3) |")
     lines.append("|---|---|---|---|---|---|")
     ef = pol["frontier"]["energy_J"]
-    order = ["ecologic", "frontier", "random", "oracle"]
+    order = ["ecologic", "frontier", "random", "oracle", "always_t1", "always_t2"]
     pretty = {"ecologic": "(a) EcoLogic routing", "frontier": "(b) Always-frontier (gpt-4o)",
-              "random": "(c) Random tier", "oracle": "(d) Oracle routing"}
+              "random": "(c) Random tier", "oracle": "(d) Oracle routing",
+              "always_t1": "Always Tier 1 (baseline)", "always_t2": "Always Tier 2 (baseline)"}
     for name in order:
         s = pol[name]
         d = s["tier_distribution"]
@@ -298,6 +302,8 @@ def main():
     orc_out = [correct[(assign["oracle"][i], i)] for i in items]
     mc_eco_fro = mcnemar(eco_out, fro_out)
     mc_eco_orc = mcnemar(eco_out, orc_out)
+    t1_out = [correct[(1, i)] for i in items]
+    mc_eco_t1 = mcnemar(eco_out, t1_out)
 
     quality_gap_pp = (fro["accuracy"] - eco["accuracy"]) * 100
     energy_gap_abs = eco["energy_J"] - orc["energy_J"]
@@ -312,6 +318,9 @@ def main():
         "quality_gap_pp_vs_frontier": quality_gap_pp,
         "quality_gap_mcnemar": mc_eco_fro,
         "quality_gap_vs_oracle_mcnemar": mc_eco_orc,
+        "vs_always_tier1_mcnemar": mc_eco_t1,
+        "always_tier1_accuracy": pol["always_t1"]["accuracy"],
+        "always_tier1_energy_J": pol["always_t1"]["energy_J"],
         "ecologic_energy_J": eco["energy_J"],
         "frontier_energy_J": ef,
         "oracle_energy_J": orc["energy_J"],
@@ -333,6 +342,10 @@ def main():
                  f"= {energy_gap_pct:+.1f}% over oracle** |")
     lines.append(f"| EcoLogic energy savings vs frontier | {savings_vs_frontier:.1f}% |")
     lines.append(f"| Oracle accuracy (efficiency ceiling) | {orc['accuracy']:.1%} |")
+    lines.append(f"| Always-Tier-1 accuracy / energy | {pol['always_t1']['accuracy']:.1%} / "
+                 f"{pol['always_t1']['energy_J']:,.1f} J |")
+    lines.append(f"| EcoLogic vs Always-Tier-1 | McNemar p={mc_eco_t1['p_value']:.4g} "
+                 f"(discordant {mc_eco_t1['b']}/{mc_eco_t1['c']}) |")
     lines.append("")
 
     # ---- energy accounting with substitute-model rates too

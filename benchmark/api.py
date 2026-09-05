@@ -47,11 +47,12 @@ RATES_PER_MILLION = {
     "gpt-4o": {"input": 2.50, "output": 10.00},
 }
 
-# Uniform across tiers and benchmarks on purpose. Tier 1/2 are reasoning
-# models that spend most of their budget in reasoning_content; a tighter cap
-# truncated them while leaving gpt-4o untouched, which would have been a
-# per-tier confound rather than a quality difference.
-MAX_TOKENS = {"humaneval": 4096, "gsm8k": 4096, "mmlu": 4096}
+# Uniform across tiers and benchmarks on purpose, and set high enough that the
+# cap is not binding for any tier. Tier 1/2 are reasoning models that spend
+# most of their budget in reasoning_content: at 4096 Tier 1 was truncated on
+# 57/164 HumanEval items while gpt-4o never exceeded 458 tokens, which measures
+# the cap rather than the model. See raw_results/responses_cap4096.jsonl.
+MAX_TOKENS = {"humaneval": 16384, "gsm8k": 16384, "mmlu": 16384}
 
 
 def auth_headers(provider: str) -> dict:
