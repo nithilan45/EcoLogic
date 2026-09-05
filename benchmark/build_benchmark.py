@@ -52,6 +52,9 @@ def load_humaneval() -> list[dict]:
         items.append({
             "item_id": r["task_id"],
             "benchmark": "humaneval",
+            # raw_query is what a user would actually type; it is what the
+            # EcoLogic classifier sees. prompt is what the model sees.
+            "raw_query": r["prompt"].strip(),
             "prompt": (
                 "Complete the following Python function. Return the complete "
                 "function implementation inside a single ```python code block. "
@@ -96,6 +99,7 @@ def load_mmlu(rng: random.Random) -> tuple[list[dict], dict]:
                 "item_id": f"mmlu/{subject}/{i}",
                 "benchmark": "mmlu",
                 "subject": subject,
+                "raw_query": f"{r['question']}\n{lettered}",
                 "prompt": (
                     "Answer this multiple-choice question. Respond with only the "
                     "letter of the correct option (A, B, C, or D) on the last line "
@@ -120,6 +124,7 @@ def load_gsm8k(rng: random.Random) -> tuple[list[dict], dict]:
         items.append({
             "item_id": f"gsm8k/{i}",
             "benchmark": "gsm8k",
+            "raw_query": r["question"],
             "prompt": (
                 "Solve this math word problem. Show your work, then give the final "
                 'numeric answer on the last line in the form "Answer: N".\n\n'

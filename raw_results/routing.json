@@ -1,0 +1,5462 @@
+{
+  "HumanEval/0": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/1": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/2": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/3": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/4": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/5": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/6": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/7": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/8": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/9": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/10": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/11": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/12": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/13": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/14": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/15": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/16": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/17": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/18": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/19": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/20": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/21": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/22": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/23": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/24": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/25": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/26": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/27": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/28": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/29": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/30": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/31": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/32": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/33": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/34": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/35": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/36": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/37": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/38": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/39": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/40": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/41": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/42": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/43": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/44": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/45": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/46": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/47": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/48": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/49": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/50": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/51": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/52": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/53": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/54": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/55": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/56": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/57": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/58": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/59": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/60": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/61": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/62": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/63": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/64": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/65": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/66": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/67": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/68": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/69": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/70": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/71": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/72": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/73": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/74": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/75": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/76": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/77": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/78": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/79": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/80": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/81": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/82": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/83": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/84": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/85": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/86": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/87": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/88": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/89": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/90": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/91": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/92": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/93": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/94": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/95": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/96": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/97": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/98": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/99": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/100": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/101": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/102": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/103": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/104": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/105": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/106": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/107": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/108": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/109": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/110": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/111": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/112": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/113": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/114": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/115": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/116": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/117": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/118": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/119": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/120": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/121": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/122": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/123": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/124": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/125": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/126": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/127": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/128": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/129": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/130": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/131": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/132": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/133": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/134": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/135": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/136": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/137": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/138": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Analytical reasoning required"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/139": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/140": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/141": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/142": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/143": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/144": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/145": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/146": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/147": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/148": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/149": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/150": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/151": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/152": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/153": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/154": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/155": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/156": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/157": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/158": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/159": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/160": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/161": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/162": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "HumanEval/163": {
+    "benchmark": "humaneval",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "mmlu/college_biology/1": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_biology/9": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_biology/10": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_biology/14": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_biology/32": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_biology/53": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_biology/55": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_biology/57": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/college_biology/58": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_biology/76": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/5": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/12": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/21": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/college_chemistry/27": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/42": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/74": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/75": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/82": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/84": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/college_chemistry/87": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/6": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/15": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/37": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "Factual question"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/50": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/54": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/75": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/80": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/85": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    }
+  },
+  "mmlu/global_facts/93": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/global_facts/96": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_computer_science/3": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/high_school_computer_science/4": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_computer_science/6": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/high_school_computer_science/13": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    }
+  },
+  "mmlu/high_school_computer_science/23": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_computer_science/49": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_computer_science/65": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "Factual question"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "mmlu/high_school_computer_science/67": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_computer_science/72": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_computer_science/92": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_us_history/16": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/high_school_us_history/23": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    }
+  },
+  "mmlu/high_school_us_history/51": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Comparative analysis"
+    }
+  },
+  "mmlu/high_school_us_history/52": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/high_school_us_history/69": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/high_school_us_history/108": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_us_history/131": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_us_history/141": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-part complex query"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-part complex query"
+    }
+  },
+  "mmlu/high_school_us_history/142": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/high_school_us_history/151": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/10": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/58": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/80": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/82": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/103": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/141": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/187": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/190": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/197": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/human_aging/221": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/machine_learning/4": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/machine_learning/12": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Analytical reasoning required"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Analytical reasoning required"
+    }
+  },
+  "mmlu/machine_learning/22": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "Factual question"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/machine_learning/26": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/machine_learning/33": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/machine_learning/50": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/machine_learning/65": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/machine_learning/66": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/machine_learning/82": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/machine_learning/90": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/82": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/philosophy/143": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/202": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/224": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/245": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/249": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/254": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/256": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/269": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/philosophy/305": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/prehistory/10": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/prehistory/13": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/prehistory/40": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/prehistory/46": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/prehistory/194": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/prehistory/195": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/prehistory/196": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/prehistory/203": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/prehistory/284": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/prehistory/298": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/48": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "mmlu/world_religions/74": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/79": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/104": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/118": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/145": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/146": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "Factual question"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/162": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/165": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "mmlu/world_religions/169": {
+    "benchmark": "mmlu",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/20": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/27": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/33": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/50": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/60": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/61": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/81": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/94": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/100": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/106": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/129": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/134": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/185": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/186": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/188": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/190": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/196": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/205": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "gsm8k/220": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/225": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "gsm8k/227": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/234": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/249": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/250": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "gsm8k/268": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/290": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/299": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "gsm8k/301": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/303": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/313": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/314": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/350": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "gsm8k/353": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/365": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/420": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/426": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/453": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/454": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/468": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/474": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/481": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/488": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/491": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/519": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/552": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/553": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/562": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/578": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/581": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/583": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/610": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/612": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/643": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/645": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/682": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/700": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/726": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/735": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/771": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/796": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/801": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "gsm8k/812": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/813": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/823": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/827": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/829": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/863": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/878": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/885": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/891": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/919": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "gsm8k/971": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/985": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/999": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1000": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1026": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1034": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1041": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1054": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1062": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1074": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1080": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code implementation request"
+    }
+  },
+  "gsm8k/1108": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1110": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1115": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 3,
+      "difficulty": "hard",
+      "risk": "high",
+      "reason": "Code debugging request"
+    }
+  },
+  "gsm8k/1117": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1156": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1165": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1168": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1170": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1174": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1183": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1227": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1240": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1251": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1260": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1269": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1277": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  },
+  "gsm8k/1279": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    },
+    "wrapped": {
+      "tier": 2,
+      "difficulty": "medium",
+      "risk": "low",
+      "reason": "Multi-step reasoning"
+    }
+  },
+  "gsm8k/1305": {
+    "benchmark": "gsm8k",
+    "raw": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    },
+    "wrapped": {
+      "tier": 1,
+      "difficulty": "easy",
+      "risk": "low",
+      "reason": "General query"
+    }
+  }
+}
