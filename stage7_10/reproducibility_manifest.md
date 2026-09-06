@@ -100,6 +100,7 @@ current number: `MiniMaxAI/MiniMax-M3` (judge), `zai-org/GLM-5.3-Flash`
 | Token counts | provider `usage` field only; never estimated from word counts |
 | Retries | exponential backoff on 429/5xx; `credit_balance_exhausted` treated as fatal, not retried |
 | Concurrency | Stages 1–6: 20 Together / 12 OpenAI workers. Stage 7: 80 Together / 24 OpenAI |
+| Request timeouts | Stages 1–6: blanket 300 s per request. Stage 7: phase-granular (connect 30 s, read 300 s, write 60 s, pool 60 s) plus a 300 s hard ceiling per task and 15 s keepalive expiry — added mid-Stage-7 because stalled sockets were halting the run; affects only call issuance, never prompts or grading |
 | User-Agent | `Mozilla/5.0 EcoLogicBenchmark/1.0` |
 
 The 16,384 cap is load-bearing. At 4,096, Tier 1 was truncated on 57/164
@@ -165,17 +166,25 @@ Sensitivity sweep: all 27 combinations of ×0.2, ×1, ×5 per tier.
 |---|---|---|
 | Superseded 24-question harness | 72 | $0.1216 |
 | Stages 1–6 (original test set + Stage 1 pool) | ~4,700 | $3.5143 |
-| Stage 7 (incomplete — see below) | 22,106 succeeded of 48,276 planned | $29.3059 |
+| Stage 7 (test-set Tier 3 outstanding — see below) | 47,185 succeeded of 48,276 planned | $41.1050 |
 | Stage 8 | 0 (re-analysis of Stage 6 data) | $0.00 |
 | Stage 9 | 0 (all local; RouteLLM's own released outputs) | $0.00 |
-| **Total spent** | | **$32.94** |
+| **Total spent** | | **$44.74** |
 
-Stage 7 split: OpenAI 15,001 calls / $26.1903 (Tier 3 completed fully),
-Together AI 7,105 calls / $3.1156 (Tiers 1–2, 22–23% complete). The pilot
-projected $47.47 against the pre-registered $150 gate; the run was halted by a
-Together AI **credit limit** (HTTP 402), not by cost overrun. Finishing needs
-roughly $13 more. Measured unit costs, useful for future projections:
-Together $0.000439/call, OpenAI $0.001746/call.
+Stage 7 split: the 45,000-call pool completed in full (Tier 1 $11.96, Tier 2
+$1.42, Tier 3 $26.19); the 364-item test set completed Tiers 1 and 2
+(1,092 calls each, $1.53 combined) and is missing 1,091 of 1,092 Tier 3 calls.
+The pilot projected $47.47 against the pre-registered $150 gate, and cost was
+never the binding constraint: the run was interrupted twice by **account credit
+limits**, first Together AI (HTTP 402) mid-pool and then OpenAI (HTTP 429
+`insufficient_quota`) on the test set. Finishing needs **$1.91**. Measured unit
+costs, useful for future projections: Together Tier 1 $0.000797/call, Tier 2
+$0.000095/call, OpenAI Tier 3 $0.001746/call.
+
+17,109 call attempts failed and were retried (15,330 HTTP 402, 1,416 HTTP 429,
+18 HTTP 503, 345 client-side task timeouts). None are billed; all but the 1,091
+Tier 3 test calls eventually succeeded. Full breakdown in
+`stage7_10/s7_run_accounting.json`.
 
 ## 11. Commands, in order
 
@@ -201,13 +210,23 @@ python3 stage7_10/s7_run.py --target pool
 python3 stage7_10/s7_run.py --target test
 python3 stage7_10/s7_grade.py --target pool
 python3 stage7_10/s7_grade.py --target test
-python3 stage7_10/s7_fit.py
-python3 stage7_10/s7_calibrate.py
-python3 stage7_10/s7_final.py
+python3 stage7_10/s7_fit.py                 # R1/R2 refit, TRAIN-CV selection only
+python3 stage7_10/s7_calibrate.py           # threshold sweep + LP/integer MCKP + gaps
+python3 stage7_10/s7_calib_policies.py      # CALIBRATION policy table
+python3 stage7_10/s7_final.py               # one-shot frozen test set + S1/S2 verdict
+python3 stage7_10/s7_export_samples.py      # per-sample grade/token/cost table
 python3 stage7_10/regret_correction.py      # Stage 8
 python3 stage7_10/external_check.py         # Stage 9 (needs the RouteLLM clone)
 python3 stage7_10/s7_variance.py            # Stage 10(a)
 ```
+
+Two helper scripts wrap the above for unattended resumption after a credit
+interruption, and are what actually produced the completed pool:
+`stage7_10/resume_when_funded.sh` (waits for Together AI, then loops the pool
+and test generation until no calls are pending) and
+`stage7_10/finish_when_funded.sh` (waits for OpenAI, then issues the outstanding
+Tier 3 test calls and runs grading, the one-shot evaluation and Stage 10(a)).
+Neither selects or tunes anything.
 
 Credentials are read from `TOGETHER_API_KEY` and `OPENAI_API_KEY` in the
 environment. No key is committed anywhere in this repository.

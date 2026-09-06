@@ -154,11 +154,11 @@ models with variable-length thinking budgets.
   this properly — splitting accuracy variance into between-item and
   within-item (regeneration) components and reporting "sampling-only" versus
   "sampling+generation" interval widths. It is **not reported here: it is
-  blocked**, because it requires k=3 temperature-0 regenerations of the Stage 7
-  frozen test set and that generation did not complete (see §11). Every
-  interval in this project is therefore a single-run Wilson interval, and the
-  share of its width attributable to pure regeneration noise is currently
-  unquantified.
+  pending**, because it requires k=3 temperature-0 regenerations of the Stage 7
+  frozen test set, and while Tiers 1 and 2 are complete the Tier 3 column is
+  missing (see §11). Every interval in this project is therefore a single-run
+  Wilson interval, and the share of its width attributable to pure regeneration
+  noise remains unquantified.
 
 ---
 
@@ -208,12 +208,17 @@ than the oracle.
 
 The learned router did not rescue this. Stage 5 (1,200 training items,
 single-sample labels): neither S1 nor S2 met, with a 5.83 pp calibration gap to
-the LP-relaxed frontier and a ~0 pp discreteness gap. Stage 7 was designed to
-retest whether that gap is a data problem, with ~4.2× the training data and
-k=3 majority-voted labels; **it is blocked and issued no verdict** (§11), so
-**the question of whether the calibration gap is a data limitation or a
-structural one is currently open.** Nothing in this card should be read as
-having settled it.
+the LP-relaxed frontier and a ~0 pp discreteness gap. Stage 7 retested whether
+that gap is a data problem, with 4.2× the training data and k=3 majority-voted
+labels, and **the answer is no**: the gap moved only to 5.00 pp while held-out
+per-tier head AUCs stayed flat (0.656 → 0.665 and 0.701 → 0.702), which points
+at a structural limit — feature representation, or how predictable per-item tier
+success is from the prompt at all. That evidence comes from the fully generated
+1,500-item CALIBRATION split. The **pre-registered S1/S2 verdict on the new
+frozen test set is still outstanding** (§11), so the negative result is stated
+at hypothesis level and not as a completed one-shot evaluation. The design does
+not separate the two structural explanations and this card does not claim it
+does.
 
 ---
 
@@ -244,9 +249,9 @@ From `router_v2/LIMITATIONS.md`:
 
 From `stage7_10/prereg_stage7.md` and `s7_LIMITATIONS.md`:
 10. **MBPP is exhausted.** Only 410 unused code items remained for the Stage 7
-    pool against Stage 1's 400 — a 1.02× scale-up versus 5.74× for MMLU and
-    GSM8K. A null result on code in Stage 7 is confounded with the inability to
-    add code training data. Flagged before the run, not after.
+    pool against Stage 1's 400 — a 1.03× scale-up versus 5.7× for MMLU and
+    GSM8K. Stage 7's null result is therefore confounded on the code subset by
+    the inability to add code training data. Flagged before the run, not after.
 11. **Stage 7 pool GSM8K items come from the train split** while test items come
     from the test split. This guarantees disjointness but introduces a (small)
     distribution difference.
@@ -266,8 +271,8 @@ accounting is biased and by how much.
 **Not appropriate**: as a measurement of EcoLogic's real-world energy savings;
 as a claim about the retired Gemma/Apriel tiers; as evidence that learned
 routing cannot work in general (Stage 5 tests *one* family of zero-API-cost
-routers on *this* workload, and Stage 7's retest is incomplete); as physical
-energy measurement of any kind.
+routers on *this* workload, and Stage 7 shows only that scaling *this* router's
+training data does not fix it); as physical energy measurement of any kind.
 
 ---
 
@@ -278,7 +283,7 @@ energy measurement of any kind.
 | `raw_results/` | every prompt, response, token count, grade, routing decision for the original test set |
 | `results_report.md` | Stages 1–4 write-up: four-policy comparison, oracle gap, sensitivity band, "what failed" |
 | `router_v2/` | learned-router addendum: pre-registration, pools, ablation, threshold sweep, MCKP frontier, one-shot results, limitations |
-| `stage7_10/` | Stage 7 retest (**blocked**), Stage 8 derivation, Stage 9 external check, Stage 10 documentation |
+| `stage7_10/` | Stage 7 retest (pool complete; test-set verdict outstanding), Stage 8 derivation, Stage 9 external check, Stage 10 documentation |
 | `quality_benchmark_report.md` | **superseded** first-pass report, retained for provenance |
 
 ---
@@ -288,14 +293,14 @@ energy measurement of any kind.
 | Stage | Status |
 |---|---|
 | 1–6 (audit, learned router, MCKP, regret) | complete |
-| 7 (scaled retest of the calibration-gap hypothesis) | **BLOCKED** — Together AI credit limit reached at 45.8% of generation; 1,039/5,000 pool items and 0/364 test items completed; no verdict issued (`stage7_results.md`) |
+| 7 (scaled retest of the calibration-gap hypothesis) | **hypothesis not supported**; pool 45,000/45,000 generated, calibration gap 5.83 → 5.00 pp. Pre-registered S1/S2 test-set verdict **outstanding**: 1,091/1,092 Tier 3 test calls missing on an OpenAI credit limit ($1.91 to finish) (`stage7_results.md`) |
 | 8 (regret correction derivation) | complete, reconciles to 2×10⁻¹⁶ |
 | 9 (external check on RouteLLM) | complete, within the scope limits in §4 |
-| 10(a) (generation-variance decomposition) | **BLOCKED** with Stage 7 |
+| 10(a) (generation-variance decomposition) | **outstanding** with the same 1,091 Tier 3 calls |
 | 10(b)(c)(d) (this card, framing, manifest) | complete |
 
-Two of the claims this card would otherwise make are therefore **not
-established**: that the calibration gap is or is not a data-quantity problem,
-and how much of each reported interval is regeneration noise. Both are blocked
-on the same external funding limit, and both scripts are written and resume
-without re-selection.
+One claim this card would otherwise make is therefore **not established**: how
+much of each reported interval is regeneration noise. The calibration-gap
+question *is* now answered at hypothesis level (§7), but its confirmation as a
+one-shot frozen-test-set verdict is outstanding on the same external funding
+limit. Both scripts are written, fixed, and resume without any re-selection.
