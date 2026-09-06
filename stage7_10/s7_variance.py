@@ -92,37 +92,51 @@ def main():
         by[(r["tier"], r["item_id"])][r["sample_idx"]] = bool(r.get("correct"))
         tok[(r["tier"], r["item_id"])][r["sample_idx"]] = int(r.get("total_tokens") or 0)
 
+    avail = [t for t in TIERS
+             if all(len(by.get((t, i), {})) >= K for i in items_meta)]
+    partial = set(avail) != set(TIERS)
     items = sorted(i for i in items_meta
-                   if all(len(by.get((t, i), {})) >= K for t in TIERS))
-    print(f"{len(items)}/{len(items_meta)} items have all 3 tiers x k={K} generations")
+                   if all(len(by.get((t, i), {})) >= K for t in avail))
+    print(f"tiers with complete k={K} generations for every item: {avail}")
+    print(f"{len(items)}/{len(items_meta)} items usable")
     if not items:
         raise SystemExit("no complete items; Stage 10(a) blocked")
+    if partial:
+        # Tier 3 is missing, so any policy that can escalate is unavailable and
+        # so is the oracle. Restrict to the per-tier decomposition and the static
+        # policies that only touch complete tiers. Router-dependent policies are
+        # deliberately excluded: the frozen test set stays unscored for them, so
+        # the pre-registered one-shot property is preserved.
+        print(f"PARTIAL MODE: tiers {sorted(set(TIERS) - set(avail))} missing; "
+              "reporting per-tier decomposition and static policies only")
 
     def outcomes(assign) -> np.ndarray:
         return np.array([[int(by[(assign[i], i)][s]) for s in range(K)] for i in items])
 
     # ---- policies whose per-item tier is deterministic given the prompt
     assign = {}
-    from main import classify_prompt_local_nlp
-    assign["ecologic"] = {i: int(classify_prompt_local_nlp(
-        items_meta[i]["raw_query"]).recommended_tier) for i in items}
-    for t in TIERS:
+    for t in avail:
         assign[f"always_t{t}"] = {i: t for i in items}
-    rng = random.Random(20260906)
-    assign["random"] = {i: rng.choice(TIERS) for i in items}
 
-    texts = [items_meta[i]["raw_query"] for i in items]
-    for name, pkl, thr in (("learned_s7", OUT / "s7_router_model.pkl",
-                            OUT / "s7_chosen_threshold.json"),
-                           ("learned_s5", V2 / "router_model.pkl",
-                            V2 / "chosen_threshold.json")):
-        with open(pkl, "rb") as f:
-            bundle = pickle.load(f)
-        with open(thr) as f:
-            ct = json.load(f)
-        p = predict(bundle["model"], texts)
-        tiers = route(p[1], p[2], ct["chosen"]["tau"], tuple(ct["candidate_order"]))
-        assign[name] = {i: int(t) for i, t in zip(items, tiers)}
+    if not partial:
+        from main import classify_prompt_local_nlp
+        assign["ecologic"] = {i: int(classify_prompt_local_nlp(
+            items_meta[i]["raw_query"]).recommended_tier) for i in items}
+        rng = random.Random(20260906)
+        assign["random"] = {i: rng.choice(TIERS) for i in items}
+
+        texts = [items_meta[i]["raw_query"] for i in items]
+        for name, pkl, thr in (("learned_s7", OUT / "s7_router_model.pkl",
+                                OUT / "s7_chosen_threshold.json"),
+                               ("learned_s5", V2 / "router_model.pkl",
+                                V2 / "chosen_threshold.json")):
+            with open(pkl, "rb") as f:
+                bundle = pickle.load(f)
+            with open(thr) as f:
+                ct = json.load(f)
+            p = predict(bundle["model"], texts)
+            tiers = route(p[1], p[2], ct["chosen"]["tau"], tuple(ct["candidate_order"]))
+            assign[name] = {i: int(t) for i, t in zip(items, tiers)}
 
     results = {}
     for name, m in assign.items():
@@ -136,7 +150,7 @@ def main():
 
     # ---- per-tier view: raw provider nondeterminism, independent of any policy
     per_tier = {}
-    for t in TIERS:
+    for t in avail:
         Y = np.array([[int(by[(t, i)][s]) for s in range(K)] for i in items])
         d = decompose(Y)
         tt = np.array([[tok[(t, i)][s] for s in range(K)] for i in items], float)
@@ -146,13 +160,32 @@ def main():
             np.mean(tt.std(axis=1) == 0))
         per_tier[str(t)] = d
 
+    suffix = "_partial" if partial else ""
     payload = {"k": K, "temperature": 0.0, "n_items": len(items),
+               "tiers_reported": avail, "partial": partial,
                "policies": results, "per_tier": per_tier}
-    with open(OUT / "s7_generation_variance.json", "w") as f:
+    if partial:
+        payload["partial_note"] = (
+            f"Tiers {sorted(set(TIERS) - set(avail))} have incomplete generations, so "
+            "policies that can escalate to them, and the oracle, are omitted. "
+            "Router-dependent policies are omitted deliberately as well, to leave the "
+            "frozen test set unscored for the pre-registered one-shot evaluation.")
+    with open(OUT / f"s7_generation_variance{suffix}.json", "w") as f:
         json.dump(payload, f, indent=2)
 
     L = []
-    L.append("# Stage 10(a) — generation-variance decomposition\n")
+    L.append("# Stage 10(a) — generation-variance decomposition"
+             + (" (partial)\n" if partial else "\n"))
+    if partial:
+        missing = sorted(set(TIERS) - set(avail))
+        L.append(f"> **Partial.** Tier {', '.join(str(t) for t in missing)} generations for "
+                 f"this test set are incomplete (OpenAI credit limit), so every policy that "
+                 f"can escalate to them — and the oracle — is omitted here, as are all "
+                 f"router-dependent policies. The latter is deliberate: leaving the frozen "
+                 f"test set unscored for the router preserves the pre-registered one-shot "
+                 f"evaluation. What is reported below is the part that does not depend on "
+                 f"the missing tier, and it is the core Stage 10(a) quantity: how much a "
+                 f"temperature-0 rerun moves accuracy.\n")
     L.append(f"The Stage 7 frozen test set (n = {len(items)}) was regenerated **k = 3 times "
              f"per item per tier at temperature 0**. Replicates therefore differ only "
              f"through provider-side nondeterminism, not sampling temperature — which is a "
@@ -161,7 +194,7 @@ def main():
     L.append("| Tier | Mean accuracy over k=3 | Items that flipped across replicates | "
              "Mean within-item token SD | Items with byte-identical token counts |")
     L.append("|---|---|---|---|---|")
-    for t in TIERS:
+    for t in avail:
         d = per_tier[str(t)]
         L.append(f"| Tier {t} | {d['mean_accuracy_over_k']:.1%} | "
                  f"{d['n_items_with_flip']} ({d['frac_items_with_flip']:.1%}) | "
@@ -171,12 +204,23 @@ def main():
     L.append("A flipped item is one where the same tier, on the same prompt, at temperature "
              "0, graded correct on some replicates and incorrect on others. Temperature 0 "
              "is not determinism.\n")
+    worst = max(avail, key=lambda t: per_tier[str(t)]["frac_items_with_flip"])
+    wd = per_tier[str(worst)]
+    L.append(f"The spread across tiers is the part worth noting. Tier {worst} changes its "
+             f"graded verdict on **{wd['frac_items_with_flip']:.1%}** of items between "
+             f"identical temperature-0 calls, with output length moving by "
+             f"{wd['mean_within_item_token_sd']:.0f} tokens on average, and only "
+             f"{wd['frac_items_identical_token_counts']:.1%} of items return the same token "
+             f"count twice. Nondeterminism of that size is not a rounding detail: it means a "
+             f"single-run accuracy figure for this tier is reproducible only to within a few "
+             f"points, and any two systems being compared through it need paired "
+             f"generations rather than independently-run numbers.\n")
     L.append("## Variance decomposition per policy\n")
     L.append("| Policy | Acc (k=3 mean) | between-item var | within-item var | "
              "within share | sampling-only ± | sampling+generation ± | Wilson ± (reported) |")
     L.append("|---|---|---|---|---|---|---|---|")
-    order = ["ecologic", "always_t1", "always_t2", "always_t3", "random",
-             "learned_s7", "learned_s5"]
+    order = [n for n in ("ecologic", "always_t1", "always_t2", "always_t3", "random",
+                         "learned_s7", "learned_s5") if n in results]
     pretty = {"ecologic": "EcoLogic keyword", "always_t1": "Always Tier 1",
               "always_t2": "Always Tier 2", "always_t3": "Always-frontier",
               "random": "Random tier", "learned_s7": "**Learned router (Stage 7)**",
@@ -214,11 +258,11 @@ def main():
              "is unbiased, not non-negative) are reported in the JSON and clipped to zero in "
              "the table; a clipped value means item difficulty is indistinguishable from "
              "pure generation noise at this sample size.\n")
-    with open(OUT / "s7_generation_variance.md", "w") as f:
+    with open(OUT / f"s7_generation_variance{suffix}.md", "w") as f:
         f.write("\n".join(L))
 
     print("\nper-tier flip rates at temperature 0:")
-    for t in TIERS:
+    for t in avail:
         d = per_tier[str(t)]
         print(f"  tier {t}: {d['n_items_with_flip']}/{len(items)} items flipped "
               f"({d['frac_items_with_flip']:.1%}), token SD {d['mean_within_item_token_sd']:.1f}")
@@ -228,7 +272,7 @@ def main():
         print(f"  {name:12} sampling-only {d['half_width_sampling_only_pp']:.2f}  "
               f"+generation {d['half_width_sampling_plus_generation_pp']:.2f}  "
               f"wilson {d['wilson_half_width_pp']:.2f}")
-    print("wrote stage7_10/s7_generation_variance.json/.md")
+    print(f"wrote stage7_10/s7_generation_variance{suffix}.json/.md")
 
 
 if __name__ == "__main__":

@@ -153,12 +153,17 @@ models with variable-length thinking budgets.
 - **Generation-variance decomposition** (Stage 10a) was designed to quantify
   this properly — splitting accuracy variance into between-item and
   within-item (regeneration) components and reporting "sampling-only" versus
-  "sampling+generation" interval widths. It is **not reported here: it is
-  pending**, because it requires k=3 temperature-0 regenerations of the Stage 7
-  frozen test set, and while Tiers 1 and 2 are complete the Tier 3 column is
-  missing (see §11). Every interval in this project is therefore a single-run
-  Wilson interval, and the share of its width attributable to pure regeneration
-  noise remains unquantified.
+  "sampling+generation" interval widths. It is **reported for Tiers 1 and 2**
+  (`s7_generation_variance_partial.md`); the Tier 3 column and all routed
+  policies are pending (see §11). Two results are in. First, the Wilson
+  intervals used throughout this project are **not too narrow**: they track the
+  sampling+generation width closely, because a single-run evaluation's draw
+  already contains the generation noise. Second, **47% of Always-Tier-1's
+  interval width is pure regeneration noise** rather than item sampling — Tier 1
+  changes its graded verdict on **19.8% of items (72/364)** between identical
+  temperature-0 calls, with output length moving ~1,936 tokens on average. A
+  Wilson interval is routinely read as if reruns would land inside it and only a
+  different item sample would move it; for this tier that reading is wrong.
 
 ---
 
@@ -296,11 +301,11 @@ training data does not fix it); as physical energy measurement of any kind.
 | 7 (scaled retest of the calibration-gap hypothesis) | **hypothesis not supported**; pool 45,000/45,000 generated, calibration gap 5.83 → 5.00 pp. Pre-registered S1/S2 test-set verdict **outstanding**: 1,091/1,092 Tier 3 test calls missing on an OpenAI credit limit ($1.91 to finish) (`stage7_results.md`) |
 | 8 (regret correction derivation) | complete, reconciles to 2×10⁻¹⁶ |
 | 9 (external check on RouteLLM) | complete, within the scope limits in §4 |
-| 10(a) (generation-variance decomposition) | **outstanding** with the same 1,091 Tier 3 calls |
+| 10(a) (generation-variance decomposition) | **partial** — Tiers 1–2 reported; Tier 3 and all routed policies outstanding with the same 1,091 calls |
 | 10(b)(c)(d) (this card, framing, manifest) | complete |
 
-One claim this card would otherwise make is therefore **not established**: how
-much of each reported interval is regeneration noise. The calibration-gap
-question *is* now answered at hypothesis level (§7), but its confirmation as a
-one-shot frozen-test-set verdict is outstanding on the same external funding
-limit. Both scripts are written, fixed, and resume without any re-selection.
+What remains **not established**: the one-shot frozen-test-set confirmation of
+the Stage 7 verdict, and the generation-noise share for the routed policies
+(the per-tier numbers for Tiers 1–2 are in, §5). Both wait on the same 1,091
+Tier 3 calls. Both scripts are written and fixed, and resume without any
+re-selection, so the one-shot property is intact.

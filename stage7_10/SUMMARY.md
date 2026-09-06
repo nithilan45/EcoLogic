@@ -10,7 +10,7 @@ Everything here is new, in `stage7_10/`.
 | **7** | Scaled, cleaned retest of the calibration-gap hypothesis | **Hypothesis not supported** on the evidence in hand (gap 5.83 → 5.00 pp for 4.2× data). Pool 100% generated; pre-registered S1/S2 test-set verdict **pending 1,091 calls / $1.91** of OpenAI credit. |
 | **8** | Derive the exact regret-decomposition correction term | **Complete.** Reconciles to residual 2.2×10⁻¹⁶. |
 | **9** | External generalization check on published routers | **Complete**, within real scope limits. Correction reproduces on RouteLLM's own data. |
-| **10(a)** | Generation-variance decomposition | **Pending** with the Stage 7 test set (same 1,091 calls). |
+| **10(a)** | Generation-variance decomposition | **Partial.** Tiers 1–2 reported (Tier 1 flips on **19.8%** of items at temperature 0); Tier 3 and all routed policies pending the same 1,091 calls. |
 | **10(b)** | Evaluation card | **Complete.** |
 | **10(c)** | Contribution-type framing | **Complete.** |
 | **10(d)** | Full reproducibility manifest, Stages 1–10 | **Complete.** |
@@ -162,14 +162,35 @@ stand-in dataset was simulated.
 
 ## Stage 10
 
-**(a) Generation-variance decomposition — pending the same 1,091 calls.** The
-k=3 temperature-0 regenerations of the Stage 7 frozen test set are complete for
-Tiers 1 and 2 and missing for Tier 3, so the decomposition cannot be reported
-for the policies that use the frontier tier. `s7_variance.py` is written and
-runs as soon as Tier 3 lands. Consequence for now: the share of each reported
-Wilson interval attributable to pure regeneration noise is unquantified, though
-the earlier finding that temperature 0 is not deterministic (byte-identical text
-on only 9/21 Tier 1 repeats) still stands.
+**(a) Generation-variance decomposition — partial, and the partial half is
+informative.** The k=3 temperature-0 regenerations of the Stage 7 frozen test
+set are complete for Tiers 1 and 2, so the per-tier decomposition and the two
+static policies that only touch those tiers are reported now
+(`s7_generation_variance_partial.md`). Policies that can escalate to Tier 3, the
+oracle, and every router-dependent policy are omitted — the last deliberately,
+so the frozen test set stays unscored for the pre-registered one-shot
+evaluation.
+
+n = 364, k = 3, temperature 0:
+
+| Tier | Items whose grade flipped across identical reruns | Mean within-item token SD | Same token count twice |
+|---|---|---|---|
+| Tier 1 (`Qwen/Qwen3.5-9B`) | **72 (19.8%)** | 1,936 tokens | 6.3% |
+| Tier 2 (`openai/gpt-oss-20b`) | 21 (5.8%) | 263 tokens | 7.1% |
+
+| Policy | sampling-only ± | sampling+generation ± | Wilson ± (as reported) | within share |
+|---|---|---|---|---|
+| Always Tier 1 | 2.80 pp | 3.85 pp | 3.81 pp | **47.0%** |
+| Always Tier 2 | 2.49 pp | 2.87 pp | 2.71 pp | 24.6% |
+
+Two things follow. **The Wilson intervals used throughout this project are not
+too narrow** — they track the sampling+generation column closely, because a
+single-run evaluation's draw already contains the generation noise. But **47% of
+Always-Tier-1's interval width is pure regeneration noise** that no amount of
+extra items would reduce, which is not how a Wilson interval is usually read.
+Tier 1 changing its graded verdict on nearly a fifth of items between identical
+temperature-0 calls is the strongest form of the earlier spot-check finding
+(byte-identical text on only 9/21 Tier 1 repeats), now measured at scale.
 
 **(b) Evaluation card — complete.** `evaluation_card.md`: what is evaluated (a
 routing policy, not a model), the four benchmarks and why (objective

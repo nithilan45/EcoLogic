@@ -1,0 +1,93 @@
+{
+  "k": 3,
+  "temperature": 0.0,
+  "n_items": 364,
+  "tiers_reported": [
+    1,
+    2
+  ],
+  "partial": true,
+  "policies": {
+    "always_t1": {
+      "n_items": 364,
+      "k": 3,
+      "mean_accuracy_over_k": 0.8315018315018315,
+      "within_item_generation_var": 0.06593406593406595,
+      "between_item_var_raw": 0.0744373471646199,
+      "between_item_var": 0.0744373471646199,
+      "between_was_clipped_at_zero": false,
+      "total_single_draw_var": 0.14037141309868584,
+      "bernoulli_check_p_bar_1_minus_p_bar": 0.1401065357109313,
+      "within_share_of_total": 0.4697114923799483,
+      "half_width_sampling_only_pp": 2.802804736618284,
+      "half_width_sampling_plus_generation_pp": 3.848900952809738,
+      "half_width_k_replicate_pp": 3.189851999061999,
+      "n_items_with_flip": 72,
+      "frac_items_with_flip": 0.1978021978021978,
+      "single_run_accuracy_sample0": 0.8351648351648352,
+      "wilson_half_width_pp": 3.8077763058625536
+    },
+    "always_t2": {
+      "n_items": 364,
+      "k": 3,
+      "mean_accuracy_over_k": 0.9148351648351648,
+      "within_item_generation_var": 0.019230769230769232,
+      "between_item_var_raw": 0.05886033158760431,
+      "between_item_var": 0.05886033158760431,
+      "between_was_clipped_at_zero": false,
+      "total_single_draw_var": 0.07809110081837353,
+      "bernoulli_check_p_bar_1_minus_p_bar": 0.07791178601618165,
+      "within_share_of_total": 0.24626070101760625,
+      "half_width_sampling_only_pp": 2.4923484003087384,
+      "half_width_sampling_plus_generation_pp": 2.8707684963773596,
+      "half_width_k_replicate_pp": 2.624557921938841,
+      "n_items_with_flip": 21,
+      "frac_items_with_flip": 0.057692307692307696,
+      "single_run_accuracy_sample0": 0.9258241758241759,
+      "wilson_half_width_pp": 2.7146874088630812
+    }
+  },
+  "per_tier": {
+    "1": {
+      "n_items": 364,
+      "k": 3,
+      "mean_accuracy_over_k": 0.8315018315018315,
+      "within_item_generation_var": 0.06593406593406595,
+      "between_item_var_raw": 0.0744373471646199,
+      "between_item_var": 0.0744373471646199,
+      "between_was_clipped_at_zero": false,
+      "total_single_draw_var": 0.14037141309868584,
+      "bernoulli_check_p_bar_1_minus_p_bar": 0.1401065357109313,
+      "within_share_of_total": 0.4697114923799483,
+      "half_width_sampling_only_pp": 2.802804736618284,
+      "half_width_sampling_plus_generation_pp": 3.848900952809738,
+      "half_width_k_replicate_pp": 3.189851999061999,
+      "n_items_with_flip": 72,
+      "frac_items_with_flip": 0.1978021978021978,
+      "mean_tokens": 5075.172161172161,
+      "mean_within_item_token_sd": 1936.402527993334,
+      "frac_items_identical_token_counts": 0.06318681318681318
+    },
+    "2": {
+      "n_items": 364,
+      "k": 3,
+      "mean_accuracy_over_k": 0.9148351648351648,
+      "within_item_generation_var": 0.019230769230769232,
+      "between_item_var_raw": 0.05886033158760431,
+      "between_item_var": 0.05886033158760431,
+      "between_was_clipped_at_zero": false,
+      "total_single_draw_var": 0.07809110081837353,
+      "bernoulli_check_p_bar_1_minus_p_bar": 0.07791178601618165,
+      "within_share_of_total": 0.24626070101760625,
+      "half_width_sampling_only_pp": 2.4923484003087384,
+      "half_width_sampling_plus_generation_pp": 2.8707684963773596,
+      "half_width_k_replicate_pp": 2.624557921938841,
+      "n_items_with_flip": 21,
+      "frac_items_with_flip": 0.057692307692307696,
+      "mean_tokens": 868.580586080586,
+      "mean_within_item_token_sd": 263.4208915238955,
+      "frac_items_identical_token_counts": 0.07142857142857142
+    }
+  },
+  "partial_note": "Tiers [3] have incomplete generations, so policies that can escalate to them, and the oracle, are omitted. Router-dependent policies are omitted deliberately as well, to leave the frozen test set unscored for the pre-registered one-shot evaluation."
+}
