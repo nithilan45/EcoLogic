@@ -8,3 +8,6 @@ benchmark/*.parquet
 benchmark/*.jsonl.gz
 stage7_10/*.jsonl
 stage7_10/*.npy
+# Raw generations: ~288 MB / ~50 MB gzipped, kept on disk not in git (see
+# stage7_10/s7_export_samples.py, which commits the per-sample grade table instead).
+stage7_10/*.jsonl.gz

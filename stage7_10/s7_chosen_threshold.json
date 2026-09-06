@@ -1,0 +1,30 @@
+{
+  "variant": "R2",
+  "routing_rule": "cost_ordered",
+  "candidate_order": [
+    2,
+    1
+  ],
+  "train_mean_energy_per_item_J": {
+    "1": 1.6098833857142856,
+    "2": 0.9019088571428572,
+    "3": 15.910482857142858
+  },
+  "rule": "highest CALIBRATION accuracy among thresholds with CALIBRATION energy <= 10% of always-frontier energy; ties toward lower energy",
+  "rule_note": "pre-registered rule applied as written",
+  "energy_budget_frac": 0.1,
+  "calibration_frontier_energy_J": 23613.618,
+  "calibration_budget_J": 2361.3618,
+  "n_eligible_thresholds": 14,
+  "chosen": {
+    "rule": "cost_ordered",
+    "tau": 0.265306,
+    "accuracy": 0.906,
+    "energy_J": 2326.04035,
+    "energy_frac_of_frontier": 0.09850419152202769,
+    "n_tier1": 24,
+    "n_tier2": 1423,
+    "n_tier3": 53,
+    "within_budget": true
+  }
+}

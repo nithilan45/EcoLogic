@@ -1,0 +1,55 @@
+{
+  "variant": "R2",
+  "tau": 0.265306,
+  "n_calibration_items": 1500,
+  "label_rule": "majority of k=3 @ temp 0.7",
+  "acc_by_tier": {
+    "1": 0.9213333333333333,
+    "2": 0.9013333333333333,
+    "3": 0.906
+  },
+  "energy_by_tier_J": {
+    "1": 2444.5220499999996,
+    "2": 1394.8879499999998,
+    "3": 23613.618000000002
+  },
+  "router": {
+    "accuracy": 0.906,
+    "energy_J": 2326.0403499999998,
+    "tier_mix": {
+      "1": 24,
+      "2": 1423,
+      "3": 53
+    }
+  },
+  "oracle": {
+    "accuracy": 0.956,
+    "energy_J": 1515.2406,
+    "tier_mix": {
+      "1": 420,
+      "2": 1063,
+      "3": 17
+    }
+  },
+  "ecologic_keyword_on_calibration": {
+    "accuracy": 0.9113333333333333,
+    "energy_J": 2757.15375,
+    "tier_mix": {
+      "1": 1087,
+      "2": 354,
+      "3": 59
+    }
+  },
+  "lp_frontier_accuracy_at_router_energy": 0.956,
+  "integer_frontier_accuracy_at_router_energy": 0.956,
+  "calibration_gap_pp": 4.999999999999993,
+  "discreteness_gap_at_router_energy_pp": 0.0,
+  "discreteness_gap_at_oracle_energy_pp": 0.0,
+  "discreteness_gap_curve_mean_pp": 0.0014796491787048638,
+  "discreteness_gap_curve_max_pp": 0.039954322019142285,
+  "stage6_reference": {
+    "calibration_gap_pp": 5.833333333333335,
+    "discreteness_gap_at_router_energy_pp": 0.0,
+    "n_calibration_items": 360
+  }
+}

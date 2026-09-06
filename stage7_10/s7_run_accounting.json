@@ -1,0 +1,47 @@
+{
+  "pool": {
+    "expected_calls": 45000,
+    "successful_by_tier": {
+      "3": 15000,
+      "2": 15000,
+      "1": 15000
+    },
+    "successful_total": 45000,
+    "pct_complete": 100.0,
+    "failed_attempts_by_tier": {
+      "1": 8186,
+      "2": 6671
+    },
+    "failed_attempts_total": 14857,
+    "failure_kinds": {
+      "HTTP 429": 1269,
+      "HTTP 402": 13410,
+      "HTTP 503": 18,
+      "task_timeout": 160
+    },
+    "usd": 39.5708
+  },
+  "test": {
+    "expected_calls": 3276,
+    "successful_by_tier": {
+      "2": 1092,
+      "1": 1092,
+      "3": 1
+    },
+    "successful_total": 2185,
+    "pct_complete": 66.7,
+    "failed_attempts_by_tier": {
+      "1": 1293,
+      "2": 959
+    },
+    "failed_attempts_total": 2252,
+    "failure_kinds": {
+      "HTTP 402": 1920,
+      "HTTP 429": 147,
+      "task_timeout": 185
+    },
+    "usd": 1.5342
+  },
+  "note": "Failed attempts were retried across resume passes keyed on (tier,item_id,sample_idx); HTTP 429 and client-side timeouts are unbilled, so they are neither cost nor data loss. Pool reached 45000/45000. Test Tier 1 and Tier 2 reached 1092/1092 each; Tier 3 is blocked at 1/1092 by OpenAI credit exhaustion (projected $1.91 to finish).",
+  "total_usd_stage7": 41.105
+}
