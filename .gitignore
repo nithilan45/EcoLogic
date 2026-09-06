@@ -6,3 +6,5 @@ venv/
 raw_results/*.parquet
 benchmark/*.parquet
 benchmark/*.jsonl.gz
+stage7_10/*.jsonl
+stage7_10/*.npy
