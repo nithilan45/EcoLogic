@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
-# Poll Together AI until a minimal call succeeds, then resume Stage 7 generation.
-# Both runs resume from the existing jsonl keyed on (tier, item_id, sample_idx),
-# so no completed call is repeated.
+# Resume Stage 7 generation, looping until no pending calls remain.
+#
+# Together rate-limits Tier 1 (Qwen3.5-9B) dynamically and the in-request retry
+# budget (5 attempts, ~60s of backoff) is exhausted under sustained pressure, so
+# a single pass abandons some calls with HTTP 429. Abandoned calls cost nothing
+# and are retried here: each pass re-enqueues only what is still missing, keyed
+# on (tier, item_id, sample_idx), so the loop converges without repeating any
+# completed call.
 set -u
 cd /workspace
 
@@ -28,22 +33,42 @@ except Exception as e:
 PY
 }
 
-DEADLINE=$(( $(date +%s) + 5400 ))   # give the balance up to 90 min to propagate
+pending() {  # $1 = pool|test ; prints remaining call count
+  python3 - "$1" <<'PY'
+import sys
+sys.path.insert(0, "stage7_10"); sys.path.insert(0, "benchmark")
+import s7_run
+from pathlib import Path
+target = sys.argv[1]
+items = s7_run.load_items(target)
+path = s7_run.OUT / s7_run.TARGETS[target]["out"]
+done = s7_run.load_done(path)
+print(sum(1 for it in items for t in (1, 2, 3) for s in range(s7_run.K)
+          if (t, it["item_id"], s) not in done))
+PY
+}
+
+DEADLINE=$(( $(date +%s) + 5400 ))
 while :; do
-  if probe; then
-    echo "$(date -u +%H:%M:%S) CREDITS LIVE — resuming"
-    break
-  fi
+  if probe; then echo "$(date -u +%H:%M:%S) credits live"; break; fi
   if [ "$(date +%s)" -ge "$DEADLINE" ]; then
-    echo "$(date -u +%H:%M:%S) STILL 402 after 90 min — giving up, not burning calls"
-    exit 1
+    echo "$(date -u +%H:%M:%S) STILL 402 after 90 min — stopping, not burning calls"; exit 1
   fi
-  echo "$(date -u +%H:%M:%S) not funded yet, retrying in 60s"
-  sleep 60
+  echo "$(date -u +%H:%M:%S) not funded yet, retry in 60s"; sleep 60
 done
 
-echo "=== resuming pool (temp 0.7, k=3) ==="
-python3 stage7_10/s7_run.py --target pool
-echo "=== resuming test set (temp 0, k=3) ==="
-python3 stage7_10/s7_run.py --target test
-echo "=== generation done ==="
+for target in pool test; do
+  for pass in $(seq 1 12); do
+    left=$(pending "$target")
+    echo "=== $target pass $pass: $left calls pending ($(date -u +%H:%M:%S)) ==="
+    if [ "$left" -eq 0 ]; then echo "$target complete"; break; fi
+    python3 stage7_10/s7_run.py --target "$target"
+    # let dynamic rate limits recover between passes
+    sleep 45
+  done
+done
+
+echo "=== generation finished at $(date -u +%H:%M:%S) ==="
+for target in pool test; do
+  echo "$target still pending: $(pending "$target")"
+done
