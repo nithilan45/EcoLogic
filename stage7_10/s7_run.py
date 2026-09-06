@@ -31,6 +31,7 @@ from api import MAX_TOKENS, MODELS, chat  # noqa: E402
 OUT = ROOT / "stage7_10"
 K = 3
 WORKERS = {"together": 80, "openai": 24}
+TASK_TIMEOUT_S = 300
 
 TARGETS = {
     "pool": {"files": ["s7_train_pool.json", "s7_calibration_pool.json"],
@@ -89,12 +90,25 @@ async def worker(queue, client, out_file, lock, state, temperature):
         tier, item, s = task
         t0 = time.time()
         try:
-            res = await chat(client, tier, item["prompt"], cap_for(item["benchmark"]),
-                             temperature=temperature)
+            # Hard ceiling per task. api.py retries up to 5 times at a 300s
+            # request timeout, so a silently stalled connection can pin a worker
+            # for ~25 minutes; with 80 workers that halts the whole run. Tier 1's
+            # p90 latency is ~76s, so this ceiling never aborts a healthy call.
+            # Abandoned tasks are re-enqueued by the next resume pass.
+            res = await asyncio.wait_for(
+                chat(client, tier, item["prompt"], cap_for(item["benchmark"]),
+                     temperature=temperature),
+                timeout=TASK_TIMEOUT_S)
         except SystemExit as e:
             state["fatal"] = str(e)
             queue.task_done()
             return
+        except (asyncio.TimeoutError, TimeoutError):
+            res = {"model": MODELS[tier]["model"], "content": "", "reasoning": "",
+                   "answer": "", "http_status": None, "retries": 0,
+                   "error": f"task_timeout after {TASK_TIMEOUT_S}s",
+                   "prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0,
+                   "usd": 0.0, "finish_reason": None}
         row = {
             "tier": tier, "model": MODELS[tier]["model"], "item_id": item["item_id"],
             "sample_idx": s, "benchmark": item["benchmark"], "subject": item.get("subject"),
