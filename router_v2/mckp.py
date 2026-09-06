@@ -118,6 +118,7 @@ def main():
     with open(OUT / "chosen_threshold.json") as f:
         chosen = json.load(f)
     tau = chosen["chosen"]["tau"]
+    order = tuple(chosen["candidate_order"])
 
     correct = load_correct()
     tokens = load_tokens()
@@ -137,7 +138,7 @@ def main():
     oracle_tier = np.array([TIERS[k] for k in oracle_idx])
 
     p = predict(model, X)
-    router_tiers = route(p[1], p[2], tau)
+    router_tiers = route(p[1], p[2], tau, order)
     router_k = np.array([TIERS.index(t) for t in router_tiers])
     router_acc = float(v[np.arange(n), router_k].mean())
     router_energy = float(w[np.arange(n), router_k].sum())
@@ -233,7 +234,8 @@ def main():
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    sweep = list(csv.DictReader(open(OUT / "threshold_sweep.csv")))
+    sweep = [r for r in csv.DictReader(open(OUT / "threshold_sweep.csv"))
+             if r["rule"] == "cost_ordered"]
     sx = [float(r["energy_J"]) for r in sweep]
     sy = [float(r["accuracy"]) for r in sweep]
     order = np.argsort(sx)

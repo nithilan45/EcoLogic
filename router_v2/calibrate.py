@@ -1,10 +1,23 @@
 """Stage 3 - threshold calibration on the CALIBRATION split only.
 
-Routing rule (one continuous knob, exactly one threshold tau):
+Routing rule (one continuous knob, exactly one threshold tau): consider the
+candidate tiers in ascending order of expected energy and take the first whose
+predicted P(correct) clears tau; if none clears it, escalate to Tier 3.
 
-    P(Tier 1 correct) >= tau        -> Tier 1
-    else P(Tier 2 correct) >= tau   -> Tier 2
+The candidate ordering is derived from TRAIN-split mean energy per tier only.
+On this pool that ordering is Tier 2 < Tier 1 < Tier 3: Tier 2 is cheaper than
+Tier 1 despite a 3x higher per-token rate, because Tier 1 emits roughly 6x more
+tokens. So the rule is
+
+    P(Tier 2 correct) >= tau        -> Tier 2
+    else P(Tier 1 correct) >= tau   -> Tier 1
     else                            -> Tier 3
+
+The naive tier-index ordering (Tier 1 checked first) is swept too and reported
+as an ablation. It is structurally unable to reach the pre-registered energy
+budget, because its cheapest reachable policy is always-Tier-1, which already
+costs more than always-Tier-2. Routing-rule *structure* was not pre-registered;
+the threshold-selection rule below was, and is applied unchanged.
 
 tau is swept over 50 values. The threshold carried forward is chosen by the
 rule fixed in PREREGISTRATION.md before any of this was run:
@@ -27,7 +40,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "router_v2"))
 sys.path.insert(0, str(ROOT / "benchmark"))
 from api import MODELS  # noqa: E402
-from train_router import load_correct, load_split, make_xy, predict  # noqa: E402
+from train_router import load_correct, load_split, make_xy, open_graded, predict  # noqa: E402
 
 OUT = ROOT / "router_v2"
 TIERS = [1, 2, 3]
@@ -39,7 +52,7 @@ N_GRID = 50
 
 def load_tokens() -> dict:
     tok = {}
-    with open(OUT / "pool_graded.jsonl") as f:
+    with open_graded() as f:
         for line in f:
             if line.strip():
                 r = json.loads(line)
@@ -47,10 +60,18 @@ def load_tokens() -> dict:
     return tok
 
 
-def route(p1: np.ndarray, p2: np.ndarray, tau: float) -> np.ndarray:
+def route(p1: np.ndarray, p2: np.ndarray, tau: float,
+          order: tuple[int, ...] = (2, 1)) -> np.ndarray:
+    """Take the first tier in `order` whose P(correct) clears tau, else Tier 3.
+
+    `order` is cheapest-expected-energy-first. Assigning in reverse means the
+    earlier (cheaper) candidates overwrite the later ones, so the first
+    qualifying tier in `order` wins.
+    """
+    p = {1: p1, 2: p2}
     t = np.full(len(p1), 3, dtype=int)
-    t[p2 >= tau] = 2
-    t[p1 >= tau] = 1
+    for tier in reversed(order):
+        t[p[tier] >= tau] = tier
     return t
 
 
@@ -69,34 +90,51 @@ def main():
 
     correct = load_correct()
     tokens = load_tokens()
+    train_items, _, _ = make_xy(load_split("train"), correct)
     cal_items, Xca, yca = make_xy(load_split("calibration"), correct)
     p = predict(model, Xca)
     p1, p2 = p[1], p[2]
 
+    # candidate ordering comes from TRAIN energy only, never calibration or test
+    train_e = {t: float(np.mean([tokens[(t, it["item_id"])] / 1000 * PAPER_RATES[t]
+                                 for it in train_items])) for t in TIERS}
+    cost_order = tuple(sorted([1, 2], key=lambda t: train_e[t]))
+    print(f"variant={variant}  CALIBRATION n={len(cal_items)}")
+    print("TRAIN mean energy per item: " +
+          ", ".join(f"tier {t} {train_e[t]:.4f} J" for t in TIERS))
+    print(f"=> cost-ordered candidates: {cost_order} then Tier 3 fallback")
+
     e_frontier = sum(tokens[(3, it["item_id"])] / 1000 * PAPER_RATES[3] for it in cal_items)
     budget = ENERGY_BUDGET_FRAC * e_frontier
-    print(f"variant={variant}  CALIBRATION n={len(cal_items)}")
     print(f"always-frontier calibration energy = {e_frontier:,.1f} J; "
           f"pre-registered budget = {ENERGY_BUDGET_FRAC:.0%} = {budget:,.1f} J")
 
     grid = np.linspace(0.0, 1.0, N_GRID)
-    rows = []
-    for tau in grid:
-        tiers = route(p1, p2, tau)
-        acc, energy, mix = evaluate(tiers, cal_items, correct, tokens)
-        rows.append({
-            "tau": round(float(tau), 6),
-            "accuracy": acc,
-            "energy_J": energy,
-            "energy_frac_of_frontier": energy / e_frontier,
-            "n_tier1": mix[1], "n_tier2": mix[2], "n_tier3": mix[3],
-            "within_budget": energy <= budget,
-        })
+    orders = {"cost_ordered": cost_order, "index_ordered": (1, 2)}
+    all_rows = []
+    for rule_name, order in orders.items():
+        for tau in grid:
+            tiers = route(p1, p2, tau, order)
+            acc, energy, mix = evaluate(tiers, cal_items, correct, tokens)
+            all_rows.append({
+                "rule": rule_name,
+                "tau": round(float(tau), 6),
+                "accuracy": acc,
+                "energy_J": energy,
+                "energy_frac_of_frontier": energy / e_frontier,
+                "n_tier1": mix[1], "n_tier2": mix[2], "n_tier3": mix[3],
+                "within_budget": energy <= budget,
+            })
 
     with open(OUT / "threshold_sweep.csv", "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0]))
+        w = csv.DictWriter(f, fieldnames=list(all_rows[0]))
         w.writeheader()
-        w.writerows(rows)
+        w.writerows(all_rows)
+
+    rows = [r for r in all_rows if r["rule"] == "cost_ordered"]
+    abl = [r for r in all_rows if r["rule"] == "index_ordered"]
+    print(f"\nablation (index-ordered): min energy {min(r['energy_J'] for r in abl):,.1f} J, "
+          f"{sum(r['within_budget'] for r in abl)}/{len(abl)} thresholds within budget")
 
     eligible = [r for r in rows if r["within_budget"]]
     if eligible:
@@ -114,6 +152,9 @@ def main():
     with open(OUT / "chosen_threshold.json", "w") as f:
         json.dump({
             "variant": variant,
+            "routing_rule": "cost_ordered",
+            "candidate_order": list(cost_order),
+            "train_mean_energy_per_item_J": train_e,
             "rule": ("highest CALIBRATION accuracy among thresholds with CALIBRATION energy "
                      f"<= {ENERGY_BUDGET_FRAC:.0%} of always-frontier energy; "
                      "ties broken toward lower energy"),
@@ -140,9 +181,13 @@ def main():
     ax[0].set_title("Accuracy vs threshold")
     ax[0].grid(alpha=0.3); ax[0].legend(fontsize=8)
 
+    ax[0].plot([r["tau"] for r in abl], [r["accuracy"] for r in abl], "s-", ms=2.5,
+               color="#999999", alpha=0.8, label="ablation: index-ordered")
     ax2 = ax[1]
+    ax2.plot([r["energy_J"] for r in abl], [r["accuracy"] for r in abl], "s-", ms=2.5,
+             color="#999999", alpha=0.8, label="ablation: index-ordered")
     ax2.plot([r["energy_J"] for r in rows], [r["accuracy"] for r in rows], "o-", ms=3,
-             color="#2ca02c", label="router threshold sweep")
+             color="#2ca02c", label="router threshold sweep (cost-ordered)")
     ax2.axvline(budget, ls=":", color="k", label=f"pre-registered budget ({ENERGY_BUDGET_FRAC:.0%})")
     ax2.plot([best["energy_J"]], [best["accuracy"]], "*", ms=16, color="crimson",
              label="chosen threshold")

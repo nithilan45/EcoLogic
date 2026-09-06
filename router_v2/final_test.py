@@ -50,7 +50,9 @@ def main():
         bundle = pickle.load(f)
     model, variant = bundle["model"], bundle["variant"]
     with open(OUT / "chosen_threshold.json") as f:
-        tau = json.load(f)["chosen"]["tau"]
+        _ct = json.load(f)
+    tau = _ct["chosen"]["tau"]
+    order = tuple(_ct["candidate_order"])
 
     correct, tokens, usd, items, bench_of, rows = load()
     with open(RAW / "routing.json") as f:
@@ -63,7 +65,7 @@ def main():
     # the learned router, applied once
     X = [frozen_items[i]["raw_query"] for i in items]
     p = predict(model, X)
-    learned_tiers = route(p[1], p[2], tau)
+    learned_tiers = route(p[1], p[2], tau, order)
     assign["learned"] = {i: int(t) for i, t in zip(items, learned_tiers)}
 
     n = len(items)

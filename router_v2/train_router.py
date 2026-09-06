@@ -47,9 +47,18 @@ def load_split(name: str) -> list[dict]:
         return json.load(f)["items"]
 
 
+def open_graded():
+    """pool_graded.jsonl is stored gzipped in the repo; accept either form."""
+    plain = OUT / "pool_graded.jsonl"
+    if plain.exists():
+        return open(plain)
+    import gzip
+    return gzip.open(plain.with_suffix(".jsonl.gz"), "rt")
+
+
 def load_correct() -> dict:
     correct = {}
-    with open(OUT / "pool_graded.jsonl") as f:
+    with open_graded() as f:
         for line in f:
             if line.strip():
                 r = json.loads(line)
