@@ -101,6 +101,13 @@ def usage_and_cost(model: str, payload: dict) -> dict:
     }
 
 
+# Phase-granular rather than a blanket 300s: a long generation legitimately
+# needs a long *read* (a 16,384-token completion takes ~190s), but a connect or
+# pool acquisition that takes minutes means a stale/stuck connection, and under
+# high concurrency waiting 300s on those pins every worker and halts the run.
+REQUEST_TIMEOUT = httpx.Timeout(connect=30.0, read=300.0, write=60.0, pool=60.0)
+
+
 async def chat(
     client: httpx.AsyncClient,
     tier: int,
@@ -125,7 +132,8 @@ async def chat(
     retries = 0
     for attempt in range(1, 6):
         try:
-            resp = await client.post(url, headers=auth_headers(provider), json=body, timeout=300)
+            resp = await client.post(url, headers=auth_headers(provider), json=body,
+                                     timeout=REQUEST_TIMEOUT)
             if resp.status_code == 429 and (
                 "insufficient_quota" in resp.text or "credit_balance_exhausted" in resp.text
             ):

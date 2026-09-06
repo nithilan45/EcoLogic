@@ -145,7 +145,10 @@ async def run(tasks, path: Path, temperature: float) -> dict:
             queues[p].put_nowait(None)
 
     total = sum(WORKERS.values())
-    limits = httpx.Limits(max_connections=total + 16, max_keepalive_connections=total)
+    # Expire idle connections quickly: long-lived keepalive sockets to Together
+    # were going stale mid-run and hanging, which stalled every worker at once.
+    limits = httpx.Limits(max_connections=total + 16, max_keepalive_connections=total,
+                          keepalive_expiry=15.0)
     async with httpx.AsyncClient(limits=limits) as client:
         with open(path, "a") as out_file:
             ws = []

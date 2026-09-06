@@ -58,13 +58,15 @@ while :; do
 done
 
 for target in pool test; do
-  for pass in $(seq 1 12); do
+  for pass in $(seq 1 40); do
     left=$(pending "$target")
     echo "=== $target pass $pass: $left calls pending ($(date -u +%H:%M:%S)) ==="
     if [ "$left" -eq 0 ]; then echo "$target complete"; break; fi
-    python3 stage7_10/s7_run.py --target "$target"
-    # let dynamic rate limits recover between passes
-    sleep 45
+    # Cap each pass at 25 min so every pass rebuilds the connection pool from
+    # scratch; observed throughput starts near 200 calls/min on a fresh client
+    # and decays as sockets go stale, so recycling is much faster than waiting.
+    timeout -k 20 1500 python3 stage7_10/s7_run.py --target "$target"
+    sleep 20
   done
 done
 
