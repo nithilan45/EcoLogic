@@ -19,45 +19,17 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from scipy.sparse import csr_matrix
 
 ROOT = Path(__file__).resolve().parent.parent
 for p in ("benchmark", "router_v2", "stage7_10"):
     sys.path.insert(0, str(ROOT / p))
-import features  # noqa: E402
-from features import Combine, EmbeddingFeatures, HandFeatures  # noqa: E402
 from s7_data import load_split, pool_correct_and_tokens  # noqa: E402
+from s7_features import build_r2_cached  # noqa: E402
 from train_router import (N_FOLDS, SEED, build_r1, cv_score, eval_probs,  # noqa: E402
                           fit_final, predict)
 
 OUT = ROOT / "stage7_10"
 HEAD_TIERS = [1, 2]
-
-
-class CachedEmbeddingFeatures(EmbeddingFeatures):
-    """Memoise MiniLM vectors by text.
-
-    Identical output to EmbeddingFeatures; only avoids re-encoding the same
-    5,000 prompts once per CV fold per hyperparameter, which at this pool size
-    is the dominant cost of the R2 grid.
-    """
-
-    _cache: dict[str, np.ndarray] = {}
-
-    def transform(self, X):
-        texts = list(X)
-        missing = [t for t in dict.fromkeys(texts) if t not in self._cache]
-        if missing:
-            m = self._get()
-            v = m.encode(missing, batch_size=self.batch_size, show_progress_bar=False,
-                         normalize_embeddings=True)
-            for t, vec in zip(missing, np.asarray(v, dtype=float)):
-                self._cache[t] = vec
-        return csr_matrix(np.vstack([self._cache[t] for t in texts]))
-
-
-def build_r2_cached():
-    return Combine([("emb", CachedEmbeddingFeatures()), ("hand", HandFeatures())])
 
 
 def make_xy(items, correct):
