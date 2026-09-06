@@ -45,13 +45,23 @@ def cap_for(benchmark: str) -> int:
 
 
 def load_items(target: str) -> list[dict]:
-    items = []
+    """Load the target's items, interleaving splits proportionally.
+
+    Enqueueing the TRAIN file before the CALIBRATION file means a truncated run
+    yields TRAIN items only, which defeats the pre-registered contingency of
+    falling back to the largest fully-generated prefix. Ordering each split by
+    its fractional position and merging keeps any prefix representative of both
+    splits.
+    """
+    per_split = []
     for name in TARGETS[target]["files"]:
         with open(OUT / name) as f:
             d = json.load(f)
-        for it in d["items"]:
-            items.append({**it, "split": d["split_name"]})
-    return items
+        per_split.append([{**it, "split": d["split_name"]} for it in d["items"]])
+    tagged = [(i / len(group), it)
+              for group in per_split for i, it in enumerate(group)]
+    tagged.sort(key=lambda p: p[0])
+    return [it for _, it in tagged]
 
 
 def load_done(path: Path) -> set:
