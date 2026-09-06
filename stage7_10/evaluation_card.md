@@ -147,13 +147,18 @@ models with variable-length thinking budgets.
 - **McNemar exact tests** for all paired comparisons, computed on identical
   item sets and identical generations. All pre-registered verdicts rest on
   paired tests, never on interval overlap.
-- **Generation-variance decomposition** (Stage 10a): the frozen Stage 7 test set
-  was regenerated k=3 times per item per tier at temperature 0, and accuracy
-  variance is split into between-item and within-item (regeneration) components,
-  with "sampling-only" and "sampling+generation" interval widths reported
-  separately in `s7_generation_variance.md`.
 - **Temperature 0 is not deterministic** on either provider. This was measured,
-  not assumed.
+  not assumed: on repeated temperature-0 calls, Tier 1 returned byte-identical
+  text on only 9/21 items and token counts moved by tens of percent.
+- **Generation-variance decomposition** (Stage 10a) was designed to quantify
+  this properly — splitting accuracy variance into between-item and
+  within-item (regeneration) components and reporting "sampling-only" versus
+  "sampling+generation" interval widths. It is **not reported here: it is
+  blocked**, because it requires k=3 temperature-0 regenerations of the Stage 7
+  frozen test set and that generation did not complete (see §11). Every
+  interval in this project is therefore a single-run Wilson interval, and the
+  share of its width attributable to pure regeneration noise is currently
+  unquantified.
 
 ---
 
@@ -202,9 +207,13 @@ entirely. Against the frontier it gives up 4.67 pp of accuracy
 than the oracle.
 
 The learned router did not rescue this. Stage 5 (1,200 training items,
-single-sample labels): neither S1 nor S2 met. Stage 7 retests the hypothesis
-that the shortfall was a data problem, with ~4.2× the training data and
-majority-voted labels; its verdict is in `stage7_results.md`.
+single-sample labels): neither S1 nor S2 met, with a 5.83 pp calibration gap to
+the LP-relaxed frontier and a ~0 pp discreteness gap. Stage 7 was designed to
+retest whether that gap is a data problem, with ~4.2× the training data and
+k=3 majority-voted labels; **it is blocked and issued no verdict** (§11), so
+**the question of whether the calibration gap is a data limitation or a
+structural one is currently open.** Nothing in this card should be read as
+having settled it.
 
 ---
 
@@ -256,9 +265,9 @@ accounting is biased and by how much.
 
 **Not appropriate**: as a measurement of EcoLogic's real-world energy savings;
 as a claim about the retired Gemma/Apriel tiers; as evidence that learned
-routing cannot work in general (Stages 5 and 7 test *one* family of
-zero-API-cost routers on *this* workload); as physical energy measurement of
-any kind.
+routing cannot work in general (Stage 5 tests *one* family of zero-API-cost
+routers on *this* workload, and Stage 7's retest is incomplete); as physical
+energy measurement of any kind.
 
 ---
 
@@ -269,5 +278,24 @@ any kind.
 | `raw_results/` | every prompt, response, token count, grade, routing decision for the original test set |
 | `results_report.md` | Stages 1–4 write-up: four-policy comparison, oracle gap, sensitivity band, "what failed" |
 | `router_v2/` | learned-router addendum: pre-registration, pools, ablation, threshold sweep, MCKP frontier, one-shot results, limitations |
-| `stage7_10/` | Stage 7 retest, Stage 8 derivation, Stage 9 external check, Stage 10 hardening and documentation |
+| `stage7_10/` | Stage 7 retest (**blocked**), Stage 8 derivation, Stage 9 external check, Stage 10 documentation |
 | `quality_benchmark_report.md` | **superseded** first-pass report, retained for provenance |
+
+---
+
+## 11. Completion status
+
+| Stage | Status |
+|---|---|
+| 1–6 (audit, learned router, MCKP, regret) | complete |
+| 7 (scaled retest of the calibration-gap hypothesis) | **BLOCKED** — Together AI credit limit reached at 45.8% of generation; 1,039/5,000 pool items and 0/364 test items completed; no verdict issued (`stage7_results.md`) |
+| 8 (regret correction derivation) | complete, reconciles to 2×10⁻¹⁶ |
+| 9 (external check on RouteLLM) | complete, within the scope limits in §4 |
+| 10(a) (generation-variance decomposition) | **BLOCKED** with Stage 7 |
+| 10(b)(c)(d) (this card, framing, manifest) | complete |
+
+Two of the claims this card would otherwise make are therefore **not
+established**: that the calibration gap is or is not a data-quantity problem,
+and how much of each reported interval is regeneration noise. Both are blocked
+on the same external funding limit, and both scripts are written and resume
+without re-selection.

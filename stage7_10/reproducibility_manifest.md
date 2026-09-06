@@ -165,8 +165,17 @@ Sensitivity sweep: all 27 combinations of ×0.2, ×1, ×5 per tier.
 |---|---|---|
 | Superseded 24-question harness | 72 | $0.1216 |
 | Stages 1–6 (original test set + Stage 1 pool) | ~4,700 | $3.5143 |
-| Stage 7 (pool k=3 @ temp 0.7 + new test set k=3 @ temp 0) | see `s7_cost.json` | see `s7_cost.json` |
+| Stage 7 (incomplete — see below) | 22,106 succeeded of 48,276 planned | $29.3059 |
+| Stage 8 | 0 (re-analysis of Stage 6 data) | $0.00 |
 | Stage 9 | 0 (all local; RouteLLM's own released outputs) | $0.00 |
+| **Total spent** | | **$32.94** |
+
+Stage 7 split: OpenAI 15,001 calls / $26.1903 (Tier 3 completed fully),
+Together AI 7,105 calls / $3.1156 (Tiers 1–2, 22–23% complete). The pilot
+projected $47.47 against the pre-registered $150 gate; the run was halted by a
+Together AI **credit limit** (HTTP 402), not by cost overrun. Finishing needs
+roughly $13 more. Measured unit costs, useful for future projections:
+Together $0.000439/call, OpenAI $0.001746/call.
 
 ## 11. Commands, in order
 
