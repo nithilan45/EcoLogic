@@ -68,6 +68,14 @@ def main():
     n = len(items)
     print(f"new frozen test set: {n} items complete across all 3 tiers "
           f"(of {len(item_meta)} requested)")
+    if n == 0:
+        raise SystemExit(
+            "No test item has complete generations across all 3 tiers, so the one-shot "
+            "evaluation cannot run. Finish generation first:\n"
+            "  python3 stage7_10/s7_run.py --target test\n"
+            "  python3 stage7_10/s7_grade.py --target test\n"
+            "As of the last run the missing calls were Tier 3 (gpt-4o); see "
+            "stage7_10/s7_run_accounting.json.")
 
     assign = {}
     from main import classify_prompt_local_nlp

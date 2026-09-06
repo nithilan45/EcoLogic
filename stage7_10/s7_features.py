@@ -29,6 +29,8 @@ class CachedEmbeddingFeatures(EmbeddingFeatures):
 
     def transform(self, X):
         texts = list(X)
+        if not texts:
+            return csr_matrix((0, self._get().get_sentence_embedding_dimension()))
         missing = [t for t in dict.fromkeys(texts) if t not in self._cache]
         if missing:
             m = self._get()
