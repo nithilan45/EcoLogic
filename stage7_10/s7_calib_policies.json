@@ -1,0 +1,140 @@
+{
+  "note": "CALIBRATION split, not the frozen test set. Reported because Stage 7's pool generation is complete while the frozen test set is still missing Tier 3. The pre-registered S1/S2 verdict is decided on the frozen test set only, and is not decided here.",
+  "n_items": 1500,
+  "tau": 0.265306,
+  "candidate_order": [
+    2,
+    1
+  ],
+  "rows": [
+    {
+      "policy": "Always Tier 1",
+      "n_correct": 1382,
+      "accuracy": 0.9213333333333333,
+      "wilson_lo": 0.906607929274484,
+      "wilson_hi": 0.9339062037719765,
+      "energy_J": 2444.52205,
+      "energy_pct_of_frontier": 10.352170726230941,
+      "energy_J_per_item": 1.6296813666666667,
+      "tier_mix": {
+        "1": 1500,
+        "2": 0,
+        "3": 0
+      }
+    },
+    {
+      "policy": "Always Tier 2",
+      "n_correct": 1352,
+      "accuracy": 0.9013333333333333,
+      "wilson_lo": 0.8852011869494905,
+      "wilson_hi": 0.9154151233257772,
+      "energy_J": 1394.88795,
+      "energy_pct_of_frontier": 5.907133544719832,
+      "energy_J_per_item": 0.9299253000000001,
+      "tier_mix": {
+        "1": 0,
+        "2": 1500,
+        "3": 0
+      }
+    },
+    {
+      "policy": "Always Tier 3 (frontier)",
+      "n_correct": 1359,
+      "accuracy": 0.906,
+      "wilson_lo": 0.8901770595240771,
+      "wilson_hi": 0.9197487427311356,
+      "energy_J": 23613.618,
+      "energy_pct_of_frontier": 100.0,
+      "energy_J_per_item": 15.742412,
+      "tier_mix": {
+        "1": 0,
+        "2": 0,
+        "3": 1500
+      }
+    },
+    {
+      "policy": "Random",
+      "n_correct": 1369,
+      "accuracy": 0.9126666666666666,
+      "wilson_lo": 0.8973046659705769,
+      "wilson_hi": 0.9259204105416999,
+      "energy_J": 9252.45115,
+      "energy_pct_of_frontier": 39.18269174168906,
+      "energy_J_per_item": 6.168300766666667,
+      "tier_mix": {
+        "1": 486,
+        "2": 500,
+        "3": 514
+      }
+    },
+    {
+      "policy": "Oracle",
+      "n_correct": 1434,
+      "accuracy": 0.956,
+      "wilson_lo": 0.9444041499014111,
+      "wilson_hi": 0.9652662092817834,
+      "energy_J": 1515.2406,
+      "energy_pct_of_frontier": 6.416808301040527,
+      "energy_J_per_item": 1.0101604,
+      "tier_mix": {
+        "1": 420,
+        "2": 1063,
+        "3": 17
+      }
+    },
+    {
+      "policy": "Learned router (Stage 7)",
+      "n_correct": 1359,
+      "accuracy": 0.906,
+      "wilson_lo": 0.8901770595240771,
+      "wilson_hi": 0.9197487427311356,
+      "energy_J": 2326.04035,
+      "energy_pct_of_frontier": 9.850419152202768,
+      "energy_J_per_item": 1.5506935666666668,
+      "tier_mix": {
+        "1": 24,
+        "2": 1423,
+        "3": 53
+      }
+    }
+  ],
+  "mcnemar_vs_learned_router": {
+    "Always Tier 1": {
+      "router_only_correct": 34,
+      "other_only_correct": 57,
+      "p_exact": 0.020584209038374254,
+      "acc_diff_pp": -1.533333333333331,
+      "energy_diff_pct": -4.8468247606929875
+    },
+    "Always Tier 2": {
+      "router_only_correct": 13,
+      "other_only_correct": 6,
+      "p_exact": 0.1670684814453125,
+      "acc_diff_pp": 0.4666666666666708,
+      "energy_diff_pct": 66.75463789044849
+    },
+    "Always Tier 3 (frontier)": {
+      "router_only_correct": 57,
+      "other_only_correct": 57,
+      "p_exact": 1.0,
+      "acc_diff_pp": 0.0,
+      "energy_diff_pct": -90.14958084779724
+    },
+    "Random": {
+      "router_only_correct": 35,
+      "other_only_correct": 45,
+      "p_exact": 0.31430657986393706,
+      "acc_diff_pp": -0.6666666666666599,
+      "energy_diff_pct": -74.86027959196521
+    },
+    "Oracle": {
+      "router_only_correct": 0,
+      "other_only_correct": 75,
+      "p_exact": 5.293955920339377e-23,
+      "acc_diff_pp": -4.999999999999993,
+      "energy_diff_pct": 53.50963734736253
+    }
+  },
+  "calibration_gap_pp": 4.999999999999993,
+  "discreteness_gap_pp": 0.0
+}

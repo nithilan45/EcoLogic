@@ -1,206 +1,266 @@
-# Stage 7 — BLOCKED, no verdict issued
+# Stage 7 — hypothesis not supported on the evidence now in; pre-registered test-set verdict still pending 1,091 calls
 
-## Verdict
+## Verdict, in one sentence
 
-**No verdict. Stage 7 is blocked and the pre-registered hypothesis remains
-untested**: the Together AI account ran out of credits partway through
-generation (HTTP 402 `credit_limit`), leaving 1,039 of 5,000 pool items fully
-generated — *fewer* than Stage 1's 1,200 — so the "4–5× more training data"
-premise the stage exists to test is unattainable from the collected data, and
-zero CALIBRATION-split items completed, which makes the pre-registered
-threshold-selection step structurally impossible.
+**The calibration-gap hypothesis is not supported by the evidence now in
+hand**: scaling the training pool 4.2× (1,200 → 5,000 items) and replacing
+single-sample labels with majority-of-k=3 labels moved the calibration gap from
+Stage 6's **+5.83 pp** to **+5.00 pp**, closing 0.83 pp of it, while held-out
+per-tier head AUCs were flat (Tier 1 0.656 → 0.665, Tier 2 0.701 → 0.702).
 
-Per the addendum's instruction, this stage stops here. What follows is exactly
-what was collected, what it cost, why the salvage does not constitute a reduced
-version of the experiment, and what is needed to resume. **No accuracy table,
-no S1/S2 determination and no calibration-gap number is reported for Stage 7,
-because none can be computed honestly from this data.**
+**That sentence is not yet the pre-registered S1/S2 verdict.** S1 and S2 are
+defined on the *new frozen test set*, and 1,091 of its 1,092 Tier 3 (`gpt-4o`)
+generations are missing because the OpenAI account hit its credit limit. The
+formal verdict is therefore withheld, not guessed. Finishing it costs **$1.91**
+of OpenAI credit (measured, not estimated — see [Remaining
+work](#remaining-work-1091-calls-191)).
 
-Stages 8, 9 and 10(b)(c)(d) do not depend on Stage 7 and are complete. Stage
-10(a) depends on the Stage 7 test set and is blocked with it.
+What separates the two statements: the hypothesis is about the **calibration
+gap**, which is defined and measured on the CALIBRATION split, and that split is
+100% generated. S1/S2 are about beating **Always-Tier-2 on a held-out test set**,
+which needs the third tier for the always-frontier and oracle rows.
 
 ---
 
-## What blocked it
+## Status of the generation run
 
-```
-HTTP 402: {"error": {"message": "Credit limit exceeded, please add credits.
-           If you've already made a payment, please wait up to 5 minutes for
-           balances to update and try again.", "type": "credit_limit"}}
-```
+Pool generation completed in full after the Together AI credits were topped up.
+Resumption was keyed on `(tier, item_id, sample_idx)`, so no completed call was
+repeated.
 
-Confirmed persistent, not transient: after halting all workers, a single
-minimal call (`openai/gpt-oss-20b`, 5 max tokens) still returned HTTP 402.
-Tiers 1 and 2 are both Together-hosted, so the failure removes two of the three
-tiers. Tier 3 (`gpt-4o`, OpenAI) was unaffected and finished completely.
-
-This is an account-funding limit, not a rate limit, a bug, or a
-misconfiguration. It cannot be worked around from inside the run.
-
-## What was collected before the limit hit
-
-| | Target | Succeeded | Share |
+| Target | Calls needed | Succeeded | Share |
 |---|---|---|---|
-| **Pool**, Tier 3 (`gpt-4o`, OpenAI) | 15,000 | **15,000** | 100% |
-| **Pool**, Tier 2 (`openai/gpt-oss-20b`, Together) | 15,000 | 3,512 | 23.4% |
-| **Pool**, Tier 1 (`Qwen/Qwen3.5-9B`, Together) | 15,000 | 3,374 | 22.5% |
-| **Test set**, all tiers | 3,276 | 220 | 6.7% |
-| **Total** | 48,276 | **22,106** | 45.8% |
+| **Pool** — Tier 1 (`Qwen/Qwen3.5-9B`) | 15,000 | **15,000** | 100% |
+| **Pool** — Tier 2 (`openai/gpt-oss-20b`) | 15,000 | **15,000** | 100% |
+| **Pool** — Tier 3 (`gpt-4o`) | 15,000 | **15,000** | 100% |
+| **Test** — Tier 1 | 1,092 | **1,092** | 100% |
+| **Test** — Tier 2 | 1,092 | **1,092** | 100% |
+| **Test** — Tier 3 | 1,092 | 1 | **0.1%** |
+| **Total** | 48,276 | 47,185 | 97.7% |
 
-13,383 calls returned HTTP 402 and 1,920 more on the test-set run. Failed calls
-are recorded with their error and are not counted as data.
+All 5,000 pool items have complete k=3 × 3-tier generations, split 3,500 TRAIN /
+1,500 CALIBRATION exactly as pre-registered. Nothing was excluded for
+incompleteness.
 
-Items with **all 3 tiers × all 3 samples** present — the only items usable
-under the pre-registered label rule:
+**Spend so far: $41.11** ($39.57 pool + $1.53 test), against the pre-registered
+$150 gate and the pilot's $47.47 projection. Full per-tier accounting is in
+`s7_run_accounting.json`.
 
-| | Count |
-|---|---|
-| Pool items fully generated | **1,039** of 5,000 |
-| ...from the TRAIN split | 1,039 |
-| ...from the CALIBRATION split | **0** |
-| Test-set items fully generated | **0** of 364 |
+### Failed attempts, and why they are not data loss
 
-## Cost
+17,109 call attempts failed and were retried: 15,330 HTTP 402 (the credit
+exhaustion, before and after top-up), 1,416 HTTP 429 (Together rate limiting),
+18 HTTP 503, and 345 client-side task timeouts. None are billed and none appear
+in the analysis; every one was retried to success except the 1,091 Tier 3
+test-set calls. Three infrastructure fixes were needed to converge, all
+committed and all affecting only *how* calls are issued, never what is asked or
+graded:
 
-| Provider | Successful calls | Spend |
-|---|---|---|
-| OpenAI (Tier 3) | 15,001 | $26.1903 |
-| Together AI (Tiers 1–2) | 7,105 | $3.1156 |
-| **Stage 7 total** | **22,106** | **$29.3059** |
+- a hard per-task timeout, because `api.py`'s 5 retries at a 300 s request
+  timeout let a single stalled socket pin a worker for ~25 minutes, and with 80
+  workers the run silently flatlined at 0 calls/min;
+- phase-granular HTTP timeouts (connect 30 s, read 300 s) so a stuck connect
+  fails fast while a legitimate 16,384-token generation still has ~190 s to run;
+- 15-second keepalive expiry plus a 25-minute cap per pass, because throughput
+  started near 200 calls/min on a fresh connection pool and decayed toward zero
+  as sockets went stale.
 
-The pilot projected **$47.47** for the full 48,276 calls, against a
-pre-registered gate of $150. That projection was accurate — the run was not
-stopped by cost overrun. Roughly **$13 of further spend** would finish it
-(~23,100 remaining Together calls at the measured $0.000439/call ≈ $10.1, plus
-1,091 OpenAI test-set calls ≈ $1.9), bringing Stage 7 to about **$42**, still
-well under the gate.
-
-## Why the salvaged data is not a reduced Stage 7
-
-Three independent reasons, any one of which is sufficient:
-
-1. **The premise is unattainable.** Stage 7 exists to test whether the Stage 6
-   calibration gap is caused by insufficient training data. 1,039 complete
-   items is **0.87× Stage 1's 1,200**, not 4.2×. Fitting a router on it would
-   test *nothing about data scaling*; at best it would test the label-noise fix
-   alone, at slightly less data than before — a different experiment that was
-   not pre-registered and that cannot separate the two changes.
-2. **There is no CALIBRATION split.** Every completed item is from TRAIN,
-   because the generator processes the TRAIN file before the CALIBRATION file.
-   The pre-registered threshold rule ("highest CALIBRATION accuracy among
-   thresholds using ≤ 10% of always-frontier energy **on the same CALIBRATION
-   split**") has no data to run on. Selecting a threshold on TRAIN instead
-   would be exactly the leak the pre-registration forbids.
-3. **There is no test set.** Zero of 364 new frozen-test items have complete
-   generations, so the one-shot evaluation cannot be run at all. Substituting
-   the Stage 5 test set is explicitly ruled out by this addendum ("do not touch
-   the original Stage 5 test set again").
-
-Refitting anyway and reporting a table would produce numbers that look like the
-pre-registered experiment while answering a different question with a
-train-set-selected threshold. That is precisely the failure the
-pre-registration was written to prevent, so it was not done.
+A fourth fix was to the enqueue order: TRAIN was previously generated before
+CALIBRATION, which is why the earlier interruption left zero CALIBRATION items.
+Splits are now interleaved proportionally, so any prefix is ~70/30. This makes
+the pre-registered throughput contingency actually usable; it was not usable
+before.
 
 ---
 
-## One measurement that does survive, clearly labelled
+## The label-noise fix, and how much noise it removed
 
-The following is a **partial diagnostic from the incomplete pool**, not the
-pre-registered experiment. It is reported because it is well-defined on the data
-that exists, it required no threshold and no test set, and it bears directly on
-whether the label-noise fix could plausibly have mattered.
+k=3 sampling at temperature 0.7 found genuine per-item disagreement, so the
+majority-vote label is doing real work rather than averaging identical repeats:
 
-**How much label noise did k=3 majority voting actually remove?** Over the 1,039
-complete TRAIN items, generating 3 independent samples per tier at temperature
-0.7 and asking how often the three samples disagreed:
-
-| Tier | Items with a 2–1 sample split | Share |
+| Tier | Items with a 2–1 sample split | Share of 5,000 |
 |---|---|---|
-| Tier 1 (`Qwen/Qwen3.5-9B`) | 74 / 1,039 | **7.1%** |
-| Tier 2 (`openai/gpt-oss-20b`) | 85 / 1,039 | **8.2%** |
-| Tier 3 (`gpt-4o`) | 42 / 1,039 | **4.0%** |
+| Tier 1 (`Qwen/Qwen3.5-9B`) | 290 | **5.8%** |
+| Tier 2 (`openai/gpt-oss-20b`) | 402 | **8.0%** |
+| Tier 3 (`gpt-4o`) | 201 | **4.0%** |
 
-Items where no tier's majority grade was correct: 33 / 1,039 (3.2%), flagged as
-label noise rather than treated as ground truth. Oracle label mix over the
-complete items: Tier 2 = 692, Tier 1 = 328, Tier 3 = 19.
+192 items (3.8%) had no tier whose majority grade was correct; per the
+pre-registration these are labelled with the lowest-energy tier and flagged as
+label noise rather than treated as ground truth. Oracle label mix: Tier 2 =
+3,428, Tier 1 = 1,497, Tier 3 = 75.
 
-Read carefully, this bounds the upside the label fix was ever going to deliver.
-A 2–1 split marks an item whose single-sample Stage 1 label was close to a coin
-flip; roughly **7–8% of per-tier labels for the two cheap tiers were in that
-category**, and majority voting fixes those in expectation. Stage 1's
-CALIBRATION head AUCs were 0.66 and 0.70. Removing noise from ~8% of labels is
-a real improvement in label quality, but it is not obviously enough to move
-head AUCs to where a router would need them (roughly 0.85+) to beat a static
-policy that is already right ~92% of the time. **This is a suggestive
-observation, not a result** — it does not test the hypothesis, and the
-pre-registered outcome remains "untested", not "not supported".
+So Stage 1's single-sample labels were wrong-by-coin-flip on roughly 6–8% of
+per-tier judgements for the two cheap tiers, and Stage 7 removes that. This is
+the "cleaned" half of "scaled and cleaned" actually landing.
 
-Per-sample accuracy on the complete items, for reference (all k samples pooled,
-temperature 0.7, so these are *not* comparable to the temperature-0 headline
-numbers elsewhere in this project):
+---
+
+## Did more, cleaner data help? Two measurements say mostly no
+
+### 1. Held-out discrimination is flat
+
+The per-tier heads are the mechanism the whole approach rests on: if they cannot
+tell which queries a tier will get right, no threshold can route well.
+
+| | Stage 2 (1,200 items, single-sample labels) | Stage 7 (5,000 items, k=3 majority labels) |
+|---|---|---|
+| TRAIN-CV mean AUC, R1 | 0.6550 | **0.7154** |
+| TRAIN-CV mean AUC, R2 | 0.6746 | **0.7162** |
+| CALIBRATION AUC, Tier 1 head (R2) | 0.6558 | **0.6650** |
+| CALIBRATION AUC, Tier 2 head (R2) | 0.7010 | **0.7015** |
+
+The TRAIN-CV numbers rose by ~0.04, which looks like the hypothesis being
+confirmed — but the held-out CALIBRATION numbers moved by **+0.009 and
++0.0005**. The cross-validation gain is largely the labels becoming easier to
+predict once denoised, not the heads generalising better. Both remain far below
+the ~0.85 that a router would need to beat a static policy already correct ~92%
+of the time.
+
+Two caveats on that comparison, both real: the Stage 2 and Stage 7 CALIBRATION
+splits are *different item sets* from different pools, and their base rates
+differ (Tier 1 0.856 vs 0.921), which alone shifts AUC. So read the flatness as
+"no visible improvement" rather than as a precise zero.
+
+R2 (MiniLM embeddings) won TRAIN-CV again, 0.7162 vs 0.7154 — a 0.0008 margin,
+i.e. the richer local representation is not meaningfully better than TF-IDF
+here. Full grids in `s7_model_comparison.md`.
+
+### 2. The calibration gap barely moved
+
+Recomputed on the new 1,500-item CALIBRATION split by the same code path:
+
+| Quantity | Stage 6 (n=360) | Stage 7 (n=1,500) |
+|---|---|---|
+| Router accuracy | — | 0.9060 |
+| LP-relaxed frontier at the router's energy | — | 0.9560 |
+| **Calibration gap** | **+5.83 pp** | **+5.00 pp** |
+| **Discreteness gap** | +0.00 pp | **+0.00 pp** |
+
+The gap closed by 0.83 pp for a 4.2× increase in data plus a label-noise fix.
+The discreteness gap stayed at zero, so the headroom is still not blocked by
+having to pick one tier per item — the LP relaxation and the integer MCKP agree
+to within 0.04 pp at every budget on the frontier curve.
+
+Per the pre-registration's framing, this points at the gap being **structural**:
+a limit of the feature representation, or of how predictable per-item tier
+success is from the prompt alone. This design deliberately does not distinguish
+those two, and I am not claiming it does.
+
+---
+
+## CALIBRATION-split policy comparison
+
+Reported because this split's data is complete. **This is not the frozen test
+set and not the pre-registered verdict.** No policy, variant or threshold was
+selected using this table: the variant was fixed by TRAIN-only CV and the
+threshold τ = 0.2653 by the pre-registered ≤10%-of-frontier budget rule
+(14 of 50 grid thresholds qualified; the rule applied as written, no fallback).
+
+n = 1,500. Energy at the paper's J/1k-token rates.
+
+| Policy | Accuracy | 95% Wilson CI | Energy (J) | % of frontier | Tier mix 1/2/3 |
+|---|---|---|---|---|---|
+| Always Tier 1 | 0.9213 | [0.9066, 0.9339] | 2,444.5 | 10.4% | 1500/0/0 |
+| Always Tier 2 | 0.9013 | [0.8852, 0.9154] | 1,394.9 | 5.9% | 0/1500/0 |
+| Always Tier 3 (frontier) | 0.9060 | [0.8902, 0.9197] | 23,613.6 | 100.0% | 0/0/1500 |
+| Random | 0.9127 | [0.8973, 0.9259] | 9,252.5 | 39.2% | 486/500/514 |
+| Oracle | 0.9560 | [0.9444, 0.9653] | 1,515.2 | 6.4% | 420/1063/17 |
+| **Learned router (Stage 7)** | **0.9060** | [0.8902, 0.9197] | **2,326.0** | **9.9%** | 24/1423/53 |
+| EcoLogic keyword router | 0.9113 | — | 2,757.2 | 11.7% | 1087/354/59 |
+
+McNemar exact, learned router vs each row:
+
+| Comparison | Δ accuracy | b / c | p | Δ energy |
+|---|---|---|---|---|
+| vs Always Tier 1 | **−1.53 pp** | 34 / 57 | **0.021** | −4.8% |
+| vs Always Tier 2 | +0.47 pp | 13 / 6 | 0.167 | **+66.8%** |
+| vs Always Tier 3 | +0.00 pp | 57 / 57 | 1.00 | −90.1% |
+| vs Random | −0.67 pp | 35 / 45 | 0.314 | −74.9% |
+| vs Oracle | −5.00 pp | 0 / 75 | 5.3e−23 | +53.5% |
+
+Read plainly: on this split the router is **significantly worse than simply
+always using Tier 1** (−1.53 pp, p = 0.021) while saving only 4.8% of energy,
+so Always-Tier-1 dominates it outright. Against Always-Tier-2 it is +0.47 pp,
+not significant, and spends **67% more energy** — so on this split neither S1
+(needs p < 0.05) nor S2 (needs ≥15% *less* energy) would hold. Whether that
+carries to the frozen test set is exactly what the missing 1,091 calls decide,
+and I am not asserting it in advance.
+
+One structural note worth flagging: on this pool Tier 1 is *more accurate* than
+Tier 2 (0.9213 vs 0.9013) but also *more energy-hungry* (2,444 J vs 1,395 J),
+because Tier 1 emits ~3,100 output tokens per call against Tier 2's ~427. The
+cost ordering that the routing rule derives from TRAIN means is therefore
+Tier 2 → Tier 1 → Tier 3, and the router sends 1,423 of 1,500 items to Tier 2.
+It is, in effect, an expensive approximation of Always-Tier-2 plus 53 escalations.
+
+---
+
+## Remaining work: 1,091 calls, $1.91
+
+Blocked by OpenAI credit exhaustion on `gpt-4o`:
+
+```
+FATAL: openai/gpt-4o HTTP 429 out of credit
+```
+
+The cost is measured from the 15,000 completed Tier 3 pool calls, not estimated
+from list prices: $26.19 / 15,000 = **$0.00175 per call** at a measured 120
+input / 145 output tokens, so 1,091 calls = **$1.91**. Together AI is funded and
+unaffected; Tiers 1 and 2 of the test set are already complete.
+
+Once credit is added:
+
+```bash
+python3 stage7_10/s7_run.py --target test    # resumes; issues only the 1,091 Tier 3 calls
+python3 stage7_10/s7_grade.py --target test
+python3 stage7_10/s7_final.py                # eight-policy one-shot table + S1/S2 verdict
+python3 stage7_10/s7_variance.py             # Stage 10(a) variance decomposition
+python3 stage7_10/s7_export_samples.py
+```
+
+Nothing needs re-selecting or re-seeding. The router weights
+(`s7_router_model.pkl`), the variant, the threshold τ = 0.2653, the pools, the
+test set and the seed (`20260906`) are all fixed on disk and committed, so the
+run that finishes is the one that was pre-registered. The one-shot property is
+intact: the frozen test set has not been scored.
+
+### Resumption fidelity, for the record
+
+Tier 3 pool generations were made before the Together interruption; Tier 1 and 2
+generations for most items were made after it, across roughly a 15-hour window.
+Provider weights behind `gpt-4o`, `Qwen/Qwen3.5-9B` and `openai/gpt-oss-20b` are
+not version-pinned (`reproducibility_manifest.md` §3), so this run mixes
+generations from different points in time. For between-tier comparisons on the
+same item that is a real, probably small, confound, and it should be disclosed
+if these results are published.
+
+---
+
+## Per-sample accuracy on the pool, for reference
+
+All k=3 samples pooled at temperature 0.7, so **not** comparable to the
+temperature-0 headline numbers elsewhere in this project.
 
 | Tier | GSM8K | MBPP | MMLU |
 |---|---|---|---|
-| Tier 1 | 96.9% (1492/1539) | 94.5% (309/327) | 87.3% (1317/1508) |
-| Tier 2 | 95.7% (1522/1590) | 97.1% (334/344) | 85.6% (1350/1578) |
+| Tier 1 | 96.2% (6625/6885) | 91.7% (1128/1230) | 87.6% (6032/6885) |
+| Tier 2 | 95.1% (6546/6885) | 95.4% (1173/1230) | 84.4% (5810/6885) |
 | Tier 3 | 95.9% (6603/6885) | 85.3% (1049/1230) | 86.1% (5929/6885) |
 
-The Tier 3 MBPP figure (85.3%, below both cheaper tiers) is unexpected and is
-noted rather than explained; with the pool incomplete it is not worth
-investigating here, since the code subset is small and the comparison is
-confounded by which items happened to complete.
+Tier 3 (`gpt-4o`) scoring **lowest of the three on MBPP** (85.3%) is the clearest
+anomaly in this table and it reproduced at full pool size, so it is not a
+small-sample artifact. It is reported, not explained; the plausible causes
+(prompt-wrapper interaction, verbosity that breaks the extraction, genuine
+weakness on this MBPP formatting) are not separated here, and it directly
+weakens the "Tier 3 is the quality ceiling" assumption that the always-frontier
+baseline encodes.
 
----
+## What the MBPP ceiling means for this stage
 
-## What was completed successfully before the block
-
-These parts of Stage 7 are done and are not affected by the credit limit:
-
-- **Pool and test-set construction**, with all five disjointness assertions
-  printing PASS (`build_pools.py`): a 5,000-item pool (MBPP 410, MMLU 2,295,
-  GSM8K-train 2,295; 3,500 TRAIN / 1,500 CALIBRATION) and a fresh 364-item test
-  set (MBPP 164, MMLU 100, GSM8K 100), with zero item-ID overlap against the
-  original frozen test set, Stage 1's pool, and each other, and no HumanEval
-  item reused anywhere.
-- **Cost pilot**, projecting $47.47 against the $150 gate.
-- **The full analysis pipeline**, written and exercised end-to-end on the
-  partial data: `s7_grade.py` (k=3 majority labels), `s7_fit.py` (R1/R2 refit
-  with TRAIN-only CV), `s7_calibrate.py` (threshold sweep + LP/integer MCKP
-  frontier + calibration and discreteness gaps), `s7_final.py` (eight-policy
-  one-shot table + verdict logic), `s7_variance.py` (Stage 10a). Grading runs
-  clean on 21,886 responses.
-- **The pre-registration** (`prereg_stage7.md`), committed at `97a08cb` before
-  any data existed, including the MBPP scaling ceiling that would have
-  confounded the code result even had the run finished.
-
-## To resume
-
-Add credits to the Together AI account, then:
-
-```bash
-python3 stage7_10/s7_run.py --target pool   # resumes; skips the 22k completed calls
-python3 stage7_10/s7_run.py --target test
-python3 stage7_10/s7_grade.py --target pool
-python3 stage7_10/s7_grade.py --target test
-python3 stage7_10/s7_fit.py
-python3 stage7_10/s7_calibrate.py
-python3 stage7_10/s7_final.py
-python3 stage7_10/s7_variance.py           # Stage 10(a)
-```
-
-Resumption is keyed on `(tier, item_id, sample_idx)` against the existing
-`s7_pool_responses.jsonl`, so no completed call is repeated and none of the
-$29.31 already spent is wasted. Expected additional cost ≈ $13; expected wall
-time ≈ 1.5 h at the observed 341 Together calls/min. Nothing needs re-selecting
-or re-seeding: the pools, the test set and the seed (`20260906`) are already
-fixed on disk, so the experiment that resumes is the one that was
-pre-registered.
-
-**One caveat on resumption fidelity, stated for the record.** The Tier 3 pool
-generations were made before the block and the Tier 1/2 generations for most
-items would be made after it. Provider model weights behind `gpt-4o`,
-`Qwen/Qwen3.5-9B` and `openai/gpt-oss-20b` are not version-pinned (see
-`reproducibility_manifest.md` §3), so a resumed run mixes generations from two
-points in time. For a comparison *between tiers on the same item* this is a
-real, if probably small, confound, and it should be disclosed if the resumed
-results are published.
+Restating the pre-registered caveat now that the numbers exist: MBPP has 974
+problems total, Stage 1 consumed 400 and the new test set reserves 164, leaving
+**410** for the pool. So GSM8K and MMLU scaled 5.7× while code scaled **1.03×**.
+Stage 5's router deviated from static Tier 2 mainly on code. Any null result on
+the code subset is therefore confounded with the inability to add code training
+data, and the "4.2× more data" claim is uneven across benchmarks by
+construction.
