@@ -1,6 +1,4 @@
-# Stage 10(a) — generation-variance decomposition (partial)
-
-> **Partial.** Tier 3 generations for this test set are incomplete (OpenAI credit limit), so every policy that can escalate to them — and the oracle — is omitted here, as are all router-dependent policies. The latter is deliberate: leaving the frozen test set unscored for the router preserves the pre-registered one-shot evaluation. What is reported below is the part that does not depend on the missing tier, and it is the core Stage 10(a) quantity: how much a temperature-0 rerun moves accuracy.
+# Stage 10(a) — generation-variance decomposition
 
 The Stage 7 frozen test set (n = 364) was regenerated **k = 3 times per item per tier at temperature 0**. Replicates therefore differ only through provider-side nondeterminism, not sampling temperature — which is a distinct quantity from Stage 7's temperature-0.7 training samples.
 
@@ -10,6 +8,7 @@ The Stage 7 frozen test set (n = 364) was regenerated **k = 3 times per item per
 |---|---|---|---|---|
 | Tier 1 | 83.2% | 72 (19.8%) | 1936.4 tokens | 6.3% |
 | Tier 2 | 91.5% | 21 (5.8%) | 263.4 tokens | 7.1% |
+| Tier 3 | 89.6% | 5 (1.4%) | 4.6 tokens | 67.0% |
 
 A flipped item is one where the same tier, on the same prompt, at temperature 0, graded correct on some replicates and incorrect on others. Temperature 0 is not determinism.
 
@@ -19,8 +18,13 @@ The spread across tiers is the part worth noting. Tier 1 changes its graded verd
 
 | Policy | Acc (k=3 mean) | between-item var | within-item var | within share | sampling-only ± | sampling+generation ± | Wilson ± (reported) |
 |---|---|---|---|---|---|---|---|
+| EcoLogic keyword | 84.1% | 0.08294 | 0.05128 | 38.2% | 2.96 pp | 3.76 pp | 3.65 pp |
 | Always Tier 1 | 83.2% | 0.07444 | 0.06593 | 47.0% | 2.80 pp | 3.85 pp | 3.81 pp |
 | Always Tier 2 | 91.5% | 0.05886 | 0.01923 | 24.6% | 2.49 pp | 2.87 pp | 2.71 pp |
+| Always-frontier | 89.6% | 0.08917 | 0.00458 | 4.9% | 3.07 pp | 3.15 pp | 3.12 pp |
+| Random tier | 88.4% | 0.07095 | 0.03205 | 31.1% | 2.74 pp | 3.30 pp | 3.19 pp |
+| **Learned router (Stage 7)** | 92.6% | 0.05143 | 0.01740 | 25.3% | 2.33 pp | 2.70 pp | 2.53 pp |
+| Learned router (Stage 5) | 91.8% | 0.05657 | 0.01923 | 25.4% | 2.44 pp | 2.83 pp | 2.67 pp |
 
 ## Reading this table
 

@@ -18,6 +18,8 @@ import json
 import pickle
 import random
 import sys
+from collections import Counter
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 
 import numpy as np
@@ -308,11 +310,25 @@ def main():
             f"{pb[b]['acc']:.1%} ({pb[b]['correct']}/{pb[b]['n']})"
             for b in BENCHMARKS) + " |")
     L.append("")
-    L.append("**The code column carries the pre-registered confound.** MBPP had only 410 "
-             "unused items left for the training pool against 400 in Stage 1 — a 1.02x "
-             "scale-up, versus 5.74x for MMLU and GSM8K. Any null result on code is "
-             "therefore confounded with the inability to add code training data, exactly as "
-             "flagged in `prereg_stage7.md` before the run.\n")
+    # Computed rather than hardcoded so this line cannot drift from the pools.
+    pool_bench = Counter(it["benchmark"] for it in
+                         json.loads((OUT / "s7_train_pool.json").read_text())["items"]
+                         + json.loads((OUT / "s7_calibration_pool.json").read_text())["items"])
+    # ROUND_HALF_UP so 410/400 renders 1.03x, matching prereg_stage7.md; float
+    # formatting would show 1.02x and put the two documents in disagreement.
+    def scale(n: int) -> str:
+        # exact decimal division: float 410/400 lands just below 1.025 and would
+        # round down to 1.02 even under ROUND_HALF_UP
+        return str((Decimal(n) / Decimal(400)).quantize(Decimal("0.01"),
+                                                        rounding=ROUND_HALF_UP))
+
+    code_scale, text_scale = scale(pool_bench["mbpp"]), scale(pool_bench["mmlu"])
+    L.append(f"**The code column carries the pre-registered confound.** MBPP had only "
+             f"{pool_bench['mbpp']} unused items left for the training pool against 400 in "
+             f"Stage 1 — a {code_scale}x scale-up, versus {text_scale}x for MMLU and "
+             f"GSM8K. Any null result on code is therefore confounded with the inability to "
+             f"add code training data, exactly as flagged in `prereg_stage7.md` before the "
+             f"run.\n")
 
     L.append("## Pre-registered comparison in detail: Stage 7 router vs Always Tier 2\n")
     L.append("| Quantity | Value |")
@@ -369,6 +385,10 @@ def main():
              "- `s7_threshold_sweep.csv` / `.png` — CALIBRATION threshold sweep\n"
              "- `s7_mckp_frontier.csv` / `.png` — LP and integer frontiers with both gaps\n"
              "- `s7_final_results.json` — every number above, machine-readable\n"
+             "- `s7_run_report.md` — generation status, cost and failure accounting, the "
+             "CALIBRATION-split analysis, and the infrastructure fixes the run required\n"
+             "- `s7_generation_variance.md` — Stage 10(a): how much a temperature-0 rerun "
+             "moves each accuracy figure above\n"
              "- `s7_LIMITATIONS.md` — what this stage does and does not establish\n")
 
     with open(OUT / "stage7_results.md", "w") as f:

@@ -7,77 +7,78 @@ Everything here is new, in `stage7_10/`.
 
 | Stage | What it was for | Status |
 |---|---|---|
-| **7** | Scaled, cleaned retest of the calibration-gap hypothesis | **Hypothesis not supported** on the evidence in hand (gap 5.83 → 5.00 pp for 4.2× data). Pool 100% generated; pre-registered S1/S2 test-set verdict **pending 1,091 calls / $1.91** of OpenAI credit. |
+| **7** | Scaled, cleaned retest of the calibration-gap hypothesis | **Complete. Verdict: partial support, inconclusive** — the pre-registered third outcome. All 48,276 calls generated. |
 | **8** | Derive the exact regret-decomposition correction term | **Complete.** Reconciles to residual 2.2×10⁻¹⁶. |
 | **9** | External generalization check on published routers | **Complete**, within real scope limits. Correction reproduces on RouteLLM's own data. |
-| **10(a)** | Generation-variance decomposition | **Partial.** Tiers 1–2 reported (Tier 1 flips on **19.8%** of items at temperature 0); Tier 3 and all routed policies pending the same 1,091 calls. |
+| **10(a)** | Generation-variance decomposition | **Complete.** Tier 1 flips its grade on **19.8%** of items at temperature 0; the router's winning margin sits inside its own generation noise. |
 | **10(b)** | Evaluation card | **Complete.** |
 | **10(c)** | Contribution-type framing | **Complete.** |
 | **10(d)** | Full reproducibility manifest, Stages 1–10 | **Complete.** |
 
-Total spend this addendum: **$41.11** (all of it Stage 7 generation), against a
-pre-registered gate of $150. The gate was never the binding constraint; two
-separate account credit limits were.
+Total spend this addendum: **$42.62** (all of it Stage 7 generation), against a
+pre-registered gate of $150 and a pilot projection of $47.47. The gate was never
+the binding constraint; two separate account credit limits were.
 
 ---
 
-## Stage 7 — hypothesis not supported; formal verdict pending 1,091 calls
+## Stage 7 — complete; verdict is the pre-registered third outcome
 
-Together AI credits were topped up and the **pool generation completed in
-full**: 45,000/45,000 calls, all 5,000 items with complete k=3 × 3-tier
-generations, split 3,500 TRAIN / 1,500 CALIBRATION as pre-registered. The new
-frozen test set has Tier 1 and Tier 2 complete (1,092 each) but **1,091 of
-1,092 Tier 3 (`gpt-4o`) calls missing**, because the OpenAI account then hit its
-own credit limit.
+All 48,276 calls generated (45,000 pool + 3,276 test), after two account credit
+interruptions. Pool split 3,500 TRAIN / 1,500 CALIBRATION as pre-registered;
+nothing excluded for incompleteness.
 
-| | Target | Succeeded |
-|---|---|---|
-| Pool, all three tiers | 45,000 | **45,000** (100%) |
-| Test set, Tiers 1 and 2 | 2,184 | **2,184** (100%) |
-| Test set, Tier 3 (`gpt-4o`) | 1,092 | 1 (0.1%) |
-| **Total** | **48,276** | **47,185** (97.7%) |
+**Verdict: partial support, inconclusive.** Assigned by the rule written down in
+`prereg_stage7.md` before any data existed:
 
-**The hypothesis-level answer is in, and it is negative.** Scaling the pool 4.2×
-and denoising labels with majority-of-k=3 moved the calibration gap from Stage
-6's **+5.83 pp** to **+5.00 pp** — 0.83 pp closed — while held-out per-tier head
-AUCs stayed flat (Tier 1 0.656 → 0.665, Tier 2 0.701 → 0.702). The
-cross-validation AUC did rise (0.675 → 0.716), but that is largely the labels
-becoming easier to predict once denoised, not the heads generalising better. The
-discreteness gap remained **+0.00 pp**, so the headroom is still not blocked by
-one-tier-per-item. This points at the gap being **structural** — feature
-representation or prompt-level predictability — which the pre-registration
-anticipated and named as a legitimate finding.
+| Pre-registered criterion | Result |
+|---|---|
+| **S1** — beats Always-Tier-2, McNemar p < 0.05 | **not met** (p = 0.2188) |
+| **S2** — matches accuracy at ≥ 15% less energy | **not met** (uses 28.2% *more*) |
+| **Third outcome** — gap to Always-Tier-2 narrows ≥ 1.0 pp vs Stage 5 | **met** (narrowed 1.37 pp) |
 
-**The pre-registered S1/S2 verdict is withheld**, because it is defined on the
-frozen test set and the always-frontier and oracle rows need Tier 3. On the
-CALIBRATION split neither criterion would hold — the router is +0.47 pp over
-Always-Tier-2 (p = 0.167, not significant) at **67% more energy**, and it is
-**significantly worse than Always-Tier-1** (−1.53 pp, p = 0.021) for only 4.8%
-less energy, so Always-Tier-1 dominates it outright. That is indicative, not the
-verdict, and the report says so.
+On the new frozen test set (n = 364) the scaled router reached **93.7%**
+(341/364) against Always-Tier-2's **92.6%** (337/364) — so it finished 1.10 pp
+*ahead*, where Stage 5's router finished 0.27 pp behind. But the margin is not
+significant (5 discordant pairs to 1), and it costs 543.6 J against
+Always-Tier-2's 424.0 J. Scaling the data moved the router from slightly-behind
+to slightly-ahead without making it a win.
 
-**Label noise the fix actually removed**: the k=3 samples split 2–1 on **5.8%**
-of Tier 1 labels, **8.0%** of Tier 2 and **4.0%** of Tier 3, across all 5,000
-items. 192 items (3.8%) had no tier correct and are flagged as noise rather than
-treated as ground truth.
+**Stage 10(a) independently corroborates the non-significance**: the +1.10 pp
+margin sits *inside* the router's own sampling+generation half-width of 2.70 pp,
+so a single evaluation run cannot separate the two policies regardless of
+McNemar. Two different statistical routes agree.
 
-**Four infrastructure fixes were needed to get the run to converge**, all
-affecting only how calls are issued, never what is asked or graded: a hard
-per-task timeout (a single stalled socket could pin a worker for ~25 min, and
-with 80 workers the run silently flatlined at 0 calls/min), phase-granular HTTP
-timeouts, 15-second keepalive expiry with a 25-minute cap per pass (throughput
-decayed from ~200 calls/min toward zero as sockets went stale), and
-proportional interleaving of the TRAIN and CALIBRATION queues — the previous
-TRAIN-first order is why the earlier interruption left zero CALIBRATION items.
+**Why the improvement is real but small — the mechanism.** Cross-validation AUC
+rose substantially (0.675 → 0.716) but **held-out** discrimination barely moved
+(Tier 1 head 0.656 → 0.665, Tier 2 0.701 → 0.702): most of the CV gain is
+denoised labels being easier to predict, not better generalisation. Consistently,
+the calibration gap to the LP frontier closed only 0.83 pp (5.83 → **5.00 pp**)
+for 4.2× the data, and the discreteness gap stayed at **0.00 pp**. So the
+remaining gap still looks **structural** — feature representation, or how
+predictable per-item tier success is from a prompt at all — which the
+pre-registration named in advance as a legitimate finding. This design does not
+distinguish those two explanations and does not claim to.
 
-**To finish**: add **$1.91** of OpenAI credit (measured at $0.00175/call over
-15,000 completed Tier 3 calls, not list-price estimated) and run `s7_run.py
---target test`, then grade, `s7_final.py` and `s7_variance.py`. Router weights,
-variant, threshold τ = 0.2653, pools, test set and seed are all fixed on disk
-and committed; the one-shot property is intact because the frozen test set has
-not been scored.
+**A discrepancy worth flagging rather than burying.** On the 1,500-item
+CALIBRATION split the same router is *significantly worse* than Always-Tier-1
+(−1.53 pp, p = 0.021) at only 4.8% less energy, and only +0.47 pp over
+Always-Tier-2 at 67% more energy. Either the larger split has more power to
+detect a deficit, or the two splits differ in composition; the data does not
+separate these. The test-set number is the pre-registered one, but the
+calibration result is the honest context for how thin the margin is.
 
-→ `stage7_results.md`
+**One anomaly that undercuts a baseline assumption.** `gpt-4o` scores *lowest of
+the three tiers* on MBPP — 85.3% on the pool, 86.0% on the test set — so
+"always-frontier" is not the quality ceiling the design assumes. On the test set
+always-frontier reaches 89.8%, **below** Always-Tier-2's 92.6%.
+
+**Label noise the k=3 fix removed**: samples split 2–1 on **5.8%** of Tier 1
+labels, **8.0%** of Tier 2 and **4.0%** of Tier 3 across all 5,000 items; 192
+items (3.8%) had no tier correct and are flagged as noise, not ground truth.
+
+→ `stage7_results.md` (verdict and the eight-policy table),
+`s7_run_report.md` (generation, cost and failure accounting, the CALIBRATION
+analysis, and the four infrastructure fixes the run required)
 
 ---
 
@@ -162,32 +163,36 @@ stand-in dataset was simulated.
 
 ## Stage 10
 
-**(a) Generation-variance decomposition — partial, and the partial half is
-informative.** The k=3 temperature-0 regenerations of the Stage 7 frozen test
-set are complete for Tiers 1 and 2, so the per-tier decomposition and the two
-static policies that only touch those tiers are reported now
-(`s7_generation_variance_partial.md`). Policies that can escalate to Tier 3, the
-oracle, and every router-dependent policy are omitted — the last deliberately,
-so the frozen test set stays unscored for the pre-registered one-shot
-evaluation.
-
-n = 364, k = 3, temperature 0:
+**(a) Generation-variance decomposition — complete.** All three tiers of the
+Stage 7 frozen test set were regenerated k = 3 times at temperature 0, so
+replicates differ only through provider-side nondeterminism.
 
 | Tier | Items whose grade flipped across identical reruns | Mean within-item token SD | Same token count twice |
 |---|---|---|---|
 | Tier 1 (`Qwen/Qwen3.5-9B`) | **72 (19.8%)** | 1,936 tokens | 6.3% |
 | Tier 2 (`openai/gpt-oss-20b`) | 21 (5.8%) | 263 tokens | 7.1% |
+| Tier 3 (`gpt-4o`) | 5 (1.4%) | 4.6 tokens | 67.0% |
 
 | Policy | sampling-only ± | sampling+generation ± | Wilson ± (as reported) | within share |
 |---|---|---|---|---|
+| EcoLogic keyword | 2.96 pp | 3.76 pp | 3.65 pp | 38.2% |
 | Always Tier 1 | 2.80 pp | 3.85 pp | 3.81 pp | **47.0%** |
 | Always Tier 2 | 2.49 pp | 2.87 pp | 2.71 pp | 24.6% |
+| Always-frontier | 3.07 pp | 3.15 pp | 3.12 pp | 4.9% |
+| Random tier | 2.74 pp | 3.30 pp | 3.19 pp | 31.1% |
+| **Learned router (Stage 7)** | 2.33 pp | 2.70 pp | 2.53 pp | 25.3% |
 
-Two things follow. **The Wilson intervals used throughout this project are not
+Three things follow. **The Wilson intervals used throughout this project are not
 too narrow** — they track the sampling+generation column closely, because a
 single-run evaluation's draw already contains the generation noise. But **47% of
 Always-Tier-1's interval width is pure regeneration noise** that no amount of
-extra items would reduce, which is not how a Wilson interval is usually read.
+extra items would reduce, which is not how a Wilson interval is usually read;
+generation noise scales with output length, from 4.9% for terse `gpt-4o` to 47%
+for the long-reasoning Tier 1. And **the Stage 7 verdict's 1.10 pp margin falls
+inside the router's own 2.70 pp sampling+generation half-width**, which is why
+the pre-registered McNemar test and this decomposition agree that the margin is
+not separable from noise.
+
 Tier 1 changing its graded verdict on nearly a fifth of items between identical
 temperature-0 calls is the strongest form of the earlier spot-check finding
 (byte-identical text on only 9/21 Tier 1 repeats), now measured at scale.
@@ -221,7 +226,9 @@ revision and `gpt-4o` is a moving alias.
 | File | Contents |
 |---|---|
 | `prereg_stage7.md` | Stage 7 pre-registration, committed before any data (`97a08cb`) |
-| `stage7_results.md` | Stage 7 results: generation status, label-noise measurement, the two tests of the hypothesis, CALIBRATION policy table, what remains |
+| `stage7_results.md` | Stage 7 verdict, eight-policy frozen-test-set table, per-benchmark breakdown, energy sensitivity (generated by `s7_final.py`) |
+| `s7_run_report.md` | generation/cost/failure accounting, the CALIBRATION-split analysis, and the infrastructure fixes the run required (hand-written; not overwritten by reruns) |
+| `s7_generation_variance.md` | Stage 10(a) decomposition |
 | `s7_model_comparison.md` | R1 vs R2 ablation on the scaled majority-voted pool, with Stage 2 columns for the data-scaling comparison |
 | `regret_correction_derivation.md` | Stage 8 proposition, proof, reconciliation |
 | `external_generalization.md` | Stage 9 external check |
@@ -229,13 +236,14 @@ revision and `gpt-4o` is a moving alias.
 | `contribution_framing.md` | Stage 10(c) |
 | `reproducibility_manifest.md` | Stage 10(d) |
 | `s7_LIMITATIONS.md` | Limitations for Stages 7–10 |
-| `build_pools.py`, `s7_run.py`, `s7_grade.py`, `s7_data.py`, `s7_features.py`, `s7_fit.py`, `s7_calibrate.py`, `s7_calib_policies.py`, `s7_final.py`, `s7_variance.py` | Stage 7 / 10(a) pipeline; all run except `s7_final.py` and `s7_variance.py`, which need Tier 3 |
+| `build_pools.py`, `s7_run.py`, `s7_grade.py`, `s7_data.py`, `s7_features.py`, `s7_fit.py`, `s7_calibrate.py`, `s7_calib_policies.py`, `s7_final.py`, `s7_variance.py` | Stage 7 / 10(a) pipeline, all run end to end |
 | `regret_correction.py`, `external_check.py` | Stage 8 / 9 analysis |
 | `s7_*_pool.json`, `s7_test_set.json` | the frozen selections (disjointness PASS) |
 | `s7_pool_labels.json`, `s7_{pool,test}_samples.csv.gz` | k=3 majority labels, and the per-sample grade/token/cost/latency table every reported number derives from |
 | `s7_{pool,test}_audit_sample.jsonl.gz` | response **text** for the cases where grading is most contestable — all ungradable and truncated responses, plus seeded samples of `no_tier_correct` items, k=3 disagreements and ordinary controls |
 | `s7_router_model.pkl`, `s7_model_selection.json`, `s7_chosen_threshold.json` | the fixed router: weights, selected variant, pre-registered threshold |
 | `s7_threshold_sweep.csv/.png`, `s7_mckp_frontier.csv/.png`, `s7_mckp_gaps.json`, `s7_calib_policies.json` | Stage 7 calibration sweep, MCKP frontier, gap decomposition, CALIBRATION policy table |
+| `s7_final_results.json`, `s7_generation_variance.json` | machine-readable Stage 7 verdict and Stage 10(a) decomposition |
 | `s7_run_accounting.json` | per-target call counts, failure kinds and measured spend |
 | `regret_correction_validation.json`, `external_generalization.json` | machine-readable Stage 8 / 9 results |
 

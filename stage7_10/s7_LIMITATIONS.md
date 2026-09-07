@@ -1,33 +1,42 @@
 # Limitations — Stages 7–10
 
-Stage 7's pool generation is complete and its hypothesis-level result is
-reported; the pre-registered S1/S2 test-set verdict is still pending 1,091
-Tier 3 calls (see `stage7_results.md`). The limitations below constrain the
-result that *is* reported, plus what will constrain the verdict when it lands.
+Stage 7 is complete, with the pre-registered verdict **partial support,
+inconclusive**. The limitations below constrain what that verdict does and does
+not establish.
 
 ## Stage 7
 
-### The outstanding limitation
+### The verdict rests on a margin smaller than the evaluation's own noise
 
-The OpenAI account exhausted its credits after the Together top-up, leaving
-1,091 of 1,092 Tier 3 (`gpt-4o`) generations for the new frozen test set
-missing. Consequences: the pre-registered S1/S2 verdict is not issued, the
-eight-policy one-shot table is not produced, and Stage 10(a)'s variance
-decomposition cannot cover any policy that uses the frontier tier. Finishing
-needs **$1.91** of OpenAI credit. The pool (45,000/45,000) and the test set's
-Tiers 1–2 (1,092 each) are complete, so nothing else is affected.
+The router finished 1.10 pp above Always-Tier-2 on the frozen test set, on 6
+discordant items out of 364 (5 to 1). Stage 10(a) puts the router's
+sampling+generation half-width at **2.70 pp**, so that margin is *inside* the
+noise of a single evaluation run. The "partial support" label is triggered by
+the pre-registered ≥1.0 pp narrowing rule and is correctly assigned, but it
+should not be read as evidence the router is better — two statistical routes
+(McNemar, and the variance decomposition) independently say the comparison is
+unresolved at this sample size.
 
-**What is reported instead, and its status.** The calibration gap and the
-CALIBRATION policy table are computed on the 1,500-item CALIBRATION split, which
-is fully generated. That is the split the hypothesis is defined on, so the
-"hypothesis not supported" statement is a real result, not a salvage. But
-CALIBRATION is *not* held-out in the same sense as the frozen test set: the
+### CALIBRATION and the frozen test set disagree about the router
+
+On the 1,500-item CALIBRATION split the same fixed router is *significantly
+worse* than Always-Tier-1 (−1.53 pp, p = 0.021) at 4.8% less energy, and only
++0.47 pp over Always-Tier-2 at 67% more energy. On the 364-item test set it is
+1.10 pp above Always-Tier-2. These are not contradictory results — different
+splits, and the larger one has ~4× the power to detect a deficit — but the data
+does not tell us which reading is right, and the more pessimistic split is the
+larger one. Note also that CALIBRATION is not held out in the same sense: the
 threshold was selected on it (by the pre-registered rule, but selected on it
-nonetheless), so its accuracy figures are mildly optimistic for the router
-specifically, and the McNemar tests on it are not the pre-registered
-comparisons. Neither point weakens the negative finding — an optimistic estimate
-of the router still loses to Always-Tier-1 — but it would matter if the finding
-were positive.
+nonetheless), so if anything its numbers are mildly *optimistic* for the router.
+
+### `gpt-4o` is not the quality ceiling the design assumes
+
+Always-frontier reaches 89.8% on the test set, **below** Always-Tier-2's 92.6%,
+driven by `gpt-4o` scoring lowest of the three tiers on MBPP (86.0% test, 85.3%
+pool). Every "quality given up versus the frontier" framing in this project
+inherits that, and the cause is not diagnosed here — prompt-wrapper interaction,
+verbosity breaking answer extraction, and genuine weakness on this MBPP
+formatting are not separated.
 
 ### Limitations that apply regardless
 
@@ -146,17 +155,28 @@ per-query cost data exists for Chen et al. (2023). As a cascade its exposure is
 structurally greater (cost varies with both length and cascade depth), but that
 was not verifiable and was not estimated.
 
-## Stage 10(a) (blocked)
+## Stage 10(a) (complete)
 
-Depends on the Stage 7 frozen test set, of which 0/364 items have complete
-generations. Not attempted. The script (`s7_variance.py`) is written and will
-run on resumption.
+**k = 3 is a small number of replicates.** With three draws per item the
+within-item estimate `p̂(1−p̂)` takes only the values 0 and 2/9, so per-item
+generation variance is coarsely quantised; the *aggregate* over 364 items is
+still a sound estimate, but no individual item's noise level is well measured.
+The between-item estimator is unbiased but not non-negative and can come out
+negative where item difficulty is indistinguishable from generation noise; such
+values are reported raw in the JSON and clipped to zero in the table, and a
+clipped value is informative rather than an error. None were clipped here.
 
-Note for when it does run: with k=3 the between-item variance estimator is
-unbiased but not non-negative, so it can come out negative when item difficulty
-is indistinguishable from generation noise. Such values are reported raw in the
-JSON and clipped to zero in the table, and a clipped value is informative
-rather than an error.
+**This measures one provider's nondeterminism on one day.** Temperature-0
+variability comes from batching, kernel scheduling, MoE routing and
+floating-point reduction order, all of which depend on the provider's serving
+conditions at the time. The 19.8% Tier 1 flip rate is a measurement of this run,
+not a stable property of the model.
+
+**The decomposition assumes replicates are exchangeable within an item**, i.e.
+that the three draws are independent conditional on the prompt. Calls issued
+seconds apart against a shared batching queue may be correlated, which would
+bias the within-item component **downward** and make the reported generation
+noise, if anything, an underestimate.
 
 ## Stage 10(b)(c)(d) (complete)
 

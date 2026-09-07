@@ -166,24 +166,23 @@ Sensitivity sweep: all 27 combinations of ×0.2, ×1, ×5 per tier.
 |---|---|---|
 | Superseded 24-question harness | 72 | $0.1216 |
 | Stages 1–6 (original test set + Stage 1 pool) | ~4,700 | $3.5143 |
-| Stage 7 (test-set Tier 3 outstanding — see below) | 47,185 succeeded of 48,276 planned | $41.1050 |
+| Stage 7 (complete) | 48,276 of 48,276 planned | $42.6240 |
 | Stage 8 | 0 (re-analysis of Stage 6 data) | $0.00 |
 | Stage 9 | 0 (all local; RouteLLM's own released outputs) | $0.00 |
-| **Total spent** | | **$44.74** |
+| **Total spent** | | **$46.26** |
 
-Stage 7 split: the 45,000-call pool completed in full (Tier 1 $11.96, Tier 2
-$1.42, Tier 3 $26.19); the 364-item test set completed Tiers 1 and 2
-(1,092 calls each, $1.53 combined) and is missing 1,091 of 1,092 Tier 3 calls.
-The pilot projected $47.47 against the pre-registered $150 gate, and cost was
-never the binding constraint: the run was interrupted twice by **account credit
-limits**, first Together AI (HTTP 402) mid-pool and then OpenAI (HTTP 429
-`insufficient_quota`) on the test set. Finishing needs **$1.91**. Measured unit
-costs, useful for future projections: Together Tier 1 $0.000797/call, Tier 2
-$0.000095/call, OpenAI Tier 3 $0.001746/call.
+Stage 7 split: the 45,000-call pool (Tier 1 $11.96, Tier 2 $1.42, Tier 3 $26.19)
+and the 3,276-call test set ($3.05), all complete. The pilot projected $47.47
+against the pre-registered $150 gate, so it was accurate to within 10% and cost
+was never the binding constraint: the run was interrupted twice by **account
+credit limits**, first Together AI (HTTP 402) mid-pool and then OpenAI (HTTP 429
+`insufficient_quota`) on the test set's Tier 3 column, each resolved by adding
+credit. Measured unit costs, useful for future projections: Together Tier 1
+$0.000797/call, Tier 2 $0.000095/call, OpenAI Tier 3 $0.001746/call.
 
 17,109 call attempts failed and were retried (15,330 HTTP 402, 1,416 HTTP 429,
-18 HTTP 503, 345 client-side task timeouts). None are billed; all but the 1,091
-Tier 3 test calls eventually succeeded. Full breakdown in
+18 HTTP 503, 345 client-side task timeouts). None are billed and all eventually
+succeeded, so they are neither cost nor data loss. Full breakdown in
 `stage7_10/s7_run_accounting.json`.
 
 ## 11. Commands, in order

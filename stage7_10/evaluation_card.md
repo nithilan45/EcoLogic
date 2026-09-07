@@ -153,17 +153,20 @@ models with variable-length thinking budgets.
 - **Generation-variance decomposition** (Stage 10a) was designed to quantify
   this properly — splitting accuracy variance into between-item and
   within-item (regeneration) components and reporting "sampling-only" versus
-  "sampling+generation" interval widths. It is **reported for Tiers 1 and 2**
-  (`s7_generation_variance_partial.md`); the Tier 3 column and all routed
-  policies are pending (see §11). Two results are in. First, the Wilson
+  "sampling+generation" interval widths. It is **complete**
+  (`s7_generation_variance.md`), and three results follow. First, the Wilson
   intervals used throughout this project are **not too narrow**: they track the
   sampling+generation width closely, because a single-run evaluation's draw
-  already contains the generation noise. Second, **47% of Always-Tier-1's
-  interval width is pure regeneration noise** rather than item sampling — Tier 1
-  changes its graded verdict on **19.8% of items (72/364)** between identical
-  temperature-0 calls, with output length moving ~1,936 tokens on average. A
-  Wilson interval is routinely read as if reruns would land inside it and only a
-  different item sample would move it; for this tier that reading is wrong.
+  already contains the generation noise. Second, the share of interval width
+  that is pure regeneration noise scales with output length — **4.9%** for terse
+  `gpt-4o` but **47.0%** for the long-reasoning Tier 1, which changes its graded
+  verdict on **19.8% of items (72/364)** between identical temperature-0 calls
+  with output length moving ~1,936 tokens on average. A Wilson interval is
+  routinely read as if reruns would land inside it and only a different item
+  sample would move it; for that tier the reading is wrong. Third, Stage 7's
+  1.10 pp verdict margin falls **inside** the router's own 2.70 pp
+  sampling+generation half-width, so the decomposition and the pre-registered
+  McNemar test agree that the margin is not separable from noise.
 
 ---
 
@@ -215,15 +218,17 @@ The learned router did not rescue this. Stage 5 (1,200 training items,
 single-sample labels): neither S1 nor S2 met, with a 5.83 pp calibration gap to
 the LP-relaxed frontier and a ~0 pp discreteness gap. Stage 7 retested whether
 that gap is a data problem, with 4.2× the training data and k=3 majority-voted
-labels, and **the answer is no**: the gap moved only to 5.00 pp while held-out
-per-tier head AUCs stayed flat (0.656 → 0.665 and 0.701 → 0.702), which points
-at a structural limit — feature representation, or how predictable per-item tier
-success is from the prompt at all. That evidence comes from the fully generated
-1,500-item CALIBRATION split. The **pre-registered S1/S2 verdict on the new
-frozen test set is still outstanding** (§11), so the negative result is stated
-at hypothesis level and not as a completed one-shot evaluation. The design does
-not separate the two structural explanations and this card does not claim it
-does.
+labels, and the pre-registered verdict is **partial support, inconclusive**: on
+a fresh 364-item frozen test set the scaled router reached 93.7% against
+Always-Tier-2's 92.6%, moving from 0.27 pp behind (Stage 5) to 1.10 pp ahead —
+but not significantly (McNemar p = 0.2188) and at 28.2% *more* energy, so
+neither S1 nor S2 was met. Mechanistically the improvement is thin: held-out
+per-tier head AUCs stayed flat (0.656 → 0.665 and 0.701 → 0.702) even though
+cross-validation AUC rose (0.675 → 0.716), and the calibration gap closed only
+0.83 pp to 5.00 pp with the discreteness gap still ~0. The remaining gap
+therefore still looks structural — feature representation, or how predictable
+per-item tier success is from a prompt at all. The design does not separate
+those two explanations and this card does not claim it does.
 
 ---
 
@@ -277,7 +282,8 @@ accounting is biased and by how much.
 as a claim about the retired Gemma/Apriel tiers; as evidence that learned
 routing cannot work in general (Stage 5 tests *one* family of zero-API-cost
 routers on *this* workload, and Stage 7 shows only that scaling *this* router's
-training data does not fix it); as physical energy measurement of any kind.
+training data moves it from slightly behind to slightly ahead of a static
+baseline, inconclusively); as physical energy measurement of any kind.
 
 ---
 
@@ -288,7 +294,7 @@ training data does not fix it); as physical energy measurement of any kind.
 | `raw_results/` | every prompt, response, token count, grade, routing decision for the original test set |
 | `results_report.md` | Stages 1–4 write-up: four-policy comparison, oracle gap, sensitivity band, "what failed" |
 | `router_v2/` | learned-router addendum: pre-registration, pools, ablation, threshold sweep, MCKP frontier, one-shot results, limitations |
-| `stage7_10/` | Stage 7 retest (pool complete; test-set verdict outstanding), Stage 8 derivation, Stage 9 external check, Stage 10 documentation |
+| `stage7_10/` | Stage 7 retest, Stage 8 derivation, Stage 9 external check, Stage 10 documentation |
 | `quality_benchmark_report.md` | **superseded** first-pass report, retained for provenance |
 
 ---
@@ -298,10 +304,10 @@ training data does not fix it); as physical energy measurement of any kind.
 | Stage | Status |
 |---|---|
 | 1–6 (audit, learned router, MCKP, regret) | complete |
-| 7 (scaled retest of the calibration-gap hypothesis) | **hypothesis not supported**; pool 45,000/45,000 generated, calibration gap 5.83 → 5.00 pp. Pre-registered S1/S2 test-set verdict **outstanding**: 1,091/1,092 Tier 3 test calls missing on an OpenAI credit limit ($1.91 to finish) (`stage7_results.md`) |
+| 7 (scaled retest of the calibration-gap hypothesis) | complete, all 48,276 calls generated. Verdict **partial support, inconclusive** — the pre-registered third outcome (`stage7_results.md`) |
 | 8 (regret correction derivation) | complete, reconciles to 2×10⁻¹⁶ |
 | 9 (external check on RouteLLM) | complete, within the scope limits in §4 |
-| 10(a) (generation-variance decomposition) | **partial** — Tiers 1–2 reported; Tier 3 and all routed policies outstanding with the same 1,091 calls |
+| 10(a) (generation-variance decomposition) | complete, all three tiers and all policies |
 | 10(b)(c)(d) (this card, framing, manifest) | complete |
 
 What remains **not established**: the one-shot frozen-test-set confirmation of
