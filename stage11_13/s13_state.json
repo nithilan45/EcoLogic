@@ -2,9 +2,10 @@
  "file_id": "file-a7cc05c2-6875-4d40-bf47-a618b7f813eb",
  "job_id": "ft-6567602b-4aa3",
  "base_model": "google/gemma-3-27b-it",
- "status": "running",
+ "status": "completed",
  "total_price": 6709648500,
  "token_count": 1491033,
  "total_price_usd": 6.7096485,
- "price_booked": true
+ "price_booked": true,
+ "ft_model": "nithilankarthik-0f83/gemma-3-27b-it-s13router-f64c70b3"
 }

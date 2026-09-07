@@ -38,7 +38,7 @@ HEADLINE_BETA = 0.5
 
 def main():
     shot = sys.argv[1] if len(sys.argv) > 1 else "0shot"
-    df, models, _ = load(shot)
+    df, models, _, _ = load(shot)
     util = df[models].to_numpy(float)
     cost = df[[f"{m}|total_cost" for m in models]].to_numpy(float)
     ybin = (util >= 0.5).astype(int)

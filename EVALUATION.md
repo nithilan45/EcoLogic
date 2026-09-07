@@ -1,9 +1,37 @@
 # How to tell whether a cost-saving LLM router actually saves anything
 
 **The goal of this research, in one sentence:** LLM routers are reported against
-the wrong baseline (always-frontier) on a biased cost axis (per-model mean cost),
-and under the right baseline and an exact cost axis the honest effect of reading
-the query is *much* smaller than reported — sometimes negative.
+the wrong baseline (always-frontier) on a biased cost axis (per-model mean cost);
+under the right baseline and an exact cost axis the honest effect of reading the
+query is *much* smaller than reported — and we can now say **why**.
+
+> ### Start here if you only read one thing
+>
+> The work has two halves. The first (Stages 1–10) is a **measurement** result:
+> against a cost-matched query-independent baseline, routing gains are small.
+> The second (Stages 11–13, and the paper in [`paper/`](paper/)) is an
+> **explanation**. A router's gain factors as
+>
+> **complementarity × predictability − estimation error**
+>
+> which blames, respectively, the model set, the task, and the router. Measured
+> on RouterBench (36,494 prompts × 11 models, all 55 pairs × 8 benchmarks):
+> **complementarity is abundant — 12.11 pp of oracle headroom at matched cost —
+> and the best of four router families captures 4.6% of it.**
+>
+> We pre-registered the explanation that *predictability* was the missing factor
+> and **the data refuted it.** Using k=3 repeated generations of 5,000 prompts —
+> the one thing no public routing dataset has — per-item difficulty turns out to
+> be highly **reliable** (77–98% of outcome variance is stable between-item
+> signal, implying a Bayes-optimal AUC of 0.95–0.99). The information is there.
+> What is missing is the ability to **infer it from prompt text**, and that gap
+> survives eight router families up to a prompted 70B model and a fine-tuned 27B
+> model, plus a learning curve whose asymptote is 0.74 AUC.
+>
+> → [`stage11_13/SUMMARY.md`](stage11_13/SUMMARY.md) ·
+> [`stage11_13/theory.md`](stage11_13/theory.md) ·
+> [`stage11_13/DEVIATIONS.md`](stage11_13/DEVIATIONS.md) (the refutation) ·
+> [`paper/main.tex`](paper/main.tex)
 
 Two systems, two outcomes, and the contrast is the point:
 
@@ -126,9 +154,40 @@ and that is where the research now sits.
    spread). The problem therefore gets worse as the field routes among reasoning
    models with variable-length thinking budgets.
 
+**And one explanatory result, which is now the centre of the work:**
+
+6. **A router's gain decomposes into complementarity × predictability, minus
+   estimation error — and the three terms blame different people.** Let `S(b)`
+   be the best accuracy at expected cost `b` from any *query-independent*
+   policy, `A†(b)` from any *router* (any function of the query), and `A*(b)`
+   from an *oracle* that sees realised outcomes. Then `S ≤ A† ≤ A*`, and with
+   `kappa = A* − S` (complementarity) and `rho = (A† − S)/kappa`
+   (predictability), any fitted router realises `rho·kappa − eps`. A small gain
+   means the **model set** is redundant (`kappa`), the **task** is unpredictable
+   (`rho`), or the **router** is bad (`eps`) — and the response differs
+   completely.
+
+   Five propositions carry it (`stage11_13/theory.md`), all validated
+   numerically against brute-force LP and Monte-Carlo references (**14/14
+   checks**, `stage11_13/s11_validate.json`). Two matter beyond bookkeeping.
+   **`rho = 1` exactly when outcomes are deterministic given the query** — so
+   every unit of `rho < 1` is generation noise, and the "oracle headroom" that
+   routing papers quote, computed from *one* generation per model, is inflated
+   by noise no router can see. And **`gain ≤ sqrt(beta(1−beta))·sd(delta)` for
+   every router**, by Cauchy–Schwarz — which is *the same covariance object* as
+   contribution 5, so routing lives or dies on one covariance read on two axes.
+
+   The catch, and it is the reason this project generated its own data:
+   `sd(delta)` is a property of *success probabilities*, and one generation per
+   item does not identify a conditional mean. **Every public routing dataset
+   stores one generation per (model, prompt)**, so the term that decides whether
+   routing can work is not recoverable from the data the field publishes.
+
 We claim **no new model, architecture or algorithm**, and we do not claim that
-learned routing cannot work — one family of zero-API-cost routers was tested on
-one workload. The claim is about how savings are currently reported.
+learned routing cannot work — `kappa` and `rho` are properties of a (workload,
+model set) pair, and a setting with high `rho` and small `eps` is a positive
+result within this framework. The claim is about how savings are reported, and
+about which term is binding in the settings we could measure.
 
 ---
 
@@ -247,6 +306,100 @@ one-tier-per-item, and not a shortage of data — **per-item tier success is onl
 weakly predictable from the prompt text.** That is a property of the workload,
 which is why it matters beyond this codebase.
 
+### Complementarity is abundant; routers capture a twentieth of it
+
+The audit says gains are small. The decomposition says where they went. On
+**RouterBench** (Hu et al., 2024 — 36,494 prompts × 11 models = 401,434
+outcomes, per-item graded score *and* per-item dollar cost), all 55 unordered
+model pairs × 8 benchmark families, at the mid-budget operating point:
+
+| Router | out-of-fold AUC | gain over matched-cost static | realised `rho` |
+|---|---|---|---|
+| TF-IDF + logistic | **0.7160** | **+0.585 pp** [0.442, 0.777] | **0.046** [0.036, 0.059] |
+| MiniLM + logistic | 0.7081 | +0.455 pp | 0.034 |
+| MiniLM + boosted trees | 0.6772 | +0.402 pp | 0.033 |
+| MiniLM + MLP (256, 64) | 0.6626 | +0.226 pp | 0.017 |
+| **complementarity `kappa`** | | **12.11 pp** [11.15, 12.92] | |
+
+**There is 12 pp of oracle headroom over a cost-matched query-independent policy,
+and the best router takes 0.59 pp of it.** This is *not* a null result: 49 of 55
+pairs show a positive mean gain, 26 survive Benjamini–Hochberg and **13 survive
+Holm–Bonferroni** at family-wise α = 0.05. Routing works — it recovers about a
+twentieth of what is available. Reading gains against always-frontier hides a
+factor of roughly twenty.
+
+Note also that the MLP is the **worst** of the four despite the most capacity,
+the same inversion Stage 7c found on our own data.
+
+### We pre-registered the explanation and the data refuted it
+
+The natural explanation is that `rho` is small — per-item success is a coin flip
+given the prompt. That was pre-registered as H3, with the falsification rule
+written down in advance. **It is wrong, and the way it is wrong is the more
+interesting result.**
+
+Using **k = 3 replicate generations** for every (item, model) — 5,000 pool items
+at temperature 0.7 (45,000 calls) and 364 test items at temperature 0 — the
+between-item and within-item components of outcome variance separate
+(`theory.md` P4). Per-item difficulty is highly **reliable**:
+
+| Set | Tier 1 (9B) | Tier 2 (20B) | Tier 3 (`gpt-4o`) |
+|---|---|---|---|
+| reliability, pool (n = 5,000, T = 0.7) | 0.895 | 0.873 | 0.942 |
+| reliability, test (n = 364, T = 0) | 0.772 | 0.902 | 0.983 |
+| implied Bayes-optimal AUC (P5), pool | 0.992 | 0.987 | 0.997 |
+
+77–98% of the variance in whether a model gets an item right is a **stable
+property of the item**, not regeneration noise. The pre-registered consistency
+check predicted the replicate-implied `AUC*` would land within 0.05 of the
+measured 0.65–0.68 plateau; **it came out 0.99 against 0.68 and is recorded as
+INCONSISTENT.** That check was included precisely because it could embarrass us.
+
+Consequently the Cauchy–Schwarz ceiling is **vacuous at these effect sizes**:
+8.4–15.6 pp against a single-draw `kappa` of 3.3–9.5 pp, a median ratio of 2.82.
+The inequality is correct and attained on a two-point distribution; real `delta`
+is diffuse and the bound loses that slack. We report this rather than reframing
+it (`stage11_13/DEVIATIONS.md` D1, which also records D2 — a pre-registration
+statement that was simply **wrong**, caught before any result depended on it).
+
+**So the claim changes.** Not "per-item success is unpredictable, so routing is
+capped by the task", but "**per-item success is highly reliable yet only weakly
+inferable from prompt text**" — a generalisation gap, `eps`, not a property of
+the task.
+
+Two things do survive: a policy allowed to **peek at one graded outcome** per
+model — information no deployed router has — captures only **34–55%** of the
+single-draw `kappa`; and **8–35% of the variance of the observed advantage is
+generation noise**, scaling with output length from 8% for terse `gpt-4o` to 35%
+for the long-reasoning 9B tier.
+
+### The gap does not close with data, capacity, or a fine-tuned LLM
+
+| Router | Representation | mean held-out AUC |
+|---|---|---|
+| k-NN (k = 50) | MiniLM | 0.6521 |
+| Gradient boosting | MiniLM | 0.6547 |
+| Random forest (**train AUC 0.9999**) | MiniLM | 0.6703 |
+| Logistic regression | MiniLM | 0.6816 |
+| Prompted LLM, zero-shot | Llama-3.3-70B-Instruct | 0.6416 |
+| Prompted LLM, 4-shot | Llama-3.3-70B-Instruct | **0.7105** |
+| LoRA fine-tune, 3 epochs | Gemma-3-27B-it | `stage11_13/s13_llm_router.json` |
+
+All eight land in 0.64–0.72, on the identical 1,500-item split. The
+pre-registered criterion — an LLM router must beat 0.6816 by ≥ 0.05 for "you
+tested a weak router" to become a live objection again — is **not met** (best is
++0.029). And a **learning curve** on RouterBench from 250 to 29,000 training
+items fits a power law with **asymptote 0.741**: AUC(10⁶) = 0.726,
+AUC(10⁹) = 0.738, about 2.5 doublings of data per +0.01 AUC. Realised gain *does*
+improve with data (+1.15 pp at 8k → +2.10 pp at 29k), so this is not "data
+doesn't help" — but the extrapolated ceiling stays far below what capturing 12 pp
+would need. (The learning curve is **exploratory and not pre-registered**.)
+
+The random forest is the diagnostic: it memorises the training set perfectly
+(train AUC 0.9999) and still generalises *below* logistic regression. Ample
+capacity, no held-out gain — the signature of a target that is not a smooth
+function of the input representation.
+
 ### Temperature 0 is not deterministic
 
 Re-running identical prompts at temperature 0 changed the **graded verdict** on
@@ -280,6 +433,14 @@ Each report stands alone and states its own limitations.
 
 | Read this | For |
 |---|---|
+| **`paper/main.tex`** | **The write-up.** Workshop-length draft: the decomposition with proofs, the RouterBench study, the refuted hypothesis, the router ladder, limitations. `paper/README.md` traces every number in it to a committed artifact. |
+| **`stage11_13/SUMMARY.md`** | **The explanation half of the project.** Stages 11–13 at a glance. |
+| `stage11_13/theory.md` | The decomposition: five propositions, proofs, what is estimable and what is not. |
+| `stage11_13/s11_validate.json` | 14/14 numerical checks of those propositions against brute-force LP and Monte-Carlo references. |
+| `stage11_13/s11_routerbench_0shot.json` | The decomposition measured on RouterBench: 55 pairs × 8 families × 9 operating points. |
+| `stage11_13/s12_ceiling.json` | Replicate variance components, reliability, the vacuous ceiling, the peeking policy. |
+| `stage11_13/DEVIATIONS.md` | **The refutation.** H3 rejected, and one pre-registration claim that was wrong. |
+| `stage11_13/prereg_stage11_13.md` | Stage 11–13 pre-registration, committed before any result artifact. |
 | **`results_report.md`** | **The main report.** Policy comparison, per-tier/per-benchmark accuracy, oracle gap, energy table with sensitivity band, "what failed", limitations. |
 | `raw_results/tables_cost.md` | The same policy comparison on **measured dollars** instead of modelled joules. Read alongside the main report. |
 | `stage7_10/s9_static_baselines.json` | **The external test of the headline claim** — RouteLLM's router vs. cost-matched static mixtures on its own data. |
@@ -300,6 +461,9 @@ Each report stands alone and states its own limitations.
 | `raw_results/` | Every prompt, response, token count and grade from the main run, plus `analysis.json` and `tables.md`. |
 | `router_v2/` | Learned router: pre-registration, pools, R1-vs-R2 ablation, threshold sweep, knapsack frontier, one-shot results. |
 | `stage7_10/` | Scaled retest (48,276 calls), the correction derivation, the external check, evaluation card and reproducibility manifest. |
+| `stage11_13/` | The decomposition and its proofs, the validation suite, RouterBench at scale, the replicate-based ceiling (and its refutation), learning curves, the prompted and fine-tuned LLM routers, the enforced cost ledger. |
+| `paper/` | Workshop paper draft (LaTeX, compiles with `pdflatex`) plus a table tracing every number to its artifact. |
+| `external_data/` | Download location for the RouterBench pickles. **Gitignored** (99 MB + 171 MB); pinned by SHA-256 in the result JSON and re-downloadable. |
 
 ### If you have five minutes
 

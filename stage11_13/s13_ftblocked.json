@@ -1,0 +1,13 @@
+{
+ "what": "Why Stage 13 rung R-c (fine-tuned LLM router) could not be scored, probed rather than assumed.",
+ "step1_finetune_gemma27b": "SUCCEEDED. job ft-6567602b-4aa3, LoRA on google/gemma-3-27b-it, 3 epochs, 10,500 examples, 1,491,033 tokens, $6.71 booked to the ledger.",
+ "step2_serverless_lora": "BLOCKED. /v1/models lists 13 *-Lora inference targets but every one returns 400 'Unable to access non-serverless model' on this account, including google/gemma-3-27b-it-lora. Calling the fine-tuned name directly returns 404 model_not_available.",
+ "step3_dedicated_v1": "BLOCKED platform-wide. POST /v1/endpoints returns 403 endpoints_v1_create_access_disabled: 'the legacy Dedicated Endpoints v1 API no longer supports creating or restarting endpoints'.",
+ "step4_dedicated_v2": "BLOCKED for this base. v2 needs a certified config; models.configs.list returns 0 configs for both the merged fine-tune (ml_CeptGFXp6sYAbugWn7W2Q) and the gemma-3-27b base (ml_CcoJgUWRTccTGCcrFPjVM), and gemma-3-27b is absent from the 43 v2-supported architectures. A validate_only deployment create fails with 'deployment.config (or deployment.config_id) is required'.",
+ "step5_refinetune_on_servable_base": "BLOCKED by account balance. Qwen/Qwen3.5-9B is both fine-tunable and has a certified v2 config (cr_CeQCqcGQpVCeTctadrHjy, BF16, 1x H100, $3.99/replica-hour), and is the Tier-1 model of the system under study. POST /v1/fine-tunes returns 402 insufficient_balance: 'This job would exceed your maximum account balance and credit limit. Required combined balance and credit limit: 4.00 USD'.",
+ "serverless_inference_still_works": "yes -- pay-as-you-go serverless calls return 200, so the block is specific to the upfront reserve a fine-tuning job requires, not to the key.",
+ "consequence": "R-c is reported as BLOCKED with the provider errors above. No number is estimated, extrapolated or simulated in its place. The two substitutes that did run are the prompted 70B router (R-b, metered) and the end-to-end fine-tuned encoder (Stage 13b, free), and both are reported instead.",
+ "spend_at_block_usd": 9.706976339999994,
+ "cost_gate_usd": 25.0,
+ "serverless_probe_status_code": 200
+}

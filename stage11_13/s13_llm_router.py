@@ -53,6 +53,21 @@ FT_BASE_CANDIDATES = ["google/gemma-3-27b-it", "Qwen/Qwen3.5-2B",
                       "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference"]
 FT_BATCH_SIZE = 8
 
+# Second fine-tune, on a base that can actually be served. The gemma-3-27b run
+# above trained fine but turned out to be unservable: serverless LoRA inference
+# is unavailable account-wide, dedicated-endpoints v1 no longer accepts creates,
+# and gemma-3-27b has no certified v2 config, so there is no route to its
+# weights. `Qwen/Qwen3.5-9B` is both fine-tunable and has a certified v2 config
+# on 1x H100, and it happens to be the Tier-1 model of the system under study,
+# so the router costs no more to run than the cheapest tier it routes to.
+# See DEVIATIONS.md D8.
+FT2_BASE = "Qwen/Qwen3.5-9B"
+FT2_CONFIG_ID = "cr_CeQCqcGQpVCeTctadrHjy"   # certified BF16 / 1x H100 profile
+STATE2 = os.path.join(HERE, "s13_state_ft2.json")
+V2_PROJECT_ID = "proj_CXT5sXEkTXThN2uNQ5ViU"
+V2_CENTS_PER_MIN = 399 / 60.0                # 1x H100-80GB, $3.99/replica-hour
+V2_MAX_MINUTES = 40                          # self-imposed cap: 40 min = $2.66
+
 TIER_DESC = {
     1: "Model A: a small 9B open-weights reasoning model (Qwen3.5-9B)",
     2: "Model B: a mid-size 20B open-weights model (gpt-oss-20b)",
@@ -128,9 +143,14 @@ YES_TOKENS = {" yes", " Yes", " YES", "yes", "Yes", "YES"}
 NO_TOKENS = {" no", " No", " NO", "no", "No", "NO"}
 
 
+_deadline = [None]      # wall-clock stop for time-metered dedicated capacity
+
+
 def score_one(sess, model, prompt, stage, price_in, price_out, retries=5):
     """-> P(yes) from the top-5 logprobs of the single generated token."""
     import math
+    if _deadline[0] and time.time() > _deadline[0]:
+        raise SystemExit("endpoint wall-clock deadline reached; stopping scoring")
     for attempt in range(retries):
         try:
             r = sess.post(f"{API}/v1/completions", timeout=120, json={
@@ -303,10 +323,16 @@ def cmd_poll_ft():
     st = json.load(open(STATE))
     j = c.fine_tuning.retrieve(st["job_id"])
     status = str(getattr(j, "status", "?"))
-    print("status", status, "model", getattr(j, "output_name", None))
+    # Together exposes the servable name under different fields across SDK
+    # versions; take the first that is populated.
+    name = next((getattr(j, f, None) for f in
+                 ("output_name", "api_model_object_name", "x_model_output_name",
+                  "adapter_object_name")
+                 if getattr(j, f, None)), None)
+    print("status", status, "model", name)
     st["status"] = status
-    if getattr(j, "output_name", None):
-        st["ft_model"] = j.output_name
+    if name:
+        st["ft_model"] = name
     for f in ("total_price", "token_count", "trainingfile_numlines"):
         v = getattr(j, f, None)
         if v is not None:
@@ -329,16 +355,317 @@ def cmd_poll_ft():
     return status
 
 
+# ---------------------------------------------------------------------------
+# Scoring the fine-tune needs a DEDICATED endpoint: no `*-lora` serverless
+# inference target is available on this account (all probed and recorded in
+# s13_endpoint_probe.json), so the adapter cannot be called serverlessly.
+# Dedicated capacity is billed by wall-clock, so this rung is metered by TIME
+# rather than by tokens. `GET /v1/hardware?model=google/gemma-3-27b-it` offers
+# 1x/2x/4x H100-80GB at 9/18/36 cents per minute; the smallest fits a 27B model
+# in bf16 with a 400-token prompt and one generated token, so it is the one used.
+ENDPOINT_HARDWARE = "1x_nvidia_h100_80gb_sxm"
+ENDPOINT_CENTS_PER_MIN = 9
+ENDPOINT_MAX_MINUTES = 45          # self-imposed cap: 45 min = $4.05
+
+
+def _endpoint_charge(minutes, note=""):
+    usd = minutes * ENDPOINT_CENTS_PER_MIN / 100.0
+    with _lock:
+        _spend["usd"] += usd
+        b = _spend["by_stage"].setdefault("finetune_endpoint",
+                                          {"usd": 0.0, "calls": 0, "minutes": 0.0})
+        b["usd"] += usd
+        b["minutes"] = b.get("minutes", 0.0) + minutes
+        save_spend()
+    print(f"  endpoint: +{minutes:.1f} min = ${usd:.2f} {note}; "
+          f"total ${_spend['usd']:.2f} of ${COST_GATE_USD}", flush=True)
+    return usd
+
+
+def cmd_start_endpoint():
+    from together import Together
+    c = Together(api_key=key())
+    st = json.load(open(STATE))
+    if not st.get("ft_model"):
+        raise SystemExit("fine-tune not finished; no output model name in state")
+    projected = ENDPOINT_MAX_MINUTES * ENDPOINT_CENTS_PER_MIN / 100.0
+    print(f"projection: up to {ENDPOINT_MAX_MINUTES} min at "
+          f"{ENDPOINT_CENTS_PER_MIN}c/min = ${projected:.2f}; "
+          f"already spent ${_spend['usd']:.2f} of ${COST_GATE_USD}")
+    if _spend["usd"] + projected > COST_GATE_USD:
+        raise SystemExit("projected endpoint cost would breach the gate; not starting")
+    if st.get("endpoint_id"):
+        print("endpoint already created:", st["endpoint_id"])
+        return
+    ep = c.endpoints.create(
+        model=st["ft_model"], hardware=ENDPOINT_HARDWARE,
+        autoscaling={"min_replicas": 1, "max_replicas": 1},
+        inactive_timeout=5, state="STARTED",
+        display_name="s13-router-eval")
+    st["endpoint_id"] = ep.id
+    st["endpoint_name"] = getattr(ep, "name", None)
+    st["endpoint_started_at"] = time.time()
+    json.dump(st, open(STATE, "w"), indent=1)
+    print("created endpoint", ep.id, "name", st["endpoint_name"])
+
+
+def cmd_stop_endpoint():
+    from together import Together
+    c = Together(api_key=key())
+    st = json.load(open(STATE))
+    eid = st.get("endpoint_id")
+    if not eid:
+        print("no endpoint to stop")
+        return
+    if st.get("endpoint_started_at") and not st.get("endpoint_billed"):
+        mins = (time.time() - st["endpoint_started_at"]) / 60.0
+        _endpoint_charge(mins, "(wall clock from create to stop)")
+        st["endpoint_billed"] = True
+        st["endpoint_minutes"] = mins
+    try:
+        c.endpoints.delete(eid)
+        print("deleted endpoint", eid)
+        st["endpoint_deleted"] = True
+    except Exception as e:
+        print("WARNING: could not delete endpoint:", e)
+        print("Delete it manually at https://api.together.ai/endpoints")
+    json.dump(st, open(STATE, "w"), indent=1)
+
+
 def cmd_score_ft():
+    """Start the endpoint, wait for it, score, and stop it -- always stop."""
+    from together import Together
+    c = Together(api_key=key())
     st = json.load(open(STATE))
     model = st.get("ft_model")
     if not model:
         raise SystemExit("fine-tune not finished; no output model name in state")
-    # LoRA price: charged at the base model's serverless rate.
-    cal = load_split("s7_calibration_pool.json")
-    out = os.path.join(HERE, "s13_finetuned.jsonl")
-    price = st.get("infer_price_per_token", 0.36 / 1e6)
-    run_scoring(model, cal, (), "finetuned", price, price, out, workers=4)
+    if not st.get("endpoint_id"):
+        cmd_start_endpoint()
+        st = json.load(open(STATE))
+
+    try:
+        t0 = time.time()
+        while True:
+            ep = c.endpoints.retrieve(st["endpoint_id"])
+            state = str(getattr(ep, "state", "?"))
+            waited = (time.time() - t0) / 60.0
+            print(f"  endpoint state={state} after {waited:.1f} min", flush=True)
+            if state.upper() == "STARTED":
+                break
+            if waited > ENDPOINT_MAX_MINUTES:
+                raise SystemExit(f"endpoint did not start within "
+                                 f"{ENDPOINT_MAX_MINUTES} min; aborting")
+            time.sleep(30)
+
+        cal = load_split("s7_calibration_pool.json")
+        out = os.path.join(HERE, "s13_finetuned.jsonl")
+        # Dedicated capacity is billed by time, not tokens, so per-token price
+        # is zero here and the endpoint minutes are charged separately. The
+        # deadline is absolute from endpoint creation, so a slow endpoint cannot
+        # walk past the cap; scoring is resumable if it does.
+        _deadline[0] = st["endpoint_started_at"] + ENDPOINT_MAX_MINUTES * 60
+        run_scoring(model, cal, (), "finetuned", 0.0, 0.0, out, workers=16)
+    finally:
+        _deadline[0] = None
+        cmd_stop_endpoint()
+    print(f"done finetuned; spend so far ${_spend['usd']:.4f}")
+
+
+# ---------------------------------------------------------------------------
+# R-c, second attempt: fine-tune a base that has a route to inference, and serve
+# it through the Dedicated Endpoints v2 resource model (endpoint -> deployment ->
+# traffic split). Billing is per replica-minute, so the run is metered by wall
+# clock and the deployment is torn down in a `finally`.
+
+def _v2():
+    from together import Together
+    return Together(api_key=key(), project_id=V2_PROJECT_ID).beta
+
+
+def _v2_charge(minutes, note=""):
+    usd = minutes * V2_CENTS_PER_MIN / 100.0
+    with _lock:
+        _spend["usd"] += usd
+        b = _spend["by_stage"].setdefault("finetune2_deployment",
+                                          {"usd": 0.0, "calls": 0, "minutes": 0.0})
+        b["usd"] += usd
+        b["minutes"] = b.get("minutes", 0.0) + minutes
+        save_spend()
+    print(f"  deployment: +{minutes:.1f} min = ${usd:.2f} {note}; "
+          f"total ${_spend['usd']:.2f} of ${COST_GATE_USD}", flush=True)
+    return usd
+
+
+def _st2():
+    return json.load(open(STATE2)) if os.path.exists(STATE2) else {}
+
+
+def _save2(st):
+    json.dump(st, open(STATE2, "w"), indent=1)
+
+
+def cmd_launch_ft2():
+    from together import Together
+    c = Together(api_key=key())
+    st = _st2()
+    if "file_id" not in st:
+        st["file_id"] = json.load(open(STATE))["file_id"]   # same training file
+        _save2(st)
+    if "job_id" in st:
+        print("job already launched:", st["job_id"])
+        return
+    job = c.fine_tuning.create(
+        training_file=st["file_id"], model=FT2_BASE, n_epochs=3, lora=True,
+        learning_rate=1e-4, batch_size=FT_BATCH_SIZE, suffix="s13router9b",
+        n_checkpoints=1)
+    st.update({"job_id": job.id, "base_model": FT2_BASE})
+    _save2(st)
+    print("launched", job.id, "on", FT2_BASE)
+
+
+def cmd_poll_ft2():
+    from together import Together
+    c = Together(api_key=key())
+    st = _st2()
+    j = c.fine_tuning.retrieve(st["job_id"])
+    st["status"] = str(getattr(j, "status", "?"))
+    name = next((getattr(j, f, None) for f in
+                 ("output_name", "api_model_object_name", "x_model_output_name",
+                  "adapter_object_name")
+                 if getattr(j, f, None)), None)
+    if name:
+        st["ft_model"] = name
+    for f in ("total_price", "token_count"):
+        v = getattr(j, f, None)
+        if v is not None:
+            st[f] = v
+    price_usd = float(st.get("total_price", 0)) / 1e9      # nano-dollars
+    st["total_price_usd"] = price_usd
+    if price_usd > 0 and not st.get("price_booked"):
+        with _lock:
+            _spend["usd"] += price_usd
+            _spend["by_stage"]["finetune2_training"] = {"usd": price_usd, "calls": 0}
+        st["price_booked"] = True
+        save_spend()
+        print(f"booked fine-tune-2 training ${price_usd:.2f}; "
+              f"total ${_spend['usd']:.2f} of ${COST_GATE_USD}")
+        if _spend["usd"] > COST_GATE_USD:
+            raise SystemExit(f"COST GATE HIT: ${_spend['usd']:.2f}")
+    _save2(st)
+    print("status", st["status"], "model", st.get("ft_model"))
+    return st["status"]
+
+
+def _v2_model_ids(b, ft_name):
+    """-> (merged_model_id, adapter_model_id) for a finished fine-tune."""
+    merged = adapter = None
+    for m in b.models.list():
+        if m.name == ft_name and m.weights.type == "WEIGHTS_TYPE_DEFAULT":
+            merged = m.id
+        elif m.name == ft_name + "-adapter":
+            adapter = m.id
+    return merged, adapter
+
+
+def cmd_deploy_ft2():
+    b = _v2()
+    st = _st2()
+    if not st.get("ft_model"):
+        raise SystemExit("fine-tune-2 not finished; no output model name in state")
+    projected = V2_MAX_MINUTES * V2_CENTS_PER_MIN / 100.0
+    print(f"projection: up to {V2_MAX_MINUTES} min at {V2_CENTS_PER_MIN:.2f}c/min "
+          f"= ${projected:.2f}; already spent ${_spend['usd']:.2f} of ${COST_GATE_USD}")
+    if _spend["usd"] + projected > COST_GATE_USD:
+        raise SystemExit("projected deployment cost would breach the gate; not starting")
+
+    merged, adapter = _v2_model_ids(b, st["ft_model"])
+    st["v2_merged_model_id"], st["v2_adapter_model_id"] = merged, adapter
+    if not merged:
+        raise SystemExit(f"no v2 merged model found for {st['ft_model']}")
+    if not st.get("endpoint_id"):
+        ep = b.endpoints.create(name="s13-router-ft2")
+        st["endpoint_id"] = ep.id
+        st["endpoint_slug"] = getattr(ep, "name", None)
+        _save2(st)
+        print("endpoint", ep.id, st["endpoint_slug"])
+    if not st.get("deployment_id"):
+        dep = b.endpoints.deployments.create(
+            st["endpoint_id"], name="ft2", model_id=merged,
+            config_id=FT2_CONFIG_ID,
+            autoscaling={"min_replicas": 1, "max_replicas": 1})
+        st["deployment_id"] = dep.id
+        st["deploy_started_at"] = time.time()
+        _save2(st)
+        print("deployment", dep.id)
+        # A deployment receives no traffic until the endpoint routes to it.
+        b.endpoints.update(st["endpoint_id"], update_mask="traffic_split",
+                           traffic_split=[{"deployment_id": dep.id, "weight": 100}])
+        print("traffic routed 100% to", dep.id)
+    _save2(st)
+
+
+def cmd_teardown_ft2():
+    b = _v2()
+    st = _st2()
+    if st.get("deploy_started_at") and not st.get("deploy_billed"):
+        mins = (time.time() - st["deploy_started_at"]) / 60.0
+        _v2_charge(mins, "(wall clock from deployment create to teardown)")
+        st["deploy_billed"] = True
+        st["deploy_minutes"] = mins
+    for step, fn in (
+            ("scale to 0", lambda: b.endpoints.deployments.update(
+                st["deployment_id"], endpoint_id=st["endpoint_id"],
+                update_mask="autoscaling",
+                autoscaling={"min_replicas": 0, "max_replicas": 0})),
+            ("delete deployment", lambda: b.endpoints.deployments.delete(
+                st["deployment_id"], endpoint_id=st["endpoint_id"])),
+            ("delete endpoint", lambda: b.endpoints.delete(st["endpoint_id"]))):
+        try:
+            fn()
+            print(step, "ok")
+        except Exception as e:
+            print(f"WARNING: {step} failed: {str(e)[:200]}")
+            print("Check https://api.together.ai/endpoints -- GPUs bill until removed.")
+    st["torn_down"] = True
+    _save2(st)
+
+
+def cmd_score_ft2():
+    """Deploy, wait for READY, score the CALIBRATION split, always tear down."""
+    b = _v2()
+    if not _st2().get("deployment_id"):
+        cmd_deploy_ft2()
+    st = _st2()
+    try:
+        t0 = time.time()
+        while True:
+            d = b.endpoints.deployments.retrieve(
+                st["deployment_id"], endpoint_id=st["endpoint_id"])
+            state = str(getattr(d, "state", getattr(d, "status", "?")))
+            waited = (time.time() - t0) / 60.0
+            print(f"  deployment state={state} after {waited:.1f} min", flush=True)
+            if "READY" in state.upper() or "RUNNING" in state.upper():
+                break
+            if waited > V2_MAX_MINUTES / 2:
+                raise SystemExit(f"deployment not ready within {V2_MAX_MINUTES/2:.0f} "
+                                 f"min; aborting")
+            time.sleep(30)
+
+        # v2 serves dedicated inference under <project_slug>/<endpoint_name> at
+        # api-inference.together.ai; the adapter is baked into the merged model.
+        served = f"{st.get('endpoint_slug')}"
+        st["served_model"] = served
+        _save2(st)
+        global API
+        API = "https://api-inference.together.ai"
+        cal = load_split("s7_calibration_pool.json")
+        out = os.path.join(HERE, "s13_finetuned.jsonl")
+        _deadline[0] = st["deploy_started_at"] + V2_MAX_MINUTES * 60
+        run_scoring(served, cal, (), "finetuned", 0.0, 0.0, out, workers=16)
+    finally:
+        _deadline[0] = None
+        cmd_teardown_ft2()
     print(f"done finetuned; spend so far ${_spend['usd']:.4f}")
 
 
@@ -443,6 +770,16 @@ if __name__ == "__main__":
         cmd_poll_ft()
     elif cmd == "score_ft":
         cmd_score_ft()
+    elif cmd == "launch_ft2":
+        cmd_launch_ft2()
+    elif cmd == "poll_ft2":
+        cmd_poll_ft2()
+    elif cmd == "deploy_ft2":
+        cmd_deploy_ft2()
+    elif cmd == "score_ft2":
+        cmd_score_ft2()
+    elif cmd == "teardown_ft2":
+        cmd_teardown_ft2()
     elif cmd == "report":
         cmd_report()
     else:

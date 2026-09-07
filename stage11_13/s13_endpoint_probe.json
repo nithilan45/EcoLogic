@@ -1,0 +1,35 @@
+{
+ "why": "Records that the fine-tuned adapter has no serverless inference target on this account, which is why Stage 13 R-c uses time-metered dedicated capacity.",
+ "serverless_direct": "Error code: 404 - {'id': 'ozP2fvM-2kFHot-a37947137e2477be', 'error': {'message': 'Unable to access model nithilankarthik-0f83/gemma-3-27b-it-s13router-f64c70b3. Please visit https://api.together.ai/models to view the list of supported models.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_available'}}",
+ "dedicated_hardware_for_base": [
+  {
+   "id": "1x_nvidia_h100_80gb_sxm",
+   "cents_per_minute": 9,
+   "availability": {
+    "status": "available"
+   }
+  },
+  {
+   "id": "2x_nvidia_h100_80gb_sxm",
+   "cents_per_minute": 18,
+   "availability": {
+    "status": "available"
+   }
+  },
+  {
+   "id": "4x_nvidia_h100_80gb_sxm",
+   "cents_per_minute": 36,
+   "availability": {
+    "status": "available"
+   }
+  }
+ ],
+ "chosen": {
+  "hardware": "1x_nvidia_h100_80gb_sxm",
+  "cents_per_minute": 9,
+  "max_minutes": 45,
+  "projected_usd": 4.05
+ },
+ "raw_base_plus_adapters": "400 {\n  \"id\": \"ozP2juS-2kFHot-a3794767c932b179\",\n  \"error\": {\n    \"message\": \"Unable to access non-serverless model google/gemma-3-27b-it. Please visit https://api.together.ai/models/google/gemma-3-27b-it to create and start a new dedicated endpoint for the model.\",\n    \"type\": \"invalid_request_error\",\n",
+ "raw_ft_direct": "404 {\n  \"id\": \"ozP2jx2-2kFHot-a3794768fb05b179\",\n  \"error\": {\n    \"message\": \"Unable to access model nithilankarthik-0f83/gemma-3-27b-it-s13router-f64c70b3. Please visit https://api.together.ai/models to view the list of supported models.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": null,\n    \"co"
+}

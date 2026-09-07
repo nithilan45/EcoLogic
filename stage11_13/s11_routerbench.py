@@ -82,7 +82,16 @@ def load(shot: str):
     models = sorted(models)
     df = df[~df.eval_name.isin(EXCLUDE_EVALS)].reset_index(drop=True)
     df["family"] = df.eval_name.map(family_of)
-    return df, models, h.hexdigest()
+
+    # The 5-shot release has 154 missing score cells spread over 28 arc-challenge
+    # items (the 0-shot release has none). An item with a missing score for some
+    # model has no defined utility vector, so it is dropped rather than imputed;
+    # the count is returned so it can be reported. See DEVIATIONS.md D6.
+    cols = models + [f"{m}|total_cost" for m in models]
+    keep = df[cols].notna().all(axis=1).to_numpy()
+    dropped = int((~keep).sum())
+    df = df[keep].reset_index(drop=True)
+    return df, models, h.hexdigest(), dropped
 
 
 def flatten_prompt(p):
@@ -105,9 +114,8 @@ def build_features(texts, cache_tag):
     from scipy.sparse import hstack
 
     emb_path = os.path.join(HERE, f"s11_emb_{cache_tag}.npy")
-    if os.path.exists(emb_path):
+    if os.path.exists(emb_path) and len(np.load(emb_path, mmap_mode="r")) == len(texts):
         emb = np.load(emb_path)
-        assert len(emb) == len(texts), "cached embedding length mismatch"
     else:
         from sentence_transformers import SentenceTransformer
         print(f"  embedding {len(texts)} prompts with all-MiniLM-L6-v2 ...", flush=True)
@@ -231,8 +239,9 @@ def pair_row(u, c, preds, beta, ia, ib, strictly_binary, with_integer=False):
 def main():
     shot = sys.argv[1] if len(sys.argv) > 1 else "0shot"
     print(f"=== Stage 11: RouterBench {shot} ===", flush=True)
-    df, models, sha = load(shot)
-    print(f"loaded {len(df)} items x {len(models)} models  sha256={sha[:16]}", flush=True)
+    df, models, sha, dropped = load(shot)
+    print(f"loaded {len(df)} items x {len(models)} models  sha256={sha[:16]}  "
+          f"dropped {dropped} items with missing cells", flush=True)
 
     util = df[models].to_numpy(float)
     cost = df[[f"{m}|total_cost" for m in models]].to_numpy(float)
@@ -309,7 +318,8 @@ def main():
     best_router = max(router_names, key=lambda nm: head[f"router_{nm}_gain"].median())
 
     summary = {
-        "shot": shot, "sha256": sha, "n_items": int(len(df)), "n_models": len(models),
+        "shot": shot, "sha256": sha, "n_items": int(len(df)),
+        "n_items_dropped_missing_cells": dropped, "n_models": len(models),
         "models": models, "seed": SEED, "n_boot": N_BOOT,
         "headline_beta": HEADLINE_BETA, "min_family_n": MIN_FAMILY_N,
         "family_sizes": {f: int((df.family == f).sum()) for f in families},

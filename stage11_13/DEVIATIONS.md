@@ -138,3 +138,91 @@ for the gap" for every pair and every `beta`.
 per instance and 55 pairs × 9 betas × 9 families made it the dominant cost of the
 run for a quantity that Stages 5 and 7 already measured at ~0.00 pp. The LP value
 is the one used in the decomposition, and it is computed everywhere.
+
+---
+
+## D6. 28 RouterBench 5-shot items dropped for missing score cells.
+
+**Pre-registered (§2.2).** Score handling was fixed in advance for fractional
+scores. Missing cells were not anticipated, because the 0-shot file has none.
+
+**What happened.** `routerbench_5shot.pkl` has **154 missing score cells spread
+over 28 `arc-challenge` items** out of 36,508 (0.077% of items, 0.038% of cells).
+An item with a missing score for some model has no defined utility vector, so it
+is **dropped rather than imputed**; the count is printed by the loader and stored
+as `n_items_dropped_missing_cells` in the result JSON. Imputation was rejected
+because every imputation rule (model mean, item mean, zero) changes `kappa` in a
+direction we would have had to argue about. The 0-shot primary analysis is
+unaffected: it drops nothing.
+
+---
+
+## D7. Stage 13b (end-to-end fine-tuned encoders) added, not pre-registered.
+
+**Addition.** The pre-registered ladder (§4) has three rungs and every one of
+them puts a *fitted head* on a *frozen* representation, or prompts a frozen LLM.
+That leaves one version of "you tested a weak router" open: perhaps the MiniLM
+sentence embedding simply does not contain the information, and a representation
+*trained on the task* would. So we add a rung that unfreezes the encoder and
+trains all of its weights on the routing labels, with a 3-logit head and
+per-tier binary cross-entropy — including the **same** `all-MiniLM-L6-v2`
+backbone whose frozen output gives 0.6816, so the comparison isolates exactly the
+effect of unfreezing.
+
+**Status.** **Exploratory and not pre-registered**, labelled as such wherever
+reported. Fitted on the Stage 7 TRAIN split and scored once on the Stage 7
+CALIBRATION split, which is the split every earlier rung reports; epoch selection
+uses a 15% inner split carved out of TRAIN and never touches CALIBRATION. It is
+judged against the same pre-registered C1 threshold (+0.05 AUC over 0.6816) as
+the pre-registered rungs, so adding it cannot make the criterion easier to pass.
+Cost $0; it runs on CPU.
+
+---
+
+## D8. Rung R-c (fine-tuned LLM router) is **BLOCKED**, and reported as blocked.
+
+**Pre-registered (§4, §4.1).** R-c: "LoRA fine-tune on Together AI ... trained on
+the Stage 7 TRAIN split labels", scored on CALIBRATION against criteria C1/C2,
+with the instruction that if credits are exhausted we "say so explicitly and
+document the cost gate rather than silently skipping. **No result will be
+estimated, extrapolated or simulated in place of a blocked run.**"
+
+**What happened.** The fine-tune itself **succeeded**. Job `ft-6567602b-4aa3`,
+LoRA on `google/gemma-3-27b-it`, 3 epochs over the 10,500 prompt/completion
+examples in `s13_ft_train.jsonl`, 1,491,033 tokens, **$6.71** booked to the
+ledger from Together's own reported price. It then proved **unservable**, through
+four independent routes, each probed rather than assumed and each recorded in
+`s13_ftblocked.json` and `s13_endpoint_probe.json` with the provider's verbatim
+error:
+
+1. **Serverless LoRA** — `/v1/models` advertises 13 `*-Lora` inference targets
+   including `google/gemma-3-27b-it-lora`, but **every one** returns
+   `400 Unable to access non-serverless model` on this account, and calling the
+   fine-tuned name directly returns `404 model_not_available`.
+2. **Dedicated endpoints v1** — `POST /v1/endpoints` returns
+   `403 endpoints_v1_create_access_disabled`. Together retired endpoint creation
+   on v1 platform-wide; this is not an account limit.
+3. **Dedicated endpoints v2** — v2 requires a *certified config*.
+   `models.configs.list` returns **0 configs** for the merged fine-tune and 0 for
+   the `gemma-3-27b-it` base, and gemma-3-27b is absent from the 43 v2-supported
+   architectures (only gemma-4 variants are listed). A `validate_only` deployment
+   create fails for want of a config.
+4. **Re-fine-tuning on a base that v2 can serve** — `Qwen/Qwen3.5-9B` is both
+   fine-tunable *and* has a certified v2 config (`cr_CeQCqcGQpVCeTctadrHjy`,
+   BF16, 1× H100, $3.99/replica-hour), and it is the Tier-1 model of the system
+   under study, so the router would cost no more to run than the cheapest tier it
+   routes to. `POST /v1/fine-tunes` returns
+   `402 insufficient_balance: "Required combined balance and credit limit:
+   4.00 USD"`. Pay-as-you-go serverless calls still return 200, so the block is
+   the upfront reserve a fine-tuning job requires, not the key.
+
+**Consequence.** R-c is reported as **BLOCKED** with those four errors, at a
+spend of **$9.71** against the $25 gate — the gate was never the binding
+constraint, the provider's balance was. The C1/C2 verdict therefore rests on the
+rungs that did run: the prompted 70B router (R-b, complete) and the end-to-end
+fine-tuned encoders (Stage 13b, D7, complete). We note plainly what this costs
+the paper: **a reviewer who believes a fine-tuned generative LLM router would
+clear C1 has not been answered by a fine-tuned generative LLM router.** They have
+been answered by a fine-tuned *encoder*, a prompted 70B model, a random forest
+that memorises its training set, and a learning curve — which is weaker on that
+specific axis, and the paper says so rather than papering over it.
