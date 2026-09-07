@@ -675,7 +675,7 @@ def cmd_report():
     import numpy as np
     from sklearn.metrics import roc_auc_score
     sys.path.insert(0, HERE)
-    from decomp import ceiling_from_sd, oracle_frontier_at, router_value_at, static_frontier_at
+    from decomp import oracle_frontier_at, router_value_at, static_frontier_at
 
     cal = load_split("s7_calibration_pool.json")
     by_id = {it["item_id"]: it for it in cal}
@@ -692,13 +692,57 @@ def cmd_report():
     C = piv_c.loc[ids, [1, 2, 3]].to_numpy(float)
     ypos = np.column_stack([[float(by_id[i]["y"][t]) for i in ids] for t in (1, 2, 3)])
 
+    # The frozen-representation reference, refitted here on the same TRAIN split
+    # and scored on the same CALIBRATION items, so C1 and C2 are both
+    # same-split comparisons rather than cross-dataset ones.
+    def frozen_reference():
+        from sentence_transformers import SentenceTransformer
+        from sklearn.linear_model import LogisticRegression
+        tr = load_split("s7_train_pool.json")
+        m = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+        m.max_seq_length = 256
+        Xtr = m.encode([it["raw_query"] for it in tr], batch_size=128,
+                       convert_to_numpy=True, normalize_embeddings=True)
+        Xca = m.encode([by_id[i]["raw_query"] for i in ids], batch_size=128,
+                       convert_to_numpy=True, normalize_embeddings=True)
+        P = np.zeros((len(ids), 3))
+        for b, t in enumerate((1, 2, 3)):
+            y = np.array([float(it["y"][t]) for it in tr])
+            P[:, b] = LogisticRegression(max_iter=3000).fit(Xtr, y).predict_proba(Xca)[:, 1]
+        return P
+
+    def metrics(P):
+        aucs = [float(roc_auc_score(ypos[:, b], P[:, b])) for b in range(3)]
+        rec = {"status": "complete", "n_items": len(ids),
+               "auc_by_tier": {f"tier{t}": aucs[b] for b, t in enumerate((1, 2, 3))},
+               "mean_auc": float(np.mean(aucs)),
+               "mean_auc_tiers12": float(np.mean(aucs[:2])), "betas": {}}
+        mc = C.mean(axis=0)
+        for beta in (0.3, 0.5, 0.7):
+            budget = float(mc.min() + beta * (mc.max() - mc.min()))
+            S = static_frontier_at(mc, U.mean(axis=0), budget)
+            A, _, _ = oracle_frontier_at(U, C, budget)
+            v, vc = router_value_at(U, C, P, budget)
+            rec["betas"][f"{beta:.1f}"] = {
+                "S": S, "A_star": A, "kappa": A - S, "router_acc": v,
+                "router_cost": vc, "gain_pp": 100 * (v - S),
+                "rho": (v - S) / (A - S) if A - S > 1e-12 else None}
+        return rec
+
     rungs = {}
     for stage, fn in [("prompted_0shot", "s13_prompted_0shot.jsonl"),
                       ("prompted_4shot", "s13_prompted_4shot.jsonl"),
-                      ("finetuned", "s13_finetuned.jsonl")]:
+                      ("finetuned_llm", "s13_finetuned.jsonl"),
+                      ("finetuned_encoder_L6", "s13b_encoder_all-MiniLM-L6-v2.jsonl"),
+                      ("finetuned_encoder_L12", "s13b_encoder_all-MiniLM-L12-v2.jsonl")]:
         p = os.path.join(HERE, fn)
         if not os.path.exists(p):
-            rungs[stage] = {"status": "NOT RUN"}
+            blocked = os.path.join(HERE, "s13_ftblocked.json")
+            if stage == "finetuned_llm" and os.path.exists(blocked):
+                rungs[stage] = {"status": "BLOCKED",
+                                "detail": "see s13_ftblocked.json and DEVIATIONS.md D8"}
+            else:
+                rungs[stage] = {"status": "NOT RUN"}
             continue
         sc = {}
         for line in open(p):
@@ -713,45 +757,50 @@ def cmd_report():
         if cov < 0.999:
             rungs[stage] = {"status": f"PARTIAL coverage={cov:.3f}"}
             continue
-        aucs = [float(roc_auc_score(ypos[:, b], P[:, b])) for b in range(3)]
-        rec = {"status": "complete", "n_items": len(ids),
-               "auc_by_tier": {f"tier{t}": aucs[b] for b, t in enumerate((1, 2, 3))},
-               "mean_auc": float(np.mean(aucs)),
-               "mean_auc_tiers12": float(np.mean(aucs[:2])), "betas": {}}
-        for beta in (0.3, 0.5, 0.7):
-            mc = C.mean(axis=0)
-            budget = float(mc.min() + beta * (mc.max() - mc.min()))
-            S = static_frontier_at(mc, U.mean(axis=0), budget)
-            A, _, _ = oracle_frontier_at(U, C, budget)
-            v, vc = router_value_at(U, C, P, budget)
-            rec["betas"][f"{beta:.1f}"] = {
-                "S": S, "A_star": A, "kappa": A - S, "router_acc": v,
-                "router_cost": vc, "gain_pp": 100 * (v - S),
-                "rho": (v - S) / (A - S) if A - S > 1e-12 else None}
-        rungs[stage] = rec
+        rungs[stage] = metrics(P)
 
-    # classical rungs on the same split, for the C1/C2 comparison
-    baseline = {"s7c_best_mean_auc": 0.6816, "s7c_best_model": "logistic regression"}
+    rungs["frozen_minilm_logreg"] = metrics(frozen_reference())
+    rungs["frozen_minilm_logreg"]["note"] = (
+        "the frozen-representation reference, refitted on TRAIN and scored on the "
+        "same CALIBRATION items; this is what C1 and C2 are measured against")
+
+    baseline = {"s7c_best_mean_auc": 0.6816, "s7c_best_model": "logistic regression",
+                "refit_here_mean_auc": rungs["frozen_minilm_logreg"]["mean_auc"],
+                "refit_here_gain_pp": rungs["frozen_minilm_logreg"]["betas"]["0.5"]["gain_pp"]}
     res = {"cost_gate_usd": COST_GATE_USD,
            "spend": json.load(open(SPEND)) if os.path.exists(SPEND) else _spend,
-           "state": json.load(open(STATE)) if os.path.exists(STATE) else {},
+           "state_ft1_gemma27b": json.load(open(STATE)) if os.path.exists(STATE) else {},
+           "state_ft2_qwen9b": _st2(),
            "baseline_stage7c": baseline, "rungs": rungs}
 
-    best = max((r for r in rungs.values() if r.get("status") == "complete"),
-               key=lambda r: r["mean_auc"], default=None)
-    if best:
+    contenders = {k2: v for k2, v in rungs.items()
+                  if v.get("status") == "complete" and k2 != "frozen_minilm_logreg"}
+    if contenders:
+        bk = max(contenders, key=lambda k2: contenders[k2]["mean_auc"])
+        best = contenders[bk]
+        d1 = best["mean_auc"] - baseline["s7c_best_mean_auc"]
         res["C1"] = {
             "rule": "mean held-out per-tier AUC exceeds Stage 7c best (0.6816) by >= 0.05",
-            "best_llm_router_mean_auc": best["mean_auc"],
-            "delta_vs_s7c": best["mean_auc"] - baseline["s7c_best_mean_auc"],
-            "verdict": ("MET -> ceiling claim must be narrowed"
-                        if best["mean_auc"] - baseline["s7c_best_mean_auc"] >= 0.05
-                        else "NOT MET -> the plateau survives an LLM router")}
+            "best_rung": bk, "best_mean_auc": best["mean_auc"], "delta_vs_s7c": d1,
+            "verdict": ("MET -> the ceiling claim must be narrowed" if d1 >= 0.05
+                        else "NOT MET -> the plateau survives")}
+        bg = max(contenders, key=lambda k2: contenders[k2]["betas"]["0.5"]["gain_pp"])
+        d2 = (contenders[bg]["betas"]["0.5"]["gain_pp"]
+              - baseline["refit_here_gain_pp"])
+        res["C2"] = {
+            "rule": ("realised matched-cost gain at beta=0.5 exceeds the frozen "
+                     "MiniLM + logistic reference by >= 1.0 pp on the same items"),
+            "best_rung": bg,
+            "best_gain_pp": contenders[bg]["betas"]["0.5"]["gain_pp"],
+            "reference_gain_pp": baseline["refit_here_gain_pp"],
+            "delta_pp": d2,
+            "verdict": "MET" if d2 >= 1.0 else "NOT MET"}
     with open(os.path.join(HERE, "s13_llm_router.json"), "w") as f:
         json.dump(res, f, indent=1)
-    print(json.dumps(res.get("C1", {}), indent=1))
+    print(json.dumps({k2: res.get(k2) for k2 in ("C1", "C2")}, indent=1))
     for k2, v in rungs.items():
-        print(f"{k2:16s} {v.get('status')}  mean_auc={v.get('mean_auc')}")
+        print(f"{k2:24s} {v.get('status'):10s} mean_auc={v.get('mean_auc')} "
+              f"gain@0.5={v.get('betas', {}).get('0.5', {}).get('gain_pp')}")
 
 
 if __name__ == "__main__":

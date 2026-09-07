@@ -250,6 +250,9 @@ def main():
     emb, tfidf = build_features(texts, shot)
     print(f"features: emb {emb.shape}, tfidf {tfidf.shape}", flush=True)
     preds = fit_routers(emb, tfidf, util, df.family.to_numpy())
+    # Export the out-of-fold predictions so later stages can re-score exactly
+    # these routers on any subset of items without refitting.
+    np.savez_compressed(os.path.join(HERE, f"s11_routerbench_oof_{shot}.npz"), **preds)
 
     # global out-of-fold router quality, for the record
     from sklearn.metrics import roc_auc_score

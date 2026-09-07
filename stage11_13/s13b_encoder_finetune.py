@@ -71,10 +71,26 @@ class Router(nn.Module):
 
 
 def encode(tok, items):
-    b = tok([it["raw_query"] for it in items], truncation=True, max_length=MAX_LEN,
-            padding="max_length", return_tensors="pt")
+    """Token id lists (unpadded) and the 3-tier label matrix.
+
+    Padding is applied per batch rather than to MAX_LEN: queries average 74
+    tokens against a 256 limit, so fixed-width padding would waste ~3.4x of the
+    compute on a CPU-only box.
+    """
+    ids = tok([it["raw_query"] for it in items], truncation=True,
+              max_length=MAX_LEN)["input_ids"]
     y = torch.tensor([[float(it["y"][t]) for t in (1, 2, 3)] for it in items])
-    return b["input_ids"], b["attention_mask"], y
+    return ids, y
+
+
+def collate(ids, pad_id):
+    w = max(len(x) for x in ids)
+    I = torch.full((len(ids), w), pad_id, dtype=torch.long)
+    M = torch.zeros((len(ids), w), dtype=torch.long)
+    for r, x in enumerate(ids):
+        I[r, :len(x)] = torch.tensor(x)
+        M[r, :len(x)] = 1
+    return I, M
 
 
 def mean_auc(y, p):
@@ -86,12 +102,16 @@ def mean_auc(y, p):
 
 
 @torch.no_grad()
-def predict(model, ids, mask, bs=64):
+def predict(model, ids, pad_id, bs=64):
+    """Length-sorted batches, then restored to the original order."""
     model.eval()
-    out = []
-    for i in range(0, len(ids), bs):
-        out.append(torch.sigmoid(model(ids[i:i + bs], mask[i:i + bs])).numpy())
-    return np.concatenate(out)
+    order = np.argsort([len(x) for x in ids], kind="stable")
+    out = np.zeros((len(ids), 3))
+    for i in range(0, len(order), bs):
+        j = order[i:i + bs]
+        I, M = collate([ids[a] for a in j], pad_id)
+        out[j] = torch.sigmoid(model(I, M)).numpy()
+    return out
 
 
 def run(name, train, val, cal, tok_cache):
@@ -99,10 +119,10 @@ def run(name, train, val, cal, tok_cache):
     torch.manual_seed(SEED)
     np.random.seed(SEED)
     tok = AutoTokenizer.from_pretrained(name)
-    key = name
-    if key not in tok_cache:
-        tok_cache[key] = (encode(tok, train), encode(tok, val), encode(tok, cal))
-    (Itr, Mtr, Ytr), (Iv, Mv, Yv), (Ic, Mc, Yc) = tok_cache[key]
+    pad_id = tok.pad_token_id
+    if name not in tok_cache:
+        tok_cache[name] = (encode(tok, train), encode(tok, val), encode(tok, cal))
+    (Itr, Ytr), (Iv, Yv), (Ic, Yc) = tok_cache[name]
 
     model = Router(name)
     opt = torch.optim.AdamW(
@@ -110,26 +130,35 @@ def run(name, train, val, cal, tok_cache):
          {"params": model.head.parameters(), "lr": HEAD_LR}], weight_decay=0.01)
     lossf = nn.BCEWithLogitsLoss()
     n = len(Itr)
-    steps = EPOCHS * ((n + BATCH - 1) // BATCH)
+    steps = EPOCHS * ((n + BATCH - 1) // BATCH) + 1
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=[LR, HEAD_LR],
                                                 total_steps=steps, pct_start=0.1)
 
     hist, best = [], {"val_auc": -1.0}
+    rng = np.random.default_rng(SEED)
     for ep in range(1, EPOCHS + 1):
         model.train()
         t0 = time.time()
-        order = torch.randperm(n)
+        # Shuffle, then sort within large chunks so each batch is roughly
+        # uniform in length: keeps padding low without making batch membership
+        # deterministic across epochs.
+        perm = rng.permutation(n)
+        chunks = [perm[i:i + BATCH * 16] for i in range(0, n, BATCH * 16)]
+        order = np.concatenate([ch[np.argsort([len(Itr[a]) for a in ch], kind="stable")]
+                                for ch in chunks])
+        batches = [order[i:i + BATCH] for i in range(0, n, BATCH)]
+        rng.shuffle(batches)
         tot = 0.0
-        for i in range(0, n, BATCH):
-            j = order[i:i + BATCH]
+        for j in batches:
+            I, M = collate([Itr[a] for a in j], pad_id)
             opt.zero_grad()
-            loss = lossf(model(Itr[j], Mtr[j]), Ytr[j])
+            loss = lossf(model(I, M), Ytr[j])
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             sched.step()
-            tot += float(loss) * len(j)
-        va, _ = mean_auc(Yv.numpy(), predict(model, Iv, Mv))
+            tot += float(loss.detach()) * len(j)
+        va, _ = mean_auc(Yv.numpy(), predict(model, Iv, pad_id))
         hist.append({"epoch": ep, "train_loss": tot / n, "val_auc": va,
                      "secs": time.time() - t0})
         print(f"  {name.split('/')[-1]} epoch {ep}/{EPOCHS} "
@@ -137,7 +166,7 @@ def run(name, train, val, cal, tok_cache):
               f"({time.time()-t0:.0f}s)", flush=True)
         # Epoch selection on the inner split carved out of TRAIN only.
         if va > best["val_auc"]:
-            pc = predict(model, Ic, Mc)
+            pc = predict(model, Ic, pad_id)
             ca, per = mean_auc(Yc.numpy(), pc)
             best = {"epoch": ep, "val_auc": va, "cal_auc": ca, "cal_per_tier": per,
                     "cal_pred": pc}
@@ -163,7 +192,16 @@ def main():
         best, hist = run(name, train, val, cal, cache)
         pred = best.pop("cal_pred")
         results[name] = {"selection": best, "history": hist}
-        np.save(os.path.join(HERE, f"s13b_pred_{name.split('/')[-1]}.npy"), pred)
+        # Same per-(item, tier) JSONL schema as the Stage 13 API rungs, so the
+        # matched-cost gain and the C2 check come from identical code.
+        tag = name.split("/")[-1]
+        with open(os.path.join(HERE, f"s13b_encoder_{tag}.jsonl"), "w") as f:
+            for a, it in enumerate(cal):
+                for b, t in enumerate((1, 2, 3)):
+                    f.write(json.dumps({
+                        "item_id": it["item_id"], "tier": t,
+                        "p_yes": float(pred[a, b]), "fallback": False,
+                        "y": it["y"][t], "benchmark": it["benchmark"]}) + "\n")
 
     best_name = max(results, key=lambda k: results[k]["selection"]["cal_auc"])
     best_auc = results[best_name]["selection"]["cal_auc"]
