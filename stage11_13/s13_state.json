@@ -4,5 +4,7 @@
  "base_model": "google/gemma-3-27b-it",
  "status": "running",
  "total_price": 6709648500,
- "token_count": 1491033
+ "token_count": 1491033,
+ "total_price_usd": 6.7096485,
+ "price_booked": true
 }

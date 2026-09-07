@@ -1,0 +1,191 @@
+\section{Proofs}\label{app:proofs}
+
+\paragraph{Proposition~\ref{prop:ladder} (ladder).}
+The inequalities follow from $\Pi_0\subset\Pi_1\subset\Pi_2$: a constant is a
+function of $x$, and a function of $x$ is a function of $(x,u,c)$. For concavity,
+$A$ and $C$ are linear in $z$ and each class is convex and closed under mixing,
+so if $z^1$ is feasible at $b_1$ and $z^2$ at $b_2$ then $tz^1+(1-t)z^2$ is
+feasible at $tb_1+(1-t)b_2$ and attains at least $tA(z^1)+(1-t)A(z^2)$.
+Monotonicity holds because enlarging $b$ enlarges the feasible set. \hfill$\square$
+
+\paragraph{Proposition~\ref{prop:rho} ($\rho=1$ iff outcomes are deterministic given $x$).}
+If $u,c$ are $\sigma(x)$-measurable then $\Pi_1=\Pi_2$ as policy classes with the
+same value and cost functionals, so $A^\dagger=A^*$ and $\rho\equiv1$.
+\hfill$\square$
+
+\paragraph{Two-model closed forms.}
+Assume constant per-model costs $c_s<c_l$ and $\E[u_l]\ge\E[u_s]$, and let
+$\beta$ be the traffic fraction sent to $l$, so $b(\beta)=(1-\beta)c_s+\beta c_l$.
+(a) A query-independent policy mixes the two points and its value is linear and
+increasing in $\beta$, so the budget binds and $\Sb=\E[u_s]+\beta\E[D]$.
+(b) Maximising $\E[u_s]+\E[z\delta]$ over $z:\mathcal X\to[0,1]$ with
+$\E[z]\le\beta$ is a fractional knapsack whose solution sets $z=1$ on the largest
+values of $\delta$, giving $\beta\CTE_\beta(\delta)$.
+(c) Identical, with the oracle ranking by realised $D$.
+(d) Binary case: any policy has value at most $\E[\max(u_s,u_l)]=1-p_{00}$,
+attained by the cheapest-correct oracle; since $\E[u_s]=p_{11}+p_{10}$ and
+$\E[u_l]=p_{11}+p_{01}$ we get $(1-p_{00})-\E[u_s]=p_{01}$ and
+$(1-p_{00})-\E[u_l]=p_{10}$, so the gain over the better single model is
+$\min(p_{01},p_{10})$. \hfill$\square$
+
+Since $\delta=\E[D\mid x]$ and $\CTE_\beta$ is a coherent risk measure,
+conditioning contracts it, which re-proves $\rho\le1$ independently of
+Proposition~\ref{prop:ladder}.
+
+\medskip
+Note that $\min(p_{01},p_{10})$ is \emph{not} $\kappa(b)$: it measures headroom
+over the better single model, whereas $\kappa(b)$ measures headroom over the
+matched-cost \emph{mixture}, which is worse than the better single model whenever
+$\beta<1$. A router can gain over a mixture even when $\min(p_{01},p_{10})=0$, by
+spending a fixed budget where it does the most good. We report both because
+$\kappa(b)$ is the quantity in the decomposition and $\min(p_{01},p_{10})$ is the
+quantity a reader intuits.
+
+\paragraph{Proposition~\ref{prop:ceiling} (ceiling).} In the main text.
+The variance step is the fact that a $[0,1]$-valued random variable with mean
+$\beta$ has variance at most $\beta(1-\beta)$, attained by the two-point
+$\{0,1\}$ distribution \citep{bhatia2000variance}. The maximum of
+$\sqrt{\beta(1-\beta)}$ over $\beta$ is at $\beta=1/2$.
+
+\paragraph{Proposition~\ref{prop:reps} (identification).}
+The first identity is the law of total variance with
+$\Var(\hat\eta\mid x)=\eta(1-\eta)/k$. For the second, $k\hat\eta\sim
+\mathrm{Bin}(k,\eta)$ given $x$, so
+$\E[\hat\eta(1-\hat\eta)\mid x]=\frac{k-1}{k}\eta(1-\eta)$ and
+$\frac{k}{k-1}\hat\eta(1-\hat\eta)$ is unbiased for $\eta(1-\eta)$. Combining
+across the two models under conditional independence, with
+$\frac1k\cdot\frac{k}{k-1}=\frac1{k-1}$, gives the stated estimator.
+\hfill$\square$
+
+\paragraph{Proposition~\ref{prop:auc} (Bayes AUC).}
+Score by $\eta$, which is AUC-optimal. With $u=\eta(X)$, $v=\eta(X')$ write
+$T_>=\E[\mathbf 1\{u>v\}u(1-v)]$, $T_<=\E[\mathbf 1\{u<v\}u(1-v)]$,
+$T_==\E[\mathbf 1\{u=v\}u(1-v)]$. Under the half-credit convention the AUC is
+$(T_>+T_=/2)/(a(1-a))$, and $T_>+T_<+T_==\E[u(1-v)]=a(1-a)$. By exchangeability
+$T_<=\E[\mathbf 1\{u>v\}v(1-u)]$, so
+$T_>-T_<=\E[\mathbf 1\{u>v\}(u-v)]=\tfrac12\E|u-v|$. Solving the two equations
+gives $T_>+T_=/2=\tfrac12 a(1-a)+\tfrac14\E|u-v|$, hence the closed form; the
+bound follows from $\E|u-v|\le\sqrt{\E(u-v)^2}=\sqrt2\,\mathrm{sd}(\eta)$.
+Sanity checks: $\eta$ constant gives $1/2$; $\eta\in\{0,1\}$ equiprobable gives
+$1$. \hfill$\square$
+
+\section{Numerical validation of every proposition}\label{app:validate}
+
+Because the propositions are load-bearing, each is checked against a
+brute-force reference before any result depends on it
+(\texttt{stage11\_13/s11\_validate.py}, results in
+\texttt{s11\_validate.json}). All 14 checks pass.
+
+\begin{table}[h]\centering\small
+\caption{Validation suite. ``LP'' references are \texttt{scipy.optimize.linprog}
+with HiGHS; others are Monte Carlo.}
+\begin{tabular}{llc}
+\toprule
+Check & Reference & Result \\
+\midrule
+$S(b)$ exact & LP over the mixing simplex, 300 cases & max err $0$ \\
+$A^*(b)$ exact & multiple-choice knapsack LP, 120 cases & max err $0$, no budget overrun \\
+Ladder $S\le A^\dagger\le A^*$ & Bayes router vs.\ oracle, $n{=}20$k & no violation \\
+$\rho=1$ iff deterministic & analytic + Bernoulli noise & exact; $\rho\to0.258$ under noise \\
+Ceiling never violated & exact top-$\beta$ tail, 4{,}000 cases & min slack $>0$; max tightness $0.856$ \\
+Ceiling tight & two-point construction & ratio $0.998$ \\
+Variance components unbiased & known Beta $\eta$, 400 cases & rel.\ bias $0.14\%$ \\
+$\mathrm{sd}(\delta)$ unbiased & known $\eta$ pair, 400 cases & rel.\ bias $0.55\%$ \\
+Naive estimator inflated & same simulation & $\Var(\delta)$ inflated $2.33\times$ \\
+Bayes AUC closed form & empirical ROC AUC, 200 cases & max err $0.0035$ \\
+$\mathrm{sd}$ bound dominates & empirical AUC$^\star$ & min slack $0.036$ \\
+Beta moment match accurate & empirical AUC$^\star$ & max err $0.0030$ \\
+$\min(p_{01},p_{10})$ identity & union minus best single & max err $0$ \\
+Naive cost axis exact/biased & simulated static vs.\ router & $1.0\%$ vs.\ $30.3\%$ rel.\ error \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Pre-registration and deviations}\label{app:prereg}
+
+Success criteria, falsification rules, the benchmark-family map, router families,
+statistics and the cost gate were committed to git \emph{before} the analyses
+they govern (\texttt{stage11\_13/prereg\_stage11\_13.md}); the commit precedes
+every result artifact and this can be checked against \texttt{git log}. This
+follows the same discipline as two earlier pre-registrations in the project.
+
+Five deviations are recorded in \texttt{stage11\_13/DEVIATIONS.md}. The two that
+affect claims:
+
+\textbf{D1.} H3 (``the router-free bound is $\le50\%$ of $\kappa$'') was
+\textbf{refuted}: the bound is $2.82\times$ $\kappa$ at median. The
+pre-registration named this outcome in advance and required us to retreat from
+the ceiling framing, which \S\ref{sec:ceiling} does. The replacement claim ---
+difficulty is reliable but not inferable from text --- is the one the data
+supports.
+
+\textbf{D2.} The pre-registration asserted that a policy seeing one replicate
+$Y^{(1)}$ upper-bounds $A^\dagger$. \emph{This is wrong}: $Y^{(1)}$ is a realised
+outcome, not a function of $x$, so the two information sets are incomparable; only
+their join contains $\sigma(x)$. The error was caught while implementing Stage 12,
+before any result depended on it. The quantity is still reported, relabelled as
+the unbiased value of a feasible peeking policy rather than a bound.
+
+\section{Per-family RouterBench detail}\label{app:rb}
+
+Full per-pair, per-family, per-$\beta$ output is in
+\texttt{stage11\_13/s11\_routerbench\_pairs\_0shot.csv.gz} (440 pair-family cells
+$\times$ 9 operating points, plus the 11-model problem). Summary statistics and
+all hypothesis verdicts are in \texttt{s11\_routerbench\_0shot.json}. The 5-shot
+file is analysed identically as a pre-registered replication and reported in
+\texttt{s11\_routerbench\_5shot.json}.
+
+Multiple-comparison detail at $\beta=0.5$ for the best router: $49/55$ pairs
+have a positive mean gain, $28$ have raw $p<0.05$, $26$ survive
+Benjamini--Hochberg at FDR $0.05$, and $13$ survive Holm--Bonferroni at
+family-wise $\alpha=0.05$. $p$-values are two-sided bootstrap over benchmark
+families with the router and baseline evaluated on identical items.
+
+\section{Cost accounting for the new experiments}\label{app:cost}
+
+The project's earlier stages spent \$48.09 of real API budget. Stage 13 was
+pre-registered with a \$25 gate on additional spend, enforced in code: every call
+accumulates the provider's own reported usage and the run aborts if the gate is
+crossed (\texttt{stage11\_13/s13\_spend.json}).
+
+\begin{table}[h]\centering\small
+\caption{Additional spend for the new experiments.}
+\begin{tabular}{llr}
+\toprule
+Item & Volume & USD \\
+\midrule
+Prompted router, zero-shot (Llama-3.3-70B) & 4{,}500 calls & 0.58 \\
+Prompted router, 4-shot (Llama-3.3-70B)    & 4{,}500 calls & 2.41 \\
+LoRA fine-tune (Gemma-3-27B-it, 3 epochs)  & 10{,}500 examples & \FTTRAIN \\
+Fine-tuned router inference                & 4{,}500 calls & \FTINFER \\
+RouterBench analysis, learning curves, theory & --- & 0.00 \\
+\midrule
+\textbf{Total additional} & & \textbf{\FTTOTAL} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+RouterBench, the decomposition, the learning curves and all validation cost
+nothing: they are analyses of already-released outcomes and of already-paid-for
+generations. The expensive part of this project is the replicate data, and it is
+the part no public dataset provides.
+
+\section{Reproduction}\label{app:repro}
+
+\begin{verbatim}
+pip install -r requirements-eval.txt
+python3 stage11_13/s11_validate.py            # 14/14 proposition checks
+curl -L -o external_data/routerbench_0shot.pkl \
+  https://huggingface.co/datasets/withmartian/routerbench/resolve/main/routerbench_0shot.pkl
+python3 stage11_13/s11_routerbench.py 0shot   # decomposition, 55 pairs x 8 families
+python3 stage11_13/s12_ceiling.py             # replicate variance components
+python3 stage11_13/s12b_learning_curve.py     # learning curves
+python3 stage11_13/s13_llm_router.py probe    # cost projection before spending
+\end{verbatim}
+
+Seeds, package versions, model strings, endpoints and dataset revisions for all
+stages are listed in \texttt{stage7\_10/reproducibility\_manifest.md} and
+\texttt{stage11\_13/}. Reproducibility hazards are flagged rather than glossed:
+no provider exposes an immutable model revision, so exact regeneration of any
+API-derived number is guaranteed by nothing under our control. The RouterBench
+pickle is pinned by SHA-256 in the result JSON.

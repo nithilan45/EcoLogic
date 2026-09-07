@@ -311,6 +311,20 @@ def cmd_poll_ft():
         v = getattr(j, f, None)
         if v is not None:
             st[f] = v
+    # Together reports fine-tune price in nano-dollars. Book it against the gate
+    # once, so the training spend is not invisible in the ledger.
+    price_usd = float(st.get("total_price", 0)) / 1e9
+    st["total_price_usd"] = price_usd
+    if price_usd > 0 and not st.get("price_booked"):
+        with _lock:
+            _spend["usd"] += price_usd
+            _spend["by_stage"]["finetune_training"] = {"usd": price_usd, "calls": 0}
+        st["price_booked"] = True
+        save_spend()
+        print(f"booked fine-tune training cost ${price_usd:.2f}; "
+              f"total spend ${_spend['usd']:.2f} of ${COST_GATE_USD}")
+        if _spend["usd"] > COST_GATE_USD:
+            raise SystemExit(f"COST GATE HIT: ${_spend['usd']:.2f}")
     json.dump(st, open(STATE, "w"), indent=1)
     return status
 

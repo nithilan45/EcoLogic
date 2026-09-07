@@ -1,5 +1,5 @@
 {
- "usd": 2.9973278399999925,
+ "usd": 9.706976339999994,
  "calls": 9000,
  "prompt_tokens": 2873046,
  "completion_tokens": 9000,
@@ -11,6 +11,10 @@
   "prompted_4shot": {
    "usd": 2.4136039199999915,
    "calls": 4500
+  },
+  "finetune_training": {
+   "usd": 6.7096485,
+   "calls": 0
   }
  }
 }

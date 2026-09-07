@@ -1,0 +1,499 @@
+% Workshop submission draft. Target: an ICLR 2027 workshop.
+%
+% Formatting note: this compiles standalone with pdflatex and no external style
+% files, so it builds in any minimal TeX install. Before submission, replace the
+% geometry/title block with the official workshop style file (\usepackage{iclr2027}
+% or equivalent) -- the content is written to fit 5 pages of body text under a
+% typical workshop template, with everything else in the appendix.
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{natbib}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newcommand{\Sb}{S(b)}
+\newcommand{\Adag}{A^{\dagger}(b)}
+\newcommand{\Astar}{A^{*}(b)}
+\newcommand{\kap}{\kappa(b)}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\CTE}{\mathrm{CTE}}
+\newcommand{\pp}{\,\text{pp}}
+
+% Fine-tuned-router numbers. Filled from stage11_13/s13_llm_router.json once the
+% Together AI LoRA job completes; if it does not, these stay as the BLOCKED
+% markers and section 5 reports the rung as blocked rather than estimated.
+\newcommand{\FTAUC}{\emph{pending}}
+\newcommand{\FTTRAIN}{6.71}
+\newcommand{\FTINFER}{\emph{pending}}
+\newcommand{\FTTOTAL}{\emph{pending}}
+
+\title{\bf Complementarity is Abundant, Predictability is Not the Problem:\\
+Decomposing Why LLM Routers Gain So Little}
+\author{Anonymous submission}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+LLM routers promise frontier quality at small-model cost. We ask where the
+promised gain actually goes. We decompose a router's achievable gain over the
+correct baseline---a \emph{cost-matched, query-independent} policy---into three
+multiplicative and additive terms: \emph{complementarity} $\kappa$ (how much
+oracle headroom the model set offers), \emph{predictability} $\rho$ (what
+fraction of that headroom is a function of the query at all), and
+\emph{estimation error} $\varepsilon$ (what a fitted router fails to capture).
+We prove $\rho=1$ exactly when outcomes are deterministic given the query, give
+a distribution-free ceiling $\sqrt{\beta(1-\beta)}\,\mathrm{sd}(\delta)$ on
+every router, and show $\mathrm{sd}(\delta)$ is identified only from
+\emph{repeated} generations---which no public routing dataset provides. On
+RouterBench (36{,}494 prompts $\times$ 11 models, all 55 model pairs $\times$ 8
+benchmark families) complementarity is abundant: median $\kappa = 12.11\pp$ of
+oracle headroom at matched cost. Yet the best of four router families captures
+$0.59\pp$, or $\rho_{\text{realised}} = 4.6\%$ of it. We then pre-registered and
+\emph{refuted} our own explanation. Using $k=3$ replicate generations of 5{,}000
+prompts across three models---data we generated because no public dataset
+replicates---we find per-item difficulty is highly \emph{reliable}
+(0.77--0.98 of outcome variance is stable between-item signal, implying a
+Bayes-optimal AUC of 0.95--0.99), so $\rho \approx 1$ and unpredictability is
+\emph{not} the bottleneck. The entire gap is $\varepsilon$: which model will
+succeed is a stable property of the item that routers cannot read off the prompt.
+That gap survives eight router families, TF-IDF through a prompted 70B model and
+a LoRA-fine-tuned 27B model, and a learning curve whose power-law asymptote is
+$0.74$ AUC at $10^9$ training items. Routing's binding constraint is
+generalisation, not noise and not model redundancy.
+\end{abstract}
+
+\section{Introduction}
+
+A cascade or router sends easy queries to a cheap model and hard ones to an
+expensive one, then reports savings against always using the expensive model.
+That comparison is nearly uninformative, because always-cheap and any fixed
+random mixture also beat always-expensive on cost while looking at nothing. The
+bar a router must clear is the best \emph{query-independent} policy at the
+\emph{same expected cost}. Reported gains against always-frontier are not
+evidence that reading the query helped.
+
+Fixing the baseline is necessary but not sufficient, because it tells you
+\emph{that} a gain is small without telling you \emph{why}. Three very different
+worlds produce the same small number. The models might be redundant, so there is
+nothing to win. The outcome might be a coin flip given the query, so nothing is
+winnable by any router. Or the information might be there and the router might
+simply fail to extract it. The first is a model-selection problem, the second a
+property of the task, the third an engineering problem---and the correct response
+differs completely.
+
+\paragraph{Contributions.}
+\begin{enumerate}\itemsep2pt
+\item \textbf{A decomposition that separates those three worlds}
+(\S\ref{sec:theory}). Achievable gain $=\rho(b)\,\kappa(b)$, and realised gain
+$=\rho(b)\kappa(b)-\varepsilon$. We prove the ladder $\Sb \le \Adag \le \Astar$,
+closed forms for two models, a distribution-free ceiling on \emph{every} router,
+the exact Bayes-optimal AUC implied by a difficulty distribution, and---the key
+structural point---that $\rho<1$ is \emph{exactly} outcome randomness given the
+query, so an oracle measured on single generations overstates attainable
+headroom. All propositions are validated numerically against brute-force LP and
+Monte-Carlo references (14/14 checks, Appendix \ref{app:validate}).
+\item \textbf{Complementarity is abundant and routers capture almost none of it}
+(\S\ref{sec:rb}). On RouterBench, median $\kappa = 12.11\pp$ $[11.15, 12.92]$
+across 55 model pairs $\times$ 8 benchmark families; the best of four router
+families realises $0.59\pp$ $[0.44, 0.78]$, i.e.\ $4.6\%$
+$[3.6\%, 5.9\%]$ of it. The direction is consistent (49/55 pairs positive,
+13/55 significant under Holm), so routing does work---it just recovers a
+twentieth of what is there.
+\item \textbf{A pre-registered refutation of our own hypothesis}
+(\S\ref{sec:ceiling}). We predicted low predictability and tested it with $k=3$
+replicate generations of 5{,}000 prompts $\times$ 3 models. The data says the
+opposite: difficulty is reliable, $\rho\approx1$, and our ceiling bound is
+vacuous at these effect sizes. We report the refutation, and it sharpens the
+claim rather than weakening it.
+\item \textbf{The gap is generalisation, and it does not close}
+(\S\ref{sec:eps}). Eight router families---TF-IDF, MiniLM$+$logistic,
+MiniLM$+$MLP, MiniLM$+$boosted trees, $k$-NN, random forest, a prompted 70B
+model, and a LoRA fine-tune of a 27B model---all land in $0.64$--$0.72$ AUC. A
+learning curve over $250$ to $29{,}000$ training items extrapolates to an
+asymptote of $0.74$.
+\end{enumerate}
+
+We claim no new router, architecture or algorithm, and we do not claim routing
+cannot work. $\kappa$ and $\rho$ are properties of a (workload, model set) pair;
+the contribution is the instrument that says which term is binding.
+
+\section{The decomposition}\label{sec:theory}
+
+A query $x\sim\mathcal D$; $K$ models; running model $m$ on $x$ yields utility
+$u_m(x)\in[0,1]$ (graded correctness) and cost $c_m(x)\ge 0$. Both are random
+\emph{given} $x$: decoding is stochastic, and measurably so even at temperature
+$0$ (\S\ref{sec:ceiling}). Write $\eta_m(x)=\E[u_m(x)\mid x]$ and
+$\gamma_m(x)=\E[c_m(x)\mid x]$. A policy assigns $x$ to a model with
+probabilities $z_m(x)$, and has value $A(z)=\E[\sum_m z_m(x)u_m(x)]$ and cost
+$C(z)=\E[\sum_m z_m(x)c_m(x)]$. Three nested classes, distinguished only by
+what they may look at, with optima at budget $b$:
+\[
+\Sb\ (\text{query-independent}),\qquad
+\Adag\ (\text{router: any function of }x),\qquad
+\Astar\ (\text{oracle: sees realised }u,c).
+\]
+
+\begin{proposition}[Ladder]\label{prop:ladder}
+$\Sb\le\Adag\le\Astar$, and all three are concave and nondecreasing in $b$.
+\end{proposition}
+
+\begin{definition}
+$\kap=\Astar-\Sb$ \emph{(complementarity)} and
+$\rho(b)=(\Adag-\Sb)/\kap$ \emph{(predictability)}, so achievable gain
+$=\rho(b)\kap$ and any fitted router $\hat z$ realises
+$A(\hat z)-\Sb=\rho(b)\kap-\varepsilon(\hat z)$ with $\varepsilon\ge0$.
+\end{definition}
+
+The identity is true by construction; its use is that the three terms are
+separately measurable and assign blame differently ($\kappa$: the model set;
+$\rho$: the task; $\varepsilon$: the engineer).
+
+\begin{proposition}[What $\rho<1$ is]\label{prop:rho}
+If $u_m$ and $c_m$ are deterministic given $x$ for every $m$, then $\rho(b)=1$
+for all $b$. Hence every unit of $\rho<1$ is outcome randomness given the query.
+\end{proposition}
+
+Proposition~\ref{prop:rho} inverts how oracle headroom is normally read. A
+routing paper's oracle is computed from \emph{one} generation per model per
+item, so it routes each item to whichever model happened to be right on that
+draw. When outcomes are noisy, part of what it collects is a coin flip it saw
+and no router can see. Published oracle headroom is an upper bound inflated by
+generation noise.
+
+For $K=2$ (cheap $s$, dear $l$, $\beta$ = traffic fraction to $l$), with
+$\delta(x)=\eta_l(x)-\eta_s(x)$, $D=u_l-u_s$, and $\CTE_\beta$ the mean of the
+upper $\beta$-tail:
+$\Sb=\E[u_s]+\beta\E[D]$, $\Adag=\E[u_s]+\beta\CTE_\beta(\delta)$,
+$\Astar=\E[u_s]+\beta\CTE_\beta(D)$, so
+$\rho(\beta)=\bigl(\CTE_\beta(\delta)-\E\delta\bigr)/\bigl(\CTE_\beta(D)-\E D\bigr)$:
+predictability is the ratio of tail dispersion of the \emph{conditional mean} to
+that of the \emph{realisation}. In the binary case the gain of an unconstrained
+oracle over the better single model is exactly $\min(p_{01},p_{10})$.
+
+\begin{proposition}[Router-free ceiling]\label{prop:ceiling}
+For every router at operating fraction $\beta$,
+$\Adag-\Sb\le\sqrt{\beta(1-\beta)}\,\mathrm{sd}(\delta)\le\tfrac12\mathrm{sd}(\delta)$,
+and the bound is attained.
+\end{proposition}
+\begin{proof}
+For any $z:\mathcal X\to[0,1]$ with $\E z=\beta$,
+$\E[z\delta]-\beta\E[\delta]=\Cov(z,\delta)\le\mathrm{sd}(z)\,\mathrm{sd}(\delta)$
+by Cauchy--Schwarz, and a $[0,1]$-valued variable with mean $\beta$ has variance
+at most $\beta(1-\beta)$. Tightness: take $\delta$ two-valued and $z$ its
+indicator.
+\end{proof}
+
+This is the same covariance object as the cost-accounting correction in
+\S\ref{sec:cost}: routing lives or dies on one covariance, read on two axes.
+
+\begin{proposition}[Identification from replicates]\label{prop:reps}
+With $k\ge2$ conditionally i.i.d.\ replicates per item, binary outcomes, and
+independence across models,
+$\Var(\hat\eta_m)=\Var(\eta_m)+\tfrac1k\E[\eta_m(1-\eta_m)]$ and
+$\E[\tfrac{k}{k-1}\hat\eta_m(1-\hat\eta_m)]=\E[\eta_m(1-\eta_m)]$, so
+$\Var(\delta)$ is identified by
+$\widehat\Var(\delta)=\Var(\hat\eta_l-\hat\eta_s)-\tfrac{1}{k-1}\overline{[\hat\eta_l(1-\hat\eta_l)+\hat\eta_s(1-\hat\eta_s)]}$.
+\end{proposition}
+
+$\kappa$ is computable from any released outcome matrix. $\rho$ is not:
+$\Var(D)=\Var(\delta)+\E[\Var(D\mid x)]\ge\Var(\delta)$, so single-generation
+data bounds $\mathrm{sd}(\delta)$ only loosely, and \emph{every public routing
+dataset stores one generation per (model, prompt)}. The quantity that decides
+whether routing can work is not recoverable from the data the field publishes.
+In simulation the uncorrected estimator inflates $\Var(\delta)$ by
+$2.33\times$ (Appendix \ref{app:validate}).
+
+\begin{proposition}[Bayes-optimal AUC]\label{prop:auc}
+With $a=\E[\eta(X)]$ and $X,X'$ i.i.d.,
+$\mathrm{AUC}^\star=\tfrac12+\E|\eta(X)-\eta(X')|/(4a(1-a))$, and
+$\mathrm{AUC}^\star\le\tfrac12+\mathrm{sd}(\eta)/(2\sqrt2\,a(1-a))$.
+\end{proposition}
+
+Proposition~\ref{prop:auc} turns a replicate-estimated quantity into a
+prediction about a number we have measured with many learners---a check that
+cannot be tuned. Proofs: Appendix~\ref{app:proofs}.
+
+\section{Complementarity is abundant; routers capture $4.6\%$ of it}\label{sec:rb}
+
+\paragraph{Setup.} RouterBench \citep{hu2024routerbench}: 36{,}494 prompts
+$\times$ 11 models $=401{,}434$ inference outcomes with per-item graded score and
+per-item dollar cost, grouped into 8 benchmark families with $n\ge100$ (MMLU
+14{,}042; HellaSwag 10{,}042; GSM8K 7{,}450; ARC 1{,}470; Winogrande 1{,}267;
+Chinese 785; other 931; MBPP 427). $21.1\%$ of score cells are fractional
+partial credit, so we run the decomposition on graded utilities in $[0,1]$,
+which needs no threshold. We verified these fractional scores are \emph{not}
+replicate means---GPT-4 is modal at $0.75$ and Mistral-7B at $0.25$ with almost
+no mass at $0$ or $1$, and only one response is stored per model---so
+RouterBench cannot support Proposition~\ref{prop:reps}.
+
+We compute $\Sb$ exactly (upper concave envelope of the per-model
+(cost, utility) points) and $\Astar$ exactly (Lagrangian solution of the
+multiple-choice knapsack LP on \emph{per-item} costs), for all 55 unordered
+model pairs and the full 11-model problem, over $\beta\in\{0.1,\dots,0.9\}$;
+headline numbers are at $\beta=0.5$, where Proposition~\ref{prop:ceiling}'s cap
+is largest and routing is therefore most favoured. Four router families are fit
+with 5-fold cross-validation grouped by item and stratified by family, so every
+router trains on $29{,}195$ items. Routers commit using their predictions and
+per-model \emph{mean} costs (a deployed router cannot know an item's token count
+in advance) but are charged \emph{realised} per-item cost.
+
+\begin{table}[t]\centering\small
+\caption{RouterBench, $\beta=0.5$: medians over 55 model pairs $\times$ 8
+benchmark families (440 cells), with $95\%$ bootstrap intervals over cells.
+$\rho_{\text{realised}}$ is realised gain divided by $\kappa$.}
+\label{tab:rb}
+\begin{tabular}{lccccc}
+\toprule
+Router & out-of-fold AUC & gain (pp) & $\rho_{\text{realised}}$ & cells with gain $>0$ \\
+\midrule
+TF-IDF $+$ logistic     & 0.7160 & $+0.585$ $[0.442,0.777]$ & 0.046 $[0.036,0.059]$ & 311/440 \\
+MiniLM $+$ logistic     & 0.7081 & $+0.455$ $[0.286,0.609]$ & 0.034 & 288/440 \\
+MiniLM $+$ boosted trees& 0.6772 & $+0.402$ $[0.268,0.544]$ & 0.033 & 290/440 \\
+MiniLM $+$ MLP (256,64) & 0.6626 & $+0.226$ $[0.138,0.326]$ & 0.017 & 269/440 \\
+\midrule
+\multicolumn{2}{l}{\emph{Complementarity} $\kappa$} & \multicolumn{3}{l}{$\mathbf{12.11}$ pp $[11.15, 12.92]$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:rb} is the central empirical result. There is $12.11\pp$ of
+oracle headroom over a cost-matched query-independent policy, and the best
+router takes $0.59\pp$ of it. The effect is real: $49$ of $55$ pairs show a
+positive mean gain, $28$ have raw $p<0.05$, $26$ survive Benjamini--Hochberg
+and $13$ survive Holm--Bonferroni at family-wise $\alpha=0.05$. So this is not a
+null result about routing; it is a statement about magnitude. Reading gains
+against always-frontier hides a factor of roughly twenty.
+
+Note also that the MLP is the \emph{worst} of the four despite the most
+capacity---the same inversion we observe in-house, and the first hint that the
+binding constraint is not model class.
+
+\section{Predictability is not the bottleneck: a refuted hypothesis}\label{sec:ceiling}
+
+We pre-registered the hypothesis that $\rho$ is small---that per-item success is
+weakly predictable in principle---and a falsification rule for it. To test it we
+generated $k=3$ replicates for every (item, model) over 5{,}000 prompts and three
+models at temperature $0.7$ ($45{,}000$ calls) and $364$ prompts at temperature
+$0$ ($3{,}276$ calls), on HumanEval, MBPP, MMLU and GSM8K with execution- or
+exact-match grading. \textbf{The hypothesis was refuted.}
+
+\begin{table}[t]\centering\small
+\caption{Replicate-based decomposition, $k=3$. \emph{Reliability} is the share of
+per-item outcome variance that is stable between-item signal rather than
+regeneration noise. $\mathrm{AUC}^\star$ is the Proposition~\ref{prop:auc} point
+estimate under a Beta fit to the replicate-identified moments.}
+\label{tab:rel}
+\begin{tabular}{llccccc}
+\toprule
+& & \multicolumn{2}{c}{Tier 1 (9B)} & \multicolumn{2}{c}{Tier 2 (20B)} & Tier 3 (GPT-4o)\\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-7}
+Set & $n$ & reliability & $\mathrm{AUC}^\star$ & reliability & $\mathrm{AUC}^\star$ & reliability \\
+\midrule
+pool, $T{=}0.7$ & 5{,}000 & 0.895 & 0.992 & 0.873 & 0.987 & 0.942 \\
+test, $T{=}0.0$ & 364     & 0.772 & 0.948 & 0.902 & 0.992 & 0.983 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:rel} says that whether a model answers an item correctly is not a
+coin flip: $77$--$98\%$ of the outcome variance is a stable property of the item,
+and the implied Bayes-optimal AUC is $0.95$--$0.99$. So $\rho\approx1$: the
+information a router would need \emph{is} there. Our pre-registered consistency
+check predicted the replicate-implied $\mathrm{AUC}^\star$ would land within
+$0.05$ of the $0.65$--$0.68$ plateau measured by four learners; it came out
+$0.99$ against $0.68$, a miss of $0.31$, and is recorded as inconsistent. We
+included that check because it could embarrass us, and it did.
+
+Correspondingly Proposition~\ref{prop:ceiling}'s ceiling is \emph{vacuous} at
+these effect sizes: at $\beta=0.5$ it evaluates to $8.4$--$15.6\pp$ against a
+single-draw $\kappa$ of $3.3$--$9.5\pp$, a median ratio of $2.82$. The
+inequality is correct and attained on a two-point distribution, but real
+$\delta$ is diffuse, and Cauchy--Schwarz loses exactly that slack. We report
+this rather than reframing it.
+
+Two things do survive. First, noise inflates the reported oracle: a policy
+allowed to peek at one graded outcome per model---information no deployed router
+has---captures only $34$--$55\%$ of the single-draw $\kappa$ when evaluated on
+held-out replicates. Second, $8$--$35\%$ of the variance of the observed
+advantage $D$ is generation noise, and the share scales with output length,
+from $8\%$ for terse GPT-4o to $35\%$ for a long-reasoning 9B model that changes
+its graded verdict on $19.8\%$ of items between identical temperature-$0$ calls.
+
+\section{The binding term is generalisation}\label{sec:eps}
+
+If $\rho\approx1$ and routers capture $4.6\%$ of $\kappa$, then $\varepsilon$ is
+essentially the whole story: difficulty is a stable property of the item that
+routers cannot read off the prompt. Two experiments ask whether that is fixable.
+
+\paragraph{More data?} A learning curve on RouterBench (fixed $20\%$ held-out
+set, training subsets from $250$ to $29{,}000$ items, repeats at small sizes)
+gives held-out AUC $0.65\!\to\!0.708$ for MiniLM$+$logistic. A power-law fit
+$\mathrm{AUC}(n)=A-Bn^{-c}$ gives asymptote $A=0.741$, with
+$\mathrm{AUC}(10^6)=0.726$ and $\mathrm{AUC}(10^9)=0.738$: roughly $2.5$
+doublings of data per $+0.01$ AUC. Realised gain does improve with data
+($+1.15\pp$ at $8$k to $+2.10\pp$ at $29$k, $\rho_{\text{realised}}=0.105$), so
+data helps---but the extrapolated ceiling stays far below what capturing
+$\kappa$ would need. (Exploratory; not pre-registered.)
+
+\paragraph{A stronger router?} Table~\ref{tab:ladder} walks up eight router
+families on the identical 1{,}500-item held-out split. Nothing escapes the
+$0.64$--$0.72$ band. A prompted 70B model with four in-context exemplars reaches
+$0.710$, $+0.029$ over the best classical learner---real, but below the
+$+0.05$ we pre-registered as the threshold at which "you tested a weak router"
+would become a live objection again.
+
+\begin{table}[t]\centering\small
+\caption{Router-strength ladder, mean held-out per-tier AUC on the same
+1{,}500-item split. Rows above the rule are from earlier stages of this project
+on identical data.}
+\label{tab:ladder}
+\begin{tabular}{llc}
+\toprule
+Router & Representation & mean AUC \\
+\midrule
+$k$-NN ($k{=}50$)      & MiniLM & 0.6521 \\
+Gradient boosting      & MiniLM & 0.6547 \\
+Random forest (train AUC 0.9999) & MiniLM & 0.6703 \\
+Logistic regression    & MiniLM & 0.6816 \\
+\midrule
+Prompted LLM, zero-shot  & Llama-3.3-70B-Instruct & 0.6416 \\
+Prompted LLM, 4-shot     & Llama-3.3-70B-Instruct & 0.7105 \\
+LoRA fine-tune           & Gemma-3-27B-it & \FTAUC \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The random forest is the diagnostic: it reaches training AUC $0.9999$---it
+memorises the training set perfectly---and still generalises \emph{below}
+logistic regression. Ample capacity, no held-out gain. That is the signature of a
+target that is not a smooth function of the input representation, not of an
+inadequate model class.
+
+\section{Matched-cost baselines and a biased cost axis}\label{sec:cost}
+
+Two measurement corrections underpin the numbers above and matter independently.
+
+\paragraph{The baseline.} On our own 364-item frozen test set, a deployed
+keyword router is beaten on \emph{both} axes simultaneously by the constant
+policy ``send everything to the mid tier'': $86.8\%$ vs $92.3\%$ accuracy at
+$6.87\times$ the measured dollar cost. Its headline saving against
+always-frontier is $88.6\%$ in modelled joules but $55.0\%$ in measured
+dollars---the choice of cost axis moves the number by $4\times$ on identical
+routing decisions. Applying the same audit to RouteLLM
+\citep{ong2024routellm} on its own released GSM8K data, its router \emph{does}
+beat a cost-matched query-independent mixture, by a mean of $+0.57\pp$: positive
+at 8 of 9 operating points (sign test $p=0.039$) but significant at none
+individually ($n=1{,}307$). So the protocol discriminates rather than rejects---
+and even the passing case has an effect the field's benchmarks cannot resolve
+point-by-point, while being reported as ``up to $85\%$ cost reduction''.
+
+\paragraph{The axis.} Pricing a routing policy by multiplying traffic fractions
+by per-model \emph{mean} cost is exact for a query-independent policy but biased
+for a router, because routers escalate precisely the items that emit more
+tokens. The exact correction is
+$R_{\text{true}}=R_{\text{naive}}+\sum_{i\ne j}\Cov\bigl(\mathbf 1\{t^*{=}i,\hat t{=}j\},\,e_j(x)-e_i(x)\bigr)$.
+On our data this term is $1.9\times$ the regret being reported and flips its
+sign, reconciling to $2\times10^{-16}$; on RouteLLM's own GSM8K data the sign
+flip reproduces and naive accounting overstates savings by up to $6.3\%$. The
+bias always favours the router and grows with within-model cost dispersion, so
+it worsens as the field routes among reasoning models with variable-length
+thinking budgets. All routers in this paper are charged realised per-item cost.
+
+\section{Related work}
+
+RouteLLM \citep{ong2024routellm} and FrugalGPT \citep{chen2023frugalgpt} report
+large savings against always-frontier; we re-audit the former against a
+cost-matched baseline. RouterBench \citep{hu2024routerbench} supplies the
+outcome matrix we decompose and proposes its own routing theory, but prices
+policies with per-model mean cost and does not separate complementarity from
+predictability. Concurrent evaluation-focused work reaches a compatible
+diagnosis from a different direction: \citet{yuan2025whoroutes} identify limited
+task diversity, imbalanced model pools and oversimplified metrics in existing
+routing benchmarks and build a larger framework (85 models, 33{,}337 queries),
+and \citet{huang2025routereval} likewise argue current router evaluation is
+inadequate. Our contribution is complementary and orthogonal: not a better
+benchmark, but a decomposition that attributes a measured shortfall to the model
+set, the task, or the router---plus the observation that the term which decides
+the question requires replicate generations that no such benchmark currently
+provides. The variance machinery is standard (reliability/ICC; CVaR
+\citep{rockafellar2000cvar}; the mean--variance bound \citep{bhatia2000variance});
+multiple-comparison control follows \citet{holm1979} and
+\citet{benjamini1995}.
+
+\section{Limitations}
+
+\emph{$\rho$ is inferred, not bounded two-sidedly.} Our rigorous ceiling is
+vacuous here; the claim $\rho\approx1$ rests on the reliability measurements and
+on a Beta fit to replicate-identified moments (Proposition~\ref{prop:auc}
+requires $\E|\eta-\eta'|$, which $k=3$ does not identify). The Beta fit is a
+modelling assumption and is labelled as such.
+
+\emph{Replicate assumptions.} Proposition~\ref{prop:reps} assumes replicates are
+conditionally i.i.d.\ and independent across models. Positive within-item
+correlation would understate the noise term and hence \emph{overstate}
+$\mathrm{sd}(\delta)$ and the ceiling---erring in routing's favour.
+
+\emph{Scale of the replicate study.} The replicate evidence is $48{,}276$ calls
+over three models, four benchmarks and \$48.09 of real API spend. Three models
+is not a model ecosystem; the reliability numbers should be re-measured before
+being assumed elsewhere. The breadth comes from RouterBench, which cannot
+replicate; the depth from our own data, which is small. Neither alone suffices,
+and we do not claim the two settings are exchangeable.
+
+\emph{Benchmarks are not production traffic.} Single-turn, self-contained,
+auto-gradable academic tasks. Real routing traffic is conversational and mostly
+not objectively gradable. Every $\kappa$ and $\rho$ here is conditional on this
+item distribution.
+
+\emph{Energy is modelled, never measured.} Where earlier stages report joules
+they mean token counts times assumed per-tier rates; the headline comparisons in
+\S\ref{sec:cost} are therefore stated in measured dollars.
+
+\emph{Generality.} Propositions~\ref{prop:ladder}, \ref{prop:rho},
+\ref{prop:reps} and \ref{prop:auc} hold for general $K$;
+Proposition~\ref{prop:ceiling} and the closed forms are two-model statements.
+Our fine-tuned rung is one LoRA configuration on one base model; a larger or
+differently-trained router could do better than $0.71$, and the learning-curve
+extrapolation is a power-law fit, not a proof.
+
+\section{Conclusion}
+
+Router gains decompose into complementarity, predictability and estimation
+error, and the three assign blame to the model set, the task and the router
+respectively. Measured across 11 models and 8 benchmarks, complementarity is
+abundant ($12.11\pp$) and routers capture $4.6\%$ of it. We expected
+predictability to be the missing factor, pre-registered that hypothesis, and
+refuted it: per-item difficulty is highly reliable, so the information is there.
+What is missing is the ability to infer it from prompt text---a gap that eight
+router families, a 70B prompted model, a fine-tuned 27B model and a
+$29{,}000$-item learning curve all fail to close. The practical implication is
+uncomfortable but actionable: for these workloads, effort spent on better
+routers is likely dominated by effort spent on choosing a more complementary
+model set, or on obtaining a signal that a prompt does not contain.
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{9}
+\bibitem[Benjamini and Hochberg(1995)]{benjamini1995} Y.~Benjamini and Y.~Hochberg. Controlling the false discovery rate: a practical and powerful approach to multiple testing. \emph{Journal of the Royal Statistical Society, Series B}, 57(1):289--300, 1995.
+\bibitem[Bhatia and Davis(2000)]{bhatia2000variance} R.~Bhatia and C.~Davis. A better bound on the variance. \emph{The American Mathematical Monthly}, 107(4):353--357, 2000.
+\bibitem[Chen et al.(2023)]{chen2023frugalgpt} L.~Chen, M.~Zaharia, and J.~Zou. FrugalGPT: How to use large language models while reducing cost and improving performance. \emph{arXiv:2305.05176}, 2023.
+\bibitem[Holm(1979)]{holm1979} S.~Holm. A simple sequentially rejective multiple test procedure. \emph{Scandinavian Journal of Statistics}, 6(2):65--70, 1979.
+\bibitem[Hu et al.(2024)]{hu2024routerbench} Q.~J. Hu, J.~Bieker, X.~Li, N.~Jiang, B.~Keigwin, G.~Ranganath, K.~Keutzer, and S.~K. Upadhyay. RouterBench: A benchmark for multi-LLM routing system. \emph{arXiv:2403.12031}; ICML 2024 workshop, 2024.
+\bibitem[Huang et al.(2025)]{huang2025routereval} Z.~Huang et al. RouterEval: A comprehensive benchmark for routing LLMs. \emph{arXiv:2503.10657}; EMNLP, 2025.
+\bibitem[Ong et al.(2025)]{ong2024routellm} I.~Ong, A.~Almahairi, V.~Wu, W.-L. Chiang, T.~Wu, J.~E. Gonzalez, M.~W. Kadous, and I.~Stoica. RouteLLM: Learning to route LLMs with preference data. \emph{ICLR}, 2025. \emph{arXiv:2406.18665}.
+\bibitem[Rockafellar and Uryasev(2000)]{rockafellar2000cvar} R.~T. Rockafellar and S.~Uryasev. Optimization of conditional value-at-risk. \emph{Journal of Risk}, 2(3):21--41, 2000.
+\bibitem[Yuan et al.(2025)]{yuan2025whoroutes} J.~Yuan, Y.~Lu, R.~Liu, Y.-N. Chuang, H.~Liu, S.~Zhong, Y.~Sui, G.~Wang, J.~Xing, and X.~Hu. Who routes the router: Rethinking the evaluation of LLM routing systems. \emph{NeurIPS 2025 LLM Evaluation Workshop}, 2025.
+\end{thebibliography}
+
+\appendix
+\input{appendix}
+
+\end{document}
