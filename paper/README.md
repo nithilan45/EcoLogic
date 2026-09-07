@@ -14,9 +14,24 @@ cd paper && pdflatex main.tex && pdflatex main.tex   # twice, for cross-refs
 `main.tex` is deliberately self-contained: `article` class plus `geometry`, so it
 compiles in a minimal TeX install with no style files to fetch. **Before
 submission, swap the preamble for the official workshop style file** (e.g.
-`\usepackage{iclr2027_workshop}`) and re-check the page budget — the content is
-sized for ~5 pages of body text under a typical workshop template, with
-everything else in `appendix.tex`.
+`\usepackage{iclr2027_workshop}`) and re-check the page budget.
+
+As of the current draft it compiles to **12 pages**: 6 pages of body, references
+on page 7, appendix on pages 8–11. If a venue caps the body at 5 pages, cut in
+this order — the list is deliberately recorded so the choice is not made under
+deadline pressure:
+
+1. §6 (`\label{sec:cost}`, matched-cost baselines and the biased cost axis) moves
+   to the appendix. It is prior work of this project, not a contribution of this
+   paper, and §1 already states the baseline argument.
+2. Proposition 4's statement compresses to one sentence with the proof in
+   Appendix A; only the *conclusion* (that `Var(delta)` needs replicates) is
+   load-bearing in the body.
+3. Table 2's per-set rows collapse to a range.
+
+Do **not** cut the deviations paragraph in §5, the blocked-rung paragraph, or
+the "null results are not proofs of absence" limitation. Those are the parts a
+reviewer is entitled to see.
 
 ## Where every number comes from
 
@@ -28,12 +43,16 @@ artifact.
 | §3, Table 1 | median `kappa` = 12.11 pp; router gain 0.59 pp; `rho_realised` = 4.6%; out-of-fold AUCs | `stage11_13/s11_routerbench_0shot.json` |
 | §3, multiple comparisons | 49/55 positive, 28 raw, 26 BH, 13 Holm | same, `pairwise_tests` |
 | §3, per-pair detail | 440 cells × 9 operating points | `stage11_13/s11_routerbench_pairs_0shot.csv.gz` |
+| §3, 5-shot replication; Appendix D table | `kappa` 11.44 pp, gain 0.640 pp, `rho` 5.5%, 50/55 positive, 22 BH, 11 Holm, 28 items dropped | `stage11_13/s11_routerbench_5shot.json` |
 | §4, Table 2 | reliability 0.77–0.98; `AUC*` 0.95–0.99 | `stage11_13/s12_ceiling.json` |
 | §4 | ceiling 8.4–15.6 pp vs `kappa` 3.3–9.5 pp, ratio 2.82 | same, `H3` |
 | §4 | peeking policy captures 34–55% of `kappa` | same, `split_replicate_gain` |
 | §5 | learning-curve asymptote 0.741, AUC(1e6)=0.726 | `stage11_13/s12b_learning_curve_0shot.json` |
-| §5, Table 3 | classical rungs (k-NN … logistic) | `stage7_10/s7_ceiling.json` |
-| §5, Table 3 | prompted 70B zero-shot 0.6416, 4-shot 0.7105; fine-tune | `stage11_13/s13_llm_router.json` |
+| §5, Table 3 | classical rungs (k-NN … logistic, Stage 7c) | `stage7_10/s7_ceiling.json` |
+| §5, Table 3 | frozen reference refit 0.6896; prompted 70B 0.6416 / 0.7105; gains at β=0.5; C1 and C2 verdicts | `stage11_13/s13_llm_router.json` |
+| §5, Table 3 | ΔAUC intervals and Holm-adjusted p-values | same, `paired_bootstrap_vs_frozen` |
+| §5 | end-to-end encoders 0.6945 / 0.6912, inner-val 0.751 | `stage11_13/s13b_encoder_finetune.json` |
+| §5, Appendix F | the blocked fine-tuned generative rung, four provider errors | `stage11_13/s13_ftblocked.json`, `s13_endpoint_probe.json` |
 | §6 | 86.8% vs 92.3% at 6.87× cost; 88.6% vs 55.0% | `raw_results/tables_cost.md` |
 | §6 | RouteLLM +0.57 pp, 8/9 points, sign test p=0.039 | `stage7_10/s9_static_baselines.json` |
 | §6 | correction 1.9× regret, reconciles to 2e-16, 6.3% on RouteLLM | `stage7_10/regret_correction_validation.json`, `external_generalization.json` |
@@ -52,9 +71,16 @@ Appendix A are condensed from it).
 - One pre-registration statement was **wrong** (D2: a peeking policy does not
   upper-bound `A†`). It is corrected in place and the affected quantity is
   relabelled.
-- The learning-curve analysis is **exploratory and not pre-registered**, and is
-  labelled as such in the paper.
-- If the Together AI fine-tune had failed or exhausted credits, the rung would
-  be reported as **BLOCKED** with the provider error, not estimated. The
-  `\FTAUC` / `\FTINFER` / `\FTTOTAL` macros in `main.tex` exist so that state is
-  explicit in the source.
+- The learning-curve analysis and the end-to-end encoder rungs are
+  **exploratory and not pre-registered**, and are labelled as such in the paper.
+  The encoders are still judged against the pre-registered +0.05 threshold, so
+  adding them cannot make the criterion easier to pass.
+- The fine-tuned **generative** LLM rung is reported as **BLOCKED** with the
+  provider's four verbatim errors (Appendix F), not estimated. The `\FTAUC` /
+  `\FTINFER` / `\FTTOTAL` macros in `main.tex` carry that state explicitly in
+  the source. The $25 spend gate was never the binding constraint; the
+  provider's account balance was, at $9.71.
+- The paper reports that **no** router rung's AUC advantage over the frozen
+  baseline survives Holm correction, and separately that the widest interval is
+  ±0.05, so a +0.02 effect cannot be ruled out. Both statements are in §5 and
+  Limitations.

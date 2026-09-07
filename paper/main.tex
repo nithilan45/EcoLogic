@@ -26,13 +26,15 @@
 \newcommand{\CTE}{\mathrm{CTE}}
 \newcommand{\pp}{\,\text{pp}}
 
-% Fine-tuned-router numbers. Filled from stage11_13/s13_llm_router.json once the
-% Together AI LoRA job completes; if it does not, these stay as the BLOCKED
-% markers and section 5 reports the rung as blocked rather than estimated.
-\newcommand{\FTAUC}{\emph{pending}}
+% Fine-tuned-generative-LLM rung. The LoRA job trained successfully ($6.71) but
+% proved unservable through four independent routes, and re-training on a
+% servable base was refused for insufficient account balance. It is therefore
+% reported as BLOCKED with the provider errors, never estimated. See
+% stage11_13/s13_ftblocked.json and DEVIATIONS.md D8.
+\newcommand{\FTAUC}{\textsc{blocked}}
 \newcommand{\FTTRAIN}{6.71}
-\newcommand{\FTINFER}{\emph{pending}}
-\newcommand{\FTTOTAL}{\emph{pending}}
+\newcommand{\FTINFER}{0.00}
+\newcommand{\FTTOTAL}{9.71}
 
 \title{\bf Complementarity is Abundant, Predictability is Not the Problem:\\
 Decomposing Why LLM Routers Gain So Little}
@@ -65,10 +67,16 @@ replicates---we find per-item difficulty is highly \emph{reliable}
 Bayes-optimal AUC of 0.95--0.99), so $\rho \approx 1$ and unpredictability is
 \emph{not} the bottleneck. The entire gap is $\varepsilon$: which model will
 succeed is a stable property of the item that routers cannot read off the prompt.
-That gap survives eight router families, TF-IDF through a prompted 70B model and
-a LoRA-fine-tuned 27B model, and a learning curve whose power-law asymptote is
-$0.74$ AUC at $10^9$ training items. Routing's binding constraint is
-generalisation, not noise and not model redundancy.
+That gap survives nine router families---TF-IDF through a prompted 70B model and
+an \emph{end-to-end fine-tuned} encoder---and a learning curve whose power-law
+asymptote is $0.74$ AUC. Under a paired bootstrap with Holm correction,
+\emph{no} family's AUC advantage over a frozen MiniLM$+$logistic baseline is
+distinguishable from zero. Two findings sharpen the measurement problem itself:
+the highest-AUC router we built has the \emph{worst} matched-cost gain
+($-1.31\pp$), so per-model AUC is not a proxy for router value; and the whole
+analysis replicates on RouterBench's independent 5-shot release
+($\kappa=11.44\pp$, $\rho_{\text{realised}}=5.5\%$). Routing's binding
+constraint is generalisation, not noise and not model redundancy.
 \end{abstract}
 
 \section{Introduction}
@@ -115,11 +123,20 @@ opposite: difficulty is reliable, $\rho\approx1$, and our ceiling bound is
 vacuous at these effect sizes. We report the refutation, and it sharpens the
 claim rather than weakening it.
 \item \textbf{The gap is generalisation, and it does not close}
-(\S\ref{sec:eps}). Eight router families---TF-IDF, MiniLM$+$logistic,
+(\S\ref{sec:eps}). Nine router families---TF-IDF, MiniLM$+$logistic,
 MiniLM$+$MLP, MiniLM$+$boosted trees, $k$-NN, random forest, a prompted 70B
-model, and a LoRA fine-tune of a 27B model---all land in $0.64$--$0.72$ AUC. A
-learning curve over $250$ to $29{,}000$ training items extrapolates to an
-asymptote of $0.74$.
+model zero-shot and 4-shot, and two \emph{end-to-end fine-tuned} encoders---all
+land in $0.64$--$0.72$ AUC, and none of their advantages over the frozen
+baseline survives a paired bootstrap with Holm correction. A learning curve over
+$250$ to $29{,}000$ training items extrapolates to an asymptote of $0.74$.
+\item \textbf{Per-model AUC is not a proxy for router value} (\S\ref{sec:eps}).
+The prompted 4-shot 70B router has the best AUC of any rung ($0.710$) and the
+\emph{worst} realised matched-cost gain ($-1.31\pp$, i.e.\ worse than ignoring
+the query). AUC is invariant to the monotone rescaling of per-model scores that
+a matched-cost policy depends on, so a router can rank items well within each
+model and still make the wrong \emph{cross-model} comparison on every item. The
+routing literature reports AUC or accuracy-at-a-budget almost universally; this
+is a concrete case where the two disagree in sign.
 \end{enumerate}
 
 We claim no new router, architecture or algorithm, and we do not claim routing
@@ -277,6 +294,16 @@ Note also that the MLP is the \emph{worst} of the four despite the most
 capacity---the same inversion we observe in-house, and the first hint that the
 binding constraint is not model class.
 
+\paragraph{Replication on the 5-shot release.} RouterBench ships a second,
+independent set of generations in which every prompt carries five in-context
+exemplars. It was pre-registered as a replication and analysed with identical
+code: $\kappa = 11.44\pp$ $[10.66, 12.27]$, best-router gain $+0.640\pp$
+$[0.519, 0.790]$, $\rho_{\text{realised}} = 5.5\%$ $[4.4\%, 6.8\%]$, with $50$
+of $55$ pairs positive and $11$ surviving Holm. Both hypotheses are supported
+again and the headline ratio moves by about a percentage point of $\kappa$. (28
+of $36{,}508$ 5-shot items are dropped for missing score cells; the 0-shot file
+has none.)
+
 \section{Predictability is not the bottleneck: a refuted hypothesis}\label{sec:ceiling}
 
 We pre-registered the hypothesis that $\rho$ is small---that per-item success is
@@ -344,39 +371,82 @@ doublings of data per $+0.01$ AUC. Realised gain does improve with data
 data helps---but the extrapolated ceiling stays far below what capturing
 $\kappa$ would need. (Exploratory; not pre-registered.)
 
-\paragraph{A stronger router?} Table~\ref{tab:ladder} walks up eight router
+\paragraph{A stronger router?} Table~\ref{tab:ladder} walks up nine router
 families on the identical 1{,}500-item held-out split. Nothing escapes the
-$0.64$--$0.72$ band. A prompted 70B model with four in-context exemplars reaches
-$0.710$, $+0.029$ over the best classical learner---real, but below the
-$+0.05$ we pre-registered as the threshold at which "you tested a weak router"
-would become a live objection again.
+$0.64$--$0.72$ band, and under a paired bootstrap over items with
+Holm--Bonferroni correction across the four new rungs, \emph{none} of their AUC
+advantages over the frozen MiniLM$+$logistic reference is distinguishable from
+zero (smallest $p_{\text{Holm}} = 0.26$). The largest point estimate, the
+prompted 70B model with four exemplars at $+0.021$ $[-0.019, +0.062]$, is well
+below the $+0.05$ we pre-registered as the threshold at which ``you tested a
+weak router'' would become a live objection again.
+
+Two rungs deserve comment. First, we \emph{unfroze the encoder}: the same
+\texttt{all-MiniLM-L6-v2} whose frozen output gives $0.690$ was fine-tuned
+end-to-end on the routing labels, which is the intervention that answers ``maybe
+the representation is the problem.'' It gains $+0.005$
+$[-0.014, +0.025]$. Its inner-validation AUC reaches $0.751$ while its held-out
+AUC is $0.694$---so the capacity to fit routing labels exists and does not
+transfer, which is $\varepsilon$ made visible.
+
+Second, and this is the measurement point: \textbf{the highest-AUC rung has the
+worst matched-cost gain.} The prompted 4-shot router's $-1.31\pp$ is worse than
+ignoring the query entirely, at the same budget, on the same items. AUC is
+computed per model and is invariant to any monotone rescaling of that model's
+scores, but a matched-cost policy ranks items by the \emph{difference} between
+two models' predicted utilities. A router can therefore order items correctly
+within each model and still get every cross-model comparison wrong. Since the
+routing literature reports per-model AUC or accuracy-at-a-budget almost
+universally, this is a concrete case where the standard metric and the quantity
+a deployment cares about disagree in sign.
 
 \begin{table}[t]\centering\small
-\caption{Router-strength ladder, mean held-out per-tier AUC on the same
-1{,}500-item split. Rows above the rule are from earlier stages of this project
-on identical data.}
+\caption{Router-strength ladder on the same 1{,}500-item held-out split.
+Rows above the first rule are earlier stages of this project on identical data.
+$\Delta$AUC and its interval are a 2{,}000-resample paired bootstrap over items
+against the frozen MiniLM$+$logistic reference, Holm-corrected across the four
+new rungs. Gain is the realised matched-cost gain at $\beta=0.5$ against
+$\kappa=4.07\pp$ on this split.}
 \label{tab:ladder}
-\begin{tabular}{llc}
+\begin{tabular}{llccc}
 \toprule
-Router & Representation & mean AUC \\
+Router & Representation & mean AUC & $\Delta$AUC $[95\%]$ & gain (pp) \\
 \midrule
-$k$-NN ($k{=}50$)      & MiniLM & 0.6521 \\
-Gradient boosting      & MiniLM & 0.6547 \\
-Random forest (train AUC 0.9999) & MiniLM & 0.6703 \\
-Logistic regression    & MiniLM & 0.6816 \\
+$k$-NN ($k{=}50$)      & MiniLM (frozen) & 0.6521 & --- & --- \\
+Gradient boosting      & MiniLM (frozen) & 0.6547 & --- & --- \\
+Random forest (train AUC 0.9999) & MiniLM (frozen) & 0.6703 & --- & --- \\
+Logistic regression, Stage 7c    & MiniLM (frozen) & 0.6816 & --- & --- \\
 \midrule
-Prompted LLM, zero-shot  & Llama-3.3-70B-Instruct & 0.6416 \\
-Prompted LLM, 4-shot     & Llama-3.3-70B-Instruct & 0.7105 \\
-LoRA fine-tune           & Gemma-3-27B-it & \FTAUC \\
+Logistic regression, refit here  & MiniLM (frozen) & 0.6896 & \emph{reference} & $+0.556$ \\
+Prompted LLM, zero-shot  & Llama-3.3-70B-Instruct & 0.6416 & $-0.048$ $[-0.097,+0.004]$ & $-0.444$ \\
+Prompted LLM, 4-shot     & Llama-3.3-70B-Instruct & \textbf{0.7105} & $+0.021$ $[-0.019,+0.062]$ & $\mathbf{-1.311}$ \\
+Fine-tuned end-to-end    & MiniLM-L6 (unfrozen)   & 0.6945 & $+0.005$ $[-0.014,+0.025]$ & $+0.533$ \\
+Fine-tuned end-to-end    & MiniLM-L12 (unfrozen)  & 0.6912 & $+0.002$ $[-0.018,+0.023]$ & $+0.533$ \\
+LoRA fine-tune           & Gemma-3-27B-it & \FTAUC & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The random forest is the diagnostic: it reaches training AUC $0.9999$---it
-memorises the training set perfectly---and still generalises \emph{below}
-logistic regression. Ample capacity, no held-out gain. That is the signature of a
-target that is not a smooth function of the input representation, not of an
-inadequate model class.
+The random forest is the other diagnostic: it reaches training AUC
+$0.9999$---it memorises the training set perfectly---and still generalises
+\emph{below} logistic regression. Ample capacity, no held-out gain. That is the
+signature of a target that is not a smooth function of the input representation,
+not of an inadequate model class.
+
+\paragraph{What we could not run, and what it costs the argument.} The
+pre-registered top rung was a fine-tuned \emph{generative} LLM router. The LoRA
+job trained without incident (Gemma-3-27B-it, 3 epochs, $10{,}500$ examples,
+$1{,}491{,}033$ tokens, \$\FTTRAIN{} booked from the provider's reported price)
+and then proved unservable through four independent routes, each probed rather
+than assumed: serverless LoRA inference is unavailable account-wide; dedicated
+endpoints v1 no longer accept creates platform-wide; the v2 resource model has
+no certified serving config for this base architecture; and re-training on a
+base that v2 \emph{can} serve was refused for insufficient account balance. We
+report the rung as \textsc{blocked} with those errors rather than estimating it,
+and we state the cost to the argument plainly: a reader who believes a fine-tuned
+generative LLM router would clear $+0.05$ has been answered by a fine-tuned
+encoder, a prompted 70B model, a memorising random forest and a learning
+curve---not by the thing they asked for.
 
 \section{Matched-cost baselines and a biased cost axis}\label{sec:cost}
 
@@ -461,9 +531,22 @@ they mean token counts times assumed per-tier rates; the headline comparisons in
 \emph{Generality.} Propositions~\ref{prop:ladder}, \ref{prop:rho},
 \ref{prop:reps} and \ref{prop:auc} hold for general $K$;
 Proposition~\ref{prop:ceiling} and the closed forms are two-model statements.
-Our fine-tuned rung is one LoRA configuration on one base model; a larger or
-differently-trained router could do better than $0.71$, and the learning-curve
-extrapolation is a power-law fit, not a proof.
+The learning-curve extrapolation is a power-law fit, not a proof.
+
+\emph{The top rung of the ladder is missing.} The pre-registered fine-tuned
+\emph{generative} LLM router is \textsc{blocked}, for the four provider reasons
+in \S\ref{sec:eps}. Our strongest evidence against ``you tested a weak router''
+is therefore an end-to-end fine-tuned encoder plus a prompted 70B model, not a
+fine-tuned generative router, and a reviewer is entitled to hold that specific
+objection open. Two things bound how much it can buy: the fine-tuned encoder has
+the \emph{capacity} to fit the labels (inner-validation AUC $0.751$) and the
+capacity does not transfer, and the effect would have to be $10\times$ the
+largest we measured to change the conclusion.
+
+\emph{Null results with wide intervals are not proofs of absence.} Every
+$\Delta$AUC interval in Table~\ref{tab:ladder} is roughly $\pm0.02$--$0.05$
+wide on $1{,}500$ items. We can rule out the $+0.05$ effect we pre-registered;
+we cannot rule out a $+0.02$ one, and we do not.
 
 \section{Conclusion}
 
@@ -473,8 +556,8 @@ respectively. Measured across 11 models and 8 benchmarks, complementarity is
 abundant ($12.11\pp$) and routers capture $4.6\%$ of it. We expected
 predictability to be the missing factor, pre-registered that hypothesis, and
 refuted it: per-item difficulty is highly reliable, so the information is there.
-What is missing is the ability to infer it from prompt text---a gap that eight
-router families, a 70B prompted model, a fine-tuned 27B model and a
+What is missing is the ability to infer it from prompt text---a gap that nine
+router families, a 70B prompted model, two end-to-end fine-tuned encoders and a
 $29{,}000$-item learning curve all fail to close. The practical implication is
 uncomfortable but actionable: for these workloads, effort spent on better
 routers is likely dominated by effort spent on choosing a more complementary

@@ -109,8 +109,8 @@ they govern (\texttt{stage11\_13/prereg\_stage11\_13.md}); the commit precedes
 every result artifact and this can be checked against \texttt{git log}. This
 follows the same discipline as two earlier pre-registrations in the project.
 
-Five deviations are recorded in \texttt{stage11\_13/DEVIATIONS.md}. The two that
-affect claims:
+Eight deviations are recorded in \texttt{stage11\_13/DEVIATIONS.md}. The three
+that affect claims:
 
 \textbf{D1.} H3 (``the router-free bound is $\le50\%$ of $\kappa$'') was
 \textbf{refuted}: the bound is $2.82\times$ $\kappa$ at median. The
@@ -125,6 +125,13 @@ outcome, not a function of $x$, so the two information sets are incomparable; on
 their join contains $\sigma(x)$. The error was caught while implementing Stage 12,
 before any result depended on it. The quantity is still reported, relabelled as
 the unbiased value of a feasible peeking policy rather than a bound.
+
+\textbf{D8.} The pre-registered fine-tuned generative LLM rung is
+\textsc{blocked}; Appendix~\ref{app:blocked} gives the four provider errors.
+Two additions are exploratory and labelled as such throughout: the learning
+curves (D3) and the end-to-end fine-tuned encoders (D7). The encoders are judged
+against the \emph{same} pre-registered $+0.05$ threshold as the pre-registered
+rungs, so adding them cannot make the criterion easier to pass.
 
 \section{Per-family RouterBench detail}\label{app:rb}
 
@@ -141,6 +148,27 @@ Benjamini--Hochberg at FDR $0.05$, and $13$ survive Holm--Bonferroni at
 family-wise $\alpha=0.05$. $p$-values are two-sided bootstrap over benchmark
 families with the router and baseline evaluated on identical items.
 
+\begin{table}[h]\centering\small
+\caption{The 5-shot release as a pre-registered replication of the 0-shot
+primary analysis, run with identical code. Medians over the same 440
+pair-family cells at $\beta=0.5$, $95\%$ bootstrap intervals over cells.}
+\begin{tabular}{lcc}
+\toprule
+Quantity & 0-shot (primary) & 5-shot (replication) \\
+\midrule
+items analysed                    & 36{,}494 & 36{,}480 (28 dropped, missing cells) \\
+complementarity $\kappa$          & $12.11\pp$ $[11.15,12.92]$ & $11.44\pp$ $[10.66,12.27]$ \\
+best router                       & TF-IDF $+$ logistic & TF-IDF $+$ logistic \\
+\quad out-of-fold AUC             & 0.7160 & 0.7172 \\
+\quad realised gain               & $+0.585\pp$ $[0.442,0.767]$ & $+0.640\pp$ $[0.519,0.790]$ \\
+\quad $\rho_{\text{realised}}$    & $4.6\%$ $[3.6,5.9]$ & $5.5\%$ $[4.4,6.8]$ \\
+pairs with positive mean gain     & 49/55 & 50/55 \\
+pairs surviving BH / Holm         & 26 / 13 & 22 / 11 \\
+H1, H2 verdicts                   & supported & supported \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Cost accounting for the new experiments}\label{app:cost}
 
 The project's earlier stages spent \$48.09 of real API budget. Stage 13 was
@@ -149,26 +177,67 @@ accumulates the provider's own reported usage and the run aborts if the gate is
 crossed (\texttt{stage11\_13/s13\_spend.json}).
 
 \begin{table}[h]\centering\small
-\caption{Additional spend for the new experiments.}
+\caption{Additional spend for the new experiments. Every line is the provider's
+own reported usage or job price, accumulated at call time.}
 \begin{tabular}{llr}
 \toprule
 Item & Volume & USD \\
 \midrule
 Prompted router, zero-shot (Llama-3.3-70B) & 4{,}500 calls & 0.58 \\
 Prompted router, 4-shot (Llama-3.3-70B)    & 4{,}500 calls & 2.41 \\
-LoRA fine-tune (Gemma-3-27B-it, 3 epochs)  & 10{,}500 examples & \FTTRAIN \\
-Fine-tuned router inference                & 4{,}500 calls & \FTINFER \\
-RouterBench analysis, learning curves, theory & --- & 0.00 \\
+LoRA fine-tune (Gemma-3-27B-it, 3 epochs)  & 10{,}500 examples, 1{,}491{,}033 tokens & \FTTRAIN \\
+Fine-tuned generative router inference     & \textsc{blocked}, App.~\ref{app:blocked} & \FTINFER \\
+End-to-end fine-tuned encoders (CPU)       & 2 backbones $\times$ 6 epochs & 0.00 \\
+RouterBench (both releases), curves, theory & --- & 0.00 \\
 \midrule
 \textbf{Total additional} & & \textbf{\FTTOTAL} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-RouterBench, the decomposition, the learning curves and all validation cost
-nothing: they are analyses of already-released outcomes and of already-paid-for
-generations. The expensive part of this project is the replicate data, and it is
-the part no public dataset provides.
+The pre-registered gate was never the binding constraint: spend stopped at
+\$\FTTOTAL{} of \$25 because the provider refused further fine-tuning jobs, not
+because we chose to stop. RouterBench, the decomposition, the learning curves,
+the end-to-end encoder rungs and all numerical validation cost nothing: they
+analyse already-released outcomes and already-paid-for generations, or are CPU
+work. The expensive part of this project is the replicate data, and it is the
+part no public dataset provides.
+
+\section{The blocked rung, in full}\label{app:blocked}
+
+The pre-registration commits us to reporting a blocked run as blocked, with the
+provider's error, and to estimating nothing in its place. Each route below was
+probed rather than assumed; verbatim responses are stored in
+\texttt{stage11\_13/s13\_ftblocked.json} and
+\texttt{stage11\_13/s13\_endpoint\_probe.json}.
+
+\begin{enumerate}\itemsep2pt
+\item \textbf{The fine-tune itself succeeded.} Job \texttt{ft-6567602b-4aa3},
+LoRA on \texttt{google/gemma-3-27b-it}, 3 epochs over the 10{,}500
+prompt/completion pairs in \texttt{s13\_ft\_train.jsonl} (the exact file is
+committed), 1{,}491{,}033 tokens, \$\FTTRAIN.
+\item \textbf{Serverless LoRA inference: unavailable.} \texttt{/v1/models}
+advertises 13 \texttt{*-Lora} inference targets including
+\texttt{google/gemma-3-27b-it-lora}; every one returns \texttt{400 Unable to
+access non-serverless model} on this account, and the fine-tuned name itself
+returns \texttt{404 model\_not\_available}.
+\item \textbf{Dedicated endpoints v1: retired.} \texttt{POST /v1/endpoints}
+returns \texttt{403 endpoints\_v1\_create\_access\_disabled} --- a platform-wide
+change, not an account limit.
+\item \textbf{Dedicated endpoints v2: no config for this base.} v2 requires a
+certified serving config; \texttt{models.configs.list} returns \emph{zero} for
+both the merged fine-tune and the \texttt{gemma-3-27b-it} base, and that base is
+absent from the 43 v2-supported architectures. A \texttt{validate\_only}
+deployment create fails for want of a config.
+\item \textbf{Re-training on a servable base: refused.}
+\texttt{Qwen/Qwen3.5-9B} is fine-tunable \emph{and} has a certified v2 config
+(1$\times$H100 BF16, \$3.99/replica-hour), and it is the Tier-1 model of the
+system under study, so the router would have cost no more to run than the
+cheapest tier it routes to. \texttt{POST /v1/fine-tunes} returns
+\texttt{402 insufficient\_balance}: ``Required combined balance and credit
+limit: 4.00 USD''. Pay-as-you-go serverless calls still return 200, so the block
+is the upfront reserve a fine-tuning job requires, not the credential.
+\end{enumerate}
 
 \section{Reproduction}\label{app:repro}
 
@@ -179,8 +248,12 @@ curl -L -o external_data/routerbench_0shot.pkl \
   https://huggingface.co/datasets/withmartian/routerbench/resolve/main/routerbench_0shot.pkl
 python3 stage11_13/s11_routerbench.py 0shot   # decomposition, 55 pairs x 8 families
 python3 stage11_13/s12_ceiling.py             # replicate variance components
+python3 stage11_13/s11_routerbench.py 5shot   # pre-registered replication
 python3 stage11_13/s12b_learning_curve.py     # learning curves
+python3 stage11_13/s13b_encoder_finetune.py   # end-to-end encoder rungs, CPU, $0
+python3 stage11_13/s13c_encoder_routerbench.py 0shot   # same, on RouterBench
 python3 stage11_13/s13_llm_router.py probe    # cost projection before spending
+python3 stage11_13/s13_llm_router.py report   # C1/C2 verdicts and bootstrap CIs
 \end{verbatim}
 
 Seeds, package versions, model strings, endpoints and dataset revisions for all
