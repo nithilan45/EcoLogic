@@ -15,20 +15,26 @@ EcoLogic is a ChatGPT-style Q&A system with a critical difference: it governs wh
 
 ---
 
-> ### 📊 Independent evaluation of the routing claims — read [`EVALUATION.md`](EVALUATION.md)
+> ## 🔬 This repository is now also a research artifact
 >
-> The routing and energy claims below have since been **measured** against
-> HumanEval, MMLU and GSM8K with real API calls, objective grading and
-> confidence intervals. Headline result: tier-based routing does deliver large
-> energy savings, but **the keyword classifier is the weak link** — a perfect
-> router on these same three tiers would be 9.6 pp more accurate *and* 44%
-> cheaper, and simply sending every query to Tier 2 beats the classifier on both
-> axes. A trained replacement router did not reliably fix it either.
+> **Research goal:** energy-saving LLM routers are reported without the baselines
+> or the cost accounting needed to know whether they save anything. This work
+> builds the **audit protocol that makes such a claim falsifiable** — and applies
+> it to the router in this repo, which fails it.
 >
-> Start with [`EVALUATION.md`](EVALUATION.md) for the guided tour, or
-> [`results_report.md`](results_report.md) for the main report. Note that energy
-> throughout this project is **modelled from token counts, not measured** with
-> hardware instrumentation.
+> The research question is not "does routing beat always-using-GPT-4o" (it does,
+> trivially) but **"does looking at the query beat not looking at the query?"**
+> On 364 objectively graded items, the answer here is no: sending *every* query
+> to Tier 2 is **5.5 pp more accurate and 43% cheaper** than the classifier.
+> Replacing the keyword rules with a properly trained, pre-registered router did
+> not reliably fix it either.
+>
+> **→ Read [`EVALUATION.md`](EVALUATION.md) first** (goal, contributions,
+> findings), then [`results_report.md`](results_report.md) (main report).
+>
+> Everything below this box describes the **product**. The evaluation changes no
+> product code. Note that energy throughout is **modelled from token counts, not
+> metered** — the honest bound on all of it.
 
 ---
 
@@ -1238,36 +1244,44 @@ graded objectively — code by executing the official test suites, MMLU by lette
 match, GSM8K by final-answer match. Energy is token counts × the per-tier
 J/1k-token rates in `backend/main.py`, so it is **modelled, not metered**.
 
-| Routing policy | Accuracy [95% CI] | Energy vs always-frontier |
-|---|---|---|
-| **EcoLogic (the real classifier)** | **86.8%** [82.9%, 89.9%] | **0.114x** |
-| Always-frontier (`gpt-4o` on everything) | 91.5% [88.2%, 93.9%] | 1.000x |
-| Random tier assignment | 90.7% [87.2%, 93.2%] | 0.421x |
-| Always Tier 1 | 87.6% [83.9%, 90.6%] | 0.112x |
-| Always Tier 2 | 92.3% [89.1%, 94.6%] | 0.065x |
-| Oracle (cheapest tier that was correct) | 96.4% [94.0%, 97.9%] | 0.064x |
+**The comparison that matters is not against always-frontier.** Every tiered
+router beats "send everything to GPT-4o" on energy; that is not the bar. The bar
+is whether reading the query beats ignoring it, so the static single-tier rows
+below are the real baselines.
 
-**What this supports:** routing does cut energy dramatically — EcoLogic used
-11.4% of always-frontier energy, an 88.6% saving, and gave up 4.7 pp of accuracy
-to do it.
+| Routing policy | Accuracy [95% CI] | Energy | vs always-frontier |
+|---|---|---|---|
+| **EcoLogic (the real classifier)** | **86.8%** [82.9%, 89.9%] | **689 J** | **0.114x** |
+| Always Tier 2 — *ignores the query* | **92.3%** [89.1%, 94.6%] | **394 J** | 0.065x |
+| Always Tier 1 — *ignores the query* | 87.6% [83.9%, 90.6%] | 677 J | 0.112x |
+| Random tier assignment | 90.7% [87.2%, 93.2%] | 2,556 J | 0.421x |
+| Always-frontier (`gpt-4o` on everything) | 91.5% [88.2%, 93.9%] | 6,066 J | 1.000x |
+| Oracle (cheapest tier that was correct) | 96.4% [94.0%, 97.9%] | 386 J | 0.064x |
 
-**What it does not:** the classifier is not the reason it works. The oracle row
-shows a perfect router on these same three tiers would have been **9.6 pp more
-accurate and 44% cheaper**, so nearly all the remaining headroom is in routing
-decisions rather than the tier design. And "always Tier 2" beat the classifier on
-*both* axes — more accurate (92.3% vs 86.8%) and cheaper (0.065x vs 0.114x) —
-so on this workload the routing logic is not yet earning its complexity.
+**What this supports:** the tier *design* works. Routing cut energy to 11.4% of
+always-frontier — an 88.6% saving for 4.7 pp of accuracy.
 
-Replacing the keyword classifier with a trained one (pre-registered,
-one-shot-tested) did not reliably close the gap either; see
-[`router_v2/README.md`](router_v2/README.md) and
+**What it refutes:** the classifier is not what makes it work. Sending every
+query to Tier 2 is **5.5 pp more accurate and 43% cheaper** than the classifier,
+while looking at nothing at all. And the oracle row shows a perfect router on
+these *same three tiers* would be **9.6 pp more accurate and 44% cheaper** — so
+essentially all remaining headroom is in routing decisions, not the models.
+
+A trained, pre-registered replacement router did not reliably close the gap
+either, and the reason generalises: per-item tier success is only weakly
+predictable from prompt text (held-out AUC ≈ 0.67), and 4.2× more training data
+barely moved it. See [`router_v2/README.md`](router_v2/README.md) and
 [`stage7_10/SUMMARY.md`](stage7_10/SUMMARY.md).
 
-Two caveats a contributor should know before optimising against these numbers:
-the classifier agrees with itself on only **53.0%** of items between the raw
-query and the wrapped prompt actually sent to the model, and `gpt-4o` scored
-*lowest of the three tiers* on code, so "always-frontier" is not the quality
-ceiling the tier design assumes.
+Three caveats before optimising against these numbers:
+
+- The classifier agrees with itself on only **53.0%** of items between the raw
+  query and the wrapped prompt actually sent to the model.
+- `gpt-4o` scored *lowest of the three tiers* on code, so "always-frontier" is
+  **not** the quality ceiling the tier design assumes.
+- Re-running identical prompts at temperature 0 flips the graded verdict on
+  **19.8%** of Tier 1 items, so small accuracy differences between tiers are not
+  reproducible from a single run.
 
 ---
 

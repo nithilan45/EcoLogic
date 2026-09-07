@@ -1,11 +1,17 @@
 # EcoLogic — context.md
 
-> **This document states the product intent.** For what was actually measured
-> once the routing claims were tested, see [`EVALUATION.md`](EVALUATION.md).
-> Relevant to §1 below: routing does cut energy substantially, but the tier
-> classifier is outperformed by static "always Tier 2" assignment on both
-> accuracy and energy, so "most queries answered by very low-energy models" is
-> currently a design goal rather than a validated result.
+> **This document states the original product intent, not the research goal.**
+>
+> The project now also carries a research artifact whose goal is different and
+> broader: building the **audit protocol needed to tell whether an energy-saving
+> router saves anything**, since the usual "savings versus always-GPT-4o"
+> comparison cannot answer that. See [`EVALUATION.md`](EVALUATION.md).
+>
+> Relevant to §1 below, and measured: routing does cut energy substantially, but
+> the tier classifier is beaten on **both** accuracy and energy by static "always
+> Tier 2" assignment, which ignores the query entirely. So "most queries answered
+> by very low-energy models" is a design goal that has been tested and not yet
+> validated — the escalation logic is not currently earning its complexity.
 
 ## 0) One-liner
 EcoLogic is a minimalist, sustainable alternative to ChatGPT that reduces the environmental cost of AI answers by governing which model is used (low, medium, or high energy) based on the user’s question.

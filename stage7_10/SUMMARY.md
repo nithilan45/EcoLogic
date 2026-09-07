@@ -1,4 +1,12 @@
-# Addendum 4 (Stages 7–10) — completion summary
+# Scaled retest, cost-accounting correction, and evaluation hardening
+
+> **New here?** Read [`../EVALUATION.md`](../EVALUATION.md) first for the research
+> goal. **This group's role:** four follow-ups that close out the objections to
+> the main finding and produce the results that generalise beyond this codebase —
+> (7) does the router lose only because it lacked data? (8) the exact correction
+> to the cost accounting the routing literature uses, (9) does that correction
+> matter for published systems? (10) how much of every reported interval is
+> generation noise rather than real signal?
 
 Nothing in `raw_results/`, `results_report.md` or `router_v2/` was modified.
 Everything here is new, in `stage7_10/`.

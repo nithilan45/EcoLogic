@@ -1,5 +1,10 @@
 # EcoLogic Routing Evaluation — Publication-Grade Benchmark
 
+> **New here?** Read [`EVALUATION.md`](EVALUATION.md) first for the research goal
+> and how this report fits into it. In short: this is the **main report** — the
+> measurement that asks whether reading the query beats ignoring it. The static
+> "Always Tier 1/2" rows, not always-frontier, are the baselines that matter.
+
 **Date:** 2026-09-05
 **Item set:** 364 prompts (HumanEval 164, MMLU 100, GSM8K 100)
 **Calls:** 1,092 graded generation calls (364 items x 3 tiers), plus 63 repeat

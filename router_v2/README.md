@@ -1,4 +1,11 @@
-# Learned router (Addendum 3)
+# Learned router — is the keyword classifier the problem?
+
+> **New here?** Read [`../EVALUATION.md`](../EVALUATION.md) first for the research
+> goal. **This study's role:** the main report found the keyword classifier loses
+> to static tier assignment. That leaves an obvious objection — *maybe keyword
+> matching is just a weak implementation, and a trained router would win.* This
+> tests that objection directly, so the finding is about the workload rather than
+> about one crude classifier.
 
 A new artifact alongside the previous audit, not a rewrite of it. Nothing in
 `raw_results/` or `results_report.md` was modified; those stand as the "before"
