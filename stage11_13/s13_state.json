@@ -1,0 +1,8 @@
+{
+ "file_id": "file-a7cc05c2-6875-4d40-bf47-a618b7f813eb",
+ "job_id": "ft-6567602b-4aa3",
+ "base_model": "google/gemma-3-27b-it",
+ "status": "running",
+ "total_price": 6709648500,
+ "token_count": 1491033
+}

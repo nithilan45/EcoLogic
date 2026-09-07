@@ -1,0 +1,623 @@
+{
+ "shot": "0shot",
+ "sha256": "ba4f77f19517610a707c374e99322d7750c30fc4ae7ff5527888595a1e65d36d",
+ "n_items": 36494,
+ "n_models": 11,
+ "models": [
+  "WizardLM/WizardLM-13B-V1.2",
+  "claude-instant-v1",
+  "claude-v1",
+  "claude-v2",
+  "gpt-3.5-turbo-1106",
+  "gpt-4-1106-preview",
+  "meta/code-llama-instruct-34b-chat",
+  "meta/llama-2-70b-chat",
+  "mistralai/mistral-7b-chat",
+  "mistralai/mixtral-8x7b-chat",
+  "zero-one-ai/Yi-34B-Chat"
+ ],
+ "seed": 20260907,
+ "n_boot": 2000,
+ "headline_beta": 0.5,
+ "min_family_n": 100,
+ "family_sizes": {
+  "mmlu": 14042,
+  "gsm8k": 7450,
+  "hellaswag": 10042,
+  "winogrande": 1267,
+  "arc": 1470,
+  "mbpp": 427,
+  "mtbench": 80,
+  "chinese": 785,
+  "other": 931
+ },
+ "out_of_fold_auc": {
+  "tfidf_logreg": {
+   "mean_auc": 0.7159721886139113,
+   "per_model": {
+    "WizardLM/WizardLM-13B-V1.2": 0.6663782517140295,
+    "claude-instant-v1": 0.6793796654418722,
+    "claude-v1": 0.7071831633833074,
+    "claude-v2": 0.7049643683412927,
+    "gpt-3.5-turbo-1106": 0.6951837045424598,
+    "gpt-4-1106-preview": 0.7273358536614487,
+    "meta/code-llama-instruct-34b-chat": 0.8425275784597195,
+    "meta/llama-2-70b-chat": 0.8319130620566051,
+    "mistralai/mistral-7b-chat": 0.6200310098358885,
+    "mistralai/mixtral-8x7b-chat": 0.7062728076195764,
+    "zero-one-ai/Yi-34B-Chat": 0.6945246096968241
+   }
+  },
+  "minilm_logreg": {
+   "mean_auc": 0.7081114601361732,
+   "per_model": {
+    "WizardLM/WizardLM-13B-V1.2": 0.6664484142409414,
+    "claude-instant-v1": 0.6744900702751535,
+    "claude-v1": 0.7039576059939385,
+    "claude-v2": 0.707188960940108,
+    "gpt-3.5-turbo-1106": 0.6901441643174653,
+    "gpt-4-1106-preview": 0.7139617206119033,
+    "meta/code-llama-instruct-34b-chat": 0.8186452326669869,
+    "meta/llama-2-70b-chat": 0.8102588353999005,
+    "mistralai/mistral-7b-chat": 0.6135435392508157,
+    "mistralai/mixtral-8x7b-chat": 0.6972301973281003,
+    "zero-one-ai/Yi-34B-Chat": 0.693357320472591
+   }
+  },
+  "minilm_mlp": {
+   "mean_auc": 0.6625792384643674,
+   "per_model": {
+    "WizardLM/WizardLM-13B-V1.2": 0.634309605116082,
+    "claude-instant-v1": 0.6228596604026861,
+    "claude-v1": 0.6465738782767676,
+    "claude-v2": 0.6322703058674837,
+    "gpt-3.5-turbo-1106": 0.6301625750975195,
+    "gpt-4-1106-preview": 0.58650607972176,
+    "meta/code-llama-instruct-34b-chat": 0.793048702952703,
+    "meta/llama-2-70b-chat": 0.803447545954073,
+    "mistralai/mistral-7b-chat": 0.5982236772080856,
+    "mistralai/mixtral-8x7b-chat": 0.6781108681195243,
+    "zero-one-ai/Yi-34B-Chat": 0.6628587243913566
+   }
+  },
+  "minilm_gbm": {
+   "mean_auc": 0.6771835271465217,
+   "per_model": {
+    "WizardLM/WizardLM-13B-V1.2": 0.657354588265297,
+    "claude-instant-v1": 0.6410833720858061,
+    "claude-v1": 0.6659105810575413,
+    "claude-v2": 0.6496374527495226,
+    "gpt-3.5-turbo-1106": 0.6455593084010705,
+    "gpt-4-1106-preview": 0.5743370742923307,
+    "meta/code-llama-instruct-34b-chat": 0.8226693986216513,
+    "meta/llama-2-70b-chat": 0.8091518831542186,
+    "mistralai/mistral-7b-chat": 0.6148497526698689,
+    "mistralai/mixtral-8x7b-chat": 0.6904450295745507,
+    "zero-one-ai/Yi-34B-Chat": 0.6780203577398818
+   }
+  }
+ },
+ "best_router_by_median_gain": "tfidf_logreg",
+ "n_pairs_scored": 440,
+ "H1_kappa_pp": {
+  "median": 12.110098276598773,
+  "lo": 11.150401097771622,
+  "hi": 12.922822751037156
+ },
+ "H2_best_router_gain_pp": {
+  "median": 0.5854800936768156,
+  "lo": 0.44217687074842,
+  "hi": 0.7669650160032317
+ },
+ "H2_best_router_rho": {
+  "median": 0.04557560465886808,
+  "lo": 0.03612491243782578,
+  "hi": 0.058900352308827515
+ },
+ "per_router_median": {
+  "tfidf_logreg": {
+   "gain_pp": {
+    "median": 0.5854800936768156,
+    "lo": 0.4421768707483009,
+    "hi": 0.7767055677901868
+   },
+   "rho": {
+    "median": 0.04557560465886808,
+    "lo": 0.03602778044557535,
+    "hi": 0.059426563774389915
+   },
+   "n_pairs_positive_gain": 311
+  },
+  "minilm_logreg": {
+   "gain_pp": {
+    "median": 0.45510470382207346,
+    "lo": 0.2861811642019123,
+    "hi": 0.608541401344526
+   },
+   "rho": {
+    "median": 0.033940134376468305,
+    "lo": 0.023148916742960702,
+    "hi": 0.04449852489992437
+   },
+   "n_pairs_positive_gain": 288
+  },
+  "minilm_mlp": {
+   "gain_pp": {
+    "median": 0.22552275943935052,
+    "lo": 0.1383074412987903,
+    "hi": 0.3262522673938506
+   },
+   "rho": {
+    "median": 0.017017206524726623,
+    "lo": 0.009708737864051404,
+    "hi": 0.026166145660651254
+   },
+   "n_pairs_positive_gain": 269
+  },
+  "minilm_gbm": {
+   "gain_pp": {
+    "median": 0.401928084875236,
+    "lo": 0.2682932499148204,
+    "hi": 0.5443382293587925
+   },
+   "rho": {
+    "median": 0.03332161426095587,
+    "lo": 0.02159647702020731,
+    "hi": 0.04272752559185433
+   },
+   "n_pairs_positive_gain": 290
+  }
+ },
+ "H1_verdict": "SUPPORTED",
+ "H2_verdict": "SUPPORTED",
+ "pairwise_tests": {
+  "n_pairs": 55,
+  "method": "bootstrap over benchmark families, 2-sided",
+  "n_raw_p_below_.05": 28,
+  "n_significant_holm": 13,
+  "n_significant_bh": 26,
+  "n_positive_effect": 49,
+  "detail": [
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "claude-instant-v1",
+    "mean_gain_pp": 0.2323034676644584,
+    "p_raw": 0.49,
+    "p_holm": 1.0,
+    "p_bh": 0.5614583333333333
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "claude-v1",
+    "mean_gain_pp": 1.151531592319494,
+    "p_raw": 0.062,
+    "p_holm": 1.0,
+    "p_bh": 0.11
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "claude-v2",
+    "mean_gain_pp": 0.6990499103803681,
+    "p_raw": 0.016,
+    "p_holm": 0.512,
+    "p_bh": 0.03666666666666667
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "gpt-3.5-turbo-1106",
+    "mean_gain_pp": 1.7262642879679528,
+    "p_raw": 0.007,
+    "p_holm": 0.252,
+    "p_bh": 0.01925
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "gpt-4-1106-preview",
+    "mean_gain_pp": 2.8927316209939846,
+    "p_raw": 0.015,
+    "p_holm": 0.495,
+    "p_bh": 0.035869565217391305
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "meta/code-llama-instruct-34b-chat",
+    "mean_gain_pp": -0.30914702855978426,
+    "p_raw": 0.446,
+    "p_holm": 1.0,
+    "p_bh": 0.5332608695652175
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "meta/llama-2-70b-chat",
+    "mean_gain_pp": 0.029771175717958204,
+    "p_raw": 0.88,
+    "p_holm": 1.0,
+    "p_bh": 0.88
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "mistralai/mistral-7b-chat",
+    "mean_gain_pp": 1.9076396472333779,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": 1.8147605398114237,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "WizardLM/WizardLM-13B-V1.2",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 1.3749285710516252,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "claude-v1",
+    "mean_gain_pp": 1.306717617578907,
+    "p_raw": 0.039,
+    "p_holm": 1.0,
+    "p_bh": 0.07944444444444444
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "claude-v2",
+    "mean_gain_pp": 0.3751039936677041,
+    "p_raw": 0.297,
+    "p_holm": 1.0,
+    "p_bh": 0.38125
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "gpt-3.5-turbo-1106",
+    "mean_gain_pp": 1.0736085206898727,
+    "p_raw": 0.443,
+    "p_holm": 1.0,
+    "p_bh": 0.5332608695652175
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "gpt-4-1106-preview",
+    "mean_gain_pp": 3.1486091553978612,
+    "p_raw": 0.011,
+    "p_holm": 0.374,
+    "p_bh": 0.0275
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "meta/code-llama-instruct-34b-chat",
+    "mean_gain_pp": 2.5056097708661524,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "meta/llama-2-70b-chat",
+    "mean_gain_pp": -0.1898530759101097,
+    "p_raw": 0.64,
+    "p_holm": 1.0,
+    "p_bh": 0.676923076923077
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "mistralai/mistral-7b-chat",
+    "mean_gain_pp": 1.1841596554726779,
+    "p_raw": 0.052,
+    "p_holm": 1.0,
+    "p_bh": 0.09862068965517241
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": 0.5324388415703852,
+    "p_raw": 0.075,
+    "p_holm": 1.0,
+    "p_bh": 0.125
+   },
+   {
+    "model_a": "claude-instant-v1",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 0.4636949118265309,
+    "p_raw": 0.479,
+    "p_holm": 1.0,
+    "p_bh": 0.560531914893617
+   },
+   {
+    "model_a": "claude-v1",
+    "model_b": "claude-v2",
+    "mean_gain_pp": 0.17989132168994976,
+    "p_raw": 0.622,
+    "p_holm": 1.0,
+    "p_bh": 0.6707843137254902
+   },
+   {
+    "model_a": "claude-v1",
+    "model_b": "gpt-3.5-turbo-1106",
+    "mean_gain_pp": -0.13674126759686683,
+    "p_raw": 0.567,
+    "p_holm": 1.0,
+    "p_bh": 0.6236999999999999
+   },
+   {
+    "model_a": "claude-v1",
+    "model_b": "gpt-4-1106-preview",
+    "mean_gain_pp": 1.4732718430446816,
+    "p_raw": 0.168,
+    "p_holm": 1.0,
+    "p_bh": 0.23692307692307693
+   },
+   {
+    "model_a": "claude-v1",
+    "model_b": "meta/code-llama-instruct-34b-chat",
+    "mean_gain_pp": 3.9320348632992412,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "claude-v1",
+    "model_b": "meta/llama-2-70b-chat",
+    "mean_gain_pp": 3.733510518957242,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "claude-v1",
+    "model_b": "mistralai/mistral-7b-chat",
+    "mean_gain_pp": 2.765683812214375,
+    "p_raw": 0.004,
+    "p_holm": 0.156,
+    "p_bh": 0.012222222222222223
+   },
+   {
+    "model_a": "claude-v1",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": 1.0447179406221991,
+    "p_raw": 0.005,
+    "p_holm": 0.185,
+    "p_bh": 0.014473684210526317
+   },
+   {
+    "model_a": "claude-v1",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 2.1733126319522365,
+    "p_raw": 0.071,
+    "p_holm": 1.0,
+    "p_bh": 0.12203125
+   },
+   {
+    "model_a": "claude-v2",
+    "model_b": "gpt-3.5-turbo-1106",
+    "mean_gain_pp": 0.29955168301398705,
+    "p_raw": 0.209,
+    "p_holm": 1.0,
+    "p_bh": 0.287375
+   },
+   {
+    "model_a": "claude-v2",
+    "model_b": "gpt-4-1106-preview",
+    "mean_gain_pp": 1.779953272803457,
+    "p_raw": 0.302,
+    "p_holm": 1.0,
+    "p_bh": 0.38125
+   },
+   {
+    "model_a": "claude-v2",
+    "model_b": "meta/code-llama-instruct-34b-chat",
+    "mean_gain_pp": 3.220670190917961,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "claude-v2",
+    "model_b": "meta/llama-2-70b-chat",
+    "mean_gain_pp": 2.361494535894769,
+    "p_raw": 0.009,
+    "p_holm": 0.315,
+    "p_bh": 0.02357142857142857
+   },
+   {
+    "model_a": "claude-v2",
+    "model_b": "mistralai/mistral-7b-chat",
+    "mean_gain_pp": 1.6121787343788576,
+    "p_raw": 0.06,
+    "p_holm": 1.0,
+    "p_bh": 0.11
+   },
+   {
+    "model_a": "claude-v2",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": 0.6937231771351318,
+    "p_raw": 0.021,
+    "p_holm": 0.63,
+    "p_bh": 0.044423076923076926
+   },
+   {
+    "model_a": "claude-v2",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 1.2753157717812944,
+    "p_raw": 0.118,
+    "p_holm": 1.0,
+    "p_bh": 0.17837837837837836
+   },
+   {
+    "model_a": "gpt-3.5-turbo-1106",
+    "model_b": "gpt-4-1106-preview",
+    "mean_gain_pp": 1.288759428001391,
+    "p_raw": 0.084,
+    "p_holm": 1.0,
+    "p_bh": 0.13588235294117648
+   },
+   {
+    "model_a": "gpt-3.5-turbo-1106",
+    "model_b": "meta/code-llama-instruct-34b-chat",
+    "mean_gain_pp": 5.05955039776863,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "gpt-3.5-turbo-1106",
+    "model_b": "meta/llama-2-70b-chat",
+    "mean_gain_pp": 2.2320163260275345,
+    "p_raw": 0.045,
+    "p_holm": 1.0,
+    "p_bh": 0.08839285714285715
+   },
+   {
+    "model_a": "gpt-3.5-turbo-1106",
+    "model_b": "mistralai/mistral-7b-chat",
+    "mean_gain_pp": 3.357221203267252,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "gpt-3.5-turbo-1106",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": 0.9126426628670907,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "gpt-3.5-turbo-1106",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 2.3675755293628606,
+    "p_raw": 0.12,
+    "p_holm": 1.0,
+    "p_bh": 0.17837837837837836
+   },
+   {
+    "model_a": "gpt-4-1106-preview",
+    "model_b": "meta/code-llama-instruct-34b-chat",
+    "mean_gain_pp": 5.509764870887382,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "gpt-4-1106-preview",
+    "model_b": "meta/llama-2-70b-chat",
+    "mean_gain_pp": 4.736518502674035,
+    "p_raw": 0.002,
+    "p_holm": 0.084,
+    "p_bh": 0.007333333333333333
+   },
+   {
+    "model_a": "gpt-4-1106-preview",
+    "model_b": "mistralai/mistral-7b-chat",
+    "mean_gain_pp": 4.217869880989306,
+    "p_raw": 0.003,
+    "p_holm": 0.12,
+    "p_bh": 0.0103125
+   },
+   {
+    "model_a": "gpt-4-1106-preview",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": 2.13929593344446,
+    "p_raw": 0.004,
+    "p_holm": 0.156,
+    "p_bh": 0.012222222222222223
+   },
+   {
+    "model_a": "gpt-4-1106-preview",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 4.485788434879905,
+    "p_raw": 0.002,
+    "p_holm": 0.084,
+    "p_bh": 0.007333333333333333
+   },
+   {
+    "model_a": "meta/code-llama-instruct-34b-chat",
+    "model_b": "meta/llama-2-70b-chat",
+    "mean_gain_pp": 0.9298216029567685,
+    "p_raw": 0.017,
+    "p_holm": 0.527,
+    "p_bh": 0.0374
+   },
+   {
+    "model_a": "meta/code-llama-instruct-34b-chat",
+    "model_b": "mistralai/mistral-7b-chat",
+    "mean_gain_pp": -0.25109494990654646,
+    "p_raw": 0.118,
+    "p_holm": 1.0,
+    "p_bh": 0.17837837837837836
+   },
+   {
+    "model_a": "meta/code-llama-instruct-34b-chat",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": 0.09796618834636076,
+    "p_raw": 0.774,
+    "p_holm": 1.0,
+    "p_bh": 0.7883333333333333
+   },
+   {
+    "model_a": "meta/code-llama-instruct-34b-chat",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 0.7133344162466839,
+    "p_raw": 0.66,
+    "p_holm": 1.0,
+    "p_bh": 0.6849056603773586
+   },
+   {
+    "model_a": "meta/llama-2-70b-chat",
+    "model_b": "mistralai/mistral-7b-chat",
+    "mean_gain_pp": 0.6685355005564435,
+    "p_raw": 0.167,
+    "p_holm": 1.0,
+    "p_bh": 0.23692307692307693
+   },
+   {
+    "model_a": "meta/llama-2-70b-chat",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": -0.43808056970236625,
+    "p_raw": 0.305,
+    "p_holm": 1.0,
+    "p_bh": 0.38125
+   },
+   {
+    "model_a": "meta/llama-2-70b-chat",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": -0.3886468297635337,
+    "p_raw": 0.534,
+    "p_holm": 1.0,
+    "p_bh": 0.5993877551020408
+   },
+   {
+    "model_a": "mistralai/mistral-7b-chat",
+    "model_b": "mistralai/mixtral-8x7b-chat",
+    "mean_gain_pp": 3.2684871978973,
+    "p_raw": 0.001,
+    "p_holm": 0.043000000000000003,
+    "p_bh": 0.004230769230769231
+   },
+   {
+    "model_a": "mistralai/mistral-7b-chat",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 1.5852346818602001,
+    "p_raw": 0.0005,
+    "p_holm": 0.0275,
+    "p_bh": 0.0022916666666666667
+   },
+   {
+    "model_a": "mistralai/mixtral-8x7b-chat",
+    "model_b": "zero-one-ai/Yi-34B-Chat",
+    "mean_gain_pp": 0.7787036131069618,
+    "p_raw": 0.299,
+    "p_holm": 1.0,
+    "p_bh": 0.38125
+   }
+  ]
+ }
+}

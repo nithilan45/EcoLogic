@@ -1,0 +1,16 @@
+{
+ "usd": 2.9973278399999925,
+ "calls": 9000,
+ "prompt_tokens": 2873046,
+ "completion_tokens": 9000,
+ "by_stage": {
+  "prompted_0shot": {
+   "usd": 0.583723919999999,
+   "calls": 4500
+  },
+  "prompted_4shot": {
+   "usd": 2.4136039199999915,
+   "calls": 4500
+  }
+ }
+}
