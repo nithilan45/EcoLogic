@@ -14,3 +14,6 @@ stage7_10/*.jsonl.gz
 # ...but keep the reviewable audit sample of raw generations (see
 # stage7_10/s7_export_audit_sample.py).
 !stage7_10/*_audit_sample.jsonl.gz
+
+# External datasets downloaded for Stage 11 (large; re-downloadable from HuggingFace)
+external_data/*.pkl
