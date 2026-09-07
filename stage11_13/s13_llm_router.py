@@ -729,7 +729,7 @@ def cmd_report():
                 "rho": (v - S) / (A - S) if A - S > 1e-12 else None}
         return rec
 
-    rungs = {}
+    rungs, preds_by_rung = {}, {}
     for stage, fn in [("prompted_0shot", "s13_prompted_0shot.jsonl"),
                       ("prompted_4shot", "s13_prompted_4shot.jsonl"),
                       ("finetuned_llm", "s13_finetuned.jsonl"),
@@ -758,11 +758,45 @@ def cmd_report():
             rungs[stage] = {"status": f"PARTIAL coverage={cov:.3f}"}
             continue
         rungs[stage] = metrics(P)
+        preds_by_rung[stage] = P
 
-    rungs["frozen_minilm_logreg"] = metrics(frozen_reference())
+    Pref = frozen_reference()
+    rungs["frozen_minilm_logreg"] = metrics(Pref)
     rungs["frozen_minilm_logreg"]["note"] = (
         "the frozen-representation reference, refitted on TRAIN and scored on the "
         "same CALIBRATION items; this is what C1 and C2 are measured against")
+
+    # Is any rung's AUD advantage over the frozen reference distinguishable from
+    # zero? Paired bootstrap over items -- the sampling unit -- with the same
+    # resample used for both routers, then Holm-Bonferroni across the rungs.
+    def paired_auc_ci(P, n_boot=2000):
+        rng = np.random.default_rng(20260907)
+        d = []
+        for _ in range(n_boot):
+            j = rng.integers(0, len(ids), len(ids))
+            try:
+                a = np.mean([roc_auc_score(ypos[j, b], P[j, b]) for b in range(3)])
+                r = np.mean([roc_auc_score(ypos[j, b], Pref[j, b]) for b in range(3)])
+            except ValueError:      # a resample with a constant label column
+                continue
+            d.append(a - r)
+        d = np.asarray(d)
+        p = 2 * min((d <= 0).mean(), (d >= 0).mean())
+        return {"delta_mean_auc": float(np.mean(d)),
+                "lo": float(np.percentile(d, 2.5)),
+                "hi": float(np.percentile(d, 97.5)),
+                "p_two_sided": float(min(1.0, max(p, 1.0 / len(d))))}
+
+    sys.path.insert(0, HERE)
+    from decomp import holm_bonferroni
+    tested = [k2 for k2 in rungs
+              if rungs[k2].get("status") == "complete" and k2 != "frozen_minilm_logreg"]
+    cis = {k2: paired_auc_ci(preds_by_rung[k2]) for k2 in tested}
+    if cis:
+        rej, adj = holm_bonferroni([cis[k2]["p_two_sided"] for k2 in tested], alpha=0.05)
+        for a, k2 in enumerate(tested):
+            cis[k2]["p_holm"] = float(adj[a])
+            cis[k2]["significant_holm_0.05"] = bool(rej[a])
 
     baseline = {"s7c_best_mean_auc": 0.6816, "s7c_best_model": "logistic regression",
                 "refit_here_mean_auc": rungs["frozen_minilm_logreg"]["mean_auc"],
@@ -771,7 +805,8 @@ def cmd_report():
            "spend": json.load(open(SPEND)) if os.path.exists(SPEND) else _spend,
            "state_ft1_gemma27b": json.load(open(STATE)) if os.path.exists(STATE) else {},
            "state_ft2_qwen9b": _st2(),
-           "baseline_stage7c": baseline, "rungs": rungs}
+           "baseline_stage7c": baseline, "rungs": rungs,
+           "paired_bootstrap_vs_frozen": cis}
 
     contenders = {k2: v for k2, v in rungs.items()
                   if v.get("status") == "complete" and k2 != "frozen_minilm_logreg"}

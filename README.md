@@ -19,8 +19,9 @@ EcoLogic is a ChatGPT-style Q&A system with a critical difference: it governs wh
 >
 > **Research goal:** energy-saving LLM routers are reported without the baselines
 > or the cost accounting needed to know whether they save anything. This work
-> builds the **audit protocol that makes such a claim falsifiable** — and applies
-> it to the router in this repo, which fails it.
+> builds the **audit protocol that makes such a claim falsifiable**, applies it
+> to the router in this repo (which fails it), and then explains *why* routing
+> gains are small in general.
 >
 > The research question is not "does routing beat always-using-GPT-4o" (it does,
 > trivially) but **"does looking at the query beat not looking at the query?"**
@@ -35,8 +36,20 @@ EcoLogic is a ChatGPT-style Q&A system with a critical difference: it governs wh
 > point significantly. The protocol distinguishes a router that earns its
 > complexity from one that does not.
 >
+> **The explanation, which is the current centre of the work.** A router's gain
+> over the correct baseline factors as **complementarity × predictability −
+> estimation error**, blaming respectively the model set, the task, and the
+> router. On **RouterBench** (36,494 prompts × 11 models, all 55 pairs × 8
+> benchmark families) complementarity is abundant — **12.11 pp** of oracle
+> headroom at matched cost — and the best of four router families captures
+> **4.6%** of it. We pre-registered the explanation that *predictability* was
+> the missing factor and **the data refuted it**: with k=3 replicate generations
+> of 5,000 prompts, per-item difficulty is highly *reliable*, so the binding term
+> is the **generalisation gap from prompt text to item difficulty**.
+>
 > **→ Read [`EVALUATION.md`](EVALUATION.md) first** (goal, contributions,
-> findings), then [`results_report.md`](results_report.md) (main report).
+> findings), then the workshop paper in [`paper/`](paper/), then
+> [`results_report.md`](results_report.md) (main report on the product).
 >
 > Everything below this box describes the **product**. The evaluation changes no
 > product code. Note that energy throughout is **modelled from token counts, not
@@ -61,8 +74,10 @@ EcoLogic is a ChatGPT-style Q&A system with a critical difference: it governs wh
 13. [Contributing](#contributing)
 
 **Evaluation of the routing claims:** [`EVALUATION.md`](EVALUATION.md) (start
-here), [`results_report.md`](results_report.md) (main report),
-[`router_v2/`](router_v2/) and [`stage7_10/`](stage7_10/) (follow-up studies).
+here), [`paper/`](paper/) (workshop paper draft),
+[`results_report.md`](results_report.md) (main report),
+[`router_v2/`](router_v2/), [`stage7_10/`](stage7_10/) and
+[`stage11_13/`](stage11_13/) (follow-up studies).
 
 ---
 
@@ -1249,9 +1264,11 @@ intervals and limitations are in [`EVALUATION.md`](EVALUATION.md) and
 graded objectively — code by executing the official test suites, MMLU by letter
 match, GSM8K by final-answer match. Energy is token counts × the per-tier
 J/1k-token rates in `backend/main.py`, so it is **modelled, not metered**.
-Total measured API spend across all evaluation stages: **$48.09**.
-*Breakdown:* Stages 1–6 $1.9497 + `router_v2` $3.5143 + `stage7_10` $42.62,
-summed from per-call `usd` fields.
+Total measured API spend across all evaluation stages: **$57.80**.
+*Breakdown:* Stages 1–6 $1.9497 + `router_v2` $3.5143 + `stage7_10` $42.62 +
+`stage11_13` $9.71, summed from per-call `usd` fields and the providers' own
+reported job prices. RouterBench, the decomposition, the learning curves and all
+numerical validation cost **nothing** — they analyse already-released outcomes.
 
 **The comparison that matters is not against always-frontier.** Every tiered
 router beats "send everything to GPT-4o" on energy; that is not the bar. The bar
@@ -1278,9 +1295,13 @@ essentially all remaining headroom is in routing decisions, not the models.
 
 A trained, pre-registered replacement router did not reliably close the gap
 either, and the reason generalises: per-item tier success is only weakly
-predictable from prompt text (held-out AUC ≈ 0.67), and 4.2× more training data
-barely moved it. See [`router_v2/README.md`](router_v2/README.md) and
-[`stage7_10/SUMMARY.md`](stage7_10/SUMMARY.md).
+**inferable from prompt text** (held-out AUC ≈ 0.68 across eight router
+families), and 4.2× more training data barely moved it. It is *not* that success
+is random — with k=3 replicate generations, per-item difficulty turns out to be
+highly **reliable**, so the barrier is a generalisation gap rather than an
+unpredictable task. See [`router_v2/README.md`](router_v2/README.md),
+[`stage7_10/SUMMARY.md`](stage7_10/SUMMARY.md) and
+[`stage11_13/SUMMARY.md`](stage11_13/SUMMARY.md).
 
 Three caveats before optimising against these numbers:
 

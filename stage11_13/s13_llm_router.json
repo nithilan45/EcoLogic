@@ -1,7 +1,7 @@
 {
  "cost_gate_usd": 25.0,
  "spend": {
-  "usd": 2.9973278399999925,
+  "usd": 9.706976339999994,
   "calls": 9000,
   "prompt_tokens": 2873046,
   "completion_tokens": 9000,
@@ -13,20 +13,32 @@
    "prompted_4shot": {
     "usd": 2.4136039199999915,
     "calls": 4500
+   },
+   "finetune_training": {
+    "usd": 6.7096485,
+    "calls": 0
    }
   }
  },
- "state": {
+ "state_ft1_gemma27b": {
   "file_id": "file-a7cc05c2-6875-4d40-bf47-a618b7f813eb",
   "job_id": "ft-6567602b-4aa3",
   "base_model": "google/gemma-3-27b-it",
-  "status": "running",
+  "status": "completed",
   "total_price": 6709648500,
-  "token_count": 1491033
+  "token_count": 1491033,
+  "total_price_usd": 6.7096485,
+  "price_booked": true,
+  "ft_model": "nithilankarthik-0f83/gemma-3-27b-it-s13router-f64c70b3"
+ },
+ "state_ft2_qwen9b": {
+  "file_id": "file-a7cc05c2-6875-4d40-bf47-a618b7f813eb"
  },
  "baseline_stage7c": {
   "s7c_best_mean_auc": 0.6816,
-  "s7c_best_model": "logistic regression"
+  "s7c_best_model": "logistic regression",
+  "refit_here_mean_auc": 0.6895544009111857,
+  "refit_here_gain_pp": 0.5555555555555314
  },
  "rungs": {
   "prompted_0shot": {
@@ -109,14 +121,179 @@
     }
    }
   },
-  "finetuned": {
-   "status": "NOT RUN"
+  "finetuned_llm": {
+   "status": "BLOCKED",
+   "detail": "see s13_ftblocked.json and DEVIATIONS.md D8"
+  },
+  "finetuned_encoder_L6": {
+   "status": "complete",
+   "n_items": 1500,
+   "auc_by_tier": {
+    "tier1": 0.6698042630429984,
+    "tier2": 0.6927374860067168,
+    "tier3": 0.720867972382697
+   },
+   "mean_auc": 0.6944699071441374,
+   "mean_auc_tiers12": 0.6812708745248577,
+   "betas": {
+    "0.3": {
+     "S": 0.9105351421917534,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04613152447491331,
+     "router_acc": 0.9184444444444444,
+     "router_cost": 0.0005899578022222174,
+     "gain_pp": 0.7909302252691042,
+     "rho": 0.17145113548094823
+    },
+    "0.5": {
+     "S": 0.9160000000000001,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04066666666666652,
+     "router_acc": 0.9213333333333333,
+     "router_cost": 0.0009183930333333262,
+     "gain_pp": 0.533333333333319,
+     "rho": 0.1311475409836035
+    },
+    "0.7": {
+     "S": 0.9160000000000001,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04066666666666652,
+     "router_acc": 0.9195555555555555,
+     "router_cost": 0.0011367488377777664,
+     "gain_pp": 0.3555555555555312,
+     "rho": 0.08743169398906538
+    }
+   }
+  },
+  "finetuned_encoder_L12": {
+   "status": "complete",
+   "n_items": 1500,
+   "auc_by_tier": {
+    "tier1": 0.6542808261178837,
+    "tier2": 0.7004762713897329,
+    "tier3": 0.7189422760790946
+   },
+   "mean_auc": 0.6912331245289037,
+   "mean_auc_tiers12": 0.6773785487538083,
+   "betas": {
+    "0.3": {
+     "S": 0.9105351421917534,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04613152447491331,
+     "router_acc": 0.915111111111111,
+     "router_cost": 0.0005899578022222174,
+     "gain_pp": 0.45759689193576314,
+     "rho": 0.09919396706358749
+    },
+    "0.5": {
+     "S": 0.9160000000000001,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04066666666666652,
+     "router_acc": 0.9213333333333333,
+     "router_cost": 0.0008924040577777656,
+     "gain_pp": 0.533333333333319,
+     "rho": 0.1311475409836035
+    },
+    "0.7": {
+     "S": 0.9160000000000001,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04066666666666652,
+     "router_acc": 0.9213333333333333,
+     "router_cost": 0.0008924040577777656,
+     "gain_pp": 0.533333333333319,
+     "rho": 0.1311475409836035
+    }
+   }
+  },
+  "frozen_minilm_logreg": {
+   "status": "complete",
+   "n_items": 1500,
+   "auc_by_tier": {
+    "tier1": 0.6710613456302583,
+    "tier2": 0.6922177354869663,
+    "tier3": 0.7053841216163325
+   },
+   "mean_auc": 0.6895544009111857,
+   "mean_auc_tiers12": 0.6816395405586123,
+   "betas": {
+    "0.3": {
+     "S": 0.9105351421917534,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04613152447491331,
+     "router_acc": 0.9173333333333333,
+     "router_cost": 0.0005899578022222174,
+     "gain_pp": 0.6798191141579979,
+     "rho": 0.14736541267516293
+    },
+    "0.5": {
+     "S": 0.9160000000000001,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04066666666666652,
+     "router_acc": 0.9215555555555555,
+     "router_cost": 0.0008511449444444337,
+     "gain_pp": 0.5555555555555314,
+     "rho": 0.13661202185791804
+    },
+    "0.7": {
+     "S": 0.9160000000000001,
+     "A_star": 0.9566666666666667,
+     "kappa": 0.04066666666666652,
+     "router_acc": 0.9215555555555555,
+     "router_cost": 0.0008511449444444337,
+     "gain_pp": 0.5555555555555314,
+     "rho": 0.13661202185791804
+    }
+   },
+   "note": "the frozen-representation reference, refitted on TRAIN and scored on the same CALIBRATION items; this is what C1 and C2 are measured against"
+  }
+ },
+ "paired_bootstrap_vs_frozen": {
+  "prompted_0shot": {
+   "delta_mean_auc": -0.047744619017089186,
+   "lo": -0.0970127213133696,
+   "hi": 0.0036224293573953355,
+   "p_two_sided": 0.064,
+   "p_holm": 0.256,
+   "significant_holm_0.05": false
+  },
+  "prompted_4shot": {
+   "delta_mean_auc": 0.020864244568476586,
+   "lo": -0.01876118425192167,
+   "hi": 0.061753302941195194,
+   "p_two_sided": 0.318,
+   "p_holm": 0.954,
+   "significant_holm_0.05": false
+  },
+  "finetuned_encoder_L6": {
+   "delta_mean_auc": 0.005103729421237399,
+   "lo": -0.014152245854455547,
+   "hi": 0.02506597087529515,
+   "p_two_sided": 0.621,
+   "p_holm": 1.0,
+   "significant_holm_0.05": false
+  },
+  "finetuned_encoder_L12": {
+   "delta_mean_auc": 0.0017639837223932075,
+   "lo": -0.01791779096273492,
+   "hi": 0.022812124925038636,
+   "p_two_sided": 0.878,
+   "p_holm": 1.0,
+   "significant_holm_0.05": false
   }
  },
  "C1": {
   "rule": "mean held-out per-tier AUC exceeds Stage 7c best (0.6816) by >= 0.05",
-  "best_llm_router_mean_auc": 0.7104850355512862,
+  "best_rung": "prompted_4shot",
+  "best_mean_auc": 0.7104850355512862,
   "delta_vs_s7c": 0.028885035551286187,
-  "verdict": "NOT MET -> the plateau survives an LLM router"
+  "verdict": "NOT MET -> the plateau survives"
+ },
+ "C2": {
+  "rule": "realised matched-cost gain at beta=0.5 exceeds the frozen MiniLM + logistic reference by >= 1.0 pp on the same items",
+  "best_rung": "finetuned_encoder_L6",
+  "best_gain_pp": 0.533333333333319,
+  "reference_gain_pp": 0.5555555555555314,
+  "delta_pp": -0.022222222222212373,
+  "verdict": "NOT MET"
  }
 }

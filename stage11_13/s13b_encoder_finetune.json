@@ -1,0 +1,124 @@
+{
+ "what": "end-to-end fine-tuned text encoders as routers (Stage 13b)",
+ "pre_registered": false,
+ "deviation": "DEVIATIONS.md D7",
+ "seed": 20260907,
+ "max_len": 256,
+ "epochs": 6,
+ "batch": 16,
+ "lr_encoder": 2e-05,
+ "lr_head": 0.001,
+ "val_fraction": 0.15,
+ "n_train": 2975,
+ "n_inner_val": 525,
+ "n_calibration": 1500,
+ "results": {
+  "sentence-transformers/all-MiniLM-L6-v2": {
+   "selection": {
+    "epoch": 2,
+    "val_auc": 0.7507553681168977,
+    "cal_auc": 0.6944699071441374,
+    "cal_per_tier": [
+     0.6698042630429984,
+     0.6927374860067168,
+     0.720867972382697
+    ]
+   },
+   "history": [
+    {
+     "epoch": 1,
+     "train_loss": 0.3825504438817,
+     "val_auc": 0.7271729535182878,
+     "secs": 154.40554809570312
+    },
+    {
+     "epoch": 2,
+     "train_loss": 0.26308646104916805,
+     "val_auc": 0.7507553681168977,
+     "secs": 95.17149209976196
+    },
+    {
+     "epoch": 3,
+     "train_loss": 0.23856991969236807,
+     "val_auc": 0.7505197084934526,
+     "secs": 93.51340293884277
+    },
+    {
+     "epoch": 4,
+     "train_loss": 0.21299483095397467,
+     "val_auc": 0.7482304121768477,
+     "secs": 95.1562283039093
+    },
+    {
+     "epoch": 5,
+     "train_loss": 0.1912738529223354,
+     "val_auc": 0.7443559766176174,
+     "secs": 95.73872256278992
+    },
+    {
+     "epoch": 6,
+     "train_loss": 0.17962797367773137,
+     "val_auc": 0.7398837329580173,
+     "secs": 93.45769214630127
+    }
+   ]
+  },
+  "sentence-transformers/all-MiniLM-L12-v2": {
+   "selection": {
+    "epoch": 2,
+    "val_auc": 0.7352587982638359,
+    "cal_auc": 0.6912331245289037,
+    "cal_per_tier": [
+     0.6542808261178837,
+     0.7004762713897329,
+     0.7189422760790946
+    ]
+   },
+   "history": [
+    {
+     "epoch": 1,
+     "train_loss": 0.3697048637346059,
+     "val_auc": 0.7290313045571596,
+     "secs": 181.5766031742096
+    },
+    {
+     "epoch": 2,
+     "train_loss": 0.26291422401155745,
+     "val_auc": 0.7352587982638359,
+     "secs": 267.5460431575775
+    },
+    {
+     "epoch": 3,
+     "train_loss": 0.2345937183724732,
+     "val_auc": 0.7278622883106168,
+     "secs": 231.33577847480774
+    },
+    {
+     "epoch": 4,
+     "train_loss": 0.19395204765956942,
+     "val_auc": 0.7139622585350577,
+     "secs": 178.90841031074524
+    },
+    {
+     "epoch": 5,
+     "train_loss": 0.16505639215978254,
+     "val_auc": 0.7204622118580298,
+     "secs": 180.67040586471558
+    },
+    {
+     "epoch": 6,
+     "train_loss": 0.14727044780464732,
+     "val_auc": 0.719361561740674,
+     "secs": 179.15780425071716
+    }
+   ]
+  }
+ },
+ "best_backbone": "sentence-transformers/all-MiniLM-L6-v2",
+ "best_cal_mean_auc": 0.6944699071441374,
+ "frozen_representation_best_auc": 0.6816,
+ "delta_vs_frozen": 0.012869907144137382,
+ "C1_threshold_delta": 0.05,
+ "C1_met": false,
+ "usd": 0.0
+}
