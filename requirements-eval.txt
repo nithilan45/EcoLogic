@@ -10,6 +10,10 @@
 #
 # Python 3.12.3, CPU only. No GPU is used anywhere; the local embedding model
 # runs on CPU.
+#
+# The CPU torch build is not on PyPI, so the extra index below is required;
+# without it pip fails with "No matching distribution found for torch==2.14.0+cpu".
+--extra-index-url https://download.pytorch.org/whl/cpu
 
 # API calls to Together AI and OpenAI
 httpx==0.28.1
