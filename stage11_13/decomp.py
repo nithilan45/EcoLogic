@@ -95,7 +95,7 @@ def _assign_from_lambda(u: np.ndarray, c: np.ndarray, lam: float):
 
 
 def oracle_frontier_at(u: np.ndarray, c: np.ndarray, budget: float, tol: float = 1e-12,
-                       max_iter: int = 200):
+                       max_iter: int = 80):
     """A*(budget) by Lagrangian bisection on the single budget constraint.
 
     Solves  max_z  sum_i sum_m z_im u_im   s.t.  sum_i sum_m z_im c_im <= n*budget,
@@ -165,17 +165,25 @@ def oracle_integer_at(u: np.ndarray, c: np.ndarray, budget: float):
     cost = c[rows, a].mean()
     if cost <= budget:
         return float(u[rows, a].mean()), float(cost)
-    # Downgrade the items that give up the least utility per dollar released.
+    # Downgrade the items that give up the least utility per dollar released,
+    # tracking the running total rather than recomputing the mean each step.
     cheapest = np.argmin(c, axis=1)
     d_u = u[rows, a] - u[rows, cheapest]
     d_c = c[rows, a] - c[rows, cheapest]
     ratio = np.where(d_c > 0, d_u / np.maximum(d_c, 1e-300), np.inf)
-    for i in np.argsort(ratio):
-        if cost <= budget:
+    order = np.argsort(ratio)
+    total_c = c[rows, a].sum()
+    total_u = u[rows, a].sum()
+    limit = budget * n
+    for i in order:
+        if total_c <= limit:
             break
+        if d_c[i] <= 0:
+            continue
         a[i] = cheapest[i]
-        cost = c[rows, a].mean()
-    return float(u[rows, a].mean()), float(cost)
+        total_c -= d_c[i]
+        total_u -= d_u[i]
+    return float(total_u / n), float(total_c / n)
 
 
 # ---------------------------------------------------------------------------
@@ -210,7 +218,7 @@ def router_value_at(u: np.ndarray, c: np.ndarray, scores: np.ndarray, budget: fl
         if eval_lam(lam_hi)[1] <= budget:
             break
         lam_hi *= 2.0
-    for _ in range(200):
+    for _ in range(80):
         mid = 0.5 * (lam_lo + lam_hi)
         if eval_lam(mid)[1] > budget:
             lam_lo = mid
