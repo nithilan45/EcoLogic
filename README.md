@@ -15,6 +15,23 @@ EcoLogic is a ChatGPT-style Q&A system with a critical difference: it governs wh
 
 ---
 
+> ### 📊 Independent evaluation of the routing claims — read [`EVALUATION.md`](EVALUATION.md)
+>
+> The routing and energy claims below have since been **measured** against
+> HumanEval, MMLU and GSM8K with real API calls, objective grading and
+> confidence intervals. Headline result: tier-based routing does deliver large
+> energy savings, but **the keyword classifier is the weak link** — a perfect
+> router on these same three tiers would be 9.6 pp more accurate *and* 44%
+> cheaper, and simply sending every query to Tier 2 beats the classifier on both
+> axes. A trained replacement router did not reliably fix it either.
+>
+> Start with [`EVALUATION.md`](EVALUATION.md) for the guided tour, or
+> [`results_report.md`](results_report.md) for the main report. Note that energy
+> throughout this project is **modelled from token counts, not measured** with
+> hardware instrumentation.
+
+---
+
 ## Table of Contents
 
 1. [How It Works: Model-Choosing Logic](#how-it-works-model-choosing-logic)
@@ -22,17 +39,18 @@ EcoLogic is a ChatGPT-style Q&A system with a critical difference: it governs wh
 3. [Frontend Structure](#frontend-structure)
 4. [Backend Structure](#backend-structure)
 5. [File Structure](#file-structure)
-6. [Energy Calculations](#energy-calculations)
-7. [API Documentation](#api-documentation)
+6. [Energy Calculation](#energy-calculation)
+7. [API Endpoints](#api-endpoints)
 8. [Setup & Installation](#setup--installation)
 9. [Deployment](#deployment)
 10. [Design Philosophy](#design-philosophy)
 11. [Tech Stack](#tech-stack)
-12. [Performance & Benchmarks](#performance--benchmarks)
-13. [Security & Privacy](#security--privacy)
-14. [Roadmap](#roadmap)
-15. [Contributing](#contributing)
-16. [FAQ](#faq)
+12. [Performance & Benchmarks](#performance--benchmarks) — measured results
+13. [Contributing](#contributing)
+
+**Evaluation of the routing claims:** [`EVALUATION.md`](EVALUATION.md) (start
+here), [`results_report.md`](results_report.md) (main report),
+[`router_v2/`](router_v2/) and [`stage7_10/`](stage7_10/) (follow-up studies).
 
 ---
 
@@ -1209,14 +1227,77 @@ pydantic==2.5.3          # Data validation and serialization
 
 ---
 
+## Performance & Benchmarks
+
+These are **measured** numbers, not projections. Full methodology, confidence
+intervals and limitations are in [`EVALUATION.md`](EVALUATION.md) and
+[`results_report.md`](results_report.md).
+
+364 items (HumanEval 164, MMLU 100, GSM8K 100), all three tiers, temperature 0,
+graded objectively — code by executing the official test suites, MMLU by letter
+match, GSM8K by final-answer match. Energy is token counts × the per-tier
+J/1k-token rates in `backend/main.py`, so it is **modelled, not metered**.
+
+| Routing policy | Accuracy [95% CI] | Energy vs always-frontier |
+|---|---|---|
+| **EcoLogic (the real classifier)** | **86.8%** [82.9%, 89.9%] | **0.114x** |
+| Always-frontier (`gpt-4o` on everything) | 91.5% [88.2%, 93.9%] | 1.000x |
+| Random tier assignment | 90.7% [87.2%, 93.2%] | 0.421x |
+| Always Tier 1 | 87.6% [83.9%, 90.6%] | 0.112x |
+| Always Tier 2 | 92.3% [89.1%, 94.6%] | 0.065x |
+| Oracle (cheapest tier that was correct) | 96.4% [94.0%, 97.9%] | 0.064x |
+
+**What this supports:** routing does cut energy dramatically — EcoLogic used
+11.4% of always-frontier energy, an 88.6% saving, and gave up 4.7 pp of accuracy
+to do it.
+
+**What it does not:** the classifier is not the reason it works. The oracle row
+shows a perfect router on these same three tiers would have been **9.6 pp more
+accurate and 44% cheaper**, so nearly all the remaining headroom is in routing
+decisions rather than the tier design. And "always Tier 2" beat the classifier on
+*both* axes — more accurate (92.3% vs 86.8%) and cheaper (0.065x vs 0.114x) —
+so on this workload the routing logic is not yet earning its complexity.
+
+Replacing the keyword classifier with a trained one (pre-registered,
+one-shot-tested) did not reliably close the gap either; see
+[`router_v2/README.md`](router_v2/README.md) and
+[`stage7_10/SUMMARY.md`](stage7_10/SUMMARY.md).
+
+Two caveats a contributor should know before optimising against these numbers:
+the classifier agrees with itself on only **53.0%** of items between the raw
+query and the wrapped prompt actually sent to the model, and `gpt-4o` scored
+*lowest of the three tiers* on code, so "always-frontier" is not the quality
+ceiling the tier design assumes.
+
+---
+
 ## Contributing
 
 Contributions welcome! Here are areas where you can help:
 
 ### Improving Classification Logic
+
+**This is the highest-leverage area in the project**, and there is now measured
+evidence of where the headroom is — see
+[Performance & Benchmarks](#performance--benchmarks). Before changing the
+classifier, read [`EVALUATION.md`](EVALUATION.md) §2: the two known failure modes
+are that the classifier is beaten outright by static "always Tier 2" assignment,
+and that it agrees with itself on only 53.0% of items between the raw query and
+the wrapped prompt. A trained-classifier replacement has already been tried and
+did not reliably beat static assignment, so the honest open question is whether
+per-item tier success is predictable from prompt text at all.
+
 1. Edit keyword patterns in `backend/main.py` (lines 71-84)
 2. Test with diverse query types
-3. Submit PR with example queries and expected tiers
+3. **Re-run the benchmark** to check the change against a fixed item set rather
+   than by intuition:
+   ```bash
+   pip install -r requirements-eval.txt
+   python3 benchmark/router.py && python3 benchmark/analyze.py
+   ```
+   This reuses the cached generations in `raw_results/`, so re-scoring a routing
+   change costs no API calls. Report the four-policy table before and after.
+4. Submit PR with example queries and expected tiers
 
 ### Adding Features
 - [ ] User accounts and query history
