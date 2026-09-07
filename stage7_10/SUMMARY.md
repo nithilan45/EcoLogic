@@ -11,6 +11,24 @@
 Nothing in `raw_results/`, `results_report.md` or `router_v2/` was modified.
 Everything here is new, in `stage7_10/`.
 
+## Later additions (external validity and self-attack)
+
+Three analyses added after the stages below, because the stages left the
+*headline* claim — routers must clear static baselines — validated only on our
+own system, which made it a case study.
+
+| File | What it establishes |
+|---|---|
+| `s9_static_baselines.py/.json` | **The headline claim tested on someone else's router.** On RouteLLM's own released GSM8K data, its router beats a **cost-matched** query-independent mixture by a mean of **+0.57 pp**, positive at 8/9 interior operating points (sign test p = 0.039) but significant at **none** individually (n = 1,307). Also verifies numerically that the per-model-mean cost formula is *exact* for a query-independent baseline and *biased* for a real router — so the usual comparison is tilted toward the router, by 0.09–0.30 pp here. |
+| `s7_ceiling.py/.json/.md` | **Defends the ceiling claim against "you tested a weak router."** Gradient boosting, random forest and k-NN on the same MiniLM features, labels and splits all fail to beat the linear head (best is 0.011 AUC *worse*). The random forest reaches TRAIN AUC 0.9999 while generalising below logistic regression: ample capacity, no held-out gain. |
+| `../benchmark/analyze_cost.py` → `../raw_results/tables_cost.md` | **Removes the modelled-energy assumption from the headline.** The policy table on measured dollars from provider `usage` fields. Always-Tier-2 still dominates, and more strongly: **6.87×** the router's cost rather than 1.75×. Separately shows the axis choice moves EcoLogic's headline saving from 88.6% (modelled joules) to 55.0% (measured dollars). |
+
+The RouteLLM result is the important one, and it cuts against a simple reading of
+this project: a published router **passes** the audit. That makes the protocol a
+discriminator rather than a rejection machine — and it shows that even the
+passing case has an effect size the field's benchmark sizes cannot resolve
+point-by-point, while being reported as "up to 85% cost reduction."
+
 ## Status at a glance
 
 | Stage | What it was for | Status |

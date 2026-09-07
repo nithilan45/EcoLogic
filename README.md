@@ -25,9 +25,15 @@ EcoLogic is a ChatGPT-style Q&A system with a critical difference: it governs wh
 > The research question is not "does routing beat always-using-GPT-4o" (it does,
 > trivially) but **"does looking at the query beat not looking at the query?"**
 > On 364 objectively graded items, the answer here is no: sending *every* query
-> to Tier 2 is **5.5 pp more accurate and 43% cheaper** than the classifier.
-> Replacing the keyword rules with a properly trained, pre-registered router did
-> not reliably fix it either.
+> to Tier 2 is **5.5 pp more accurate at 1/6.87 of the measured dollar cost**
+> than the classifier. Replacing the keyword rules with a properly trained,
+> pre-registered router did not reliably fix it either.
+>
+> Applying the same audit to **RouteLLM** (Ong et al., ICLR 2025) on its own
+> released data, its router *does* beat a cost-matched query-independent
+> baseline — but by only **+0.57 pp** on average, and at no single operating
+> point significantly. The protocol distinguishes a router that earns its
+> complexity from one that does not.
 >
 > **→ Read [`EVALUATION.md`](EVALUATION.md) first** (goal, contributions,
 > findings), then [`results_report.md`](results_report.md) (main report).

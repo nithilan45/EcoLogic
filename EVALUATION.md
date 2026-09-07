@@ -1,13 +1,25 @@
-# How to tell whether an energy-saving LLM router actually saves anything
+# How to tell whether a cost-saving LLM router actually saves anything
 
-**The goal of this research, in one sentence:** energy-saving query routers are
-currently reported without the baselines or the cost accounting needed to know
-whether they save anything — this work builds the audit protocol that makes such
-a claim falsifiable, and applies it to a deployed router, which fails it.
+**The goal of this research, in one sentence:** LLM routers are reported against
+the wrong baseline (always-frontier) on a biased cost axis (per-model mean cost),
+and under the right baseline and an exact cost axis the honest effect of reading
+the query is *much* smaller than reported — sometimes negative.
 
-That is the research contribution. EcoLogic is the subject of the audit, not the
-point of it. If you only remember one thing: **the protocol is the contribution,
-and the negative result is the evidence that the protocol bites.**
+Two systems, two outcomes, and the contrast is the point:
+
+- **EcoLogic** (the router in this repo) is **beaten outright** by the constant
+  policy "send everything to Tier 2" — 5.5 pp less accurate at **6.87x the
+  measured dollar cost**. It fails the audit.
+- **RouteLLM** (Ong et al., ICLR 2025) **passes**, but by far less than its
+  headline suggests: on its own released GSM8K data its router beats a
+  cost-matched query-independent baseline by a mean of **+0.57 pp**, consistent
+  in direction (8 of 9 operating points) yet **not statistically significant at
+  any single one** (n = 1,307).
+
+So the claim is not "routing does not work." It is that **the reported effect of
+routing is inflated by the baseline and the cost model**, and that once both are
+fixed the true effect is at or below the resolution of the benchmarks the field
+uses. That is a measurement problem, and it is what this work is about.
 
 ---
 
@@ -38,17 +50,23 @@ frontier" — it will, trivially — but:
 
 > **Does looking at the query beat not looking at the query?**
 
+There is a second, subtler problem: **the cost axis itself is usually biased.**
+The standard way to price a routing policy is to multiply the fraction of traffic
+sent to each model by that model's *mean* cost. That is exact for a
+query-independent baseline (assignment is independent of the item, so the mean
+factorises) but **biased for a real router**, because routers escalate precisely
+the items that generate more tokens. The bias runs in the router's favour. So the
+usual comparison charges the baseline honestly and the router too little.
+
 This began as a narrower task. The audited system's own limitations section
 conceded:
 
 > "no formal quality evaluation comparing tier outputs on matched query sets has
 > been performed."
 
-Filling that gap is Stage 1–2. But once the measurement was in place, three of
-the results turned out to be about **evaluation practice rather than about this
-one system**, and that is where the research now sits: the negative result is
-specific to one router, while the protocol, the cost-accounting correction, and
-the nondeterminism finding apply to anyone reporting routing savings.
+Filling that gap is Stage 1–2. But once the measurement was in place, the results
+turned out to be about **evaluation practice rather than about this one system**,
+and that is where the research now sits.
 
 ---
 
@@ -97,6 +115,17 @@ the nondeterminism finding apply to anyone reporting routing savings.
    6.3%. See `stage7_10/regret_correction_derivation.md` and
    `stage7_10/external_generalization.md`.
 
+   The asymmetry is the part that bites: the naive formula is **exact** for a
+   query-independent baseline (verified numerically to $5×10⁻⁵ per item) and
+   **biased** for a real router. So the standard router-vs-random comparison
+   charges the baseline honestly and the router too little. Correcting it removes
+   0.09–0.30 pp of RouteLLM's apparent edge over a matched baseline — a small
+   absolute number, but its size **scales with within-model cost dispersion**
+   (coefficient of variation ~0.4 for 2024-era short-answer models; our
+   reasoning-model Tier 1 emits ~5,300 tokens per call with an order-of-magnitude
+   spread). The problem therefore gets worse as the field routes among reasoning
+   models with variable-length thinking budgets.
+
 We claim **no new model, architecture or algorithm**, and we do not claim that
 learned routing cannot work — one family of zero-API-cost routers was tested on
 one workload. The claim is about how savings are currently reported.
@@ -105,9 +134,34 @@ one workload. The claim is about how savings are currently reported.
 
 ## 3. What was found
 
-### The router loses to a constant
+### The router loses to a constant — on a measured, not modelled, axis
 
-364 items (HumanEval 164, MMLU 100, GSM8K 100), all three tiers, identical set:
+364 items (HumanEval 164, MMLU 100, GSM8K 100), all three tiers, identical set.
+Cost here is **measured dollars** from the providers' own `usage` fields, so no
+assumed energy rate enters (`raw_results/tables_cost.md`):
+
+| Routing policy | Accuracy | Cost (USD) | vs frontier |
+|---|---|---|---|
+| **EcoLogic (real classifier)** | **86.8%** | **$0.2867** | 0.450x |
+| Always Tier 2 — *ignores the query* | **92.3%** | **$0.0418** | 0.066x |
+| Always Tier 1 — *ignores the query* | 87.6% | $0.3342 | 0.525x |
+| Random tier | 90.7% | $0.3628 | 0.570x |
+| Always-frontier (`gpt-4o`) | 91.5% | $0.6366 | 1.000x |
+| Oracle (cheapest correct) | 96.4% | $0.0470 | 0.074x |
+
+**Always-Tier-2 dominates the router on both axes simultaneously: 5.5 pp more
+accurate at 1/6.87 of the cost.** The finding is not an artifact of the assumed
+energy rates — it is *stronger* on the measured axis (6.87x) than on the
+modelled one (1.75x).
+
+That gap between axes is itself a result worth reporting: the modelled energy
+rates flatter the router badly. EcoLogic's headline saving versus always-frontier
+is **88.6% in modelled joules but only 55.0% in measured dollars** — the choice
+of cost model moves the headline number by roughly 4x, on identical routing
+decisions.
+
+The same table on the modelled energy axis, for comparability with
+`results_report.md`: 
 
 | Routing policy | Accuracy [95% CI] | Energy | vs always-frontier |
 |---|---|---|---|
@@ -118,15 +172,42 @@ one workload. The claim is about how savings are currently reported.
 | Always-frontier (`gpt-4o`) | 91.5% [88.2%, 93.9%] | 6,066 J | 1.000x |
 | Oracle (cheapest tier that was right) | 96.4% [94.0%, 97.9%] | 386 J | 0.064x |
 
-Read the first two rows together. Sending every query to the middle tier is
-**5.5 pp more accurate and 43% cheaper** than the router — so on this workload,
-looking at the query is worse than not looking at it. Against always-frontier the
-router does save 88.6% of energy, which is the number such systems normally
-report, and it is true and nearly meaningless.
-
 The oracle row locates the headroom: a perfect router on these *same three tiers*
 would be 9.6 pp more accurate and 44% cheaper. The tier design is fine. The
 routing decisions are the problem.
+
+### On someone else's router, the audit passes — but only just
+
+This is the check that decides whether any of the above is a general claim or a
+case study, and it was run on RouteLLM's **own** released GSM8K responses, own
+decontamination list, own BERT checkpoint and own threshold grid (n = 1,307,
+`stage7_10/s9_static_baselines.json`).
+
+The right baseline for a two-model router is the query-independent *mixture*
+whose expected cost equals the router's realised cost. Comparing at matched
+**call fraction** — the usual practice — is not the same thing, precisely because
+of the cost bias above.
+
+| Comparison | Router's edge |
+|---|---|
+| vs. mixture at matched call fraction (usual practice) | +0.76 pp mean |
+| vs. mixture at **matched cost** (correct) | **+0.57 pp mean** |
+| Operating points where the router wins on cost-matched accuracy | 8 of 9 |
+| Operating points where that win is significant at p < 0.05 | **0 of 9** |
+| Sign test across the sweep | p = 0.039 |
+
+So RouteLLM's router does help: the direction is consistent and the aggregate
+sign test reaches significance. But the effect is **~0.57 pp**, and a
+1,307-item benchmark cannot resolve it at any individual operating point. The
+cost-matching correction removes 0.09–0.30 pp of the apparent edge — small here,
+for a reason given below.
+
+**This matters more than a straightforward negative result would.** The protocol
+is not a machine for rejecting routers. It separates a router that genuinely
+earns its complexity (RouteLLM, barely) from one that does not (EcoLogic,
+decisively), and it shows that even the successful case has an effect size the
+field's benchmarks are too small to establish point-by-point — while the field
+reports it as "up to 85% cost reduction."
 
 ### It is not just that the classifier is keyword-based
 
@@ -138,8 +219,28 @@ Scaling its training data 4.2× and de-noising labels via k=3 majority voting
 moved it to 1.10 pp *ahead*, but not significantly (p = 0.22) and at 28% *more*
 energy — the pre-registered verdict is **"partial support, inconclusive."**
 
-Why it doesn't work is the more useful finding: held-out per-tier discrimination
-is only AUC ≈ 0.67, and 4.2× more data barely moved it (0.656 → 0.665). The
+### The ceiling is the signal, not the model class
+
+The obvious objection is that we tested a weak router and blamed the workload. So
+we attacked our own claim: same MiniLM representation, same labels, same splits,
+stronger learners (`stage7_10/s7_ceiling.md`).
+
+| Model | Mean CALIBRATION AUC | Mean TRAIN AUC |
+|---|---|---|
+| Logistic regression (our router) | **0.6816** | 0.8140 |
+| Gradient boosting | 0.6547 | 0.9577 |
+| Random forest | 0.6703 | **0.9999** |
+| k-NN (k = 50) | 0.6521 | 0.7835 |
+
+**No stronger learner beats the linear head; the best is 0.011 AUC worse.** The
+random forest reaches TRAIN AUC 0.9999 — it memorises the training set perfectly
+— and still generalises *below* logistic regression. Ample capacity, zero
+held-out gain. That is the signature of a task with little learnable signal, not
+of an inadequate model class. It does not prove no representation could do
+better (a fine-tuned LLM might), but it rules out the cheap explanation.
+
+Why the router doesn't work, then: held-out per-tier discrimination is only
+AUC ≈ 0.68, and 4.2× more data barely moved it (0.656 → 0.665). The
 calibration gap to the knapsack frontier closed just 0.83 pp while the
 discreteness gap stayed at **0.00 pp**. So the shortfall is not the cost of
 one-tier-per-item, and not a shortage of data — **per-item tier success is only
@@ -180,6 +281,9 @@ Each report stands alone and states its own limitations.
 | Read this | For |
 |---|---|
 | **`results_report.md`** | **The main report.** Policy comparison, per-tier/per-benchmark accuracy, oracle gap, energy table with sensitivity band, "what failed", limitations. |
+| `raw_results/tables_cost.md` | The same policy comparison on **measured dollars** instead of modelled joules. Read alongside the main report. |
+| `stage7_10/s9_static_baselines.json` | **The external test of the headline claim** — RouteLLM's router vs. cost-matched static mixtures on its own data. |
+| `stage7_10/s7_ceiling.md` | Whether the predictability ceiling survives stronger learners (it does). |
 | `stage7_10/regret_correction_derivation.md` | Contribution 5: the proposition, proof, and reconciliation to 2×10⁻¹⁶. |
 | `stage7_10/external_generalization.md` | Whether contribution 5 affects published work. Sign flip reproduced on RouteLLM's data. |
 | `router_v2/README.md` | The learned router: pre-registered, one-shot tested. |
@@ -239,10 +343,23 @@ The reports are only useful if their bounds are clear.
 
 - **No joule was measured.** Energy is token counts — which are real — times the
   audited system's own assumed J/1k-token rates. No wattmeter, no GPU telemetry.
-  This is the single weakest point in the work. Every energy claim therefore
-  carries a ±5× sensitivity band, and contributions 1–5 are better understood as
-  being about **cost accounting under per-item cost dispersion**, which is
-  rate-model independent, than about energy specifically.
+  Every energy claim therefore carries a ±5× sensitivity band. This is why the
+  headline comparison is now reported on **measured dollars**
+  (`raw_results/tables_cost.md`), which is rate-model independent: the dominance
+  finding survives there and is stronger. Read this work as being about **cost
+  accounting under per-item cost dispersion**, not about energy. Where the
+  documents say "energy," they mean a linear transform of token counts.
+- **The external check is one benchmark, one router, one model pair.** GSM8K is
+  the only RouteLLM artifact shipping response text, so it is the only one where
+  per-item cost is reconstructable. MMLU and MT-Bench release correctness flags
+  only. One passing router is not evidence about routers in general, any more
+  than one failing router is.
+- **The predictability ceiling is shown for one representation.** MiniLM
+  embeddings plus four model classes. A fine-tuned LLM router might extract more
+  signal; we ruled out the cheap explanation, not every explanation.
+- **RouteLLM's own conclusions are not refuted.** Their quality-vs-call-fraction
+  curves are unaffected. What is affected is the translation of call fraction
+  into cost, and the absence of a cost-matched query-independent baseline.
 - **Benchmarks are not production traffic.** Single-turn, self-contained,
   auto-gradable academic tasks. Transfer to real usage is not measured.
 - **Tiers 1 and 2 are substitutes.** The routing *logic* is audited; the

@@ -1,0 +1,251 @@
+{
+  "source": "RouteLLM released GSM8K responses (Ong et al., ICLR 2025)",
+  "repo_commit_note": "github.com/lm-sys/RouteLLM, per stage7_10/external_generalization.md",
+  "n_items": 1307,
+  "weak_model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+  "strong_model": "gpt-4-1106-preview",
+  "prices_usd_per_1m": {
+    "gpt-4-1106-preview": {
+      "in": 10.0,
+      "out": 30.0
+    },
+    "mistralai/Mixtral-8x7B-Instruct-v0.1": {
+      "in": 0.6,
+      "out": 0.6
+    }
+  },
+  "accuracy": {
+    "always_weak_pct": 63.733741392501905,
+    "always_strong_pct": 85.76893649579189
+  },
+  "mean_cost_per_item_usd": {
+    "weak": 0.00011874353481254782,
+    "strong": 0.004313205814843153
+  },
+  "statics": {
+    "always_weak": {
+      "accuracy": 0.6373374139250191,
+      "cost_per_item": 0.00011874353481254782,
+      "n_correct": 833,
+      "wilson": [
+        0.6109052393564621,
+        0.6629646164674604
+      ]
+    },
+    "always_strong": {
+      "accuracy": 0.8576893649579189,
+      "cost_per_item": 0.004313205814843153,
+      "n_correct": 1121,
+      "wilson": [
+        0.8376988958199935,
+        0.8755833192088857
+      ]
+    }
+  },
+  "naive_formula_exact_for_random_residual_usd": 5.4509847451981314e-05,
+  "sweep": [
+    {
+      "threshold": 0.21292775869369507,
+      "strong_pct": 100.0,
+      "router_accuracy_pct": 85.76893649579189,
+      "router_cost_per_item_usd": 0.004313205814843153,
+      "random_same_fraction_accuracy_pct": 85.76893649579189,
+      "router_minus_random_same_fraction_pp": 0.0,
+      "random_same_fraction_cost_per_item_usd": 0.004313205814843153,
+      "random_matched_cost_fraction": 1.0,
+      "random_matched_cost_accuracy_pct": 85.76893649579189,
+      "router_minus_random_matched_cost_pp": 0.0,
+      "advantage_lost_to_cost_matching_pp": 0.0,
+      "mc_baseline_mean_pct": 85.76893649579189,
+      "mc_baseline_sd_pp": 0.0,
+      "mc_p_value": 1.0
+    },
+    {
+      "threshold": 0.4211216330528259,
+      "strong_pct": 89.9770466717674,
+      "router_accuracy_pct": 84.46824789594491,
+      "router_cost_per_item_usd": 0.003909702677888294,
+      "random_same_fraction_accuracy_pct": 83.56035917480415,
+      "router_minus_random_same_fraction_pp": 0.9078887211407705,
+      "random_same_fraction_cost_per_item_usd": 0.0038927968181453644,
+      "random_matched_cost_fraction": 0.9038009856767828,
+      "random_matched_cost_accuracy_pct": 83.6491724464356,
+      "router_minus_random_matched_cost_pp": 0.81907544950931,
+      "advantage_lost_to_cost_matching_pp": 0.08881327163146047,
+      "mc_baseline_mean_pct": 83.65012241775057,
+      "mc_baseline_sd_pp": 0.49315237186467714,
+      "mc_p_value": 0.0551
+    },
+    {
+      "threshold": 0.45597598552703855,
+      "strong_pct": 79.95409334353482,
+      "router_accuracy_pct": 81.56082631981637,
+      "router_cost_per_item_usd": 0.003497752257077276,
+      "random_same_fraction_accuracy_pct": 81.35178185381639,
+      "router_minus_random_same_fraction_pp": 0.20904446599997462,
+      "random_same_fraction_cost_per_item_usd": 0.003472387821447576,
+      "random_matched_cost_fraction": 0.8055880579381616,
+      "random_matched_cost_accuracy_pct": 81.48503142204979,
+      "router_minus_random_matched_cost_pp": 0.0757948977665901,
+      "advantage_lost_to_cost_matching_pp": 0.13324956823338452,
+      "mc_baseline_mean_pct": 81.4839403213466,
+      "mc_baseline_sd_pp": 0.6618611023558635,
+      "mc_p_value": 0.48015
+    },
+    {
+      "threshold": 0.477284574508667,
+      "strong_pct": 70.00765110941086,
+      "router_accuracy_pct": 79.265493496557,
+      "router_cost_per_item_usd": 0.003081292578423871,
+      "random_same_fraction_accuracy_pct": 79.16006390169115,
+      "router_minus_random_same_fraction_pp": 0.1054295948658579,
+      "random_same_fraction_cost_per_item_usd": 0.003055188053732214,
+      "random_matched_cost_fraction": 0.7063000799210208,
+      "random_matched_cost_accuracy_pct": 79.2972014550309,
+      "router_minus_random_matched_cost_pp": -0.031707958473903286,
+      "advantage_lost_to_cost_matching_pp": 0.1371375533397612,
+      "mc_baseline_mean_pct": 79.30072685539403,
+      "mc_baseline_sd_pp": 0.7613674285743599,
+      "mc_p_value": 0.542
+    },
+    {
+      "threshold": 0.4984637975692749,
+      "strong_pct": 59.984697781178276,
+      "router_accuracy_pct": 78.19433817903597,
+      "router_cost_per_item_usd": 0.0026634379495026777,
+      "random_same_fraction_accuracy_pct": 76.9514865807034,
+      "router_minus_random_same_fraction_pp": 1.2428515983325505,
+      "random_same_fraction_cost_per_item_usd": 0.0026347790570344256,
+      "random_matched_cost_fraction": 0.6066795323932589,
+      "random_matched_cost_accuracy_pct": 77.1020432539601,
+      "router_minus_random_matched_cost_pp": 1.092294925075854,
+      "advantage_lost_to_cost_matching_pp": 0.15055667325669653,
+      "mc_baseline_mean_pct": 77.10571155317521,
+      "mc_baseline_sd_pp": 0.8209177121074579,
+      "mc_p_value": 0.09925
+    },
+    {
+      "threshold": 0.5167810916900635,
+      "strong_pct": 50.03825554705432,
+      "router_accuracy_pct": 76.28156082631982,
+      "router_cost_per_item_usd": 0.002256832440703902,
+      "random_same_fraction_accuracy_pct": 74.75976862857814,
+      "router_minus_random_same_fraction_pp": 1.521792197741667,
+      "random_same_fraction_cost_per_item_usd": 0.002217579289319063,
+      "random_matched_cost_fraction": 0.5097408828947089,
+      "random_matched_cost_accuracy_pct": 74.96598119921012,
+      "router_minus_random_matched_cost_pp": 1.3155796271096976,
+      "advantage_lost_to_cost_matching_pp": 0.20621257063196952,
+      "mc_baseline_mean_pct": 74.96685156847744,
+      "mc_baseline_sd_pp": 0.8393429858862674,
+      "mc_p_value": 0.06275
+    },
+    {
+      "threshold": 0.5349911093711853,
+      "strong_pct": 40.01530221882173,
+      "router_accuracy_pct": 73.37413925019128,
+      "router_cost_per_item_usd": 0.0018536690130068862,
+      "random_same_fraction_accuracy_pct": 72.5511913075904,
+      "router_minus_random_same_fraction_pp": 0.8229479426008712,
+      "random_same_fraction_cost_per_item_usd": 0.0017971702926212751,
+      "random_matched_cost_fraction": 0.4136228585137448,
+      "random_matched_cost_accuracy_pct": 72.84800177903278,
+      "router_minus_random_matched_cost_pp": 0.5261374711584832,
+      "advantage_lost_to_cost_matching_pp": 0.29681047144238804,
+      "mc_baseline_mean_pct": 72.85322111706198,
+      "mc_baseline_sd_pp": 0.8274022687095905,
+      "mc_p_value": 0.28175
+    },
+    {
+      "threshold": 0.5554229855537415,
+      "strong_pct": 29.992348890589138,
+      "router_accuracy_pct": 70.92578423871461,
+      "router_cost_per_item_usd": 0.0014258530986993112,
+      "random_same_fraction_accuracy_pct": 70.34261398660266,
+      "router_minus_random_same_fraction_pp": 0.5831702521119642,
+      "random_same_fraction_cost_per_item_usd": 0.0013767612959234869,
+      "random_matched_cost_fraction": 0.31162744509821316,
+      "random_matched_cost_accuracy_pct": 70.60051294478083,
+      "router_minus_random_matched_cost_pp": 0.32527129393379317,
+      "advantage_lost_to_cost_matching_pp": 0.257898958178171,
+      "mc_baseline_mean_pct": 70.59674062739097,
+      "mc_baseline_sd_pp": 0.7722495578759624,
+      "mc_p_value": 0.3526
+    },
+    {
+      "threshold": 0.5815513014793395,
+      "strong_pct": 20.04590665646519,
+      "router_accuracy_pct": 69.01300688599848,
+      "router_cost_per_item_usd": 0.001005880336648814,
+      "random_same_fraction_accuracy_pct": 68.1508960344774,
+      "router_minus_random_same_fraction_pp": 0.8621108515210696,
+      "random_same_fraction_cost_per_item_usd": 0.0009595615282081242,
+      "random_matched_cost_fraction": 0.21150191433591656,
+      "random_matched_cost_accuracy_pct": 68.39422733961315,
+      "router_minus_random_matched_cost_pp": 0.6187795463853174,
+      "advantage_lost_to_cost_matching_pp": 0.24333130513575219,
+      "mc_baseline_mean_pct": 68.39518745218056,
+      "mc_baseline_sd_pp": 0.6781571950567133,
+      "mc_p_value": 0.1977
+    },
+    {
+      "threshold": 0.6258944869041443,
+      "strong_pct": 10.022953328232594,
+      "router_accuracy_pct": 66.48814078041316,
+      "router_cost_per_item_usd": 0.0005754361132364193,
+      "random_same_fraction_accuracy_pct": 65.94231871348966,
+      "router_minus_random_same_fraction_pp": 0.545822066923507,
+      "random_same_fraction_cost_per_item_usd": 0.0005391525315103361,
+      "random_matched_cost_fraction": 0.1088798868446468,
+      "random_matched_cost_accuracy_pct": 66.13293094194783,
+      "router_minus_random_matched_cost_pp": 0.3552098384653313,
+      "advantage_lost_to_cost_matching_pp": 0.19061222845817571,
+      "mc_baseline_mean_pct": 66.13292654934965,
+      "mc_baseline_sd_pp": 0.5203454821293074,
+      "mc_p_value": 0.2681
+    },
+    {
+      "threshold": 0.8179140686988831,
+      "strong_pct": 0.07651109410864575,
+      "router_accuracy_pct": 63.810252486610565,
+      "router_cost_per_item_usd": 0.00012225554705432286,
+      "random_same_fraction_accuracy_pct": 63.75060076136441,
+      "router_minus_random_same_fraction_pp": 0.05965172524615703,
+      "random_same_fraction_cost_per_item_usd": 0.00012195276379497368,
+      "random_matched_cost_fraction": 0.0008372973714641253,
+      "random_matched_cost_accuracy_pct": 63.75219140344159,
+      "router_minus_random_matched_cost_pp": 0.05806108316896985,
+      "advantage_lost_to_cost_matching_pp": 0.0015906420771871765,
+      "mc_baseline_mean_pct": 63.7526817138485,
+      "mc_baseline_sd_pp": 0.04841822482737211,
+      "mc_p_value": 0.2588
+    }
+  ],
+  "mc_draws": 20000,
+  "n_interior_points": 9,
+  "n_interior_beating_matched_cost_mixture": 8,
+  "n_interior_beating_matched_cost_mixture_p05": 0,
+  "sign_test_across_sweep": {
+    "n_positive": 8,
+    "n_interior": 9,
+    "p_two_sided": 0.0390625,
+    "note": "operating points share items and are not independent, so this is a descriptive consistency check, not an exact test"
+  },
+  "mean_router_edge_matched_cost_pp": 0.5662705656589415,
+  "max_advantage_lost_to_cost_matching_pp": 0.29681047144238804,
+  "max_advantage_lost_at_strong_pct": 40.01530221882173,
+  "mid_point": {
+    "strong_pct": 50.03825554705432,
+    "router_accuracy_pct": 76.28156082631982,
+    "mcnemar_router_vs_always_weak": {
+      "a_only_correct": 202,
+      "b_only_correct": 38,
+      "p_exact": 3.3771740483447868e-28
+    },
+    "mcnemar_router_vs_always_strong": {
+      "a_only_correct": 56,
+      "b_only_correct": 180,
+      "p_exact": 2.2980410086117915e-16
+    }
+  }
+}
