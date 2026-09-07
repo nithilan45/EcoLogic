@@ -1,0 +1,85 @@
+{
+ "n_checks": 14,
+ "n_failures": 0,
+ "failures": [],
+ "checks": {
+  "P1_static_frontier_matches_LP": {
+   "pass": true,
+   "n_cases": 300,
+   "max_abs_err": 1.4432899320127035e-15
+  },
+  "P2_oracle_frontier_matches_MCKP_LP": {
+   "pass": true,
+   "n_cases": 120,
+   "max_abs_err": 3.885780586188048e-16,
+   "max_budget_overrun": 0.0
+  },
+  "P1_ladder_S_le_Adag_le_Astar": {
+   "pass": true,
+   "max_S_minus_Adag": -0.03508126039117021,
+   "max_Adag_minus_Astar": -0.1158014943206852,
+   "max_realistic_minus_Adag": 0.0,
+   "mean_bayes_router_gain": 0.0428075633524214
+  },
+  "P1b_rho_is_one_iff_outcomes_deterministic_given_x": {
+   "pass": true,
+   "max_deterministic_kappa_minus_achievable": 0.0,
+   "mean_rho_under_bernoulli_noise": 0.25769076603281654,
+   "note": "rho = 1 exactly when u is a function of x; Bernoulli noise alone drives it far below 1"
+  },
+  "P3_ceiling_never_violated": {
+   "pass": true,
+   "n_cases": 4000,
+   "min_slack": 0.014446925473083919,
+   "max_tightness_ratio": 0.8557406291591594
+  },
+  "P3_ceiling_tight_on_two_point": {
+   "pass": true,
+   "gain": 0.209808,
+   "bound": 0.21012775633885208,
+   "ratio": 0.9984782765284161
+  },
+  "P4_variance_components_unbiased": {
+   "pass": true,
+   "mean_true_var": 0.03507986663301563,
+   "mean_est_var": 0.035128253639616795,
+   "rel_bias": 0.0013793383853868272
+  },
+  "P4_sd_delta_from_replicates_unbiased": {
+   "pass": true,
+   "mean_true_var_delta": 0.07031026459814224,
+   "mean_est_var_delta": 0.07069691961725677,
+   "rel_bias": 0.005499268440027005
+  },
+  "P4_naive_estimator_is_inflated": {
+   "pass": true,
+   "mean_inflation_factor_of_naive_var": 2.330924057688059
+  },
+  "P5_bayes_auc_closed_form": {
+   "pass": true,
+   "n_cases": 200,
+   "max_abs_err": 0.0035321173120799187
+  },
+  "P5_sd_bound_dominates_truth": {
+   "pass": true,
+   "min_slack": 0.036145923277226655,
+   "mean_slack": 0.057811600708380394
+  },
+  "P5_beta_moment_match_accurate": {
+   "pass": true,
+   "n_cases": 200,
+   "max_abs_err": 0.003008608546788083
+  },
+  "P2c_kappa0_equals_union_minus_best_single": {
+   "pass": true,
+   "n_cases": 2000,
+   "max_abs_err": 1.6653345369377348e-16
+  },
+  "S8_naive_cost_exact_for_static_biased_for_router": {
+   "pass": true,
+   "mean_rel_err_static": 0.010349960749257228,
+   "mean_rel_err_router": 0.3034469301119549,
+   "note": "router error is signed: positive means naive accounting understates true cost"
+  }
+ }
+}
