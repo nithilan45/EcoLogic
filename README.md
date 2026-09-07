@@ -1243,6 +1243,9 @@ intervals and limitations are in [`EVALUATION.md`](EVALUATION.md) and
 graded objectively — code by executing the official test suites, MMLU by letter
 match, GSM8K by final-answer match. Energy is token counts × the per-tier
 J/1k-token rates in `backend/main.py`, so it is **modelled, not metered**.
+Total measured API spend across all evaluation stages: **$48.09**.
+*Breakdown:* Stages 1–6 $1.9497 + `router_v2` $3.5143 + `stage7_10` $42.62,
+summed from per-call `usd` fields.
 
 **The comparison that matters is not against always-frontier.** Every tiered
 router beats "send everything to GPT-4o" on energy; that is not the bar. The bar
@@ -1277,8 +1280,13 @@ Three caveats before optimising against these numbers:
 
 - The classifier agrees with itself on only **53.0%** of items between the raw
   query and the wrapped prompt actually sent to the model.
-- `gpt-4o` scored *lowest of the three tiers* on code, so "always-frontier" is
-  **not** the quality ceiling the tier design assumes.
+- Code-tier ranking is **benchmark-dependent**. On the Stage 1–6 HumanEval set
+  that [`results_report.md`](results_report.md) reports, `gpt-4o` is middle of
+  the pack (Tier 1 86.0% / Tier 2 96.3% / Tier 3 91.5%; range 10.3 pp). On the
+  Stage 7 MBPP test set it is *lowest* of the three (Tier 1 72.8% / Tier 2
+  93.7% / Tier 3 86.0%; range 20.9 pp). Tier 2 is highest on both. So
+  "always-frontier" is not a reliable quality ceiling — but that is a property
+  of the code benchmark, not a uniform fact about these tiers.
 - Re-running identical prompts at temperature 0 flips the graded verdict on
   **19.8%** of Tier 1 items, so small accuracy differences between tiers are not
   reproducible from a single run.

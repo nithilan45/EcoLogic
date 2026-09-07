@@ -157,10 +157,14 @@ decomposition) agree the comparison is unresolved.
 
 ### Two anomalies that break assumptions the design depends on
 
-- **The frontier tier is not the quality ceiling.** `gpt-4o` scored *lowest of
-  the three tiers* on code (86.0% MBPP), so always-frontier (89.8%) trails
-  Always-Tier-2 (92.6%). Every "quality given up versus the frontier" framing
-  inherits this.
+- **Code-tier ranking is benchmark-dependent, so the frontier is not a
+  reliable quality ceiling.** On the Stage 1–6 HumanEval set that
+  `results_report.md` reports, `gpt-4o` is middle of the pack (Tier 1 86.0% /
+  Tier 2 96.3% / Tier 3 91.5%; range 10.3 pp). On the Stage 7 MBPP test set it
+  is *lowest* of the three (Tier 1 72.8% / Tier 2 93.7% / Tier 3 86.0%; range
+  20.9 pp). Tier 2 is highest on both. The discrepancy is the finding: which
+  tier is "best at code" flips with the benchmark, and the spread nearly
+  doubles. Every "quality given up versus the frontier" framing inherits this.
 - **The classifier is barely stable under prompt formatting.** It agrees with
   itself on only **53.0%** of items between the raw user query and the wrapped
   prompt actually sent to the model, and the wrapped form escalates all 164 code
@@ -203,7 +207,9 @@ everything else supports it or tries to overturn it.
 ## 5. How the numbers were produced
 
 Every figure comes from real calls to real endpoints. Nothing is estimated,
-extrapolated or simulated. Total spend **$46.26**.
+extrapolated or simulated. Total spend **$48.09**.
+*Breakdown:* Stages 1–6 $1.9497 + `router_v2` $3.5143 + `stage7_10` $42.62,
+summed from per-call `usd` fields.
 
 **Models.** The audited system's Tier 1/2 slugs (Gemma 3N E4B, Apriel 1.6 15B)
 were retired from Together AI before this work, so energy-adjacent substitutes
