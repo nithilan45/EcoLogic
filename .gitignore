@@ -11,3 +11,6 @@ stage7_10/*.npy
 # Raw generations: ~288 MB / ~50 MB gzipped, kept on disk not in git (see
 # stage7_10/s7_export_samples.py, which commits the per-sample grade table instead).
 stage7_10/*.jsonl.gz
+# ...but keep the reviewable audit sample of raw generations (see
+# stage7_10/s7_export_audit_sample.py).
+!stage7_10/*_audit_sample.jsonl.gz

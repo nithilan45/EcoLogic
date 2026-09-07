@@ -232,10 +232,30 @@ revision and `gpt-4o` is a moving alias.
 | `build_pools.py`, `s7_run.py`, `s7_grade.py`, `s7_data.py`, `s7_features.py`, `s7_fit.py`, `s7_calibrate.py`, `s7_calib_policies.py`, `s7_final.py`, `s7_variance.py` | Stage 7 / 10(a) pipeline; all run except `s7_final.py` and `s7_variance.py`, which need Tier 3 |
 | `regret_correction.py`, `external_check.py` | Stage 8 / 9 analysis |
 | `s7_*_pool.json`, `s7_test_set.json` | the frozen selections (disjointness PASS) |
-| `s7_pool_labels.json`, `s7_pool_samples.csv.gz` | k=3 majority labels, and the per-sample grade/token/cost table all numbers derive from |
+| `s7_pool_labels.json`, `s7_{pool,test}_samples.csv.gz` | k=3 majority labels, and the per-sample grade/token/cost/latency table every reported number derives from |
+| `s7_{pool,test}_audit_sample.jsonl.gz` | response **text** for the cases where grading is most contestable — all ungradable and truncated responses, plus seeded samples of `no_tier_correct` items, k=3 disagreements and ordinary controls |
 | `s7_router_model.pkl`, `s7_model_selection.json`, `s7_chosen_threshold.json` | the fixed router: weights, selected variant, pre-registered threshold |
 | `s7_threshold_sweep.csv/.png`, `s7_mckp_frontier.csv/.png`, `s7_mckp_gaps.json`, `s7_calib_policies.json` | Stage 7 calibration sweep, MCKP frontier, gap decomposition, CALIBRATION policy table |
 | `s7_run_accounting.json` | per-target call counts, failure kinds and measured spend |
 | `regret_correction_validation.json`, `external_generalization.json` | machine-readable Stage 8 / 9 results |
 
 The poster and earlier abstract work was not touched.
+
+### What is deliberately *not* in the repo
+
+Stage 7's full raw generations are **288 MB** (~48 MB gzipped), because Tier 1
+averages ~3,100 output tokens per call across 15,000 calls. Committing them
+would burden a repository that is also deployed, so they stay on disk at
+`stage7_10/s7_{pool,test}_{responses,graded}.jsonl` and are **not** recoverable
+from git. What is committed instead:
+
+- `s7_*_samples.csv.gz` — every grade, token count, cost, latency and
+  finish_reason, i.e. enough to recompute every number in every report;
+- `s7_*_audit_sample.jsonl.gz` — 8.3 MB of actual response text, weighted toward
+  the cases where a grader is most likely to be wrong, so grading judgement is
+  checkable without the full 48 MB.
+
+Regenerating the full set costs ~$41 and ~15 hours, and because the provider
+models carry no immutable revision it would **not** reproduce identically. By
+contrast Stages 1–6 *do* commit their full raw responses
+(`raw_results/graded.jsonl`, 9 MB), which were small enough to keep.
