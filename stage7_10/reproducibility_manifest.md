@@ -220,7 +220,7 @@ python3 stage7_10/s7_variance.py            # Stage 10(a)
 ```
 
 Two helper scripts wrap the above for unattended resumption after a credit
-interruption, and are what actually produced the completed pool:
+interruption, and are what actually produced the completed run:
 `stage7_10/resume_when_funded.sh` (waits for Together AI, then loops the pool
 and test generation until no calls are pending) and
 `stage7_10/finish_when_funded.sh` (waits for OpenAI, then issues the outstanding

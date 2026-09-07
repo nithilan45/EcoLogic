@@ -210,8 +210,9 @@ Still binding on everything here:
 3. **Benchmarks are not EcoLogic traffic** — single-turn, self-contained,
    difficulty-concentrated academic tasks, chosen for objective
    auto-gradability and explicitly not claimed representative.
-4. **Train/test distribution shift**: MBPP ≠ HumanEval, in the stage that ran
-   and in the stage that was blocked.
+4. **Train/test distribution shift**: MBPP ≠ HumanEval in Stage 1's pool, and
+   Stage 7's fresh test set uses MBPP for code while the original frozen test
+   set used HumanEval, so the two test sets are not interchangeable.
 5. **Prompt-wrapper sensitivity**: the deployed classifier agrees with itself
    only 53.0% of the time between the raw query and the wrapped prompt,
    multiplying energy 5× — so all reported routing behaviour is conditional on

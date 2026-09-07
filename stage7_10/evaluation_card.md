@@ -310,8 +310,10 @@ baseline, inconclusively); as physical energy measurement of any kind.
 | 10(a) (generation-variance decomposition) | complete, all three tiers and all policies |
 | 10(b)(c)(d) (this card, framing, manifest) | complete |
 
-What remains **not established**: the one-shot frozen-test-set confirmation of
-the Stage 7 verdict, and the generation-noise share for the routed policies
-(the per-tier numbers for Tiers 1–2 are in, §5). Both wait on the same 1,091
-Tier 3 calls. Both scripts are written and fixed, and resume without any
-re-selection, so the one-shot property is intact.
+Every stage in this addendum is complete. What remains **not established** is
+stated in §8 and in `s7_LIMITATIONS.md` rather than left implicit: chiefly that
+energy is modelled and never measured, that the workload is four
+auto-gradable benchmarks rather than EcoLogic traffic, and that Stage 7's
+"partial support" label rests on a 1.10 pp margin smaller than the evaluation's
+own 2.70 pp generation noise — so it should not be read as evidence the learned
+router is better than static assignment.
