@@ -282,6 +282,11 @@ oracle frontier (Lagrangian multiple-choice-knapsack solve on per-item costs),
 every closed form in `theory.md`, and the Holm–Bonferroni / Benjamini–Hochberg
 corrections.
 
+**Checked:** re-running `s11_validate.py` on a later date reproduced
+`s11_validate.json` **byte-identically** (14/14 checks, every reported error
+term unchanged), so the LP solves, the Monte-Carlo suites and the closed forms
+are reproducible on this machine rather than merely seeded.
+
 **Not pinned:** CPU-only PyTorch training is deterministic given the seed on
 this machine but is not guaranteed bit-identical across BLAS builds or thread
 counts. `OMP_NUM_THREADS=2` was set for the encoder runs. The reported held-out
