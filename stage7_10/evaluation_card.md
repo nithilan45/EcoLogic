@@ -300,7 +300,7 @@ of Proposition 3 is also recorded as **vacuous at these effect sizes** (it
 evaluates to 2.82× the measured `kappa`), which was the falsification rule
 written down in advance.
 
-### Nine router families, and the "weak router" objection
+### Nine router families, and the "weak router" objection (in AUC)
 
 Same 1,500-item held-out split throughout. `ΔAUC` is a 2,000-resample paired
 bootstrap over items against the frozen MiniLM + logistic reference refitted on
@@ -344,6 +344,36 @@ they qualify how any router number here should be read:
   memorisation), held-out AUC *below* logistic regression. Ample capacity, no
   generalisation — the signature of a target that is not a smooth function of
   the input representation, not of an inadequate model class.
+
+### And the same experiment at 10x the supervision qualified our conclusion
+
+Repeating the unfreezing rung on RouterBench — the same `all-MiniLM-L6-v2`
+fine-tuned end-to-end on **27,735** training items over 11 models, scored on the
+learning curve's **7,299**-item held-out split, against the frozen logistic and
+MLP routers **refit on the same training items** (`kappa` = 19.95 pp; epoch
+chosen on a 1,460-item inner split that never touches the held-out set):
+
+| Router | mean AUC | gain (pp) | share of `kappa` captured |
+|---|---|---|---|
+| MiniLM (frozen) + logistic | 0.7078 | +1.939 | 9.7% |
+| MiniLM (frozen) + MLP | 0.6617 | +2.825 | 14.2% |
+| MiniLM **unfrozen**, fine-tuned end-to-end | **0.7126** | **+6.507** | **32.6%** |
+
+Unfreezing buys **+0.005 AUC** — *the same +0.005 it bought in-house, where it
+bought nothing* — and **3.4x the matched-cost gain**. The frozen MLP shows the
+same dissociation from the other side: 0.046 AUC worse than frozen logistic,
+0.9 pp better at the same budget. Supervision rather than capacity is what
+changed, since the inner-validation-to-held-out gap collapses from 0.751 vs
+0.694 on 2,975 in-house items to 0.7173 vs 0.7126 on 27,735.
+
+**This is the sharpest single caution on this card.** What nine router families
+fail to move is *AUC*; the deployable quantity moved by a factor of 3.4 while
+AUC moved +0.005. So the "generalisation gap does not close" finding should be
+read as scoped to AUC, and the gap itself as large but not immovable — closing
+it looks like a representation-learning problem. Two thirds of `kappa`
+nonetheless remains unclaimed. Caveats: **one split, one seed, three epochs,
+exploratory and not pre-registered** (D7), and no interval is quoted on the
+32.6% because it was run once (`../stage11_13/s13c_encoder_routerbench_0shot.json`).
 
 ### What was blocked
 
@@ -407,10 +437,14 @@ From `stage7_10/prereg_stage7.md` and `s7_LIMITATIONS.md`:
     than published directly.
 
 From `stage11_13/prereg_stage11_13.md` and `stage11_13/DEVIATIONS.md`:
-13. **Null results are not proofs of absence.** Nine router families failing to
-    clear +0.05 AUC bounds what *these* representations and *this* volume of
-    supervision achieve. It does not prove no router can; the learning curve is
-    an extrapolation, not a theorem.
+13. **Null results are not proofs of absence, and the null is scoped to AUC.**
+    Nine router families failing to clear +0.05 AUC bounds what *these*
+    representations and *this* volume of supervision achieve. It does not prove
+    no router can; the learning curve is an extrapolation, not a theorem. Every
+    ΔAUC interval is ±0.02–0.05 wide on 1,500 items, so a +0.02 effect is not
+    ruled out. And Stage 13c shows the *deployable* quantity moving 3.4× while
+    AUC moved +0.005, so an AUC null does not license a claim about deployable
+    value.
 14. **The top pre-registered rung was never served** (§7b, D8). The strongest
     remaining evidence against "you tested a weak router" is a fine-tuned
     *encoder*, not a fine-tuned generative LLM.
@@ -423,11 +457,17 @@ From `stage11_13/prereg_stage11_13.md` and `stage11_13/DEVIATIONS.md`:
     buys scale and model diversity, not traffic realism. Its outcomes are
     single generations, which is exactly why the in-house `k = 3` replicate data
     is not redundant with it (Proposition 4).
-17. **Two RouterBench analyses are exploratory, not pre-registered**: the
-    learning curves (D3) and the end-to-end encoder rungs (D7). Both are
-    labelled as such wherever reported, and the encoders are still judged
+17. **Three analyses are exploratory, not pre-registered**: the learning curves
+    (D3) and the end-to-end encoder rungs in-house and on RouterBench (D7). All
+    are labelled as such wherever reported, and the encoders are still judged
     against the pre-registered +0.05 threshold, so adding them cannot make the
     criterion easier to pass.
+18. **The encoder-at-scale result is one split, one seed.** The 32.6%-of-`kappa`
+    figure rests on a single 7,299-item held-out set, one seed, three epochs, no
+    interval. Its comparison rows are refit on identical items, which controls
+    the comparison but not the sampling variability of the split. Read it as a
+    demonstration that the two axes come apart by a large factor, not as an
+    estimate of what unfreezing buys.
 
 ---
 
@@ -448,14 +488,16 @@ routing cannot work in general (Stage 5 tests *one* family of zero-API-cost
 routers on *this* workload, and Stage 7 shows only that scaling *this* router's
 training data moves it from slightly behind to slightly ahead of a static
 baseline, inconclusively); as evidence that **no** router can close the
-RouterBench gap (§8 limitation 13 — nine families is a bound on these
-representations, not a theorem); as a claim that a fine-tuned generative LLM
-router would also fail (it was never served, §7b); as physical energy
-measurement of any kind.
+RouterBench gap (§8 limitations 13 and 18 — nine families is a bound on these
+representations in AUC, not a theorem, and the deployable gain demonstrably
+moves); as a claim that a fine-tuned generative LLM router would also fail (it
+was never served, §7b); as physical energy measurement of any kind.
 
 **Read AUC on this card with the §7b caution in hand.** The highest-AUC router
-built anywhere in this project has the *worst* matched-cost gain. Per-model AUC
-is the field's standard router metric and it is not a proxy for router value.
+built anywhere in this project has the *worst* matched-cost gain, and the rung
+that tripled matched-cost gain moved AUC by +0.005. Per-model AUC is the field's
+standard router metric and it is not a proxy for router value, in either
+direction.
 
 ---
 
@@ -467,7 +509,7 @@ is the field's standard router metric and it is not a proxy for router value.
 | `results_report.md` | Stages 1–4 write-up: four-policy comparison, oracle gap, sensitivity band, "what failed" |
 | `router_v2/` | learned-router addendum: pre-registration, pools, ablation, threshold sweep, MCKP frontier, one-shot results, limitations |
 | `stage7_10/` | Stage 7 retest, Stage 8 derivation, Stage 9 external check, Stage 10 documentation |
-| `stage11_13/` | the decomposition (`theory.md`, proofs), its numerical validation, RouterBench at scale (both releases), replicate-based reliability, learning curves, the nine-rung router ladder, `DEVIATIONS.md` (including the refuted hypothesis and the blocked rung) |
+| `stage11_13/` | the decomposition (`theory.md`, proofs), its numerical validation, RouterBench at scale (both releases), replicate-based reliability, learning curves, the nine-rung router ladder, the end-to-end encoder rungs in-house and at RouterBench scale, `DEVIATIONS.md` (including the refuted hypothesis and the blocked rung) |
 | `external_data/` | RouterBench 0-shot and 5-shot releases as downloaded, SHA-256 recorded in the result JSONs |
 | `paper/` | workshop paper draft (`main.tex`, `appendix.tex`) and a per-number provenance table in `paper/README.md` |
 | `quality_benchmark_report.md` | **superseded** first-pass report, retained for provenance |
@@ -489,7 +531,7 @@ is the field's standard router metric and it is not a proxy for router value.
 | 12b (learning curves on RouterBench) | complete, **exploratory, not pre-registered** (D3) |
 | 13 (router-strength ladder) | **partly blocked.** Prompted 70B router complete; the fine-tuned **generative** LLM rung is **BLOCKED** through four probed routes (D8) |
 | 13b (end-to-end fine-tuned encoders, in-house) | complete, **exploratory, not pre-registered** (D7) |
-| 13c (the same, on RouterBench) | **running**; exploratory, and no number from it is quoted until it lands |
+| 13c (the same, on RouterBench) | complete, **exploratory, not pre-registered** (D7), **and it qualified our own conclusion**: 32.6% of `kappa` captured against the frozen representation's 9.7% for +0.005 AUC |
 | paper | draft complete, `paper/main.tex` |
 
 Total measured API spend across all stages: **$57.80** — Stages 1–4 $1.9497 +
