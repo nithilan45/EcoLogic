@@ -308,6 +308,37 @@ either provider, which is what makes the $T{=}0$ column meaningful rather than
 degenerate: the 9B tier changes its graded verdict on $19.8\%$ of items between
 identical temperature-$0$ calls.
 
+\section{Further limitations and assumptions}\label{app:limits}
+
+The limitations a reviewer most needs are in the body; these are the remaining
+assumptions, stated so they can be checked rather than taken on trust.
+
+\emph{Replicate exchangeability.} Proposition~\ref{prop:reps} assumes replicates
+are conditionally i.i.d.\ given the item and independent across models. Positive
+within-item correlation --- for instance a prompt that reliably pushes a model
+into the same wrong reasoning path --- would understate the noise term and hence
+\emph{overstate} $\mathrm{sd}(\delta)$ and the ceiling. The error therefore runs
+in routing's favour, so it cannot manufacture our negative direction; it could
+however make the vacuousness of Proposition~\ref{prop:ceiling} look worse than
+it is.
+
+\emph{Which propositions are general.} Propositions~\ref{prop:ladder},
+\ref{prop:rho}, \ref{prop:reps} and \ref{prop:auc} hold for arbitrary $K$.
+Proposition~\ref{prop:ceiling} and the closed-form frontier expressions are
+two-model statements; with $K>2$ we compute the frontiers by linear program
+instead (\S\ref{app:validate} checks the two agree at $K=2$).
+
+\emph{The learning curve is a fit, not a bound.} $\mathrm{AUC}(n)=A-Bn^{-c}$ is
+fitted by least squares on nine training sizes over roughly two decades of $n$.
+Its asymptote $A=0.741$ is an extrapolation whose functional form we chose; a
+different form with the same in-range fit can put the asymptote elsewhere. We
+use it to argue that the observed trend is slow, not to prove a ceiling.
+
+\emph{Three models is not a model ecosystem.} The reliability numbers come from
+one small reasoning model, one mid-tier model and GPT-4o. They should be
+re-measured before being assumed for a different tier structure, and nothing in
+this paper establishes that reliability is stable across model families.
+
 \section{Matched-cost baselines and the biased cost axis}\label{sec:cost}
 
 The two measurement corrections summarised at the end of \S\ref{sec:eps}, in

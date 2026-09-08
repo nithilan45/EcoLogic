@@ -109,47 +109,43 @@ differs completely.
 \paragraph{Contributions.}
 \begin{enumerate}\itemsep2pt
 \item \textbf{A decomposition that separates those three worlds}
-(\S\ref{sec:theory}). Achievable gain $=\rho(b)\,\kappa(b)$, and realised gain
+(\S\ref{sec:theory}). Achievable gain $=\rho(b)\,\kappa(b)$, realised gain
 $=\rho(b)\kappa(b)-\varepsilon$. We prove the ladder $\Sb \le \Adag \le \Astar$,
 closed forms for two models, a distribution-free ceiling on \emph{every} router,
 the exact Bayes-optimal AUC implied by a difficulty distribution, and---the key
 structural point---that $\rho<1$ is \emph{exactly} outcome randomness given the
 query, so an oracle measured on single generations overstates attainable
-headroom. All propositions are validated numerically against brute-force LP and
-Monte-Carlo references (14/14 checks, Appendix \ref{app:validate}).
+headroom. All five are validated numerically against brute-force LP and
+Monte-Carlo references (14/14 checks, Appendix~\ref{app:validate}).
 \item \textbf{Complementarity is abundant and routers capture almost none of it}
 (\S\ref{sec:rb}). On RouterBench, median $\kappa = 12.11\pp$ $[11.15, 12.92]$
-across 55 model pairs $\times$ 8 benchmark families; the best of four router
-families realises $0.59\pp$ $[0.44, 0.78]$, i.e.\ $4.6\%$
-$[3.6\%, 5.9\%]$ of it. The direction is consistent (49/55 pairs positive,
-13/55 significant under Holm), so routing does work---it just recovers a
-twentieth of what is there.
+across 55 model pairs $\times$ 8 benchmark families, of which the best of four
+router families realises $4.6\%$ $[3.6\%, 5.9\%]$. The direction is consistent
+(49/55 pairs positive, 13/55 significant under Holm), so routing does
+work---it just recovers a twentieth of what is there.
 \item \textbf{A pre-registered refutation of our own hypothesis}
 (\S\ref{sec:ceiling}). We predicted low predictability and tested it with $k=3$
 replicate generations of 5{,}000 prompts $\times$ 3 models. The data says the
 opposite: difficulty is reliable, $\rho\approx1$, and our ceiling bound is
-vacuous at these effect sizes. We report the refutation, and it sharpens the
-claim rather than weakening it.
-\item \textbf{The gap is generalisation, and in AUC it does not close}
-(\S\ref{sec:eps}). Nine router families---TF-IDF, MiniLM with logistic
-regression, an MLP, boosted trees, $k$-NN and a random forest, a prompted 70B
-model zero-shot and 4-shot, and two \emph{end-to-end fine-tuned} encoders---all
-land in $0.64$--$0.72$ AUC, and none of their advantages over the frozen
-baseline survives a paired bootstrap with Holm correction. A learning curve over
-$250$ to $29{,}000$ training items extrapolates to an asymptote of $0.74$.
-\emph{On the deployable quantity it partly does close}: at RouterBench scale an
-end-to-end fine-tuned encoder captures $32.6\%$ of $\kappa$ against $9.7\%$ for
-the frozen representation refit on the same items --- for the same $+0.005$ AUC.
-So $\varepsilon$ is reducible by representation learning, and per-model AUC does
-not register the reduction.
+vacuous at these effect sizes. The refutation sharpens the claim rather than
+weakening it: the whole gap is $\varepsilon$.
+\item \textbf{That gap is stubborn in AUC and partly tractable in deployable
+gain} (\S\ref{sec:eps}). Nine router families---TF-IDF, MiniLM with four model
+classes, a prompted 70B model zero-shot and 4-shot, and two \emph{end-to-end
+fine-tuned} encoders---all land in $0.64$--$0.72$ AUC, none beats the frozen
+baseline under a paired bootstrap with Holm correction, and a learning curve
+over $250$ to $29{,}000$ items extrapolates to $0.74$. Yet at RouterBench scale
+an end-to-end fine-tuned encoder captures $32.6\%$ of $\kappa$ against $9.7\%$
+for the frozen representation refit on the same items---for the same $+0.005$
+AUC.
 \item \textbf{Per-model AUC is not a proxy for router value} (\S\ref{sec:eps}).
-The prompted 4-shot 70B router has the best AUC of any rung ($0.710$) and the
-\emph{worst} realised matched-cost gain ($-1.31\pp$, i.e.\ worse than ignoring
-the query). AUC is invariant to the monotone rescaling of per-model scores that
-a matched-cost policy depends on, so a router can rank items well within each
-model and still make the wrong \emph{cross-model} comparison on every item. The
-routing literature reports AUC or accuracy-at-a-budget almost universally; this
-is a concrete case where the two disagree in sign.
+Besides failing to register that $3.4\times$, AUC gets the sign wrong: the
+prompted 4-shot router has the best AUC of any rung ($0.710$) and the
+\emph{worst} matched-cost gain ($-1.31\pp$, worse than ignoring the query). AUC
+is invariant to the monotone rescaling of per-model scores that a matched-cost
+policy depends on, so a router can rank items well within each model and still
+make the wrong \emph{cross-model} comparison on every one. The literature
+reports AUC or accuracy-at-a-budget almost universally.
 \end{enumerate}
 
 We claim no new router, architecture or algorithm, and we do not claim routing
@@ -236,8 +232,8 @@ unbiasedness are in Appendix~\ref{app:proofs}.
 \end{proposition}
 
 The consequence is the one that matters. $\kappa$ is computable from any
-released outcome matrix; $\rho$ is not. Since
-$\Var(D)=\Var(\delta)+\E[\Var(D\mid x)]\ge\Var(\delta)$, single-generation data
+released outcome matrix; $\rho$ is not. Since $\Var(D)=\Var(\delta)+\E[\Var(D\mid
+x)]\ge\Var(\delta)$, single-generation data
 bounds $\mathrm{sd}(\delta)$ only loosely---and \emph{every public routing
 dataset stores one generation per (model, prompt)}. So the quantity that decides
 whether routing can work is not recoverable from the data the field publishes:
@@ -247,8 +243,11 @@ relying on RouterBench alone.
 
 \begin{proposition}[Bayes-optimal AUC]\label{prop:auc}
 With $a=\E[\eta(X)]$ and $X,X'$ i.i.d.,
-$\mathrm{AUC}^\star=\tfrac12+\E|\eta(X)-\eta(X')|/(4a(1-a))$, and
-$\mathrm{AUC}^\star\le\tfrac12+\mathrm{sd}(\eta)/(2\sqrt2\,a(1-a))$.
+\[
+\mathrm{AUC}^\star=\tfrac12+\frac{\E|\eta(X)-\eta(X')|}{4a(1-a)},
+\qquad
+\mathrm{AUC}^\star\le\tfrac12+\frac{\mathrm{sd}(\eta)}{2\sqrt2\,a(1-a)}.
+\]
 \end{proposition}
 
 Proposition~\ref{prop:auc} turns a replicate-estimated quantity into a
@@ -333,15 +332,14 @@ exact-match grading. \textbf{The hypothesis was refuted.}
 Call \emph{reliability} the share of per-item outcome variance that is stable
 between-item signal rather than regeneration noise. Across three models and both
 sets it runs $0.772$--$0.983$ (lowest the 9B tier at temperature $0$, highest
-GPT-4o), and the corresponding Proposition~\ref{prop:auc} point estimates under
-a Beta fit to the replicate-identified moments run
-$\mathrm{AUC}^\star=0.948$--$1.000$. Per-set, per-tier values are in
-Table~\ref{tab:rel}, Appendix~\ref{app:rel}.
-
-So whether a model answers an item correctly is not a
-coin flip: $77$--$98\%$ of the outcome variance is a stable property of the item,
-and the implied Bayes-optimal AUC is $0.95$--$0.99$. So $\rho\approx1$: the
-information a router would need \emph{is} there. Our pre-registered consistency
+GPT-4o), so whether a model answers an item correctly is not a coin flip:
+$77$--$98\%$ of the outcome variance is a stable property of the item. The
+corresponding Proposition~\ref{prop:auc} estimates under a Beta fit to the
+replicate-identified moments run $\mathrm{AUC}^\star=0.948$--$1.000$, i.e.\ a
+Bayes-optimal AUC of $0.95$--$0.99$ against the $0.65$--$0.72$ that nine router
+families reach (per-set, per-tier values in Table~\ref{tab:rel},
+Appendix~\ref{app:rel}). So $\rho\approx1$: the information a router would need
+\emph{is} there. Our pre-registered consistency
 check predicted the replicate-implied $\mathrm{AUC}^\star$ would land within
 $0.05$ of the $0.65$--$0.68$ plateau measured by four learners; it came out
 $0.99$ against $0.68$, a miss of $0.31$, and is recorded as inconsistent. We
@@ -385,19 +383,16 @@ advantages over the frozen MiniLM$+$logistic reference is distinguishable from
 zero (smallest $p_{\text{Holm}} = 0.26$). The largest point estimate is the
 prompted 70B model with four exemplars, at $+0.021$ $[-0.019, +0.062]$ against
 the reference refit here and $+0.029$ against the $0.6816$ of our earlier
-frozen-representation stage --- which is the baseline the pre-registered
-criterion names. Either way it is well below the $+0.05$ we fixed in advance as
-the threshold at which ``you tested a weak router'' would become a live
-objection again, so that criterion is \textsc{not met}. Nor is the second one:
-no new rung beats the reference's realised gain by the pre-registered $1.0\pp$;
-the best manages $-0.022\pp$.
-
-One rung answers ``maybe the representation is the problem'' directly: we
-\emph{unfroze the encoder}, fine-tuning end-to-end the same
-\texttt{all-MiniLM-L6-v2} whose frozen output gives $0.690$. It gains $+0.005$
-$[-0.014, +0.025]$, with inner-validation AUC $0.751$ against $0.694$ held
-out---capacity to fit routing labels that does not transfer, $\varepsilon$ made
-visible.
+frozen-representation stage, the baseline the pre-registered criterion names.
+Either way it is well below the $+0.05$ fixed in advance as the threshold at
+which ``you tested a weak router'' would become a live objection again, so that
+criterion is \textsc{not met}; nor is the second, since no new rung beats the
+reference's realised gain by the pre-registered $1.0\pp$ (the best manages
+$-0.022\pp$). One rung answers ``maybe the representation is the problem''
+directly: \emph{unfreezing the encoder} and fine-tuning the same
+\texttt{all-MiniLM-L6-v2} end-to-end gains $+0.005$ $[-0.014, +0.025]$, with
+inner-validation AUC $0.751$ against $0.694$ held out---capacity to fit routing
+labels that does not transfer, $\varepsilon$ made visible.
 
 Now the measurement point: \textbf{the highest-AUC rung has the
 worst matched-cost gain.} The prompted 4-shot router's $-1.31\pp$ is worse than
@@ -438,14 +433,14 @@ MiniLM \textbf{unfrozen}, fine-tuned end-to-end & \textbf{0.7126} & $\mathbf{+6.
 \end{tabular}
 \end{table}
 
-Unfreezing buys $+0.005$ AUC here---\emph{the same $+0.005$ it bought on our own
-data}---and \textbf{3.4$\times$ the matched-cost gain}, taking
+Unfreezing buys $+0.005$ AUC here, the same $+0.005$ it bought on our own data,
+and \textbf{3.4$\times$ the matched-cost gain}: it takes
 $\rho_{\text{realised}}$ from $9.7\%$ to $32.6\%$. An identical AUC delta means
 nothing in one setting and triples the deployable gain in the other. The frozen
 MLP makes the point a second time from the other direction: it is $0.046$ AUC
 \emph{worse} than frozen logistic and $0.9\pp$ \emph{better} at the same budget.
-Supervision, not capacity, is what changed: the inner-validation-to-held-out AUC
-gap collapses from $0.751$ vs $0.694$ on our $2{,}975$ training items to
+Supervision, not capacity, is what changed: the gap between inner-validation and
+held-out AUC collapses from $0.751$ vs $0.694$ on our $2{,}975$ training items to
 $0.7173$ vs $0.7126$ on $27{,}735$, so the same architecture that merely
 memorised at our scale generalises at RouterBench's.
 We therefore state the negative result precisely. What nine router families fail
@@ -459,15 +454,15 @@ router we could train, with $\rho\approx1$ saying it is not noise that is in the
 way.
 
 \begin{table}[t]\centering\small
-\caption{Router-strength ladder on the same 1{,}500-item held-out split. The
-first row summarises four earlier classical rungs of this project on identical
-data ($k$-NN at $0.6521$, gradient boosting $0.6547$, a random forest $0.6703$
-that reaches training AUC $0.9999$, and logistic regression $0.6816$).
-$\Delta$AUC and its interval are a 2{,}000-resample paired bootstrap over items
-against the frozen MiniLM$+$logistic reference, Holm-corrected across the four
-new rungs. Gain is the realised matched-cost gain at $\beta=0.5$ against
-$\kappa=4.07\pp$ on this split.}
+\caption{Router-strength ladder on one 1{,}500-item held-out split. Row 1
+summarises four earlier classical rungs on identical data ($k$-NN $0.6521$,
+gradient boosting $0.6547$, a random forest $0.6703$ that reaches training AUC
+$0.9999$, logistic regression $0.6816$). $\Delta$AUC is a 2{,}000-resample
+paired bootstrap over items against the frozen reference, Holm-corrected across
+the four new rungs; gain is realised matched-cost gain at $\beta=0.5$ against
+$\kappa=4.07\pp$.}
 \label{tab:ladder}
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{llccc}
 \toprule
 Router & Representation & mean AUC & $\Delta$AUC $[95\%]$ & gain (pp) \\
@@ -475,10 +470,10 @@ Router & Representation & mean AUC & $\Delta$AUC $[95\%]$ & gain (pp) \\
 Four classical rungs, earlier stages & MiniLM (frozen) & 0.652--0.682 & --- & --- \\
 \midrule
 Logistic regression, refit here  & MiniLM (frozen) & 0.6896 & \emph{reference} & $+0.556$ \\
-Prompted LLM, zero-shot  & Llama-3.3-70B-Instruct & 0.6416 & $-0.048$ $[-0.097,+0.004]$ & $-0.444$ \\
-Prompted LLM, 4-shot     & Llama-3.3-70B-Instruct & \textbf{0.7105} & $+0.021$ $[-0.019,+0.062]$ & $\mathbf{-1.311}$ \\
-Fine-tuned end-to-end    & MiniLM-L6 (unfrozen)   & 0.6945 & $+0.005$ $[-0.014,+0.025]$ & $+0.533$ \\
-Fine-tuned end-to-end    & MiniLM-L12 (unfrozen)  & 0.6912 & $+0.002$ $[-0.018,+0.023]$ & $+0.533$ \\
+Prompted LLM, zero-shot  & Llama-3.3-70B & 0.6416 & $-0.048\ [-0.097,+0.004]$ & $-0.444$ \\
+Prompted LLM, 4-shot     & Llama-3.3-70B & \textbf{0.7105} & $+0.021\ [-0.019,+0.062]$ & $\mathbf{-1.311}$ \\
+Fine-tuned end-to-end    & MiniLM-L6 (unfrozen)   & 0.6945 & $+0.005\ [-0.014,+0.025]$ & $+0.533$ \\
+Fine-tuned end-to-end    & MiniLM-L12 (unfrozen)  & 0.6912 & $+0.002\ [-0.018,+0.023]$ & $+0.533$ \\
 LoRA fine-tune           & Gemma-3-27B-it & \FTAUC & --- & --- \\
 \bottomrule
 \end{tabular}
@@ -538,63 +533,48 @@ variance machinery is standard (reliability/ICC; CVaR
 
 \section{Limitations}
 
-\emph{$\rho$ is inferred, not bounded two-sidedly.} Our rigorous ceiling is
-vacuous here; the claim $\rho\approx1$ rests on the reliability measurements and
-on a Beta fit to replicate-identified moments (Proposition~\ref{prop:auc}
-requires $\E|\eta-\eta'|$, which $k=3$ does not identify). The Beta fit is a
-modelling assumption and is labelled as such.
-
-\emph{Replicate assumptions.} Proposition~\ref{prop:reps} assumes replicates are
-conditionally i.i.d.\ and independent across models. Positive within-item
-correlation would understate the noise term and hence \emph{overstate}
-$\mathrm{sd}(\delta)$ and the ceiling---erring in routing's favour.
-
-\emph{Scale of the replicate study.} The replicate evidence is $48{,}276$ calls
-over three models, four benchmarks and \$48.09 of real API spend. Three models
-is not a model ecosystem; the reliability numbers should be re-measured before
-being assumed elsewhere. The breadth comes from RouterBench, which cannot
-replicate; the depth from our own data, which is small. Neither alone suffices,
-and we do not claim the two settings are exchangeable.
-
-\emph{Benchmarks are not production traffic.} Single-turn, self-contained,
-auto-gradable academic tasks. Real routing traffic is conversational and mostly
-not objectively gradable. Every $\kappa$ and $\rho$ here is conditional on this
-item distribution.
-
-\emph{Energy is modelled, never measured.} Where earlier stages report joules
-they mean token counts times assumed per-tier rates; the headline comparisons in
-Appendix~\ref{sec:cost} are therefore stated in measured dollars.
-
-\emph{Generality.} Propositions~\ref{prop:ladder}, \ref{prop:rho},
-\ref{prop:reps} and \ref{prop:auc} hold for general $K$;
-Proposition~\ref{prop:ceiling} and the closed forms are two-model statements.
-The learning-curve extrapolation is a power-law fit, not a proof.
-
 \emph{The top rung of the ladder is missing.} The pre-registered fine-tuned
 \emph{generative} LLM router is \textsc{blocked}, for the four provider reasons
-in \S\ref{sec:eps}. Our strongest evidence against ``you tested a weak router''
-is therefore an end-to-end fine-tuned encoder plus a prompted 70B model, not a
-fine-tuned generative router, and a reviewer is entitled to hold that specific
-objection open. One bound on how much it could buy: the fine-tuned encoder
-already has the \emph{capacity} to fit the labels (inner-validation AUC $0.751$
-against $0.694$ held out), so on our own data the shortfall is transfer, not
-capacity. We do not claim a generative router could not do better on the
-matched-cost axis, because Table~\ref{tab:rbenc} shows that axis moving
-$3.4\times$ while AUC moved $+0.005$; an AUC-framed bound is exactly the kind of
-bound that experiment invalidates.
-
-\emph{The encoder-at-scale result is one split, one seed, exploratory.}
-Table~\ref{tab:rbenc} is a single $7{,}299$-item held-out set, one seed, three
-epochs, and was not pre-registered. Its comparison rows are refit on identical
-items, which controls the comparison but not the sampling variability of the
-split; we quote no interval on the $32.6\%$ because we ran it once. It should be
-read as a demonstration that the matched-cost axis and the AUC axis come apart
-by a large factor, not as a precise estimate of what unfreezing buys.
+above. Our strongest evidence against ``you tested a weak router'' is therefore
+an end-to-end fine-tuned encoder plus a prompted 70B model, not a fine-tuned
+generative router, and a reviewer is entitled to hold that objection open. The
+fine-tuned encoder does at least have the \emph{capacity} to fit the labels
+(inner-validation $0.751$ against $0.694$ held out), so on our own data the
+shortfall is transfer, not capacity. But we do not claim a generative router
+could not do better on the matched-cost axis: Table~\ref{tab:rbenc} shows that
+axis moving $3.4\times$ while AUC moved $+0.005$, and an AUC-framed bound is
+exactly the kind of bound that experiment invalidates.
 
 \emph{Null results with wide intervals are not proofs of absence.} Every
 $\Delta$AUC interval in Table~\ref{tab:ladder} is roughly $\pm0.02$--$0.05$
 wide on $1{,}500$ items. We can rule out the $+0.05$ effect we pre-registered;
 we cannot rule out a $+0.02$ one, and we do not.
+
+\emph{The encoder-at-scale result is one split, one seed, exploratory.}
+Table~\ref{tab:rbenc} is a single $7{,}299$-item held-out set, three epochs, not
+pre-registered. Its comparison rows are refit on identical items, which controls
+the comparison but not the sampling variability of the split, and we quote no
+interval on the $32.6\%$ because we ran it once. Read it as a demonstration that
+the two axes come apart by a large factor, not as an estimate of what unfreezing
+buys.
+
+\emph{$\rho$ is inferred, not bounded two-sidedly.} Our rigorous ceiling is
+vacuous here, so $\rho\approx1$ rests on the reliability measurements plus a
+Beta fit to replicate-identified moments (Proposition~\ref{prop:auc} needs
+$\E|\eta-\eta'|$, which $k=3$ does not identify). That fit is a modelling
+assumption and is labelled as one throughout.
+
+\emph{Scale, and what each half of the evidence cannot do.} The replicate study
+is $48{,}276$ calls over three models, four benchmarks and \$48.09 of real API
+spend --- depth without breadth; RouterBench is breadth that cannot replicate.
+Neither alone suffices and we do not claim the two settings are exchangeable.
+Both are single-turn, self-contained, auto-gradable academic tasks, so every
+$\kappa$ and $\rho$ here is conditional on that item distribution rather than on
+production traffic. Where earlier stages report joules they mean token counts
+times assumed per-tier rates, which is why the headline comparisons are stated
+in measured dollars. Further assumptions --- replicate exchangeability, which
+propositions hold for general $K$, and the status of the power-law fit --- are in
+Appendix~\ref{app:limits}.
 
 \section{Conclusion}
 
