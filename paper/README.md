@@ -49,7 +49,31 @@ reviewer is entitled to see.
 ## Where every number comes from
 
 No number in the paper is typed by hand from memory; each traces to a committed
-artifact.
+artifact. That claim is **checked, not asserted**:
+
+```bash
+python3 paper/check_numbers.py      # exits 1 on any mismatch
+python3 paper/check_numbers.py -v   # also lists the passing and unquoted checks
+```
+
+The script recomputes 59 curated values from the artifacts, formats them the way
+the paper does, and requires each to appear in `main.tex` or `appendix.tex`;
+56 further values are generated from the result JSONs (per-router table rows,
+bootstrap bounds, paired-bootstrap rows, every replicate cell) and reported but
+not required, since the paper is not obliged to quote everything. It also
+reports **coverage**: what share of the paper's multi-decimal literals are under
+explicit audit, currently **70%**, with the remainder listed so the gap is
+visible rather than implied.
+
+Two things it deliberately does *not* claim. It cannot catch a correct number
+attributed to the wrong artifact, or prose that misdescribes a correct number.
+And an earlier version tried the reverse direction as a check — flag any literal
+no artifact produces — which was removed because it could not fail usefully: the
+artifacts hold ~1,500 distinct floats, generating more candidate strings than
+there are two-decimal values in [0, 100], so it passed on a known error. That
+error was real: a learning-curve gain of `+1.15 pp` appeared in four files where
+the artifact says `+1.47 pp`. The curated direction catches it; the script is
+regression-tested against that case and three perturbed AUCs.
 
 | Paper location | Claim | Artifact |
 |---|---|---|

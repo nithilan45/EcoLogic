@@ -361,7 +361,7 @@ gives held-out AUC $0.65\!\to\!0.708$ for MiniLM$+$logistic. A power-law fit
 $\mathrm{AUC}(n)=A-Bn^{-c}$ gives asymptote $A=0.741$, with
 $\mathrm{AUC}(10^6)=0.726$ and $\mathrm{AUC}(10^9)=0.738$: roughly $2.5$
 doublings of data per $+0.01$ AUC. Realised gain does improve with data
-($+1.15\pp$ at $8$k to $+2.10\pp$ at $29$k, $\rho_{\text{realised}}=0.105$), so
+($+1.47\pp$ at $8$k to $+2.10\pp$ at $29$k, $\rho_{\text{realised}}=0.105$), so
 data helps---but the extrapolated ceiling stays far below what capturing
 $\kappa$ would need. (Exploratory; not pre-registered.)
 
@@ -370,10 +370,15 @@ families on the identical 1{,}500-item held-out split. Nothing escapes the
 $0.64$--$0.72$ band, and under a paired bootstrap over items with
 Holm--Bonferroni correction across the four new rungs, \emph{none} of their AUC
 advantages over the frozen MiniLM$+$logistic reference is distinguishable from
-zero (smallest $p_{\text{Holm}} = 0.26$). The largest point estimate, the
-prompted 70B model with four exemplars at $+0.021$ $[-0.019, +0.062]$, is well
-below the $+0.05$ we pre-registered as the threshold at which ``you tested a
-weak router'' would become a live objection again.
+zero (smallest $p_{\text{Holm}} = 0.26$). The largest point estimate is the
+prompted 70B model with four exemplars, at $+0.021$ $[-0.019, +0.062]$ against
+the reference refit here and $+0.029$ against the $0.6816$ of our earlier
+frozen-representation stage --- which is the baseline the pre-registered
+criterion names. Either way it is well below the $+0.05$ we fixed in advance as
+the threshold at which ``you tested a weak router'' would become a live
+objection again, so that criterion is \textsc{not met}. Nor is the second one:
+no new rung beats the reference's realised gain by the pre-registered $1.0\pp$;
+the best manages $-0.022\pp$.
 
 Two rungs deserve comment. First, we \emph{unfroze the encoder}: the same
 \texttt{all-MiniLM-L6-v2} whose frozen output gives $0.690$ was fine-tuned
