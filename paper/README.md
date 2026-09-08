@@ -57,11 +57,17 @@ artifact.
 | §6 | RouteLLM +0.57 pp, 8/9 points, sign test p=0.039 | `stage7_10/s9_static_baselines.json` |
 | §6 | correction 1.9× regret, reconciles to 2e-16, 6.3% on RouteLLM | `stage7_10/regret_correction_validation.json`, `external_generalization.json` |
 | Appendix B | 14/14 proposition checks | `stage11_13/s11_validate.json` |
-| Appendix C | pre-registration and 5 deviations | `stage11_13/prereg_stage11_13.md`, `DEVIATIONS.md` |
+| Appendix C | pre-registration and 8 deviations | `stage11_13/prereg_stage11_13.md`, `DEVIATIONS.md` |
 | Appendix E | cost ledger | `stage11_13/s13_spend.json` |
 
 Theory and proofs: `stage11_13/theory.md` (the long form; the paper's §2 and
 Appendix A are condensed from it).
+
+Reproduction: `stage7_10/reproducibility_manifest.md` §12 gives every seed,
+model string, hyperparameter, split and command for the work in this paper.
+RouterBench itself is gitignored (~270 MB); `stage11_13/fetch_routerbench.py`
+downloads both releases and **fails** unless their SHA-256 matches the files the
+results were computed on.
 
 ## Honesty notes carried into the draft
 
