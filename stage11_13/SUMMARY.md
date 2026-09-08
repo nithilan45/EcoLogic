@@ -45,8 +45,8 @@ analysis **replicates** on RouterBench's independent 5-shot release
 | **12b** | Learning curves — would more data close the gap? | **Complete. Exploratory, not pre-registered** (`DEVIATIONS.md` D3). |
 | **13** | Router-strength ladder: prompted LLM router, fine-tuned LLM router | **Partly blocked.** R-b (prompted 70B) complete. **R-c, the fine-tuned generative LLM, is BLOCKED** — it trained, then proved unservable through four routes, and re-training on a servable base was refused for insufficient balance (`DEVIATIONS.md` D8, `s13_ftblocked.json`). |
 | **13b** | The substitute for R-c: **unfreeze the encoder** and fine-tune it end-to-end | **Complete. Exploratory, not pre-registered** (`DEVIATIONS.md` D7). C1 **not met**. |
-| **13c** | The same, on RouterBench's 29k training items | **Complete.** Exploratory. |
-| **Paper** | Workshop-length draft with proofs and appendix | **Complete.** `../paper/main.tex`, compiles with `pdflatex` to 12 pages (6 body + references + appendix). |
+| **13c** | The same, on RouterBench's 29k training items | **Running.** Exploratory. No result is quoted anywhere until it lands; nothing else in this group depends on it. |
+| **Paper** | Workshop-length draft with proofs and appendix | **Complete.** `../paper/main.tex`, compiles with `pdflatex` to 12 pages (~6.3 body + references + appendix). |
 
 Additional spend for these stages: **$9.71** against a pre-registered gate of
 **$25**. The gate was never the binding constraint — the provider's account

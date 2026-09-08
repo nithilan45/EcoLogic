@@ -488,7 +488,8 @@ is the field's standard router metric and it is not a proxy for router value.
 | 12 (router-free ceiling from k=3 replicates) | complete, **and it refuted our own pre-registered H3**; reported as such |
 | 12b (learning curves on RouterBench) | complete, **exploratory, not pre-registered** (D3) |
 | 13 (router-strength ladder) | **partly blocked.** Prompted 70B router complete; the fine-tuned **generative** LLM rung is **BLOCKED** through four probed routes (D8) |
-| 13b/13c (end-to-end fine-tuned encoders, in-house and RouterBench) | complete, **exploratory, not pre-registered** (D7) |
+| 13b (end-to-end fine-tuned encoders, in-house) | complete, **exploratory, not pre-registered** (D7) |
+| 13c (the same, on RouterBench) | **running**; exploratory, and no number from it is quoted until it lands |
 | paper | draft complete, `paper/main.tex` |
 
 Total measured API spend across all stages: **$57.80** (Stages 1–6 $1.9497 +
