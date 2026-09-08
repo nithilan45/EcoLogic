@@ -98,8 +98,7 @@ def main():
     ids = tok([texts[i] for i in idx], truncation=True, max_length=MAX_LEN)["input_ids"]
     Ytr = torch.tensor(util[tr], dtype=torch.float32)
 
-    model = Router(BACKBONE)
-    model.head = nn.Linear(model.enc.config.hidden_size, k)
+    model = Router(BACKBONE, n_out=k)
     opt = torch.optim.AdamW(
         [{"params": model.enc.parameters(), "lr": LR},
          {"params": model.head.parameters(), "lr": HEAD_LR}], weight_decay=0.01)

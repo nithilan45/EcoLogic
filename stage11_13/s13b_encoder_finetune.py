@@ -56,12 +56,12 @@ FROZEN_BEST_AUC = 0.6816
 class Router(nn.Module):
     """Encoder + mean-pooling + one logit per tier."""
 
-    def __init__(self, name):
+    def __init__(self, name, n_out=3):
         super().__init__()
         from transformers import AutoModel
         self.enc = AutoModel.from_pretrained(name)
         self.drop = nn.Dropout(0.1)
-        self.head = nn.Linear(self.enc.config.hidden_size, 3)
+        self.head = nn.Linear(self.enc.config.hidden_size, n_out)
 
     def forward(self, ids, mask):
         h = self.enc(input_ids=ids, attention_mask=mask).last_hidden_state
@@ -106,7 +106,7 @@ def predict(model, ids, pad_id, bs=64):
     """Length-sorted batches, then restored to the original order."""
     model.eval()
     order = np.argsort([len(x) for x in ids], kind="stable")
-    out = np.zeros((len(ids), 3))
+    out = np.zeros((len(ids), model.head.out_features))
     for i in range(0, len(order), bs):
         j = order[i:i + bs]
         I, M = collate([ids[a] for a in j], pad_id)
