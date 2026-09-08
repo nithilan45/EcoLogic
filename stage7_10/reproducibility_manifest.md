@@ -308,11 +308,23 @@ analysis ran.
 The pickles are ~270 MB together and are **gitignored, not committed**, so
 fetching them is a required reproduction step rather than an optional one.
 
-The 5-shot file has **154 missing score cells over 28 `arc-challenge` items**
-(0.077% of items). Those items are **dropped, not imputed**, because every
-imputation rule would move `kappa` in a direction requiring an argument; the
-count is printed by the loader and stored as `n_items_dropped_missing_cells`.
-The 0-shot primary analysis drops nothing. See `DEVIATIONS.md` D6.
+Item accounting, so the counts in the reports reconcile against the files:
+
+| | 0-shot | 5-shot |
+|---|---|---|
+| rows in the pickle | 36,497 | 36,511 |
+| less `eval_name == test-match` (a 3-item smoke test, "Once upon a ") | −3 | −3 |
+| less items with any missing score or cost cell | −0 | −28 |
+| **analysed** | **36,494** | **36,480** |
+
+The `test-match` exclusion was **pre-registered** (`prereg_stage11_13.md` §2.2,
+"`test-match` (n = 3) is excluded as a smoke-test artifact"), so it is not a
+deviation. The missing cells were not anticipated: the 5-shot file has **154
+missing score cells over 28 `arc-challenge` items** (0.077% of items), and those
+items are **dropped, not imputed**, because every imputation rule would move
+`kappa` in a direction requiring an argument. The count is printed by the loader
+and stored as `n_items_dropped_missing_cells`. The 0-shot primary analysis drops
+nothing on this ground. See `DEVIATIONS.md` D6.
 
 The 11 models and 8 benchmark families are listed in
 `s11_routerbench_{0shot,5shot}.json` under `models` and `family_sizes`. Families
