@@ -24,12 +24,23 @@ query is *much* smaller than reported — and we can now say **why**.
 > the one thing no public routing dataset has — per-item difficulty turns out to
 > be highly **reliable** (77–98% of outcome variance is stable between-item
 > signal, implying a Bayes-optimal AUC of 0.95–0.99). The information is there.
-> What is missing is the ability to **infer it from prompt text**, and that gap
-> survives nine router families up to a prompted 70B model and an **end-to-end
-> fine-tuned** encoder, plus a learning curve whose asymptote is 0.74 AUC. Under
-> a paired bootstrap with Holm correction, **no** router family's AUC advantage
-> over a frozen MiniLM + logistic baseline is distinguishable from zero. The
-> whole RouterBench analysis **replicates** on the independent 5-shot release.
+> What is missing is the ability to **infer it from prompt text** — a
+> generalisation gap.
+>
+> **Measured in AUC that gap is immovable.** Nine router families up to a
+> prompted 70B model and an end-to-end fine-tuned encoder all land in 0.64–0.72;
+> under a paired bootstrap with Holm correction **no** family's advantage over a
+> frozen MiniLM + logistic baseline is distinguishable from zero; and a learning
+> curve from 250 to 29,000 items extrapolates to an asymptote of 0.74.
+> **Measured in what a deployment is billed for, it is partly tractable.**
+> Unfreezing that encoder and fine-tuning it end-to-end on RouterBench's 27,735
+> training items takes the captured share of complementarity from **9.7% to
+> 32.6%** on identical held-out items — for an AUC change of **+0.005**, the
+> same +0.005 it bought on our own 2,975 items where it bought nothing at all.
+> So the gap is large but *not* immovable, and **the metric the field reports
+> does not register the part that moves**. Two thirds of complementarity
+> nonetheless stays unclaimed. The whole RouterBench analysis **replicates** on
+> the independent 5-shot release.
 >
 > → [`stage11_13/SUMMARY.md`](stage11_13/SUMMARY.md) ·
 > [`stage11_13/theory.md`](stage11_13/theory.md) ·
@@ -157,7 +168,7 @@ and that is where the research now sits.
    spread). The problem therefore gets worse as the field routes among reasoning
    models with variable-length thinking budgets.
 
-**And one explanatory result, which is now the centre of the work:**
+**And two explanatory results, which are now the centre of the work:**
 
 6. **A router's gain decomposes into complementarity × predictability, minus
    estimation error — and the three terms blame different people.** Let `S(b)`
@@ -185,6 +196,18 @@ and that is where the research now sits.
    item does not identify a conditional mean. **Every public routing dataset
    stores one generation per (model, prompt)**, so the term that decides whether
    routing can work is not recoverable from the data the field publishes.
+
+7. **Per-model AUC is not a proxy for router value, and here it disagrees in
+   sign.** The routing literature reports per-model AUC or accuracy-at-a-budget
+   almost universally. AUC is invariant to the monotone rescaling of per-model
+   scores that a matched-cost policy depends on, so a router can order items
+   correctly *within* each model and still lose every *cross-model* comparison.
+   We hit both directions of that: our highest-AUC rung (a prompted 4-shot 70B
+   model, 0.710) has the **worst** matched-cost gain of any rung (−1.31 pp,
+   worse than ignoring the query), while unfreezing an encoder buys +0.005 AUC
+   and **3.4x** the matched-cost gain at RouterBench scale. If you audit a
+   router on AUC you can conclude the opposite of what a deployment would
+   measure.
 
 We claim **no new model, architecture or algorithm**, and we do not claim that
 learned routing cannot work — `kappa` and `rho` are properties of a (workload,
@@ -376,7 +399,7 @@ single-draw `kappa`; and **8–35% of the variance of the observed advantage is
 generation noise**, scaling with output length from 8% for terse `gpt-4o` to 35%
 for the long-reasoning 9B tier.
 
-### The gap does not close with data, capacity, or a fine-tuned encoder
+### In AUC the gap does not close with data, capacity, or a fine-tuned encoder
 
 `ΔAUC` is a paired bootstrap over items against the frozen MiniLM + logistic
 reference refitted on the same split, Holm-corrected across the four new rungs.
@@ -436,6 +459,45 @@ in its place, and the cost to the argument is stated rather than hidden: a reade
 who believes a fine-tuned generative router would clear +0.05 has not been
 answered by one.
 
+### But in deployable gain it partly does — and AUC cannot see it
+
+Repeating the unfreezing experiment with 10x the supervision qualifies our own
+conclusion. On RouterBench we fine-tuned the same `all-MiniLM-L6-v2` end-to-end
+on **27,735** training items over all 11 models and scored it on the
+**7,299**-item held-out split of the learning curve, against the frozen logistic
+and MLP routers **refit on the same training items** (`kappa` = 19.95 pp on
+these items; epoch chosen on a 1,460-item inner split that never touches the
+held-out set).
+
+| Router | mean AUC | gain (pp) | share of `kappa` captured |
+|---|---|---|---|
+| MiniLM (frozen) + logistic | 0.7078 | +1.939 | 9.7% |
+| MiniLM (frozen) + MLP | 0.6617 | +2.825 | 14.2% |
+| MiniLM **unfrozen**, fine-tuned end-to-end | **0.7126** | **+6.507** | **32.6%** |
+
+Unfreezing buys **+0.005 AUC** here — *the same +0.005 it bought on our own
+data* — and **3.4x the matched-cost gain**. An identical AUC delta means nothing
+in one setting and triples the deployable gain in the other. The frozen MLP
+makes the point again from the other direction: 0.046 AUC **worse** than frozen
+logistic and 0.9 pp **better** at the same budget. Supervision, not capacity, is
+what changed — the inner-validation-to-held-out AUC gap collapses from 0.751 vs
+0.694 on our 2,975 training items to 0.7173 vs 0.7126 on 27,735, so the same
+architecture that merely memorised at our scale generalises at RouterBench's.
+
+So the negative result is stated precisely. What nine router families fail to
+move is **AUC**; what the decomposition shows is that AUC was the wrong thing to
+watch. On the deployable quantity, at scale, a representation trained for the
+task recovers roughly a third of complementarity instead of a tenth — the
+generalisation gap is large but **not** immovable, and closing it looks more like
+representation learning than model scaling. Two thirds still goes unclaimed.
+
+This run is **one split, one seed, three epochs, and exploratory** — the
+comparison rows are refit on identical items, which controls the comparison but
+not the sampling variability of the split, and we quote no interval on the 32.6%
+because we ran it once. Read it as a demonstration that the two axes come apart
+by a large factor, not as a precise estimate of what unfreezing buys.
+([`stage11_13/s13c_encoder_routerbench_0shot.json`](stage11_13/s13c_encoder_routerbench_0shot.json))
+
 ### Temperature 0 is not deterministic
 
 Re-running identical prompts at temperature 0 changed the **graded verdict** on
@@ -475,6 +537,8 @@ Each report stands alone and states its own limitations.
 | `stage11_13/s11_validate.json` | 14/14 numerical checks of those propositions against brute-force LP and Monte-Carlo references. |
 | `stage11_13/s11_routerbench_0shot.json` | The decomposition measured on RouterBench: 55 pairs × 8 families × 9 operating points. |
 | `stage11_13/s12_ceiling.json` | Replicate variance components, reliability, the vacuous ceiling, the peeking policy. |
+| `stage11_13/s13_llm_router.json` | The nine-rung router ladder with paired-bootstrap ΔAUC and Holm-adjusted p-values, and the blocked rung's verbatim provider errors. |
+| `stage11_13/s13c_encoder_routerbench_0shot.json` | **Where AUC and deployable gain come apart.** The unfrozen encoder at RouterBench scale: +0.005 AUC, 3.4x the matched-cost gain. |
 | `stage11_13/DEVIATIONS.md` | **The refutation.** H3 rejected, and one pre-registration claim that was wrong. |
 | `stage11_13/prereg_stage11_13.md` | Stage 11–13 pre-registration, committed before any result artifact. |
 | **`results_report.md`** | **The main report.** Policy comparison, per-tier/per-benchmark accuracy, oracle gap, energy table with sensitivity band, "what failed", limitations. |
@@ -559,9 +623,21 @@ The reports are only useful if their bounds are clear.
   per-item cost is reconstructable. MMLU and MT-Bench release correctness flags
   only. One passing router is not evidence about routers in general, any more
   than one failing router is.
-- **The predictability ceiling is shown for one representation.** MiniLM
-  embeddings plus four model classes. A fine-tuned LLM router might extract more
-  signal; we ruled out the cheap explanation, not every explanation.
+- **The AUC plateau is shown for nine router families, and the top rung is
+  missing.** MiniLM embeddings with four model classes, TF-IDF, a prompted 70B
+  model zero- and 4-shot, and two end-to-end fine-tuned encoders. The
+  pre-registered fine-tuned *generative* LLM router is **blocked** (§3), so a
+  reviewer who believes one would clear the +0.05 threshold has not been
+  answered by one. We ruled out the cheap explanations, not every explanation.
+- **Null results with wide intervals are not proofs of absence.** Every ΔAUC
+  interval in the ladder is roughly ±0.02–0.05 wide on 1,500 items. We can rule
+  out the +0.05 effect we pre-registered; we cannot rule out a +0.02 one, and we
+  do not.
+- **The encoder-at-scale result is one split, one seed, exploratory.** The 32.6%
+  of `kappa` figure is a single 7,299-item held-out set, one seed, three epochs,
+  not pre-registered, and carries no interval because we ran it once. It shows
+  the two axes coming apart by a large factor; it is not a precise estimate of
+  what unfreezing buys.
 - **RouteLLM's own conclusions are not refuted.** Their quality-vs-call-fraction
   curves are unaffected. What is affected is the translation of call fraction
   into cost, and the absence of a cost-matched query-independent baseline.
