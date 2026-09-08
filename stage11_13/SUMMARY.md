@@ -209,7 +209,7 @@ items, repeats at the small sizes; power-law fit `AUC(n) = A − B·n^(−c)`.
 | MiniLM + logistic | 0.7081 | **0.741** | 0.726 | 0.738 | 2.5 |
 | MiniLM + MLP | 0.6612 | *fit hit the bound at 1.0; unreliable* | 0.717 | 0.809 | — |
 
-Realised gain **does** improve with data (+1.15 pp at 8k → +2.10 pp at 29k,
+Realised gain **does** improve with data (+1.47 pp at 8k → +2.10 pp at 29k,
 realised `rho` = 0.105), so this is not "data doesn't help." But the extrapolated
 ceiling stays far below what capturing 12 pp of `kappa` would require. The MLP's
 power-law fit is degenerate (the asymptote parameter hit its upper bound) and is

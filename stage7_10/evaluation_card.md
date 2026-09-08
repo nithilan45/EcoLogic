@@ -321,7 +321,7 @@ by ≥ 0.05 for "you tested a weak router" to become a live objection again — 
 the reference) is **not met**, and **no rung's ΔAUC is distinguishable from
 zero** (smallest Holm-adjusted p = 0.26). A learning curve on RouterBench from
 250 to 29,000 training items fits a power law with **asymptote 0.741 AUC**;
-realised gain *does* improve with data (+1.15 pp at 8k → +2.10 pp at 29k), so
+realised gain *does* improve with data (+1.47 pp at 8k → +2.10 pp at 29k), so
 this is not "data doesn't help", but the extrapolated ceiling stays far below
 what capturing 12 pp would need.
 

@@ -402,7 +402,7 @@ point estimate +0.029), and the matched-cost criterion is not met either. A
 **learning curve** on RouterBench from 250 to 29,000 training items fits a power
 law with **asymptote 0.741**: AUC(10⁶) = 0.726, AUC(10⁹) = 0.738, about 2.5
 doublings of data per +0.01 AUC. Realised gain *does* improve with data
-(+1.15 pp at 8k → +2.10 pp at 29k), so this is not "data doesn't help" — but the
+(+1.47 pp at 8k → +2.10 pp at 29k), so this is not "data doesn't help" — but the
 extrapolated ceiling stays far below what capturing 12 pp would need. (The
 learning curve and the end-to-end encoder rungs are **exploratory and not
 pre-registered**; the encoders are still judged against the pre-registered
