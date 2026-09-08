@@ -6,6 +6,12 @@ Datasheets for Datasets (Gebru et al., CACM 2021), adapted to document an
 quoting a number from this project can find, in one place, what that number
 does and does not license them to say.
 
+Sections 1–7 document the audit of **this** router on **our** data. Section 7b
+documents the generalisation of that audit — a decomposition of any router's
+gain into complementarity, predictability and estimation error, measured on
+RouterBench's 401,434 released outcomes — and is the part a reader interested in
+routing generally should start from. Section 8 carries every limitation forward.
+
 ---
 
 ## 1. What is being evaluated
@@ -232,6 +238,137 @@ those two explanations and this card does not claim it does.
 
 ---
 
+## 7b. The explanation, and the external check (Stages 11–13)
+
+Sections 1–7 audit *this* router. Stages 11–13 ask the more general question the
+audit raises: when a routing gain is small, **which of three things is to
+blame** — the model set, the task, or the router? For a workload and a model
+set, let `S(b)` be the best expected utility at expected cost `b` achievable by
+any **query-independent** policy, `A†(b)` by any **router** (any function of the
+query), and `A*(b)` by an **oracle** that sees realised outcomes. Then
+`S(b) ≤ A†(b) ≤ A*(b)`, and writing
+
+```
+complementarity  kappa(b) = A*(b) - S(b)          blames the model set
+predictability   rho(b)   = (A†(b) - S(b))/kappa  blames the task
+estimation error eps                              blames the engineer
+```
+
+any fitted router realises `rho·kappa − eps`. Five propositions with proofs are
+in `../stage11_13/theory.md`; **14/14** are checked numerically against LP or
+Monte-Carlo ground truth (`s11_validate.json`).
+
+### Measured on RouterBench — 100× more data than this project bought
+
+`withmartian/routerbench` (SHA-256 pinned in the result JSON): 36,494 prompts ×
+11 models = 401,434 already-released outcomes with per-item graded score and
+per-item dollar cost, across 8 benchmark families. All 55 model pairs × 8
+families. **Cost of this analysis: $0.** Medians over 440 pair-family cells at
+`beta = 0.5`, 95% bootstrap intervals:
+
+| Quantity | 0-shot (primary) | 5-shot (pre-registered replication) |
+|---|---|---|
+| complementarity `kappa` | **12.11 pp** [11.15, 12.92] | 11.44 pp [10.66, 12.27] |
+| best router's realised gain | **+0.585 pp** [0.442, 0.767] | +0.640 pp [0.519, 0.790] |
+| best router's realised `rho` | **4.6%** [3.6, 5.9] | 5.5% [4.4, 6.8] |
+| pairs with positive mean gain | 49/55 | 50/55 |
+| surviving BH / Holm at 0.05 | 26 / 13 | 22 / 11 |
+
+**Complementarity is abundant and routers capture about a twentieth of it.**
+This is *not* a null result — routing works, and 13 pairs survive
+Holm–Bonferroni. But reading gains against an always-frontier baseline instead
+of a cost-matched query-independent one overstates the achievement by roughly
+20×.
+
+### We pre-registered an explanation and the data refuted it
+
+The pre-registered hypothesis H3 was that **predictability** is the missing
+factor — that per-item success is close to a coin flip, so most of `kappa` is
+provably unreachable. Using `k = 3` replicate generations of 5,000 pool items
+(the one thing no public routing dataset has), **it is not**: 77–98% of per-item
+outcome variance is stable between-item signal rather than regeneration noise,
+implying a Bayes-optimal AUC of 0.95–0.99 against the 0.65–0.72 that nine
+router families actually reach. The pre-registered §3.4 consistency check,
+written because it could embarrass us, came out **0.99 against 0.68 and is
+recorded as INCONSISTENT**.
+
+**So `rho ≈ 1` and the whole gap is `eps`.** The claim this project now makes is
+not "per-item success is unpredictable" but "**per-item success is a highly
+reliable property of the item that routers cannot read off the prompt text**."
+Full accounting in `../stage11_13/DEVIATIONS.md` D1; the Cauchy–Schwarz ceiling
+of Proposition 3 is also recorded as **vacuous at these effect sizes** (it
+evaluates to 2.82× the measured `kappa`), which was the falsification rule
+written down in advance.
+
+### Nine router families, and the "weak router" objection
+
+Same 1,500-item held-out split throughout. `ΔAUC` is a 2,000-resample paired
+bootstrap over items against the frozen MiniLM + logistic reference refitted on
+the same TRAIN split, Holm-corrected across the four new rungs.
+
+| Router | Representation | mean AUC | ΔAUC [95%] | gain (pp) |
+|---|---|---|---|---|
+| k-NN, boosting, random forest, logistic | MiniLM (frozen) | 0.652–0.690 | — | up to +0.556 |
+| Prompted LLM, zero-shot | Llama-3.3-70B | 0.6416 | −0.048 [−0.097, +0.004] | −0.444 |
+| Prompted LLM, 4-shot | Llama-3.3-70B | **0.7105** | +0.021 [−0.019, +0.062] | **−1.311** |
+| Fine-tuned end-to-end | MiniLM-L6 (**unfrozen**) | 0.6945 | +0.005 [−0.014, +0.025] | +0.533 |
+| Fine-tuned end-to-end | MiniLM-L12 (**unfrozen**) | 0.6912 | +0.002 [−0.018, +0.023] | +0.533 |
+| LoRA fine-tune, 3 epochs | Gemma-3-27B-it | **BLOCKED** | — | — |
+
+The pre-registered criterion C1 — a stronger router must beat Stage 7c's 0.6816
+by ≥ 0.05 for "you tested a weak router" to become a live objection again — is
+**not met** (largest point estimate +0.029), C2 (matched-cost gain ≥ 1.0 pp over
+the reference) is **not met**, and **no rung's ΔAUC is distinguishable from
+zero** (smallest Holm-adjusted p = 0.26). A learning curve on RouterBench from
+250 to 29,000 training items fits a power law with **asymptote 0.741 AUC**;
+realised gain *does* improve with data (+1.15 pp at 8k → +2.10 pp at 29k), so
+this is not "data doesn't help", but the extrapolated ceiling stays far below
+what capturing 12 pp would need.
+
+Three observations carry more than the verdict, and belong on this card because
+they qualify how any router number here should be read:
+
+- **Unfreezing the encoder is the honest answer to "you used frozen features",**
+  and it buys +0.005 held out while its *inner-validation* AUC reaches 0.751.
+  The capacity to fit routing labels exists and does not transfer.
+- **The highest-AUC rung has the worst matched-cost gain.** The prompted 4-shot
+  router ranks best by AUC and is *worse than ignoring the query* (−1.31 pp) at
+  the same budget on the same items. AUC is per-model and invariant to monotone
+  rescaling; a matched-cost policy ranks by the *difference* of two models'
+  predicted utilities, so a router can order items correctly within each model
+  and get every cross-model comparison wrong. The routing literature reports
+  per-model AUC almost universally. **Here it disagrees in sign with the
+  deployable quantity** — which is a caution against every AUC on this card,
+  including ours.
+- **The random forest is the diagnostic:** train AUC 0.9999 (perfect
+  memorisation), held-out AUC *below* logistic regression. Ample capacity, no
+  generalisation — the signature of a target that is not a smooth function of
+  the input representation, not of an inadequate model class.
+
+### What was blocked
+
+The pre-registered top rung was a fine-tuned **generative** LLM router. It
+trained without incident (`ft-6567602b-4aa3`, LoRA on `google/gemma-3-27b-it`,
+1,491,033 tokens, **$6.71** booked from Together's own reported price) and then
+proved **unservable** through four independently probed routes: no serverless
+LoRA on the account; dedicated-endpoints v1 creation retired platform-wide
+(`403 endpoints_v1_create_access_disabled`); no certified v2 serving config for
+`gemma-3-27b-it`; and re-training on a v2-servable base refused with
+`402 insufficient_balance`. Verbatim provider errors are in
+`../stage11_13/s13_ftblocked.json` and `DEVIATIONS.md` D8. **Nothing was
+estimated, extrapolated or simulated in its place**, per the pre-registration.
+The cost to the argument is stated rather than hidden: *a reader who believes a
+fine-tuned generative LLM router would clear +0.05 AUC has not been answered by
+one.* They have been answered by a fine-tuned encoder, a prompted 70B model, a
+memorising random forest, and a learning curve.
+
+Additional spend for Stages 11–13: **$9.71** against a pre-registered $25 gate
+enforced in code. The gate never bound; the provider's account balance did.
+RouterBench (both releases), the decomposition, the learning curves, the
+end-to-end encoders and all numerical validation cost **$0**.
+
+---
+
 ## 8. Known limitations, carried forward from every stage
 
 From `results_report.md`:
@@ -269,6 +406,29 @@ From `stage7_10/prereg_stage7.md` and `s7_LIMITATIONS.md`:
     pair**, with token counts reconstructed from released response text rather
     than published directly.
 
+From `stage11_13/prereg_stage11_13.md` and `stage11_13/DEVIATIONS.md`:
+13. **Null results are not proofs of absence.** Nine router families failing to
+    clear +0.05 AUC bounds what *these* representations and *this* volume of
+    supervision achieve. It does not prove no router can; the learning curve is
+    an extrapolation, not a theorem.
+14. **The top pre-registered rung was never served** (§7b, D8). The strongest
+    remaining evidence against "you tested a weak router" is a fine-tuned
+    *encoder*, not a fine-tuned generative LLM.
+15. **Proposition 3's ceiling is vacuous at these effect sizes.** It is a
+    correct inequality, tight on a two-point distribution, and 2.82× too loose
+    on real data. It is retained because the falsification rule was
+    pre-registered, not because it constrains anything here.
+16. **RouterBench is not this workload either.** Its 8 families share the
+    single-turn, auto-gradable character that limitation 2 already flags; it
+    buys scale and model diversity, not traffic realism. Its outcomes are
+    single generations, which is exactly why the in-house `k = 3` replicate data
+    is not redundant with it (Proposition 4).
+17. **Two RouterBench analyses are exploratory, not pre-registered**: the
+    learning curves (D3) and the end-to-end encoder rungs (D7). Both are
+    labelled as such wherever reported, and the encoders are still judged
+    against the pre-registered +0.05 threshold, so adding them cannot make the
+    criterion easier to pass.
+
 ---
 
 ## 9. Intended and unintended use of these results
@@ -276,14 +436,26 @@ From `stage7_10/prereg_stage7.md` and `s7_LIMITATIONS.md`:
 **Appropriate**: as evidence that this keyword router underperforms static
 assignment on objectively-gradable single-turn tasks; as a worked template for
 auditing a routing system; as a demonstration that confusion-matrix cost
-accounting is biased and by how much.
+accounting is biased and by how much; as evidence that on RouterBench's 55 model
+pairs, routing gains against a cost-matched query-independent baseline are real
+but roughly 20× smaller than the available oracle headroom, and that the binding
+constraint there is generalisation rather than outcome noise or model
+redundancy.
 
 **Not appropriate**: as a measurement of EcoLogic's real-world energy savings;
 as a claim about the retired Gemma/Apriel tiers; as evidence that learned
 routing cannot work in general (Stage 5 tests *one* family of zero-API-cost
 routers on *this* workload, and Stage 7 shows only that scaling *this* router's
 training data moves it from slightly behind to slightly ahead of a static
-baseline, inconclusively); as physical energy measurement of any kind.
+baseline, inconclusively); as evidence that **no** router can close the
+RouterBench gap (§8 limitation 13 — nine families is a bound on these
+representations, not a theorem); as a claim that a fine-tuned generative LLM
+router would also fail (it was never served, §7b); as physical energy
+measurement of any kind.
+
+**Read AUC on this card with the §7b caution in hand.** The highest-AUC router
+built anywhere in this project has the *worst* matched-cost gain. Per-model AUC
+is the field's standard router metric and it is not a proxy for router value.
 
 ---
 
@@ -295,6 +467,9 @@ baseline, inconclusively); as physical energy measurement of any kind.
 | `results_report.md` | Stages 1–4 write-up: four-policy comparison, oracle gap, sensitivity band, "what failed" |
 | `router_v2/` | learned-router addendum: pre-registration, pools, ablation, threshold sweep, MCKP frontier, one-shot results, limitations |
 | `stage7_10/` | Stage 7 retest, Stage 8 derivation, Stage 9 external check, Stage 10 documentation |
+| `stage11_13/` | the decomposition (`theory.md`, proofs), its numerical validation, RouterBench at scale (both releases), replicate-based reliability, learning curves, the nine-rung router ladder, `DEVIATIONS.md` (including the refuted hypothesis and the blocked rung) |
+| `external_data/` | RouterBench 0-shot and 5-shot releases as downloaded, SHA-256 recorded in the result JSONs |
+| `paper/` | workshop paper draft (`main.tex`, `appendix.tex`) and a per-number provenance table in `paper/README.md` |
 | `quality_benchmark_report.md` | **superseded** first-pass report, retained for provenance |
 
 ---
@@ -309,11 +484,22 @@ baseline, inconclusively); as physical energy measurement of any kind.
 | 9 (external check on RouteLLM) | complete, within the scope limits in §4 |
 | 10(a) (generation-variance decomposition) | complete, all three tiers and all policies |
 | 10(b)(c)(d) (this card, framing, manifest) | complete |
+| 11 (decomposition: formalise, prove, validate, measure on RouterBench) | complete; 14/14 propositions validated; H1 and H2 **supported** on both the 0-shot and the 5-shot release |
+| 12 (router-free ceiling from k=3 replicates) | complete, **and it refuted our own pre-registered H3**; reported as such |
+| 12b (learning curves on RouterBench) | complete, **exploratory, not pre-registered** (D3) |
+| 13 (router-strength ladder) | **partly blocked.** Prompted 70B router complete; the fine-tuned **generative** LLM rung is **BLOCKED** through four probed routes (D8) |
+| 13b/13c (end-to-end fine-tuned encoders, in-house and RouterBench) | complete, **exploratory, not pre-registered** (D7) |
+| paper | draft complete, `paper/main.tex` |
 
-Every stage in this addendum is complete. What remains **not established** is
-stated in §8 and in `s7_LIMITATIONS.md` rather than left implicit: chiefly that
-energy is modelled and never measured, that the workload is four
-auto-gradable benchmarks rather than EcoLogic traffic, and that Stage 7's
-"partial support" label rests on a 1.10 pp margin smaller than the evaluation's
-own 2.70 pp generation noise — so it should not be read as evidence the learned
-router is better than static assignment.
+Total measured API spend across all stages: **$57.80** (Stages 1–6 $1.9497 +
+`router_v2` $3.5143 + `stage7_10` $42.62 + `stage11_13` $9.71), against the
+original $150 envelope.
+
+What remains **not established** is stated in §8 and in `s7_LIMITATIONS.md`
+rather than left implicit: chiefly that energy is modelled and never measured,
+that the workload is four auto-gradable benchmarks rather than EcoLogic traffic,
+that Stage 7's "partial support" label rests on a 1.10 pp margin smaller than
+the evaluation's own 2.70 pp generation noise — so it should not be read as
+evidence the learned router is better than static assignment — and that the
+Stage 13 verdict rests on nine router families of which the strongest
+pre-registered one was never served.
