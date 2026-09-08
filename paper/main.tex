@@ -123,8 +123,8 @@ opposite: difficulty is reliable, $\rho\approx1$, and our ceiling bound is
 vacuous at these effect sizes. We report the refutation, and it sharpens the
 claim rather than weakening it.
 \item \textbf{The gap is generalisation, and it does not close}
-(\S\ref{sec:eps}). Nine router families---TF-IDF, MiniLM$+$logistic,
-MiniLM$+$MLP, MiniLM$+$boosted trees, $k$-NN, random forest, a prompted 70B
+(\S\ref{sec:eps}). Nine router families---TF-IDF, MiniLM with logistic
+regression, an MLP, boosted trees, $k$-NN and a random forest, a prompted 70B
 model zero-shot and 4-shot, and two \emph{end-to-end fine-tuned} encoders---all
 land in $0.64$--$0.72$ AUC, and none of their advantages over the frozen
 baseline survives a paired bootstrap with Holm correction. A learning curve over
@@ -198,7 +198,9 @@ oracle over the better single model is exactly $\min(p_{01},p_{10})$.
 
 \begin{proposition}[Router-free ceiling]\label{prop:ceiling}
 For every router at operating fraction $\beta$,
-$\Adag-\Sb\le\sqrt{\beta(1-\beta)}\,\mathrm{sd}(\delta)\le\tfrac12\mathrm{sd}(\delta)$,
+\[
+\Adag-\Sb\;\le\;\sqrt{\beta(1-\beta)}\,\mathrm{sd}(\delta)\;\le\;\tfrac12\,\mathrm{sd}(\delta),
+\]
 and the bound is attained.
 \end{proposition}
 \begin{proof}
@@ -209,25 +211,26 @@ at most $\beta(1-\beta)$. Tightness: take $\delta$ two-valued and $z$ its
 indicator.
 \end{proof}
 
-This is the same covariance object as the cost-accounting correction in
-\S\ref{sec:cost}: routing lives or dies on one covariance, read on two axes.
+This is the same covariance object as the cost-accounting correction of
+Appendix~\ref{sec:cost}: routing lives or dies on one covariance, read on two
+axes.
 
 \begin{proposition}[Identification from replicates]\label{prop:reps}
-With $k\ge2$ conditionally i.i.d.\ replicates per item, binary outcomes, and
-independence across models,
-$\Var(\hat\eta_m)=\Var(\eta_m)+\tfrac1k\E[\eta_m(1-\eta_m)]$ and
-$\E[\tfrac{k}{k-1}\hat\eta_m(1-\hat\eta_m)]=\E[\eta_m(1-\eta_m)]$, so
-$\Var(\delta)$ is identified by
-$\widehat\Var(\delta)=\Var(\hat\eta_l-\hat\eta_s)-\tfrac{1}{k-1}\overline{[\hat\eta_l(1-\hat\eta_l)+\hat\eta_s(1-\hat\eta_s)]}$.
+With $k\ge2$ conditionally i.i.d.\ replicates per item and independence across
+models, $\Var(\delta)$ is identified by subtracting a within-item noise term
+from the observed dispersion of $\hat\eta_l-\hat\eta_s$; the estimator and its
+unbiasedness are in Appendix~\ref{app:proofs}.
 \end{proposition}
 
-$\kappa$ is computable from any released outcome matrix. $\rho$ is not:
-$\Var(D)=\Var(\delta)+\E[\Var(D\mid x)]\ge\Var(\delta)$, so single-generation
-data bounds $\mathrm{sd}(\delta)$ only loosely, and \emph{every public routing
-dataset stores one generation per (model, prompt)}. The quantity that decides
-whether routing can work is not recoverable from the data the field publishes.
-In simulation the uncorrected estimator inflates $\Var(\delta)$ by
-$2.33\times$ (Appendix \ref{app:validate}).
+The consequence is the one that matters. $\kappa$ is computable from any
+released outcome matrix; $\rho$ is not. Since
+$\Var(D)=\Var(\delta)+\E[\Var(D\mid x)]\ge\Var(\delta)$, single-generation data
+bounds $\mathrm{sd}(\delta)$ only loosely---and \emph{every public routing
+dataset stores one generation per (model, prompt)}. So the quantity that decides
+whether routing can work is not recoverable from the data the field publishes:
+in simulation the uncorrected estimator inflates $\Var(\delta)$ by $2.33\times$
+(Appendix~\ref{app:validate}). This is why we generated replicates rather than
+relying on RouterBench alone.
 
 \begin{proposition}[Bayes-optimal AUC]\label{prop:auc}
 With $a=\E[\eta(X)]$ and $X,X'$ i.i.d.,
@@ -252,10 +255,11 @@ replicate means---GPT-4 is modal at $0.75$ and Mistral-7B at $0.25$ with almost
 no mass at $0$ or $1$, and only one response is stored per model---so
 RouterBench cannot support Proposition~\ref{prop:reps}.
 
-We compute $\Sb$ exactly (upper concave envelope of the per-model
-(cost, utility) points) and $\Astar$ exactly (Lagrangian solution of the
+We compute $\Sb$ exactly (the upper concave envelope of the per-model
+cost--utility points) and $\Astar$ exactly (the Lagrangian solution of the
 multiple-choice knapsack LP on \emph{per-item} costs), for all 55 unordered
-model pairs and the full 11-model problem, over $\beta\in\{0.1,\dots,0.9\}$;
+model pairs and for the full 11-model problem, over
+$\beta\in\{0.1,\dots,0.9\}$;
 headline numbers are at $\beta=0.5$, where Proposition~\ref{prop:ceiling}'s cap
 is largest and routing is therefore most favoured. Four router families are fit
 with 5-fold cross-validation grouped by item and stratified by family, so every
@@ -313,25 +317,15 @@ models at temperature $0.7$ ($45{,}000$ calls) and $364$ prompts at temperature
 $0$ ($3{,}276$ calls), on HumanEval, MBPP, MMLU and GSM8K with execution- or
 exact-match grading. \textbf{The hypothesis was refuted.}
 
-\begin{table}[t]\centering\small
-\caption{Replicate-based decomposition, $k=3$. \emph{Reliability} is the share of
-per-item outcome variance that is stable between-item signal rather than
-regeneration noise. $\mathrm{AUC}^\star$ is the Proposition~\ref{prop:auc} point
-estimate under a Beta fit to the replicate-identified moments.}
-\label{tab:rel}
-\begin{tabular}{llccccc}
-\toprule
-& & \multicolumn{2}{c}{Tier 1 (9B)} & \multicolumn{2}{c}{Tier 2 (20B)} & Tier 3 (GPT-4o)\\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-7}
-Set & $n$ & reliability & $\mathrm{AUC}^\star$ & reliability & $\mathrm{AUC}^\star$ & reliability \\
-\midrule
-pool, $T{=}0.7$ & 5{,}000 & 0.895 & 0.992 & 0.873 & 0.987 & 0.942 \\
-test, $T{=}0.0$ & 364     & 0.772 & 0.948 & 0.902 & 0.992 & 0.983 \\
-\bottomrule
-\end{tabular}
-\end{table}
+Call \emph{reliability} the share of per-item outcome variance that is stable
+between-item signal rather than regeneration noise. Across three models and both
+sets it runs $0.772$--$0.983$ (lowest the 9B tier at temperature $0$, highest
+GPT-4o), and the corresponding Proposition~\ref{prop:auc} point estimates under
+a Beta fit to the replicate-identified moments run
+$\mathrm{AUC}^\star=0.948$--$1.000$. Per-set, per-tier values are in
+Table~\ref{tab:rel}, Appendix~\ref{app:rel}.
 
-Table~\ref{tab:rel} says that whether a model answers an item correctly is not a
+So whether a model answers an item correctly is not a
 coin flip: $77$--$98\%$ of the outcome variance is a stable property of the item,
 and the implied Bayes-optimal AUC is $0.95$--$0.99$. So $\rho\approx1$: the
 information a router would need \emph{is} there. Our pre-registered consistency
@@ -401,8 +395,10 @@ universally, this is a concrete case where the standard metric and the quantity
 a deployment cares about disagree in sign.
 
 \begin{table}[t]\centering\small
-\caption{Router-strength ladder on the same 1{,}500-item held-out split.
-Rows above the first rule are earlier stages of this project on identical data.
+\caption{Router-strength ladder on the same 1{,}500-item held-out split. The
+first row summarises four earlier classical rungs of this project on identical
+data ($k$-NN at $0.6521$, gradient boosting $0.6547$, a random forest $0.6703$
+that reaches training AUC $0.9999$, and logistic regression $0.6816$).
 $\Delta$AUC and its interval are a 2{,}000-resample paired bootstrap over items
 against the frozen MiniLM$+$logistic reference, Holm-corrected across the four
 new rungs. Gain is the realised matched-cost gain at $\beta=0.5$ against
@@ -412,10 +408,7 @@ $\kappa=4.07\pp$ on this split.}
 \toprule
 Router & Representation & mean AUC & $\Delta$AUC $[95\%]$ & gain (pp) \\
 \midrule
-$k$-NN ($k{=}50$)      & MiniLM (frozen) & 0.6521 & --- & --- \\
-Gradient boosting      & MiniLM (frozen) & 0.6547 & --- & --- \\
-Random forest (train AUC 0.9999) & MiniLM (frozen) & 0.6703 & --- & --- \\
-Logistic regression, Stage 7c    & MiniLM (frozen) & 0.6816 & --- & --- \\
+Four classical rungs, earlier stages & MiniLM (frozen) & 0.652--0.682 & --- & --- \\
 \midrule
 Logistic regression, refit here  & MiniLM (frozen) & 0.6896 & \emph{reference} & $+0.556$ \\
 Prompted LLM, zero-shot  & Llama-3.3-70B-Instruct & 0.6416 & $-0.048$ $[-0.097,+0.004]$ & $-0.444$ \\
@@ -448,56 +441,37 @@ generative LLM router would clear $+0.05$ has been answered by a fine-tuned
 encoder, a prompted 70B model, a memorising random forest and a learning
 curve---not by the thing they asked for.
 
-\section{Matched-cost baselines and a biased cost axis}\label{sec:cost}
-
-Two measurement corrections underpin the numbers above and matter independently.
-
-\paragraph{The baseline.} On our own 364-item frozen test set, a deployed
-keyword router is beaten on \emph{both} axes simultaneously by the constant
-policy ``send everything to the mid tier'': $86.8\%$ vs $92.3\%$ accuracy at
-$6.87\times$ the measured dollar cost. Its headline saving against
-always-frontier is $88.6\%$ in modelled joules but $55.0\%$ in measured
-dollars---the choice of cost axis moves the number by $4\times$ on identical
-routing decisions. Applying the same audit to RouteLLM
-\citep{ong2024routellm} on its own released GSM8K data, its router \emph{does}
-beat a cost-matched query-independent mixture, by a mean of $+0.57\pp$: positive
-at 8 of 9 operating points (sign test $p=0.039$) but significant at none
-individually ($n=1{,}307$). So the protocol discriminates rather than rejects---
-and even the passing case has an effect the field's benchmarks cannot resolve
-point-by-point, while being reported as ``up to $85\%$ cost reduction''.
-
-\paragraph{The axis.} Pricing a routing policy by multiplying traffic fractions
-by per-model \emph{mean} cost is exact for a query-independent policy but biased
-for a router, because routers escalate precisely the items that emit more
-tokens. The exact correction is
-$R_{\text{true}}=R_{\text{naive}}+\sum_{i\ne j}\Cov\bigl(\mathbf 1\{t^*{=}i,\hat t{=}j\},\,e_j(x)-e_i(x)\bigr)$.
-On our data this term is $1.9\times$ the regret being reported and flips its
-sign, reconciling to $2\times10^{-16}$; on RouteLLM's own GSM8K data the sign
-flip reproduces and naive accounting overstates savings by up to $6.3\%$. The
-bias always favours the router and grows with within-model cost dispersion, so
-it worsens as the field routes among reasoning models with variable-length
-thinking budgets. All routers in this paper are charged realised per-item cost.
+\paragraph{Two measurement corrections this rests on.} Every gain above is
+measured against a \emph{cost-matched query-independent} baseline and charged
+\emph{realised per-item} cost, because both choices change conclusions rather
+than decimals. On our own data a deployed keyword router is beaten on both axes
+at once by the constant policy ``send everything to the mid tier'' ($86.8\%$ vs
+$92.3\%$ accuracy at $6.87\times$ the dollar cost), and pricing a router by
+per-model \emph{mean} cost---standard practice---is biased in the router's
+favour by a term $1.9\times$ the regret being reported, which flips its sign.
+Re-auditing RouteLLM \citep{ong2024routellm} on its own released data, its
+router \emph{does} beat a cost-matched mixture, by $+0.57\pp$: the protocol
+discriminates rather than rejects. Full statement, derivation and the RouteLLM
+re-audit are in Appendix~\ref{sec:cost}.
 
 \section{Related work}
 
 RouteLLM \citep{ong2024routellm} and FrugalGPT \citep{chen2023frugalgpt} report
 large savings against always-frontier; we re-audit the former against a
 cost-matched baseline. RouterBench \citep{hu2024routerbench} supplies the
-outcome matrix we decompose and proposes its own routing theory, but prices
-policies with per-model mean cost and does not separate complementarity from
-predictability. Concurrent evaluation-focused work reaches a compatible
-diagnosis from a different direction: \citet{yuan2025whoroutes} identify limited
-task diversity, imbalanced model pools and oversimplified metrics in existing
-routing benchmarks and build a larger framework (85 models, 33{,}337 queries),
-and \citet{huang2025routereval} likewise argue current router evaluation is
-inadequate. Our contribution is complementary and orthogonal: not a better
-benchmark, but a decomposition that attributes a measured shortfall to the model
-set, the task, or the router---plus the observation that the term which decides
-the question requires replicate generations that no such benchmark currently
-provides. The variance machinery is standard (reliability/ICC; CVaR
-\citep{rockafellar2000cvar}; the mean--variance bound \citep{bhatia2000variance});
-multiple-comparison control follows \citet{holm1979} and
-\citet{benjamini1995}.
+outcome matrix we decompose, but prices policies with per-model mean cost and
+does not separate complementarity from predictability. Concurrent
+evaluation-focused work reaches a compatible diagnosis from a different
+direction: \citet{yuan2025whoroutes} identify limited task diversity, imbalanced
+model pools and oversimplified metrics in routing benchmarks and build a larger
+framework (85 models, 33{,}337 queries), and \citet{huang2025routereval}
+likewise argue current router evaluation is inadequate. Ours is orthogonal: not
+a better benchmark, but a decomposition that attributes a measured shortfall to
+the model set, the task or the router---plus the observation that the deciding
+term needs replicate generations no such benchmark provides. The variance
+machinery is standard (reliability/ICC; CVaR \citep{rockafellar2000cvar}; the
+mean--variance bound \citep{bhatia2000variance}); multiple-comparison control
+follows \citet{holm1979} and \citet{benjamini1995}.
 
 \section{Limitations}
 
@@ -526,7 +500,7 @@ item distribution.
 
 \emph{Energy is modelled, never measured.} Where earlier stages report joules
 they mean token counts times assumed per-tier rates; the headline comparisons in
-\S\ref{sec:cost} are therefore stated in measured dollars.
+Appendix~\ref{sec:cost} are therefore stated in measured dollars.
 
 \emph{Generality.} Propositions~\ref{prop:ladder}, \ref{prop:rho},
 \ref{prop:reps} and \ref{prop:auc} hold for general $K$;

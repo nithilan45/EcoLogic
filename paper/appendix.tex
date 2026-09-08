@@ -48,7 +48,18 @@ $\{0,1\}$ distribution \citep{bhatia2000variance}. The maximum of
 $\sqrt{\beta(1-\beta)}$ over $\beta$ is at $\beta=1/2$.
 
 \paragraph{Proposition~\ref{prop:reps} (identification).}
-The first identity is the law of total variance with
+The full statement, condensed in the body. Let $\hat\eta_m$ be the mean of the
+$k$ replicates of model $m$ on an item. Then
+$\Var(\hat\eta_m)=\Var(\eta_m)+\tfrac1k\E[\eta_m(1-\eta_m)]$ and
+$\E\bigl[\tfrac{k}{k-1}\hat\eta_m(1-\hat\eta_m)\bigr]=\E[\eta_m(1-\eta_m)]$,
+so with $\delta=\eta_l-\eta_s$,
+\[
+\widehat\Var(\delta)=\Var(\hat\eta_l-\hat\eta_s)
+-\tfrac{1}{k-1}\overline{\left[\hat\eta_l(1-\hat\eta_l)+\hat\eta_s(1-\hat\eta_s)\right]}
+\]
+is unbiased for $\Var(\delta)$, where the bar denotes the average over items.
+
+\emph{Proof.} The first identity is the law of total variance with
 $\Var(\hat\eta\mid x)=\eta(1-\eta)/k$. For the second, $k\hat\eta\sim
 \mathrm{Bin}(k,\eta)$ given $x$, so
 $\E[\hat\eta(1-\hat\eta)\mid x]=\frac{k-1}{k}\eta(1-\eta)$ and
@@ -211,6 +222,7 @@ probed rather than assumed; verbatim responses are stored in
 \texttt{stage11\_13/s13\_ftblocked.json} and
 \texttt{stage11\_13/s13\_endpoint\_probe.json}.
 
+\begin{sloppypar}
 \begin{enumerate}\itemsep2pt
 \item \textbf{The fine-tune itself succeeded.} Job \texttt{ft-6567602b-4aa3},
 LoRA on \texttt{google/gemma-3-27b-it}, 3 epochs over the 10{,}500
@@ -238,14 +250,14 @@ cheapest tier it routes to. \texttt{POST /v1/fine-tunes} returns
 limit: 4.00 USD''. Pay-as-you-go serverless calls still return 200, so the block
 is the upfront reserve a fine-tuning job requires, not the credential.
 \end{enumerate}
+\end{sloppypar}
 
 \section{Reproduction}\label{app:repro}
 
 \begin{verbatim}
 pip install -r requirements-eval.txt
 python3 stage11_13/s11_validate.py            # 14/14 proposition checks
-curl -L -o external_data/routerbench_0shot.pkl \
-  https://huggingface.co/datasets/withmartian/routerbench/resolve/main/routerbench_0shot.pkl
+python3 stage11_13/fetch_routerbench.py       # download + SHA-256 verify
 python3 stage11_13/s11_routerbench.py 0shot   # decomposition, 55 pairs x 8 families
 python3 stage11_13/s12_ceiling.py             # replicate variance components
 python3 stage11_13/s11_routerbench.py 5shot   # pre-registered replication
@@ -261,4 +273,76 @@ stages are listed in \texttt{stage7\_10/reproducibility\_manifest.md} and
 \texttt{stage11\_13/}. Reproducibility hazards are flagged rather than glossed:
 no provider exposes an immutable model revision, so exact regeneration of any
 API-derived number is guaranteed by nothing under our control. The RouterBench
-pickle is pinned by SHA-256 in the result JSON.
+pickle is pinned by SHA-256 in the result JSON, and
+\texttt{fetch\_routerbench.py} refuses to proceed on a mismatch.
+
+\section{Replicate study detail}\label{app:rel}
+
+\begin{table}[h]\centering\small
+\caption{Replicate-based decomposition, $k=3$. \emph{Reliability} is the share
+of per-item outcome variance that is stable between-item signal rather than
+regeneration noise. $\mathrm{AUC}^\star$ is the Proposition~\ref{prop:auc} point
+estimate under a Beta fit to the replicate-identified moments; the
+distribution-free upper bound of Proposition~\ref{prop:auc} is $1.0$ in all six
+cells and is therefore uninformative here, which is why the Beta fit is quoted
+and labelled as a modelling assumption.}
+\label{tab:rel}
+\begin{tabular}{llcccccc}
+\toprule
+& & \multicolumn{2}{c}{Tier 1 (9B)} & \multicolumn{2}{c}{Tier 2 (20B)} & \multicolumn{2}{c}{Tier 3 (GPT-4o)}\\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+Set & $n$ & reliab. & $\mathrm{AUC}^\star$ & reliab. & $\mathrm{AUC}^\star$ & reliab. & $\mathrm{AUC}^\star$ \\
+\midrule
+pool, $T{=}0.7$ & 5{,}000 & 0.895 & 0.992 & 0.873 & 0.987 & 0.942 & 0.997 \\
+test, $T{=}0.0$ & 364     & 0.772 & 0.948 & 0.902 & 0.992 & 0.983 & 1.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The pool set is $5{,}000$ prompts $\times$ 3 models $\times$ $k=3$ at
+temperature $0.7$ ($45{,}000$ calls); the test set is $364$ prompts $\times$ 3
+models $\times$ $k=3$ at temperature $0$ ($3{,}276$ calls). Both are drawn from
+HumanEval, MBPP, MMLU and GSM8K with execution- or exact-match grading, so no
+model sits in the grading loop. Temperature $0$ is \emph{not} deterministic on
+either provider, which is what makes the $T{=}0$ column meaningful rather than
+degenerate: the 9B tier changes its graded verdict on $19.8\%$ of items between
+identical temperature-$0$ calls.
+
+\section{Matched-cost baselines and the biased cost axis}\label{sec:cost}
+
+The two measurement corrections summarised at the end of \S\ref{sec:eps}, in
+full. Both are prior stages of this project rather than contributions of this
+paper, but every number in \S\ref{sec:rb}--\ref{sec:eps} depends on them.
+
+\paragraph{The baseline.} On our own 364-item frozen test set, a deployed
+keyword router is beaten on \emph{both} axes simultaneously by the constant
+policy ``send everything to the mid tier'': $86.8\%$ vs $92.3\%$ accuracy at
+$6.87\times$ the measured dollar cost. Its headline saving against
+always-frontier is $88.6\%$ in modelled joules but $55.0\%$ in measured
+dollars---the choice of cost axis moves the number by $4\times$ on identical
+routing decisions. Applying the same audit to RouteLLM
+\citep{ong2024routellm} on its own released GSM8K data, its router \emph{does}
+beat a cost-matched query-independent mixture, by a mean of $+0.57\pp$: positive
+at 8 of 9 operating points (sign test $p=0.039$) but significant at none
+individually ($n=1{,}307$). So the protocol discriminates rather than rejects---
+and even the passing case has an effect the field's benchmarks cannot resolve
+point-by-point, while being reported as ``up to $85\%$ cost reduction''.
+
+\paragraph{The axis.} Pricing a routing policy by multiplying traffic fractions
+by per-model \emph{mean} cost is exact for a query-independent policy but biased
+for a router, because routers escalate precisely the items that emit more
+tokens. The exact correction is
+\[
+R_{\text{true}}=R_{\text{naive}}+\sum_{i\ne j}\Cov\bigl(\mathbf 1\{t^*{=}i,\hat t{=}j\},\,e_j(x)-e_i(x)\bigr).
+\]
+On our data this term is $1.9\times$ the regret being reported and flips its
+sign, reconciling to $2\times10^{-16}$; on RouteLLM's own GSM8K data the sign
+flip reproduces and naive accounting overstates savings by up to $6.3\%$. The
+bias always favours the router and grows with within-model cost dispersion, so
+it worsens as the field routes among reasoning models with variable-length
+thinking budgets. All routers in this paper are charged realised per-item cost.
+
+Note that this correction is the \emph{same covariance object} as
+Proposition~\ref{prop:ceiling}: routing lives or dies on one covariance between
+a routing indicator and a per-item difference, read once on the utility axis and
+once on the cost axis.
