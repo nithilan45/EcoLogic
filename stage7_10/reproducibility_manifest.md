@@ -1,4 +1,4 @@
-# Reproducibility manifest — Stages 1–10
+# Reproducibility manifest — Stages 1–13
 
 Every seed, model version string, package version, endpoint and dataset
 revision used anywhere in this project. Compiled so that a year from now the
@@ -6,6 +6,12 @@ exact configuration of each stage is recoverable from one file.
 
 Anything below marked **not pinned** is a genuine reproducibility hazard, not an
 oversight being papered over.
+
+Sections 1–11 cover Stages 1–10. **Section 12 covers Stages 11–13** (the
+decomposition, RouterBench, the router ladder) and is self-contained: it repeats
+the seeds, models, datasets, costs and commands for that group rather than
+amending the sections above, so nothing documenting the earlier stages changes
+meaning.
 
 ## 1. Environment
 
@@ -229,3 +235,228 @@ Neither selects or tunes anything.
 
 Credentials are read from `TOGETHER_API_KEY` and `OPENAI_API_KEY` in the
 environment. No key is committed anywhere in this repository.
+
+---
+
+# 12. Stages 11–13 — the decomposition, RouterBench, and the router ladder
+
+Same machine, same Python 3.12.3, CPU only. Additional or newly load-bearing
+packages beyond §1:
+
+| Package | Version | Used by |
+|---|---|---|
+| `together` | 2.32.0 | Stage 13 prompted and fine-tuned routers, endpoint probes |
+| `torch` | 2.14.0+cpu | Stages 13b/13c end-to-end encoder fine-tuning |
+| `transformers` | 5.16.1 | same (`AutoModel`, `AutoTokenizer`) |
+| `pandas` | 3.0.5 | RouterBench pickle loading (no longer Stage 9 only) |
+| `huggingface_hub` | 1.30.0 | RouterBench download |
+
+`datasets` is **not** installed and is not needed: the RouterBench release ships
+as pickled DataFrames, loaded with `pandas` directly.
+
+## 12.1 Seeds
+
+| Seed | Used by | Governs |
+|---|---|---|
+| `20260907` | `s11_routerbench.py` | 5-fold `StratifiedKFold(shuffle=True)` for out-of-fold router predictions, MLP and GBM initialisation |
+| `20260907` | `s12_ceiling.py` | replicate resampling and bootstrap draws |
+| `20260907` | `s12b_learning_curve.py` | the fixed 20% held-out split; training subsets drawn as `SEED + repeat` |
+| `20260907` | `s13_llm_router.py` | few-shot exemplar selection, bootstrap resampling |
+| `20260907` | `s13b_encoder_finetune.py`, `s13c_encoder_routerbench.py` | `torch.manual_seed`, the inner-validation split, batch order |
+| `2000` resamples | all bootstrap intervals in Stages 11–13 | interval width |
+
+Deterministic by construction: the static frontier (upper concave envelope), the
+oracle frontier (Lagrangian multiple-choice-knapsack solve on per-item costs),
+every closed form in `theory.md`, and the Holm–Bonferroni / Benjamini–Hochberg
+corrections.
+
+**Not pinned:** CPU-only PyTorch training is deterministic given the seed on
+this machine but is not guaranteed bit-identical across BLAS builds or thread
+counts. `OMP_NUM_THREADS=2` was set for the encoder runs. The reported held-out
+AUCs should reproduce to the third decimal, not exactly.
+
+## 12.2 External dataset — RouterBench
+
+| File | SHA-256 | Items | Models |
+|---|---|---|---|
+| `external_data/routerbench_0shot.pkl` | `ba4f77f19517610a707c374e99322d7750c30fc4ae7ff5527888595a1e65d36d` | 36,494 | 11 |
+| `external_data/routerbench_5shot.pkl` | `fbd7d3d16fba2759a18fa0ad44409d3e0e92ba80d03d90827eed1a6d084c9ffe` | 36,480 analysed (28 dropped) | 11 |
+
+Source: `withmartian/routerbench` on the HuggingFace Hub. `fetch_routerbench.py`
+downloads both releases into `external_data/`, hashes them and **fails** if
+either hash differs from the two above. **The Hub revision is not pinned** from
+the dataset id alone, which is why the hash of each file as actually analysed is
+recorded — in the `sha256` field of each result JSON and again in
+`s11_routerbench_sha256.json`. A future download that hashes differently is a
+different dataset and none of the numbers here describe it. Checked: a fresh
+download from the Hub on 2026-09-07 reproduced
+`ba4f77f1…d36d` for the 0-shot file, so the revision has not moved since the
+analysis ran.
+
+The pickles are ~270 MB together and are **gitignored, not committed**, so
+fetching them is a required reproduction step rather than an optional one.
+
+The 5-shot file has **154 missing score cells over 28 `arc-challenge` items**
+(0.077% of items). Those items are **dropped, not imputed**, because every
+imputation rule would move `kappa` in a direction requiring an argument; the
+count is printed by the loader and stored as `n_items_dropped_missing_cells`.
+The 0-shot primary analysis drops nothing. See `DEVIATIONS.md` D6.
+
+The 11 models and 8 benchmark families are listed in
+`s11_routerbench_{0shot,5shot}.json` under `models` and `family_sizes`. Families
+are included at `n ≥ 100`, giving 8 families × 55 pairs = 440 cells.
+
+**Not used:** the "Who Routes the Router" release was considered and not
+analysed; nothing in this project depends on it, and it is not cited as if it
+were.
+
+## 12.3 Models
+
+| Model string | Provider | Role |
+|---|---|---|
+| `meta-llama/Llama-3.3-70B-Instruct-Turbo` | Together AI | prompted LLM router, zero-shot and 4-shot (Stage 13 rung R-b) |
+| `google/gemma-3-27b-it` | Together AI | LoRA fine-tune base (rung R-c) — **trained, never served**, see §12.6 |
+| `Qwen/Qwen3.5-9B` | Together AI | attempted second fine-tune base, refused for insufficient balance |
+| `sentence-transformers/all-MiniLM-L6-v2` | local, CPU | frozen features for RouterBench routers; **and** the unfrozen backbone in 13b/13c |
+| `sentence-transformers/all-MiniLM-L12-v2` | local, CPU | second unfrozen backbone in 13b |
+
+`all-MiniLM-L6-v2` appears twice deliberately: Stage 13b fine-tunes end-to-end
+**the same backbone** whose frozen output gives 0.6816 in Stage 7c, so the
+comparison isolates the effect of unfreezing and nothing else.
+
+Fine-tuned adapter produced and retained on the provider side:
+`nithilankarthik-0f83/gemma-3-27b-it-s13router-f64c70b3`, from job
+`ft-6567602b-4aa3`.
+
+**Not pinned:** as in §3, no provider revision is exposed for the Together
+slugs.
+
+## 12.4 Router hyperparameters
+
+RouterBench routers (`s11_routerbench.py`), all fitted out-of-fold within the
+5-fold CV and never on their own scoring fold:
+
+| Router | Configuration |
+|---|---|
+| TF-IDF + logistic | `TfidfVectorizer` word 1–2 grams, `LogisticRegression(lbfgs)` |
+| MiniLM + logistic | 384-d frozen embedding, `LogisticRegression(lbfgs)` |
+| MiniLM + MLP | hidden `(256, 64)`, `learning_rate_init=1e-3`, multi-output |
+| MiniLM + boosted trees | `HistGradientBoostingClassifier`, `early_stopping=True` |
+
+End-to-end encoders: `MAX_LEN=256`; Stage 13b `EPOCHS=6`, `BATCH=16`,
+encoder LR `2e-5`, head LR `1e-3`, inner-validation fraction 0.15; Stage 13c
+`EPOCHS=3`, `BATCH=32`, encoder LR `3e-5`, head LR `1e-3`, inner-validation
+fraction 0.05. Head is 3 logits (one per tier) with per-tier binary
+cross-entropy. Dynamic padding with length bucketing — chosen for CPU
+throughput, and it changes no result because padding is masked out of the mean
+pool either way. Epoch selection uses the inner split carved out of TRAIN and
+**never touches the split every rung is scored on**.
+
+Fine-tune job configuration: LoRA, 3 epochs, 10,500 prompt/completion examples
+from `s13_ft_train.jsonl` (the Stage 7 TRAIN split, 3,500 items × 3 tiers),
+1,491,033 tokens.
+
+## 12.5 Splits
+
+Stages 13/13b reuse **exactly** the Stage 7 partitions in §7 — fitted on the
+3,500-item TRAIN split, scored once on the 1,500-item CALIBRATION split, which
+is the split every earlier rung reports. Nothing new was partitioned in-house,
+so no new disjointness check exists or is needed.
+
+RouterBench (Stages 12b, 13c): a fixed **7,299-item held-out set** (20%) drawn
+at `SEED`, leaving **29,195** training items. Stage 12b sweeps training subsets
+from 250 to 29,000 of those; Stage 13c trains on 27,735 and holds 1,460 back as
+inner validation. Stages 12b and 13c draw the held-out set with the same seed
+and the same call, so their numbers are directly comparable, and 13c
+**refits** the frozen logistic and MLP baselines on its own training split
+rather than quoting the 5-fold CV numbers, so the end-to-end comparison is
+like-for-like.
+
+## 12.6 API configuration and the blocked rung
+
+| Item | Value |
+|---|---|
+| Prompted router endpoint | `POST https://api.together.xyz/v1/chat/completions`, `logprobs` on, 1 completion token |
+| Decision rule | `P(yes)` from the logprobs of the `yes`/`no` tokens, per tier |
+| Fine-tuning endpoint | `POST https://api.together.xyz/v1/fine-tunes` |
+| Endpoint probes | `/v1/models`, `/v1/hardware`, `/v1/endpoints`, and the v2 `models.configs.list` / deployments API via the SDK |
+| Cost gate | **$25**, enforced in code; every call books the provider's own reported usage into `s13_spend.json` and the run aborts at the gate |
+
+The fine-tuned generative rung is **BLOCKED**. Four routes were probed rather
+than assumed, each with the provider's verbatim error recorded in
+`s13_ftblocked.json` and `s13_endpoint_probe.json`:
+
+1. serverless LoRA — `400 Unable to access non-serverless model` on all 13
+   advertised `*-Lora` targets, `404 model_not_available` on the fine-tune;
+2. dedicated endpoints v1 — `403 endpoints_v1_create_access_disabled`
+   (retired platform-wide, not an account limit);
+3. dedicated endpoints v2 — **0 certified configs** for both the merged
+   fine-tune and the `gemma-3-27b-it` base; gemma-3-27b absent from the 43
+   v2-supported architectures;
+4. re-fine-tuning on a v2-servable base — `402 insufficient_balance`
+   ("Required combined balance and credit limit: 4.00 USD").
+
+Per the pre-registration, **no result was estimated, extrapolated or simulated
+in its place**.
+
+## 12.7 Pre-registration commit
+
+| Document | Commit | Covers |
+|---|---|---|
+| `stage11_13/prereg_stage11_13.md` | `0b17dfa`, committed before any Stage 11–13 artifact existed | H1 (complementarity ≥ 5 pp), H2 (realised `rho` ≤ 30%), H3 (the ceiling hypothesis, since **refuted**), the §3.4 consistency check that came out INCONSISTENT, the C1/C2 router-ladder criteria, score handling, the $25 cost gate, and the rule that a blocked run is reported as blocked |
+
+Deviations are in `stage11_13/DEVIATIONS.md`, D1–D8. D1 (H3 refuted), D2 (a
+pre-registration error about what the peeking policy bounds), D3 and D7
+(analyses added as exploratory), D6 (the 28 dropped items) and D8 (the blocked
+rung) all change what the project claims and are written up in full rather than
+summarised.
+
+## 12.8 Measured API cost
+
+| Item | Volume | Cost |
+|---|---|---|
+| Prompted router, zero-shot | 4,500 calls | $0.5837 |
+| Prompted router, 4-shot | 4,500 calls | $2.4136 |
+| LoRA fine-tune (Gemma-3-27B-it, 3 epochs) | 1,491,033 tokens | $6.7096 |
+| Fine-tuned generative inference | **blocked** | $0.00 |
+| End-to-end encoders (13b, 13c) | CPU | $0.00 |
+| RouterBench both releases, theory, validation, learning curves | — | $0.00 |
+| **Total, Stages 11–13** | 9,000 calls | **$9.7070** |
+
+Against the pre-registered $25 gate and a projection of ~$16. The gate never
+bound; the provider's account balance did. Project total **$57.80**.
+
+## 12.9 Commands, in order
+
+```bash
+python3 stage11_13/fetch_routerbench.py         # download + hash-verify both releases
+python3 stage11_13/s11_validate.py              # 14/14 propositions vs LP / Monte Carlo
+python3 stage11_13/s11_routerbench.py 0shot     # primary analysis
+python3 stage11_13/s11_routerbench.py 5shot     # pre-registered replication
+python3 stage11_13/s12_ceiling.py               # replicate reliability, Bayes AUC, peeking policy
+python3 stage11_13/s12b_learning_curve.py       # exploratory (D3)
+python3 stage11_13/s13_llm_router.py probe      # catalogue + pricing preflight
+python3 stage11_13/s13_llm_router.py prompted 0
+python3 stage11_13/s13_llm_router.py prompted 4
+python3 stage11_13/s13_llm_router.py build_ft   # writes s13_ft_train.jsonl
+python3 stage11_13/s13_llm_router.py launch_ft
+python3 stage11_13/s13_llm_router.py poll_ft
+python3 stage11_13/s13_llm_router.py score_ft   # BLOCKED; records the provider errors
+OMP_NUM_THREADS=2 python3 stage11_13/s13b_encoder_finetune.py          # exploratory (D7), hours on CPU
+OMP_NUM_THREADS=2 python3 stage11_13/s13c_encoder_routerbench.py 0shot # exploratory, ~1 h on CPU
+python3 stage11_13/s13_llm_router.py report     # ladder, paired bootstrap, C1/C2 verdict
+cd paper && pdflatex main.tex && pdflatex main.tex
+```
+
+The `launch_ft2` / `poll_ft2` / `deploy_ft2` / `score_ft2` / `teardown_ft2`
+subcommands are the fourth route in §12.6 — the attempt to re-train on a
+v2-servable base. They are retained because `launch_ft2` is what returned
+`402 insufficient_balance`, and a reader checking that claim should be able to
+run the same call.
+
+`s11_routerbench.py` caches MiniLM embeddings under `external_data/`; the cache
+is derived and deliberately untracked, and is regenerated if absent or if the
+item count changes.
+
+Credentials: `TOGETHER_API_KEY` only (no OpenAI call is made in Stages 11–13).
+No key is committed anywhere in this repository.

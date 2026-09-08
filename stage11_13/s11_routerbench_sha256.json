@@ -1,0 +1,12 @@
+{
+ "repo": "withmartian/routerbench",
+ "expected": {
+  "routerbench_0shot.pkl": "ba4f77f19517610a707c374e99322d7750c30fc4ae7ff5527888595a1e65d36d",
+  "routerbench_5shot.pkl": "fbd7d3d16fba2759a18fa0ad44409d3e0e92ba80d03d90827eed1a6d084c9ffe"
+ },
+ "observed": {
+  "routerbench_0shot.pkl": "ba4f77f19517610a707c374e99322d7750c30fc4ae7ff5527888595a1e65d36d",
+  "routerbench_5shot.pkl": "fbd7d3d16fba2759a18fa0ad44409d3e0e92ba80d03d90827eed1a6d084c9ffe"
+ },
+ "all_match": true
+}
