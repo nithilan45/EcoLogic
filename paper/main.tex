@@ -53,38 +53,35 @@ multiplicative and additive terms: \emph{complementarity} $\kappa$ (how much
 oracle headroom the model set offers), \emph{predictability} $\rho$ (what
 fraction of that headroom is a function of the query at all), and
 \emph{estimation error} $\varepsilon$ (what a fitted router fails to capture).
-We prove $\rho=1$ exactly when outcomes are deterministic given the query, give
-a distribution-free ceiling $\sqrt{\beta(1-\beta)}\,\mathrm{sd}(\delta)$ on
-every router, and show $\mathrm{sd}(\delta)$ is identified only from
-\emph{repeated} generations---which no public routing dataset provides. On
-RouterBench (36{,}494 prompts $\times$ 11 models, all 55 model pairs $\times$ 8
-benchmark families) complementarity is abundant: median $\kappa = 12.11\pp$ of
-oracle headroom at matched cost. Yet the best of four router families captures
-$0.59\pp$, or $\rho_{\text{realised}} = 4.6\%$ of it. We then pre-registered and
-\emph{refuted} our own explanation. Using $k=3$ replicate generations of 5{,}000
-prompts across three models---data we generated because no public dataset
-replicates---we find per-item difficulty is highly \emph{reliable}
-(0.77--0.98 of outcome variance is stable between-item signal, implying a
-Bayes-optimal AUC of 0.95--0.99), so $\rho \approx 1$ and unpredictability is
-\emph{not} the bottleneck. The entire gap is $\varepsilon$: which model will
-succeed is a stable property of the item that routers cannot read off the prompt.
-In \emph{AUC} that gap is immovable: nine router families---TF-IDF through a
-prompted 70B model and an \emph{end-to-end fine-tuned} encoder---all land in
-$0.64$--$0.72$, no family's advantage over a frozen MiniLM$+$logistic baseline
-survives a paired bootstrap with Holm correction, and a learning curve over
-$250$ to $29{,}000$ items extrapolates to an asymptote of $0.74$. But AUC turns
-out to be the wrong thing to watch, and the decomposition is what reveals it.
-The highest-AUC router we built has the \emph{worst} matched-cost gain
-($-1.31\pp$, worse than ignoring the query); conversely, unfreezing the encoder
-buys the same $+0.005$ AUC on both our data and RouterBench while
-\emph{tripling} the deployable gain at RouterBench scale, from
-$\rho_{\text{realised}}=9.7\%$ to $32.6\%$. So $\varepsilon$ is large but not
-immovable, and reducing it looks like a representation-learning problem that
-per-model AUC cannot see. Two thirds of $\kappa$ nonetheless remains unclaimed,
-and the whole analysis replicates on RouterBench's independent 5-shot release
-($\kappa=11.44\pp$). Routing's binding constraint is generalisation, not noise
-and not model redundancy---and it is being measured with a metric that does not
-track it.
+We prove $\rho=1$ exactly when outcomes are deterministic given the query, and
+that the term deciding whether routing can work is identified only from
+\emph{repeated} generations, which no public routing dataset provides.
+
+On RouterBench (36{,}494 prompts $\times$ 11 models, all 55 pairs $\times$ 8
+benchmark families) complementarity is abundant---median $\kappa = 12.11\pp$ of
+oracle headroom---and the best of four router families captures $4.6\%$ of it.
+We pre-registered low predictability as the explanation and \emph{refuted} it:
+with $k=3$ replicates of 5{,}000 prompts, data we generated because no public
+dataset replicates, per-item difficulty is highly \emph{reliable}
+($0.77$--$0.98$ of outcome variance is stable signal, implying a Bayes-optimal
+AUC of $0.95$--$0.99$). So $\rho\approx1$ and the whole gap is $\varepsilon$:
+which model will succeed is a stable property of the item that routers cannot
+read off the prompt.
+
+That gap behaves differently on the two axes the field uses. In \emph{AUC} it is
+immovable---nine router families, TF-IDF through a prompted 70B model and an
+end-to-end fine-tuned encoder, all land in $0.64$--$0.72$; none beats a frozen
+MiniLM$+$logistic baseline under a Holm-corrected paired bootstrap; a learning
+curve over $250$ to $29{,}000$ items extrapolates to $0.74$. In \emph{realised
+matched-cost gain} it partly yields: unfreezing that encoder at RouterBench
+scale takes $\rho_{\text{realised}}$ from $9.7\%$ to $32.6\%$ on identical
+held-out items, for the same $+0.005$ AUC that bought nothing on our own data.
+The highest-AUC router we built, meanwhile, has the \emph{worst} matched-cost
+gain ($-1.31\pp$, worse than ignoring the query). Routing's binding constraint
+is generalisation rather than noise or model redundancy, two thirds of $\kappa$
+is still unclaimed, and the metric the field reports does not track the part
+that moves. The analysis replicates on RouterBench's independent 5-shot release
+($\kappa=11.44\pp$).
 \end{abstract}
 
 \section{Introduction}
