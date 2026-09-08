@@ -1,0 +1,185 @@
+{
+ "what": "isolates graded-vs-binarised supervision from unfreezing",
+ "pre_registered": false,
+ "deviation": "DEVIATIONS.md D9",
+ "shot": "0shot",
+ "seeds": [
+  20260907,
+  11,
+  202,
+  3033,
+  77
+ ],
+ "beta": 0.5,
+ "epochs": 3,
+ "batch": 32,
+ "head_lr": 0.001,
+ "per_seed": [
+  {
+   "seed": 20260907,
+   "kappa_pp": 19.94898652750964,
+   "n_train": 27735,
+   "n_inner_val": 1460,
+   "n_held_out": 7299,
+   "A_frozen_graded_bce": {
+    "epoch": 3,
+    "val_auc": 0.6515034327964527,
+    "held_out": {
+     "mean_auc": 0.649596385390513,
+     "gain_pp": 6.2751955972452205,
+     "rho": 0.31456212517822546
+    }
+   },
+   "B_frozen_logreg_binarised": {
+    "mean_auc": 0.7078829789422038,
+    "gain_pp": 1.9211744984645618,
+    "rho": 0.09630436592932998
+   },
+   "C_frozen_ridge_graded": {
+    "mean_auc": 0.6763602923400417,
+    "gain_pp": 5.225736767268508,
+    "rho": 0.261955000072922
+   }
+  },
+  {
+   "seed": 11,
+   "kappa_pp": 20.162077922759526,
+   "n_train": 27735,
+   "n_inner_val": 1460,
+   "n_held_out": 7299,
+   "A_frozen_graded_bce": {
+    "epoch": 3,
+    "val_auc": 0.6599439601559729,
+    "held_out": {
+     "mean_auc": 0.6479669893751615,
+     "gain_pp": 6.197151220471531,
+     "rho": 0.3073666932650831
+    }
+   },
+   "B_frozen_logreg_binarised": {
+    "mean_auc": 0.7052208795300738,
+    "gain_pp": 2.685026271848434,
+    "rho": 0.13317210071971303
+   },
+   "C_frozen_ridge_graded": {
+    "mean_auc": 0.6748064960888165,
+    "gain_pp": 5.490314719668909,
+    "rho": 0.2723089723540492
+   }
+  },
+  {
+   "seed": 202,
+   "kappa_pp": 20.028952228496177,
+   "n_train": 27735,
+   "n_inner_val": 1460,
+   "n_held_out": 7299,
+   "A_frozen_graded_bce": {
+    "epoch": 3,
+    "val_auc": 0.6641002792728643,
+    "held_out": {
+     "mean_auc": 0.6528329858160284,
+     "gain_pp": 6.418868655403975,
+     "rho": 0.32047950298026745
+    }
+   },
+   "B_frozen_logreg_binarised": {
+    "mean_auc": 0.7051965908746326,
+    "gain_pp": 1.5946576043125105,
+    "rho": 0.07961762483230214
+   },
+   "C_frozen_ridge_graded": {
+    "mean_auc": 0.6803423604275978,
+    "gain_pp": 4.904962640881438,
+    "rho": 0.24489362124010194
+   }
+  },
+  {
+   "seed": 3033,
+   "kappa_pp": 19.49844874437997,
+   "n_train": 27735,
+   "n_inner_val": 1460,
+   "n_held_out": 7299,
+   "A_frozen_graded_bce": {
+    "epoch": 3,
+    "val_auc": 0.6501756054036523,
+    "held_out": {
+     "mean_auc": 0.6527155218082488,
+     "gain_pp": 5.751360102100211,
+     "rho": 0.29496500862705416
+    }
+   },
+   "B_frozen_logreg_binarised": {
+    "mean_auc": 0.7070893519754138,
+    "gain_pp": 2.155915981054035,
+    "rho": 0.11056858980514714
+   },
+   "C_frozen_ridge_graded": {
+    "mean_auc": 0.6806309732394041,
+    "gain_pp": 4.887543140872641,
+    "rho": 0.25066317864293564
+   }
+  },
+  {
+   "seed": 77,
+   "kappa_pp": 20.12953907763221,
+   "n_train": 27735,
+   "n_inner_val": 1460,
+   "n_held_out": 7299,
+   "A_frozen_graded_bce": {
+    "epoch": 3,
+    "val_auc": 0.6437121410253938,
+    "held_out": {
+     "mean_auc": 0.6538543820128204,
+     "gain_pp": 6.934580864178308,
+     "rho": 0.34449774718805964
+    }
+   },
+   "B_frozen_logreg_binarised": {
+    "mean_auc": 0.707195925904961,
+    "gain_pp": 2.1207328815648463,
+    "rho": 0.10535426933453179
+   },
+   "C_frozen_ridge_graded": {
+    "mean_auc": 0.6803922941612933,
+    "gain_pp": 5.665857499633054,
+    "rho": 0.28146980801606686
+   }
+  }
+ ],
+ "summary": {
+  "A_frozen_graded_bce": {
+   "rho_mean": 0.3163742154477379,
+   "rho_sd": 0.016435082518687385,
+   "rho_min": 0.29496500862705416,
+   "rho_max": 0.34449774718805964,
+   "auc_mean": 0.6513932528805544,
+   "auc_sd": 0.0022291880599661423,
+   "gain_pp_mean": 6.315431287879849
+  },
+  "B_frozen_logreg_binarised": {
+   "rho_mean": 0.10500339012420482,
+   "rho_sd": 0.017576580564609746,
+   "rho_min": 0.07961762483230214,
+   "rho_max": 0.13317210071971303,
+   "auc_mean": 0.7065171454454571,
+   "auc_sd": 0.0011025274657689521,
+   "gain_pp_mean": 2.0955014474488776
+  },
+  "C_frozen_ridge_graded": {
+   "rho_mean": 0.26225811606521515,
+   "rho_sd": 0.013462310005463109,
+   "rho_min": 0.24489362124010194,
+   "rho_max": 0.28146980801606686,
+   "auc_mean": 0.6785064832514307,
+   "auc_sd": 0.002438697436516723,
+   "gain_pp_mean": 5.23488295366491
+  }
+ },
+ "s13c_unfrozen_reference_one_split": {
+  "mean_auc": 0.7126414083182877,
+  "gain_pp": 6.507419189518126,
+  "rho": 0.3262029968562263
+ },
+ "finding": "A frozen linear probe on graded targets reaches rho = 0.316 (sd 0.016, 5 splits) against 0.105 for the same frozen embeddings with binarised targets. s13c's unfrozen encoder reached 0.326 on one split, so the target encoding accounts for essentially all of the 9.7% -> 32.6% jump and unfreezing for about a point, inside the split spread. The AUC-vs-gain dissociation is correspondingly strengthened: row A has lower AUC than row B and ~3x its realised gain.",
+ "usd": 0.0
+}

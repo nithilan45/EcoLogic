@@ -248,3 +248,53 @@ clear C1 has not been answered by a fine-tuned generative LLM router.** They hav
 been answered by a fine-tuned *encoder*, a prompted 70B model, a random forest
 that memorises its training set, and a learning curve — which is weaker on that
 specific axis, and the paper says so rather than papering over it.
+---
+
+## D9. **D7's isolation claim was wrong. Stage 13c's headline is a supervision-target effect, not an unfreezing effect.**
+
+**What D7 claimed.** That in Stage 13c "the only difference between the rows is
+whether the encoder was updated", so the 9.7% → 32.6% jump in realised `rho`
+isolates the effect of unfreezing `all-MiniLM-L6-v2`.
+
+**That is false, and the code shows it.** The two rows differ in *two* ways at
+once. The fine-tuned encoder minimises `BCEWithLogitsLoss` against **graded**
+utilities in [0, 1] through one joint 11-output head (`s13c_...py`:
+`Ytr = torch.tensor(util[tr])`). The frozen logistic reference is fit per model
+against **binarised** labels (`s13c_...py`: `y = ybin[tr, m]`, where
+`ybin = (util >= 0.5)`). Since 21.1% of RouterBench score cells carry fractional
+partial credit, and a matched-cost policy ranks items by the *difference*
+between two models' predicted utilities, thresholding at 0.5 discards precisely
+the cross-model spread the policy consumes.
+
+**The isolating experiment.** `s13d_target_encoding_ablation.py` holds the
+encoder **frozen** and changes only the target and loss to match the fine-tuned
+run — a linear head on the same cached embeddings, same loss, epochs, batch,
+head learning rate, schedule and inner-val epoch selection — over **five**
+splits rather than one:
+
+| Row | Encoder | Targets | mean AUC | realised `rho` |
+|---|---|---|---|---|
+| A | **frozen** | graded, BCE | 0.6514 | **31.6% ± 1.6%** |
+| B | **frozen** | binarised (D7's baseline) | 0.7065 | 10.5% ± 1.8% |
+| C | **frozen** | graded, ridge | 0.6785 | 26.2% ± 1.3% |
+| — | *unfrozen (Stage 13c, one split)* | graded, BCE | *0.7126* | *32.6%* |
+
+A fully frozen linear probe recovers **31.6%** of `kappa`. Unfreezing adds about
+a single point, inside the ±1.6% split-to-split spread. So the target encoding
+accounts for essentially the entire jump.
+
+**Consequence, in both directions.** Stage 13c's *causal* reading — that closing
+`eps` "looks more like a representation-learning problem than a model-capacity
+one" — is **not supported by that experiment**, and any sentence resting on it
+(paper §5's closing paragraph, the conclusion's second implication, and the D7
+note above) overstates what was shown. But the paper's *central* claim gets
+**stronger and much cheaper**: row A has 0.055 **lower** AUC than row B and
+**3× its realised gain**, on the same frozen representation, the same items and
+the same scoring code, across five splits. The AUC-vs-gain dissociation
+therefore needs no fine-tuning, no GPU and no API spend to demonstrate — and it
+no longer rests on a single unreplicated run, which was the sharpest caveat
+attached to Table 2.
+
+**Status.** Exploratory, not pre-registered, $0, CPU, ~45 s. Recorded here
+because it came out against a claim this project had already published, which is
+the same reason D1 and D2 are recorded.
