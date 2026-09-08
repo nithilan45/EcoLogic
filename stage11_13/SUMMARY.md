@@ -26,13 +26,20 @@ pre-registered the explanation that predictability is the missing factor, and
 be highly *reliable* — 77–98% of outcome variance is stable between-item signal
 — implying a Bayes-optimal AUC of 0.95–0.99. So the information is there and the
 binding term is the **generalisation gap**: which model will succeed is a stable
-property of the item that routers cannot read off the prompt. That gap survives
-nine router families up to a prompted 70B model and an **end-to-end fine-tuned**
-encoder, and a learning curve whose power-law asymptote is 0.74 AUC. Under a
-paired bootstrap with Holm correction, **no** router family's AUC advantage over
-a frozen MiniLM + logistic baseline is distinguishable from zero. The whole
-analysis **replicates** on RouterBench's independent 5-shot release
-(κ = 11.44 pp, realised ρ = 5.5%).
+property of the item that routers cannot read off the prompt.
+
+**Measured in AUC that gap is immovable** — nine router families up to a
+prompted 70B model land in 0.64–0.72, none of their advantages over a frozen
+MiniLM + logistic baseline survives a paired bootstrap with Holm correction, and
+a learning curve extrapolates to 0.74. **Measured in what a deployment is billed
+for, it is partly tractable.** Unfreezing the encoder and fine-tuning it
+end-to-end on RouterBench's 27,735 training items takes the captured share of κ
+from **9.7% to 32.6%** on identical held-out items — for an AUC change of
+**+0.005**, the same +0.005 it bought on our own 2,975 items where it bought
+nothing at all. So ε is large but *not* immovable, and the metric the field
+reports does not register the part that moves. Two thirds of κ nonetheless
+remains unclaimed. The whole analysis **replicates** on RouterBench's
+independent 5-shot release (κ = 11.44 pp, realised ρ = 5.5%).
 
 ---
 
@@ -45,7 +52,7 @@ analysis **replicates** on RouterBench's independent 5-shot release
 | **12b** | Learning curves — would more data close the gap? | **Complete. Exploratory, not pre-registered** (`DEVIATIONS.md` D3). |
 | **13** | Router-strength ladder: prompted LLM router, fine-tuned LLM router | **Partly blocked.** R-b (prompted 70B) complete. **R-c, the fine-tuned generative LLM, is BLOCKED** — it trained, then proved unservable through four routes, and re-training on a servable base was refused for insufficient balance (`DEVIATIONS.md` D8, `s13_ftblocked.json`). |
 | **13b** | The substitute for R-c: **unfreeze the encoder** and fine-tune it end-to-end | **Complete. Exploratory, not pre-registered** (`DEVIATIONS.md` D7). C1 **not met**. |
-| **13c** | The same, on RouterBench's 29k training items | **Running.** Exploratory. No result is quoted anywhere until it lands; nothing else in this group depends on it. |
+| **13c** | The same, on RouterBench's 29k training items | **Complete, and it qualified our own conclusion.** Exploratory. Unfreezing captures 32.6% of κ against the frozen representation's 9.7% on identical items, for +0.005 AUC. |
 | **Paper** | Workshop-length draft with proofs and appendix | **Complete.** `../paper/main.tex`, compiles with `pdflatex` to 12 pages (~6.3 body + references + appendix). |
 
 Additional spend for these stages: **$9.71** against a pre-registered gate of
