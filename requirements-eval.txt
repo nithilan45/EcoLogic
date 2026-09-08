@@ -1,6 +1,6 @@
 # Dependencies for the quality/energy evaluation (benchmark/, router_v2/,
-# stage7_10/). The app itself needs only requirements.txt; nothing here is
-# imported by backend/main.py.
+# stage7_10/, stage11_13/). The app itself needs only requirements.txt; nothing
+# here is imported by backend/main.py.
 #
 # Versions are the ones the reported results were produced with, per
 # stage7_10/reproducibility_manifest.md. Note that pinning these does NOT make
@@ -34,6 +34,14 @@ transformers==5.16.1
 tokenizers==0.23.2
 torch==2.14.0+cpu
 
-# Stage 9 only (external check against RouteLLM's released data)
+# Stage 9 (external check against RouteLLM's released data) and Stage 11, where
+# the RouterBench releases ship as pickled DataFrames. Note `datasets` is NOT
+# required: the pickles are read with pandas directly.
 pandas==3.0.5
 tiktoken==0.14.0
+
+# Stage 13: fine-tuning jobs, endpoint probes and the prompted LLM router. The
+# raw REST API would do, but the SDK is what the recorded provider errors in
+# s13_ftblocked.json and s13_endpoint_probe.json came from, including the v2
+# `models.configs.list` and deployment calls that have no documented REST form.
+together==2.32.0
