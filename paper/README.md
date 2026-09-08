@@ -16,18 +16,31 @@ compiles in a minimal TeX install with no style files to fetch. **Before
 submission, swap the preamble for the official workshop style file** (e.g.
 `\usepackage{iclr2027_workshop}`) and re-check the page budget.
 
-As of the current draft it compiles to **12 pages**: 6 pages of body, references
-on page 7, appendix on pages 8–11. If a venue caps the body at 5 pages, cut in
-this order — the list is deliberately recorded so the choice is not made under
-deadline pressure:
+As of the current draft it compiles to **12 pages**: body through §Conclusion
+ending a third of the way down page 7, references filling the rest of page 7,
+and the appendix on pages 8–12. So the body is **≈6.3 pages** under
+`article` + 1 inch margins.
 
-1. §6 (`\label{sec:cost}`, matched-cost baselines and the biased cost axis) moves
-   to the appendix. It is prior work of this project, not a contribution of this
-   paper, and §1 already states the baseline argument.
-2. Proposition 4's statement compresses to one sentence with the proof in
-   Appendix A; only the *conclusion* (that `Var(delta)` needs replicates) is
-   load-bearing in the body.
-3. Table 2's per-set rows collapse to a range.
+Three trims have already been taken to get there, and each moved material to the
+appendix rather than deleting it: the matched-cost/cost-axis section is now
+Appendix H (it is prior work of this project, not a contribution of this paper),
+Proposition 4's estimator now states its conclusion in the body with the formula
+and proof in Appendix A, and the replicate table is now Appendix G — where it
+gained the two Tier-3 `AUC*` cells the body version omitted.
+
+**Expect the count to drop under the venue style.** `article` with 1 inch margins
+is looser than most conference styles; ICLR's own style file is denser, so the
+same body is likely to land near 5 pages. Re-measure before cutting further.
+
+If it does not, cut in this order:
+
+1. Table 3's realised-gain column moves to Appendix E, keeping only ΔAUC in the
+   body. The AUC-vs-gain dissociation would then need one sentence with the two
+   numbers inline.
+2. Related work compresses to four sentences; the survey citations
+   (`yuan2025whoroutes`, `huang2025routereval`) stay, since the paper positions
+   itself against them.
+3. §4's two "things that do survive" collapse to one sentence each.
 
 Do **not** cut the deviations paragraph in §5, the blocked-rung paragraph, or
 the "null results are not proofs of absence" limitation. Those are the parts a
