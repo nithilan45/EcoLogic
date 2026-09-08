@@ -25,8 +25,11 @@ query is *much* smaller than reported — and we can now say **why**.
 > be highly **reliable** (77–98% of outcome variance is stable between-item
 > signal, implying a Bayes-optimal AUC of 0.95–0.99). The information is there.
 > What is missing is the ability to **infer it from prompt text**, and that gap
-> survives eight router families up to a prompted 70B model and a fine-tuned 27B
-> model, plus a learning curve whose asymptote is 0.74 AUC.
+> survives nine router families up to a prompted 70B model and an **end-to-end
+> fine-tuned** encoder, plus a learning curve whose asymptote is 0.74 AUC. Under
+> a paired bootstrap with Holm correction, **no** router family's AUC advantage
+> over a frozen MiniLM + logistic baseline is distinguishable from zero. The
+> whole RouterBench analysis **replicates** on the independent 5-shot release.
 >
 > → [`stage11_13/SUMMARY.md`](stage11_13/SUMMARY.md) ·
 > [`stage11_13/theory.md`](stage11_13/theory.md) ·
@@ -373,32 +376,65 @@ single-draw `kappa`; and **8–35% of the variance of the observed advantage is
 generation noise**, scaling with output length from 8% for terse `gpt-4o` to 35%
 for the long-reasoning 9B tier.
 
-### The gap does not close with data, capacity, or a fine-tuned LLM
+### The gap does not close with data, capacity, or a fine-tuned encoder
 
-| Router | Representation | mean held-out AUC |
-|---|---|---|
-| k-NN (k = 50) | MiniLM | 0.6521 |
-| Gradient boosting | MiniLM | 0.6547 |
-| Random forest (**train AUC 0.9999**) | MiniLM | 0.6703 |
-| Logistic regression | MiniLM | 0.6816 |
-| Prompted LLM, zero-shot | Llama-3.3-70B-Instruct | 0.6416 |
-| Prompted LLM, 4-shot | Llama-3.3-70B-Instruct | **0.7105** |
-| LoRA fine-tune, 3 epochs | Gemma-3-27B-it | `stage11_13/s13_llm_router.json` |
+`ΔAUC` is a paired bootstrap over items against the frozen MiniLM + logistic
+reference refitted on the same split, Holm-corrected across the four new rungs.
 
-All eight land in 0.64–0.72, on the identical 1,500-item split. The
-pre-registered criterion — an LLM router must beat 0.6816 by ≥ 0.05 for "you
-tested a weak router" to become a live objection again — is **not met** (best is
-+0.029). And a **learning curve** on RouterBench from 250 to 29,000 training
-items fits a power law with **asymptote 0.741**: AUC(10⁶) = 0.726,
-AUC(10⁹) = 0.738, about 2.5 doublings of data per +0.01 AUC. Realised gain *does*
-improve with data (+1.15 pp at 8k → +2.10 pp at 29k), so this is not "data
-doesn't help" — but the extrapolated ceiling stays far below what capturing 12 pp
-would need. (The learning curve is **exploratory and not pre-registered**.)
+| Router | Representation | mean held-out AUC | ΔAUC [95%] | gain (pp) |
+|---|---|---|---|---|
+| k-NN (k = 50) | MiniLM (frozen) | 0.6521 | — | — |
+| Gradient boosting | MiniLM (frozen) | 0.6547 | — | — |
+| Random forest (**train AUC 0.9999**) | MiniLM (frozen) | 0.6703 | — | — |
+| Logistic regression, Stage 7c | MiniLM (frozen) | 0.6816 | — | — |
+| Logistic regression, refit here | MiniLM (frozen) | 0.6896 | *reference* | **+0.556** |
+| Prompted LLM, zero-shot | Llama-3.3-70B-Instruct | 0.6416 | −0.048 [−0.097, +0.004] | −0.444 |
+| Prompted LLM, 4-shot | Llama-3.3-70B-Instruct | **0.7105** | +0.021 [−0.019, +0.062] | **−1.311** |
+| Fine-tuned end-to-end | MiniLM-L6 (**unfrozen**) | 0.6945 | +0.005 [−0.014, +0.025] | +0.533 |
+| Fine-tuned end-to-end | MiniLM-L12 (**unfrozen**) | 0.6912 | +0.002 [−0.018, +0.023] | +0.533 |
+| LoRA fine-tune, 3 epochs | Gemma-3-27B-it | **BLOCKED** | — | — |
 
-The random forest is the diagnostic: it memorises the training set perfectly
-(train AUC 0.9999) and still generalises *below* logistic regression. Ample
-capacity, no held-out gain — the signature of a target that is not a smooth
-function of the input representation.
+All nine land in 0.64–0.72, on the identical 1,500-item split, and **no rung's
+ΔAUC is distinguishable from zero** (smallest Holm-adjusted p = 0.26). The
+pre-registered criterion — a stronger router must beat 0.6816 by ≥ 0.05 for "you
+tested a weak router" to become a live objection again — is **not met** (largest
+point estimate +0.029), and the matched-cost criterion is not met either. A
+**learning curve** on RouterBench from 250 to 29,000 training items fits a power
+law with **asymptote 0.741**: AUC(10⁶) = 0.726, AUC(10⁹) = 0.738, about 2.5
+doublings of data per +0.01 AUC. Realised gain *does* improve with data
+(+1.15 pp at 8k → +2.10 pp at 29k), so this is not "data doesn't help" — but the
+extrapolated ceiling stays far below what capturing 12 pp would need. (The
+learning curve and the end-to-end encoder rungs are **exploratory and not
+pre-registered**; the encoders are still judged against the pre-registered
++0.05 threshold.)
+
+Three observations carry more than the verdict.
+
+- **Unfreezing the encoder is the honest answer to "you used frozen features",**
+  and it buys +0.005. Its *inner-validation* AUC reaches 0.751 against 0.6945
+  held out — the capacity to fit routing labels exists and does not transfer.
+- **The highest-AUC rung has the worst matched-cost gain.** The prompted 4-shot
+  router ranks best by AUC and is *worse than ignoring the query* (−1.31 pp) at
+  the same budget on the same items. AUC is per-model and invariant to monotone
+  rescaling; a matched-cost policy ranks by the *difference* of two models'
+  predicted utilities. The routing literature reports per-model AUC almost
+  universally, and here it **disagrees in sign** with the deployable quantity.
+- **The random forest is the diagnostic:** it memorises the training set
+  perfectly (train AUC 0.9999) and still generalises *below* logistic
+  regression. Ample capacity, no held-out gain — the signature of a target that
+  is not a smooth function of the input representation.
+
+**What is blocked.** The pre-registered top rung was a fine-tuned *generative*
+LLM router. It trained without incident ($6.71) and then proved unservable
+through four probed routes: no serverless LoRA on the account,
+dedicated-endpoints v1 creation retired platform-wide, no certified v2 serving
+config for `gemma-3-27b-it`, and re-training on a v2-servable base refused with
+`402 insufficient_balance`. Verbatim errors in
+[`stage11_13/s13_ftblocked.json`](stage11_13/s13_ftblocked.json) and
+[`stage11_13/DEVIATIONS.md`](stage11_13/DEVIATIONS.md) D8. Nothing was estimated
+in its place, and the cost to the argument is stated rather than hidden: a reader
+who believes a fine-tuned generative router would clear +0.05 has not been
+answered by one.
 
 ### Temperature 0 is not deterministic
 
