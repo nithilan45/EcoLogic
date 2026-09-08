@@ -168,14 +168,26 @@ Sensitivity sweep: all 27 combinations of ×0.2, ×1, ×5 per tier.
 
 ## 10. Measured API cost
 
-| Stage group | Calls | Cost |
-|---|---|---|
-| Superseded 24-question harness | 72 | $0.1216 |
-| Stages 1–6 (original test set + Stage 1 pool) | ~4,700 | $3.5143 |
-| Stage 7 (complete) | 48,276 of 48,276 planned | $42.6240 |
-| Stage 8 | 0 (re-analysis of Stage 6 data) | $0.00 |
-| Stage 9 | 0 (all local; RouteLLM's own released outputs) | $0.00 |
-| **Total spent** | | **$46.26** |
+| Stage group | Calls | Cost | Source |
+|---|---|---|---|
+| Stages 1–4 (original frozen test set, pilots, repeats, the archived 4,096-cap run, determinism checks) | ~1,900 | $1.9497 | `results_report.md` |
+| Stages 5–6 / `router_v2` (Stage 1 training pool + calibration) | ~4,700 | $3.5143 | `router_v2/README.md` ($3.4712 pool + $0.0431) |
+| Stage 7 (complete) | 48,276 of 48,276 planned | $42.6240 | `s7_run_accounting.json` |
+| Stage 8 | 0 (re-analysis of Stage 6 data) | $0.00 | — |
+| Stage 9 | 0 (all local; RouteLLM's own released outputs) | $0.00 | — |
+| **Subtotal, Stages 1–10** | | **$48.0880** | |
+| Stages 11–13 (§12.8) | 9,000 | $9.7070 | `s13_spend.json` |
+| **Total spent** | | **$57.7950** | |
+
+Quoted elsewhere as **$48.09** through Stage 10 and **$57.80** overall.
+
+The superseded 24-question judge-graded harness cost a further **$0.1216**
+(`quality_benchmark_report.md`). It is **excluded** from both totals because no
+current number depends on it; a reader who wants every dollar ever spent on this
+project should add it, for $57.9166. An earlier revision of this table both
+omitted the Stages 1–4 row and included the superseded harness in its total,
+which is why it read $46.26; the components above are each traceable to the file
+named beside them and now sum to the totals the rest of the project quotes.
 
 Stage 7 split: the 45,000-call pool (Tier 1 $11.96, Tier 2 $1.42, Tier 3 $26.19)
 and the 3,276-call test set ($3.05), all complete. The pilot projected $47.47

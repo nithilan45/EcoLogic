@@ -1265,10 +1265,13 @@ graded objectively — code by executing the official test suites, MMLU by lette
 match, GSM8K by final-answer match. Energy is token counts × the per-tier
 J/1k-token rates in `backend/main.py`, so it is **modelled, not metered**.
 Total measured API spend across all evaluation stages: **$57.80**.
-*Breakdown:* Stages 1–6 $1.9497 + `router_v2` $3.5143 + `stage7_10` $42.62 +
-`stage11_13` $9.71, summed from per-call `usd` fields and the providers' own
-reported job prices. RouterBench, the decomposition, the learning curves and all
-numerical validation cost **nothing** — they analyse already-released outcomes.
+*Breakdown:* Stages 1–4 $1.9497 + `router_v2` $3.5143 + `stage7_10` $42.6240 +
+`stage11_13` $9.7070 = **$57.7950**, each component traceable to the report that
+produced it and summed from per-call `usd` fields and the providers' own
+reported job prices (see `stage7_10/reproducibility_manifest.md` §10 and §12.8).
+RouterBench, the decomposition, the learning curves, the end-to-end encoders and
+all numerical validation cost **nothing** — they analyse already-released
+outcomes or run on CPU.
 
 **The comparison that matters is not against always-frontier.** Every tiered
 router beats "send everything to GPT-4o" on energy; that is not the bar. The bar

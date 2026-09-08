@@ -511,9 +511,14 @@ everything else supports it or tries to overturn it.
 ## 5. How the numbers were produced
 
 Every figure comes from real calls to real endpoints. Nothing is estimated,
-extrapolated or simulated. Total spend **$48.09**.
-*Breakdown:* Stages 1–6 $1.9497 + `router_v2` $3.5143 + `stage7_10` $42.62,
-summed from per-call `usd` fields.
+extrapolated or simulated. Total spend **$57.80**.
+*Breakdown:* Stages 1–4 $1.9497 + `router_v2` (Stages 5–6) $3.5143 +
+`stage7_10` $42.6240 + `stage11_13` $9.7070 = **$57.7950**, summed from per-call
+`usd` fields and the providers' own reported job prices, each component
+traceable to the report that produced it
+(`stage7_10/reproducibility_manifest.md` §10 and §12.8). Stages 11–13 are the
+$9.7070; everything through Stage 10 is the $48.0880 quoted as $48.09 in the
+earlier reports.
 
 **Models.** The audited system's Tier 1/2 slugs (Gemma 3N E4B, Apriel 1.6 15B)
 were retired from Together AI before this work, so energy-adjacent substitutes

@@ -492,9 +492,10 @@ is the field's standard router metric and it is not a proxy for router value.
 | 13c (the same, on RouterBench) | **running**; exploratory, and no number from it is quoted until it lands |
 | paper | draft complete, `paper/main.tex` |
 
-Total measured API spend across all stages: **$57.80** (Stages 1–6 $1.9497 +
-`router_v2` $3.5143 + `stage7_10` $42.62 + `stage11_13` $9.71), against the
-original $150 envelope.
+Total measured API spend across all stages: **$57.80** — Stages 1–4 $1.9497 +
+`router_v2` $3.5143 + `stage7_10` $42.6240 + `stage11_13` $9.7070 =
+**$57.7950**, against the original $150 envelope. Components and their sources
+are in `reproducibility_manifest.md` §10 and §12.8.
 
 What remains **not established** is stated in §8 and in `s7_LIMITATIONS.md`
 rather than left implicit: chiefly that energy is modelled and never measured,
