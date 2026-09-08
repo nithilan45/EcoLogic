@@ -47,6 +47,14 @@ EcoLogic is a ChatGPT-style Q&A system with a critical difference: it governs wh
 > of 5,000 prompts, per-item difficulty is highly *reliable*, so the binding term
 > is the **generalisation gap from prompt text to item difficulty**.
 >
+> That gap behaves differently on the two axes the field uses. In **AUC** it is
+> immovable — nine router families up to a prompted 70B model land in 0.64–0.72
+> and none beats a frozen MiniLM + logistic baseline under a Holm-corrected
+> paired bootstrap. In **matched-cost gain** it partly yields: unfreezing the
+> encoder at RouterBench scale takes the captured share of complementarity from
+> **9.7% to 32.6%** for an AUC change of just **+0.005**. So the metric the
+> field reports does not track the value a deployment gets.
+>
 > **→ Read [`EVALUATION.md`](EVALUATION.md) first** (goal, contributions,
 > findings), then the workshop paper in [`paper/`](paper/), then
 > [`results_report.md`](results_report.md) (main report on the product).
