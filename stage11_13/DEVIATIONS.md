@@ -157,7 +157,7 @@ unaffected: it drops nothing.
 
 ---
 
-## D7. Stage 13b (end-to-end fine-tuned encoders) added, not pre-registered.
+## D7. Stages 13b and 13c (end-to-end fine-tuned encoders) added, not pre-registered.
 
 **Addition.** The pre-registered ladder (§4) has three rungs and every one of
 them puts a *fitted head* on a *frozen* representation, or prompts a frozen LLM.
@@ -176,6 +176,28 @@ uses a 15% inner split carved out of TRAIN and never touches CALIBRATION. It is
 judged against the same pre-registered C1 threshold (+0.05 AUC over 0.6816) as
 the pre-registered rungs, so adding it cannot make the criterion easier to pass.
 Cost $0; it runs on CPU.
+
+**Stage 13c: the same rung at 10x the supervision.** Stage 13b trains on 2,975
+in-house items, which is small enough that "the encoder had too little data to
+learn a representation" is a live reading of its null. So we repeat it on
+RouterBench: the same `all-MiniLM-L6-v2`, unfrozen, on 27,735 training items
+over all 11 models, with an 11-logit head, scored on the **same 7,299-item
+held-out split Stage 12b's learning curve uses** so the two are directly
+comparable. Frozen logistic and frozen MLP routers are **refit on the identical
+training items** rather than carried over, so the only difference between the
+rows is whether the encoder was updated. Epoch selection uses a 1,460-item inner
+split carved from TRAIN that never touches the held-out set. Also exploratory,
+also $0 (CPU).
+
+**Why this deviation is reported prominently rather than buried.** It came out
+*against* the negative result we had already written down: unfreezing captures
+32.6% of `kappa` where the refit frozen representation captures 9.7%, a 3.4x
+increase in the deployable quantity — for +0.005 AUC, the same +0.005 that
+bought nothing in Stage 13b. We therefore narrowed our own claim from "the
+generalisation gap does not close" to "the gap does not close *in AUC*, and AUC
+is the wrong axis", and we report the AUC-vs-gain dissociation as a finding.
+The caveats travel with it everywhere it is quoted: one split, one seed, three
+epochs, exploratory, no interval.
 
 ---
 

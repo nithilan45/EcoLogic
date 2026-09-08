@@ -140,9 +140,13 @@ the unbiased value of a feasible peeking policy rather than a bound.
 \textbf{D8.} The pre-registered fine-tuned generative LLM rung is
 \textsc{blocked}; Appendix~\ref{app:blocked} gives the four provider errors.
 Two additions are exploratory and labelled as such throughout: the learning
-curves (D3) and the end-to-end fine-tuned encoders (D7). The encoders are judged
-against the \emph{same} pre-registered $+0.05$ threshold as the pre-registered
-rungs, so adding them cannot make the criterion easier to pass.
+curves (D3) and the end-to-end fine-tuned encoders (D7), both in-house and at
+RouterBench scale. The encoders are judged against the \emph{same}
+pre-registered $+0.05$ threshold as the pre-registered rungs, so adding them
+cannot make the criterion easier to pass. D7 is worth flagging for a second
+reason: the RouterBench encoder came out \emph{against} the negative result we
+had already written down, and Table~\ref{tab:rbenc} and \S\ref{sec:eps} narrow
+our own claim accordingly rather than reporting the AUC null alone.
 
 \section{Per-family RouterBench detail}\label{app:rb}
 

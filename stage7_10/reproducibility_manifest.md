@@ -375,8 +375,10 @@ RouterBench routers (`s11_routerbench.py`), all fitted out-of-fold within the
 End-to-end encoders: `MAX_LEN=256`; Stage 13b `EPOCHS=6`, `BATCH=16`,
 encoder LR `2e-5`, head LR `1e-3`, inner-validation fraction 0.15; Stage 13c
 `EPOCHS=3`, `BATCH=32`, encoder LR `3e-5`, head LR `1e-3`, inner-validation
-fraction 0.05. Head is 3 logits (one per tier) with per-tier binary
-cross-entropy. Dynamic padding with length bucketing — chosen for CPU
+fraction 0.05. The head emits one logit per candidate model — 3 for Stage 13b's
+tiers, 11 for Stage 13c's RouterBench models — each trained with binary
+cross-entropy against that model's graded outcome. Dynamic padding with length
+bucketing — chosen for CPU
 throughput, and it changes no result because padding is masked out of the mean
 pool either way. Epoch selection uses the inner split carved out of TRAIN and
 **never touches the split every rung is scored on**.
