@@ -61,6 +61,7 @@ LC = load("stage11_13/s12b_learning_curve_0shot.json")
 LLM = load("stage11_13/s13_llm_router.json")
 ENC = load("stage11_13/s13b_encoder_finetune.json")
 VAL = load("stage11_13/s11_validate.json")
+RBE = load("stage11_13/s13c_encoder_routerbench_0shot.json")
 
 # Also loaded purely to feed the reverse check, since the paper quotes earlier
 # stages of the project alongside the new work.
@@ -192,6 +193,31 @@ CURATED = [
      "s13_llm_router.json"),
     ("C2 best new-rung gain (pp)", LLM and LLM["C2"]["best_gain_pp"], ".3f", "same"),
     ("C2 shortfall vs reference (pp)", LLM and LLM["C2"]["delta_pp"], ".3f", "same"),
+
+    # --- Stage 13c, the encoder at RouterBench scale (exploratory) ---
+    ("RB encoder held-out AUC", RBE and RBE["encoder_finetuned"]["held_out"]["mean_auc"],
+     ".4f", "s13c_encoder_routerbench_0shot.json"),
+    ("RB encoder gain (pp)", RBE and RBE["encoder_finetuned"]["held_out"]["gain_pp"],
+     ".3f", "same"),
+    ("RB encoder rho (%)", RBE and 100 * RBE["encoder_finetuned"]["held_out"]["rho"],
+     ".1f", "same"),
+    ("RB encoder inner-val AUC", RBE and RBE["encoder_finetuned"]["val_auc"], ".4f", "same"),
+    ("RB frozen logreg AUC", RBE and
+     RBE["frozen_routers_same_items"]["frozen_minilm_logreg"]["mean_auc"], ".4f", "same"),
+    ("RB frozen logreg gain (pp)", RBE and
+     RBE["frozen_routers_same_items"]["frozen_minilm_logreg"]["gain_pp"], ".3f", "same"),
+    ("RB frozen logreg rho (%)", RBE and
+     100 * RBE["frozen_routers_same_items"]["frozen_minilm_logreg"]["rho"], ".1f", "same"),
+    ("RB frozen MLP AUC", RBE and
+     RBE["frozen_routers_same_items"]["frozen_minilm_mlp"]["mean_auc"], ".4f", "same"),
+    ("RB frozen MLP gain (pp)", RBE and
+     RBE["frozen_routers_same_items"]["frozen_minilm_mlp"]["gain_pp"], ".3f", "same"),
+    ("RB frozen MLP rho (%)", RBE and
+     100 * RBE["frozen_routers_same_items"]["frozen_minilm_mlp"]["rho"], ".1f", "same"),
+    ("RB held-out kappa (pp)", RBE and RBE["held_out_kappa_pp"], ".2f", "same"),
+    ("RB encoder n_train", RBE and RBE["n_train"], ",d", "same"),
+    ("RB encoder n_held_out", RBE and RBE["n_held_out"], ",d", "same"),
+    ("RB encoder n_inner_val", RBE and RBE["n_inner_val"], ",d", "same"),
 ]
 
 # Generated: the per-router rows of Table 1 and their bootstrap bounds, the

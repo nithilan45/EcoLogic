@@ -1,0 +1,66 @@
+{
+ "what": "end-to-end fine-tuned encoder as a router, on RouterBench",
+ "pre_registered": false,
+ "deviation": "DEVIATIONS.md D7",
+ "shot": "0shot",
+ "seed": 20260907,
+ "backbone": "sentence-transformers/all-MiniLM-L6-v2",
+ "max_len": 256,
+ "epochs": 3,
+ "batch": 32,
+ "lr_encoder": 3e-05,
+ "lr_head": 0.001,
+ "n_train": 27735,
+ "n_inner_val": 1460,
+ "n_held_out": 7299,
+ "n_models": 11,
+ "beta": 0.5,
+ "held_out_S": 0.7136626213669094,
+ "held_out_A_star": 0.9131524866420058,
+ "held_out_kappa_pp": 19.94898652750964,
+ "encoder_finetuned": {
+  "epoch": 2,
+  "val_auc": 0.7173493197032081,
+  "held_out": {
+   "mean_auc": 0.7126414083182877,
+   "gain_pp": 6.507419189518126,
+   "rho": 0.3262029968562263,
+   "router_cost": 0.0016749564734895197
+  }
+ },
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.5836163079435597,
+   "inner_val_auc": 0.6897252275449163,
+   "secs": 2991.083498239517
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.5523730392732856,
+   "inner_val_auc": 0.7173493197032081,
+   "secs": 5595.706225156784
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.5383190038312936,
+   "inner_val_auc": 0.7137889132306416,
+   "secs": 6508.874237298965
+  }
+ ],
+ "frozen_routers_same_items": {
+  "frozen_minilm_logreg": {
+   "mean_auc": 0.7077909190528194,
+   "gain_pp": 1.9390617598818216,
+   "rho": 0.09720101606203688,
+   "router_cost": 0.0016749564734895197
+  },
+  "frozen_minilm_mlp": {
+   "mean_auc": 0.6617191893792196,
+   "gain_pp": 2.824722929756518,
+   "rho": 0.14159731502456163,
+   "router_cost": 0.0016749564734895197
+  }
+ },
+ "usd": 0.0
+}
