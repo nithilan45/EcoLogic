@@ -27,12 +27,13 @@ anything here.
 
 ## Run
 
-From the repository root, with `requirements-eval.txt` installed (numpy /
-scipy / matplotlib). No API keys.
+Use **Python 3.10+** with numpy / scipy / matplotlib (the eval stack). The
+system `python3` on some machines is 3.7; prefer `python3.13` if that is what
+has the scientific packages:
 
 ```bash
-python3 -m woais_experiments.run_offline
-python3 -m unittest discover -s woais_experiments/tests -t . -v
+python3.13 -m unittest discover -s woais_experiments/tests -t . -v
+python3.13 -m woais_experiments.run_offline
 ```
 
 `run_offline` verifies frozen hashes, writes JSON/CSV/PNG under `results/`,

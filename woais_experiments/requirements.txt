@@ -1,0 +1,6 @@
+# Offline WOAIS experiments. No provider API keys.
+numpy>=2.0
+scipy>=1.11
+matplotlib>=3.8
+# Optional: lets tests import benchmark/api.py and router_v2/calibrate.py
+httpx>=0.28
