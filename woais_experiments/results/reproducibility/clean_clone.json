@@ -1,7 +1,119 @@
 {
-  "ok": false,
-  "skipped": true,
-  "exercised": false,
-  "detail": "clean-clone was not run. skipped is not a pass; a publication artifact must exercise the venv install without --skip-clone",
-  "checks": null
+  "tmp": "<redacted-absolute>",
+  "dest": "<redacted-absolute>",
+  "ok": true,
+  "copied": true,
+  "install": {
+    "ok": true,
+    "returncode": 0
+  },
+  "clone_environment": {
+    "captured_utc": "2026-09-10T19:02:43Z",
+    "python": {
+      "version": "3.13.2",
+      "implementation": "CPython",
+      "executable": "<redacted-absolute>",
+      "version_full": "3.13.2 (v3.13.2:4f8bb3947cf, Feb  4 2025, 11:51:10) [Clang 15.0.0 (clang-1500.3.9.4)]"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.5.0",
+      "machine": "arm64",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O"
+    },
+    "dependencies": {
+      "numpy": "2.5.2",
+      "scipy": "1.18.0",
+      "matplotlib": "3.11.1",
+      "sklearn": "1.9.0",
+      "yaml": "6.0.3",
+      "httpx": "0.28.1",
+      "datasets": "5.0.1",
+      "pandas": "3.0.3"
+    },
+    "git": {
+      "available": false,
+      "commit": null,
+      "branch": null,
+      "dirty": null,
+      "error": "fatal: not a git repository (or any of the parent directories): .git"
+    },
+    "random_seeds": {
+      "random_policy": 20260905,
+      "monte_carlo": 20260909,
+      "arrival": 20260909
+    },
+    "config_hash": "3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4",
+    "frozen_manifest_sha256": "144b59ee2e34ae288df06efaaa3b34954ca4cccba4dc14e25c9493c73ee0d16a",
+    "artifact_hashes": {
+      "woais_experiments/EXISTING_RESULTS_SHA256.txt": "144b59ee2e34ae288df06efaaa3b34954ca4cccba4dc14e25c9493c73ee0d16a",
+      "woais_experiments/requirements-lock.txt": "833d4dd20e7f15f10fe32c8fab533523826c286f909c01a2074a445730f48f31",
+      "woais_experiments/results/accounting/stage12.json": "6f4d6227a522953d03414ad9c107e021b32398087e2590ccceb097dcc563d12b",
+      "woais_experiments/results/routing/stage12_policies.json": "ac0a877a586453c7ae2689bf4177059b05d9f50eb1f726bd20a475efb7dd1130",
+      "woais_experiments/results/external/routellm_tables.json": "2d4abfd0a081c1152a922660868e9896d083148d4b698212812dfc95ed8c33bb"
+    },
+    "paid_api_key_names_present": [],
+    "cwd_is_repo": true
+  },
+  "cleaned": true,
+  "exercised": true,
+  "skipped": false,
+  "checks": {
+    "ok": true,
+    "steps": {
+      "unit_tests": {
+        "ok": true,
+        "returncode": 0,
+        "cmd": [
+          "<redacted-absolute>",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "woais_experiments/tests",
+          "-t",
+          ".",
+          "-q"
+        ],
+        "stdout_tail": "{\n  \"ok\": false,\n  \"critical\": [\n    \"anonymity_scan\",\n    \"clean_clone_skipped\"\n  ],\n  \"written\": {\n    \"environment.json\": \"woais_experiments/results/reproducibility/environment.json\",\n    \"result_provenance.json\": \"woais_experiments/results/reproducibility/result_provenance.json\",\n    \"secret_scan.json\": \"woais_experiments/results/reproducibility/secret_scan.json\",\n    \"anonymity_scan.json\": \"woais_experiments/results/reproducibility/anonymity_scan.json\",\n    \"ANONYMITY_REPORT.md\": \"woais_experiments/results/reproducibility/ANONYMITY_REPORT.md\",\n    \"package_check.json\": \"woais_experiments/results/reproducibility/package_check.json\",\n    \"clean_clone.json\": \"woais_experiments/results/reproducibility/clean_clone.json\",\n    \"validate.json\": \"woais_experiments/results/reproducibility/validate.json\"\n  },\n  \"anonymity_files\": 1,\n  \"secret_hits\": 0,\n  \"reconstruction_ok\": true,\n  \"clean_clone_ok\": false,\n  \"clean_clone_skipped\": true\n}\n\nWOAIS experiment summary\n  run_id:       unit_audit_runner\n  command:      audit\n  git:          unknown\n  config_hash:  3383f9d559b8ee32\u2026\n  seeds:        policy=20260905 mc=20260909 arrival=20260909\n  allow_api:    False\n  run_dir:      woais_experiments/results/runs/unit_audit_runner\n  latest_link:  None\n  stages:\n    audit        ok       0.03s\n\nWOAIS experiment summary\n  run_id:       unit_audit_clobber\n  command:      audit\n  git:          unknown\n  config_hash:  3383f9d559b8ee32\u2026\n  seeds:        policy=20260905 mc=20260909 arrival=20260909\n  allow_api:    False\n  run_dir:      woais_experiments/results/runs/unit_audit_clobber\n  latest_link:  None\n  stages:\n    audit        ok       0.03s\n\nWOAIS experiment summary\n  run_id:       unit_audit_fail_resume\n  command:      audit\n  git:          unknown\n  config_hash:  3383f9d559b8ee32\u2026\n  seeds:        policy=20260905 mc=20260909 arrival=20260909\n  allow_api:    False\n  run_dir:      woais_experiments/results/runs/unit_audit_fail_resume\n  latest_link:  None\n  stages:\n    audit        ok       0.03s\n\nWOAIS experiment summary\n  run_id:       unit_audit_fail_resume\n  command:      audit\n  git:          unknown\n  config_hash:  3383f9d559b8ee32\u2026\n  seeds:        policy=20260905 mc=20260909 arrival=20260909\n  allow_api:    False\n  run_dir:      woais_experiments/results/runs/unit_audit_fail_resume\n  latest_link:  None\n  stages:\n    audit        ok       0.05s\n\nWOAIS experiment summary\n  run_id:       unit_audit_resume\n  command:      audit\n  git:          unknown\n  config_hash:  3383f9d559b8ee32\u2026\n  seeds:        policy=20260905 mc=20260909 arrival=20260909\n  allow_api:    False\n  run_dir:      woais_experiments/results/runs/unit_audit_resume\n  latest_link:  None\n  stages:\n    audit        ok       0.04s\n\nWOAIS experiment summary\n  run_id:       unit_audit_resume\n  command:      audit\n  git:          unknown\n  config_hash:  3383f9d559b8ee32\u2026\n  seeds:        policy=20260905 mc=20260909 arrival=20260909\n  allow_api:    False\n  run_dir:      woais_experiments/results/runs/unit_audit_resume\n  latest_link:  None\n  stages:\n    audit        skipped  0.00s\n[xroutebench] resume skip toy__test__all\n",
+        "stderr_tail": "dropped 1 incomplete calls (missing usd/latency/tokens/correct; not zero-filled)\nwarning: Local and loopback results are not labeled serverless. MEASURED_REAL_DEPLOYMENT serverless labels require Cloud Run or Lambda with --allow-api --allow-cloud --max-cost-usd and a non-loopback --base-url.\nerror: REAL API execution requires all three flags: --allow-api --allow-cloud --max-cost-usd <value>. Missing: --allow-cloud, --max-cost-usd. There is no default spend limit.\nerror: REAL API execution requires all three flags: --allow-api --allow-cloud --max-cost-usd <value>. Missing: --max-cost-usd. There is no default spend limit.\nerror: REAL API execution requires all three flags: --allow-api --allow-cloud --max-cost-usd <value>. Missing: --allow-cloud. There is no default spend limit.\nrun_offline replaces files under woais_experiments/results (policy=replace). Use python run_woais.py for timestamped runs that refuse silent overwrite.\nINFO    run.start run_id=unit_audit_runner git_commit=None config_hash=3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4 allow_api=False overwrite=forbid\nINFO    stage.start stage=audit\nINFO    stage.ok stage=audit elapsed_s=0.03\nINFO    run.ok n_stages=1\nINFO    run.start run_id=unit_audit_clobber git_commit=None config_hash=3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4 allow_api=False overwrite=forbid\nINFO    stage.start stage=audit\nINFO    stage.ok stage=audit elapsed_s=0.03\nINFO    run.ok n_stages=1\nprerequisites failed: run directory exists: woais_experiments/results/runs/unit_audit_clobber. Pass --resume or --force, or choose a new --run-id.\nINFO    run.start run_id=unit_audit_fail_resume git_commit=None config_hash=3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4 allow_api=False overwrite=forbid\nINFO    stage.start stage=audit\nINFO    stage.ok stage=audit elapsed_s=0.034\nINFO    run.ok n_stages=1\nINFO    run.start run_id=unit_audit_fail_resume git_commit=None config_hash=3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4 allow_api=False overwrite=resume\nINFO    stage.start stage=audit\nWARNING overwriting existing artifact woais_experiments/results/runs/unit_audit_fail_resume/audit/frozen_hashes.json\nWARNING overwriting existing artifact woais_experiments/results/runs/unit_audit_fail_resume/audit/environment.json\nINFO    stage.ok stage=audit elapsed_s=0.051\nINFO    run.ok n_stages=1\nINFO    run.start run_id=unit_audit_resume git_commit=None config_hash=3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4 allow_api=False overwrite=forbid\nINFO    stage.start stage=audit\nINFO    stage.ok stage=audit elapsed_s=0.037\nINFO    run.ok n_stages=1\nINFO    run.start run_id=unit_audit_resume git_commit=None config_hash=3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4 allow_api=False overwrite=resume\nINFO    stage.skip stage=audit reason=complete\nINFO    run.ok n_stages=1\nerror: simulated stress tests never call APIs; omit --allow-api\nerror: paid runs require --max-cost-usd\n----------------------------------------------------------------------\nRan 419 tests in 29.419s\n\nOK (skipped=1)\n"
+      },
+      "frozen_hashes": {
+        "ok": true,
+        "returncode": 0,
+        "cmd": [
+          "<redacted-absolute>",
+          "-c",
+          "from woais_experiments.frozen import verify_frozen_hashes; import sys; r=verify_frozen_hashes(); sys.exit(0 if r.get('ok') else 1)"
+        ],
+        "stdout_tail": "",
+        "stderr_tail": ""
+      },
+      "smoke_audit": {
+        "ok": true,
+        "returncode": 0,
+        "cmd": [
+          "<redacted-absolute>",
+          "run_woais.py",
+          "audit",
+          "--run-id",
+          "artifact_smoke",
+          "--no-symlink"
+        ],
+        "stdout_tail": "\nWOAIS experiment summary\n  run_id:       artifact_smoke\n  command:      audit\n  git:          unknown\n  config_hash:  3383f9d559b8ee32\u2026\n  seeds:        policy=20260905 mc=20260909 arrival=20260909\n  allow_api:    False\n  run_dir:      woais_experiments/results/runs/artifact_smoke\n  latest_link:  None\n  stages:\n    audit        ok       0.03s\n",
+        "stderr_tail": "INFO    run.start run_id=artifact_smoke git_commit=None config_hash=3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4 allow_api=False overwrite=forbid\nINFO    stage.start stage=audit\nINFO    stage.ok stage=audit elapsed_s=0.026\nINFO    run.ok n_stages=1\n"
+      },
+      "accounting_static_external": {
+        "ok": true,
+        "returncode": 0,
+        "cmd": [
+          "<redacted-absolute>",
+          "-c",
+          "from woais_experiments.reproducibility.reproduce_tables import reconstruct, smoke_external_public; import json,sys; r=reconstruct(); e=smoke_external_public(); print(json.dumps({'reconstruct': r['ok'], 'external': e, 'n_failed': r['n_failed']})); sys.exit(0 if r['ok'] and e.get('ok') else 1)"
+        ],
+        "stdout_tail": "{\"reconstruct\": true, \"external\": {\"ok\": true, \"available\": true, \"n_items\": 1307, \"mean_edge_matched_cost_pp\": 0.5662705656589415, \"source\": \"RouteLLM released GSM8K responses (Ong et al., ICLR 2025)\", \"detail\": \"re-tabulated committed RouteLLM GSM8K table; no download\"}, \"n_failed\": 0}\n",
+        "stderr_tail": ""
+      }
+    }
+  }
 }

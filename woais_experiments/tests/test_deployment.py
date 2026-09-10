@@ -30,7 +30,13 @@ from woais_experiments.deployment.provider import (
     StubProvider,
     parse_chat_completion,
 )
-from woais_experiments.deployment.records import MEASUREMENT_TYPE, REQUIRED_REQUEST_FIELDS, RequestRecord, assert_measured_record
+from woais_experiments.deployment.records import (
+    MEASUREMENT_TYPE,
+    MEASUREMENT_TYPE_DRY_RUN,
+    REQUIRED_REQUEST_FIELDS,
+    RequestRecord,
+    assert_measured_record,
+)
 from woais_experiments.deployment.router import classify_prompt, load_production_router
 
 
@@ -380,9 +386,9 @@ class TestHttpEndpointAndLambda(unittest.TestCase):
     def test_lambda_handler_direct_event(self):
         reset_lambda_context()
         out = lambda_handler({"prompt": "What is photosynthesis?", "policy": "ecologic"}, None)
-        self.assertEqual(out["measurement_type"], MEASUREMENT_TYPE)
+        self.assertEqual(out["measurement_type"], MEASUREMENT_TYPE_DRY_RUN)
         body = json.loads(out["body"])
-        self.assertEqual(body["measurement_type"], MEASUREMENT_TYPE)
+        self.assertEqual(body["measurement_type"], MEASUREMENT_TYPE_DRY_RUN)
         self.assertEqual(out["statusCode"], 200)
         reset_lambda_context()
 

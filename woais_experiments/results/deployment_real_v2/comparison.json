@@ -1,0 +1,109 @@
+{
+  "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+  "workloads": [
+    {
+      "workload": "burst",
+      "ecologic_cost_per_query": 1.8363333333333334e-05,
+      "static_cost_per_query": 2.457e-05,
+      "cost_savings_vs_static": 6.206666666666666e-06,
+      "ecologic_p95_ms": 6.718125,
+      "static_p95_ms": 6.13325,
+      "mean_latency_overhead_ms": 0.4317496666666676,
+      "router_decision_ms": 0.0611245,
+      "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+      "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+      "pareto_status_cost_vs_p95_latency": "tradeoff",
+      "quality_graded_in_this_run": false
+    },
+    {
+      "workload": "concurrency_4",
+      "ecologic_cost_per_query": 1.8363333333333334e-05,
+      "static_cost_per_query": 2.457e-05,
+      "cost_savings_vs_static": 6.206666666666666e-06,
+      "ecologic_p95_ms": 8.026792,
+      "static_p95_ms": 8.251792,
+      "mean_latency_overhead_ms": 0.2468961666666658,
+      "router_decision_ms": 0.08700033333333333,
+      "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+      "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+      "pareto_status_cost_vs_p95_latency": "ecologic_dominates",
+      "quality_graded_in_this_run": false
+    },
+    {
+      "workload": "concurrency_8",
+      "ecologic_cost_per_query": 1.8363333333333334e-05,
+      "static_cost_per_query": 2.457e-05,
+      "cost_savings_vs_static": 6.206666666666666e-06,
+      "ecologic_p95_ms": 8.279958,
+      "static_p95_ms": 7.776292,
+      "mean_latency_overhead_ms": 0.27515266666666705,
+      "router_decision_ms": 0.07023616666666667,
+      "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+      "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+      "pareto_status_cost_vs_p95_latency": "tradeoff",
+      "quality_graded_in_this_run": false
+    },
+    {
+      "workload": "idle_then_batch",
+      "ecologic_cost_per_query": 1.8363333333333334e-05,
+      "static_cost_per_query": 2.457e-05,
+      "cost_savings_vs_static": 6.206666666666666e-06,
+      "ecologic_p95_ms": 4.550417,
+      "static_p95_ms": 3.779625,
+      "mean_latency_overhead_ms": -0.08646533333333384,
+      "router_decision_ms": 0.09599266666666667,
+      "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+      "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+      "pareto_status_cost_vs_p95_latency": "tradeoff",
+      "quality_graded_in_this_run": false
+    },
+    {
+      "workload": "sequential_warm",
+      "ecologic_cost_per_query": 1.8363333333333334e-05,
+      "static_cost_per_query": 2.457e-05,
+      "cost_savings_vs_static": 6.206666666666666e-06,
+      "ecologic_p95_ms": 3.703375,
+      "static_p95_ms": 3.37075,
+      "mean_latency_overhead_ms": 0.20792350000000015,
+      "router_decision_ms": 0.10702116666666668,
+      "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+      "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+      "pareto_status_cost_vs_p95_latency": "tradeoff",
+      "quality_graded_in_this_run": false
+    }
+  ],
+  "conclusions_change_under_burst": false,
+  "quality_not_measured": true,
+  "energy_not_measured": true,
+  "cloud_backend": null,
+  "region": null,
+  "instance_configuration": {
+    "source": "not_provisioned_by_this_tool",
+    "backend": "local",
+    "serverless": false,
+    "note": "This runner does not deploy Cloud Run or Lambda and does not invent CPU/RAM. Recorded fields come from flags and platform env."
+  },
+  "timestamp": "2026-09-10T09:35:48.818498Z",
+  "git_commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+  "model_identifiers": {
+    "tier1": {
+      "name": "google/gemma-3n-E4B-it",
+      "provider": "together"
+    },
+    "tier2": {
+      "name": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+      "provider": "together"
+    },
+    "tier3": {
+      "name": "gpt-4o",
+      "provider": "openai"
+    }
+  },
+  "pricing_config_hash": "95e7c137d7100dfdf3f54619577d4a84c312be07686cbc310b18a9de84659ef5",
+  "query_set_hash": "66cdeceab5a1a43e8247ad25c69295e6031c62978acb818599372ba5367e0e83",
+  "energy": {
+    "measured": false,
+    "status": "not_measured",
+    "note": "Estimated energy is not reported as measured energy."
+  }
+}

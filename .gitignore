@@ -6,6 +6,8 @@ venv/
 # Hugging Face cache for xRouteBench (downloaded parquet; results live under
 # woais_experiments/results/xroutebench/).
 woais_experiments/data/xroutebench/hf_cache/
+# Optional RouteLLM GSM8K clone / BERT score cache (public download; not committed).
+woais_experiments/data/routellm/
 raw_results/*.parquet
 benchmark/*.parquet
 benchmark/*.jsonl.gz

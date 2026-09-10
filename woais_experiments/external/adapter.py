@@ -370,7 +370,11 @@ def discover_sources() -> list[DiscoveredSource]:
             note=(
                 "Optional local RouteLLM GSM8K CSV. Searched ROUTELLM_RESPONSES, "
                 "ROUTELLM_DATA, /tmp/routellm_chk, and woais_experiments/data/routellm/. "
-                "Not downloaded."
+                + (
+                    "Present on disk."
+                    if csv_path
+                    else "This adapter does not fetch it; external_routing --download can."
+                )
             ),
         )
     )

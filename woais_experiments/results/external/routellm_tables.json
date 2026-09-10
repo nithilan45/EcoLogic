@@ -383,9 +383,9 @@
       {
         "name": "routellm_gsm8k_responses",
         "kind": "panel",
-        "available": false,
-        "path": null,
-        "note": "Optional local RouteLLM GSM8K CSV. Searched ROUTELLM_RESPONSES, ROUTELLM_DATA, /tmp/routellm_chk, and woais_experiments/data/routellm/. Not downloaded.",
+        "available": true,
+        "path": "woais_experiments/data/routellm/gsm8k_responses.csv",
+        "note": "Optional local RouteLLM GSM8K CSV. Searched ROUTELLM_RESPONSES, ROUTELLM_DATA, /tmp/routellm_chk, and woais_experiments/data/routellm/. Present on disk.",
         "extra": {}
       },
       {
@@ -414,6 +414,9 @@
     "saved": {
       "routellm_s9_committed": {
         "json": "woais_experiments/results/external/audit/routellm_s9_committed.json"
+      },
+      "routellm_gsm8k_responses": {
+        "json": "woais_experiments/results/external/audit/routellm_gsm8k_responses.json"
       },
       "ecologic_stage12": {
         "json": "woais_experiments/results/external/audit/ecologic_stage12.json",

@@ -1,0 +1,148 @@
+{
+  "available": false,
+  "query_level_assignments_available": false,
+  "reason": "RouteLLM scores are not cached and the `transformers` package is not installed. Install transformers+tiktoken for local BERT scoring, or place woais_experiments/data/routellm/bert_win_rates_gsm8k.npy with one float per decontaminated prompt. This is not a paid inference call.",
+  "n_queries_with_released_correctness": 1307,
+  "fields_present_from_release": [
+    "query/prompt",
+    "cheap_quality",
+    "strong_quality",
+    "response_text"
+  ],
+  "fields_missing": [
+    "router_score (needs local BERT checkpoint forward pass)",
+    "token counts (not published; need tiktoken + Mixtral tokenizer)",
+    "realized_cost",
+    "router_assignment"
+  ],
+  "threshold_grid_frozen": {
+    "protocol": "external_router_v1",
+    "frozen_before_quality_cost": true,
+    "rule": "strong if router_score >= threshold else cheap",
+    "kind": "predefined_linspace",
+    "low": 0.0,
+    "high": 1.0,
+    "n": 21,
+    "note": "RouteLLM BERT strong-win-rate is a probability in [0, 1] by construction (softmax). This grid is fixed before any quality or cost aggregation. It is not a quantile grid and is not tuned on downstream metrics.",
+    "thresholds": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ]
+  },
+  "router_kind": "EXTERNAL_LEARNED_ROUTER",
+  "oracle_kind": "ORACLE_ASSIGNMENT",
+  "note": "Refusing to invent RouteLLM scores, token counts, costs, or assignments. Committed Stage 9 JSON is aggregate-only and is not written into threshold_results.csv as if it were this query-level sweep.",
+  "inventory": {
+    "router": "RouteLLM BERT (routellm/bert_gpt4_augmented)",
+    "router_kind": "EXTERNAL_LEARNED_ROUTER",
+    "commit": "0b64fda",
+    "committed_aggregates": {
+      "s9_static_baselines": {
+        "path": "stage7_10/s9_static_baselines.json",
+        "available": true,
+        "n_items": 1307,
+        "query_level": false,
+        "has_router_scores": false,
+        "has_assignments": false,
+        "has_tokens": false,
+        "has_costs": true
+      },
+      "external_generalization": {
+        "path": "stage7_10/external_generalization.json",
+        "available": true,
+        "query_level": false
+      },
+      "routellm_tables": {
+        "path": "woais_experiments/results/external/routellm_tables.json",
+        "available": true,
+        "query_level": false
+      }
+    },
+    "query_level_on_disk": {
+      "gsm8k_responses_csv": "woais_experiments/data/routellm/gsm8k_responses.csv",
+      "bert_win_rates_npy": null,
+      "tokens_npz": null
+    },
+    "missing_unless_downloaded": [
+      "BERT router scores (computed locally from the public checkpoint)",
+      "per-query token counts (reconstructed from released response text)"
+    ],
+    "not_available_anywhere": [
+      "published numeric token counts",
+      "published per-query USD",
+      "MMLU/MT-Bench response text (cannot reconstruct cost)"
+    ],
+    "scoring_dependencies": {
+      "torch": true,
+      "transformers": false,
+      "tiktoken": false,
+      "sentencepiece": false
+    },
+    "env_overrides": {
+      "ROUTELLM_WIN_RATES": null,
+      "ROUTELLM_TOKENS": null
+    },
+    "csv_search_paths": [
+      "<redacted-absolute>",
+      "woais_experiments/data/routellm/gsm8k_responses.csv",
+      "routellm/evals/gsm8k/gsm8k_responses.csv"
+    ],
+    "download_urls": {
+      "gsm8k_responses.csv": "https://raw.githubusercontent.com/lm-sys/RouteLLM/0b64fda/routellm/evals/gsm8k/gsm8k_responses.csv",
+      "contaminated_prompts.jsonl": "https://raw.githubusercontent.com/lm-sys/RouteLLM/0b64fda/routellm/evals/gsm8k/contaminated_prompts.jsonl"
+    },
+    "paid_inference": false,
+    "historical_stage9_aggregates": {
+      "not_this_protocol": true,
+      "query_level": false,
+      "threshold_grid": "pd.qcut on BERT scores (chosen after scoring; not the frozen linspace)",
+      "paths": {
+        "s9_static_baselines": "stage7_10/s9_static_baselines.json",
+        "external_generalization": "stage7_10/external_generalization.json"
+      },
+      "note": "Do not treat Stage 9 qcut aggregates as the query-level linspace sweep in woais_experiments/results/external_router/."
+    }
+  },
+  "historical_stage9_aggregates": {
+    "not_this_protocol": true,
+    "query_level": false,
+    "threshold_grid": "pd.qcut on BERT scores (chosen after scoring; not the frozen linspace)",
+    "paths": {
+      "s9_static_baselines": "stage7_10/s9_static_baselines.json",
+      "external_generalization": "stage7_10/external_generalization.json"
+    },
+    "note": "Do not treat Stage 9 qcut aggregates as the query-level linspace sweep in woais_experiments/results/external_router/."
+  },
+  "primary_question": "Does exact per-query accounting materially alter the apparent efficiency of an independently developed routing policy?",
+  "secondary_question": "Does that router beat the best query-independent policy at the same realized cost?",
+  "primary_answer": "unanswered \u2014 query-level scores and token counts are not on disk",
+  "secondary_answer": "unanswered \u2014 no external-router assignment could be reconstructed without scores",
+  "null_results_preserved": true,
+  "written": {
+    "threshold_results.csv": "external_router/threshold_results.csv",
+    "query_level.csv": "external_router/query_level.csv",
+    "accounting_flips.csv": "external_router/accounting_flips.csv",
+    "ranking_flips.csv": "external_router/ranking_flips.csv",
+    "summary.json": "external_router/summary.json",
+    "threshold_grid.json": "external_router/threshold_grid.json"
+  }
+}

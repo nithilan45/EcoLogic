@@ -8,6 +8,7 @@ is never used as a cold-start proxy.
 from __future__ import annotations
 
 import os
+import socket
 import threading
 import time
 from dataclasses import dataclass
@@ -74,3 +75,53 @@ class ProcessLifecycle:
     def request_count(self) -> int:
         with self._lock:
             return self._index
+
+
+def platform_instance_id(*, process_id: int | None = None) -> str:
+    """Container/process identity from env or pid. Never inferred from latency."""
+    pid = int(process_id or os.getpid())
+    lambda_stream = os.environ.get("AWS_LAMBDA_LOG_STREAM_NAME")
+    if lambda_stream:
+        return f"lambda:{lambda_stream}"
+    k_rev = os.environ.get("K_REVISION")
+    k_svc = os.environ.get("K_SERVICE")
+    if k_rev or k_svc:
+        host = socket.gethostname()
+        return f"cloudrun:{k_svc or 'unknown'}:{k_rev or 'unknown'}:{host}:pid{pid}"
+    return f"pid:{pid}"
+
+
+def platform_region() -> str | None:
+    return (
+        os.environ.get("CLOUD_RUN_REGION")
+        or os.environ.get("AWS_REGION")
+        or os.environ.get("AWS_DEFAULT_REGION")
+        or None
+    )
+
+
+def platform_cloud_backend() -> str | None:
+    if os.environ.get("K_SERVICE") or os.environ.get("K_REVISION"):
+        return "cloudrun"
+    if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or os.environ.get("AWS_LAMBDA_RUNTIME_API"):
+        return "lambda"
+    return None
+
+
+def cold_start_observed(obs: LifecycleObservation) -> bool:
+    """True only from process/container init — never from high latency."""
+    if obs.init_type and str(obs.init_type).lower() in {"on-demand", "cold"}:
+        return obs.request_index_in_process == 1
+    return obs.lifecycle_state == COLD and obs.lifecycle_basis == BASIS_FIRST and obs.request_index_in_process == 1
+
+
+def keep_lifecycle_if_same_process(life: ProcessLifecycle) -> ProcessLifecycle:
+    """Reuse the tracker unless the OS pid actually changed.
+
+    Constructing a new ``ProcessLifecycle`` in the same Python process is not a
+    platform cold start. Idle HTTP-server restarts must call this instead of
+    ``ProcessLifecycle()``.
+    """
+    if int(life.process_id) == int(os.getpid()):
+        return life
+    return ProcessLifecycle()

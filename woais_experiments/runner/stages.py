@@ -218,6 +218,8 @@ def stages_for_command(command: str) -> tuple[str, ...]:
         return STAGE_ORDER
     if command == "validate-artifact":
         raise KeyError("validate-artifact is not a reconstruction stage")
+    if command == "deployment-real":
+        raise KeyError("deployment-real is not a reconstruction stage")
     if command not in STAGES:
         raise KeyError(command)
     return (command,)

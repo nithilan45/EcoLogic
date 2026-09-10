@@ -80,6 +80,31 @@ def build_parser() -> argparse.ArgumentParser:
         default=1200.0,
         help="validate-artifact: max seconds for the clean-clone step",
     )
+    p.add_argument(
+        "--allow-cloud",
+        action="store_true",
+        help="deployment-real: permit serverless labels; required with --allow-api and --max-cost-usd for paid runs",
+    )
+    p.add_argument(
+        "--max-cost-usd",
+        type=float,
+        default=None,
+        help="deployment-real: spend cap in USD. Required for paid runs. No default (omitting forbids spend).",
+    )
+    p.add_argument(
+        "--backend",
+        default="local",
+        choices=("local", "docker", "cloudrun", "lambda"),
+        help="deployment-real: execution backend. local is never labeled serverless.",
+    )
+    p.add_argument("--base-url", default=None, help="deployment-real: already-deployed service URL")
+    p.add_argument("--dry-run", action="store_true", help="deployment-real: stub provider (default if safety flags are incomplete)")
+    p.add_argument("--n-queries", type=int, default=None, help="deployment-real: frozen subset size (official 50–150)")
+    p.add_argument("--max-queries", type=int, default=None, help="deployment-real: execute only the first K frozen IDs")
+    p.add_argument("--skip-concurrency-8", action="store_true", help="deployment-real: skip the concurrency=8 profile")
+    p.add_argument("--idle-s", type=float, default=None, help="deployment-real: idle gap seconds before the last batch")
+    p.add_argument("--print-commands", action="store_true", help="deployment-real: print deploy commands and exit")
+    p.add_argument("--prefix", default=None, help="deployment-real: results subdirectory (default deployment_real_v2)")
     return p
 
 
@@ -293,4 +318,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         }
         sys.stdout.write(json.dumps(compact, indent=2, default=str) + "\n")
         return 0 if report.get("ok") else 1
+    if args.command == "deployment-real":
+        from woais_experiments.deployment.analyze_real import RESULTS_PREFIX
+        from woais_experiments.deployment.query_set import TARGET_N
+        from woais_experiments.deployment.run_real import run_cli
+
+        if args.n_queries is None:
+            args.n_queries = TARGET_N
+        if args.prefix is None:
+            args.prefix = RESULTS_PREFIX
+        return run_cli(args)
     return run_command(args)

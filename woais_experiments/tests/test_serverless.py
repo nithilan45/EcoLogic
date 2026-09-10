@@ -56,5 +56,60 @@ class TestServerlessModel(unittest.TestCase):
         self.assertFalse(bool(flags.any()))
 
 
+class TestColdLikeResidualTolerance(unittest.TestCase):
+    def test_perfectly_linear_timings_have_no_outliers(self):
+        x = np.linspace(0, 10, 40)
+        y = 1.5 + 0.25 * x
+        flags = flag_cold_like(fit_linear_service(y, x)["residuals"], k=2.0)
+        self.assertFalse(bool(flags.any()))
+
+    def test_linear_with_machine_epsilon_is_not_cold(self):
+        x = np.linspace(0, 10, 50)
+        y = 2.0 + 0.5 * x
+        y = y + np.finfo(float).eps * np.arange(len(y), dtype=float)
+        flags = flag_cold_like(fit_linear_service(y, x)["residuals"], k=2.0)
+        self.assertFalse(bool(flags.any()))
+
+    def test_one_genuine_latency_outlier(self):
+        x = np.linspace(0, 10, 40)
+        y = 2.0 + 0.5 * x
+        y = y.copy()
+        y[11] += 8.0
+        flags = flag_cold_like(fit_linear_service(y, x)["residuals"], k=2.0)
+        self.assertTrue(bool(flags[11]))
+        self.assertEqual(int(flags.sum()), 1)
+
+    def test_multiple_genuine_latency_outliers(self):
+        x = np.linspace(0, 10, 50)
+        y = 2.0 + 0.5 * x
+        y = y.copy()
+        y[5] += 9.0
+        y[30] += 9.0
+        flags = flag_cold_like(fit_linear_service(y, x)["residuals"], k=2.0)
+        self.assertTrue(bool(flags[5]))
+        self.assertTrue(bool(flags[30]))
+        self.assertGreaterEqual(int(flags.sum()), 2)
+
+    def test_constant_latency_is_not_cold(self):
+        x = np.linspace(0, 10, 25)
+        y = np.full(25, 0.42)
+        flags = flag_cold_like(fit_linear_service(y, x)["residuals"], k=2.0)
+        self.assertFalse(bool(flags.any()))
+        flags0 = flag_cold_like(np.zeros(12), k=2.0)
+        self.assertFalse(bool(flags0.any()))
+
+    def test_extremely_small_values_are_not_cold(self):
+        x = np.linspace(0, 1, 30)
+        y = 1e-18 + 1e-20 * x
+        flags = flag_cold_like(fit_linear_service(y, x)["residuals"], k=2.0)
+        self.assertFalse(bool(flags.any()))
+
+    def test_very_large_linear_values_are_not_cold(self):
+        x = np.linspace(0, 10, 50)
+        y = 1.0e8 + 0.5 * x
+        flags = flag_cold_like(fit_linear_service(y, x)["residuals"], k=2.0)
+        self.assertFalse(bool(flags.any()))
+
+
 if __name__ == "__main__":
     unittest.main()

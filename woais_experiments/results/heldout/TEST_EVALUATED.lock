@@ -1,0 +1,17 @@
+{
+  "protocol": "heldout_v1",
+  "lock": true,
+  "evaluated_at_utc": "2026-09-10T05:08:18Z",
+  "config_sha256": "082df0eb5ddba145cc8054b3b6143945d16224f700a7dbcd96579cf64e448aeb",
+  "split_manifest_sha256": "caa1105bfdb067ddc00b0fc652dbf7e170138e94eb1b97903711c3dcd6b7b785",
+  "test_ids_hash": "34e3e56880b45c805d3e0c05e1061ee532c22dc8078e59741831ebf86a25a173",
+  "n_test": 243,
+  "n_boot": 10000,
+  "n_perm": 10000,
+  "selected_method": "logistic",
+  "bootstrap_unit": "group",
+  "new_experiment": false,
+  "previous_lock_present": false,
+  "note": "Test was scored once after configuration freeze. Do not retune. Pass --new-experiment to start a different run; that does not un-see this evaluation.",
+  "historical_stage12_n364_not_used": true
+}

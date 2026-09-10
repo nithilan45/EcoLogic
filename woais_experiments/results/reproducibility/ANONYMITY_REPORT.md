@@ -2,25 +2,27 @@
 
 Double-blind scan. Nothing was deleted. Secret values and identity strings are not copied here.
 
-- hits: 50
-- files requiring manual review: 1
+- hits: 51
+- files requiring manual review: 2
 - severity: critical
 
 ## Files requiring manual review
 
 - `git:log`
+- `woais_experiments/POST_FIX_VALIDATION.md`
 
 ## Locations (file, line, pattern)
 
 | file | line | pattern |
 |---|---:|---|
+| `woais_experiments/POST_FIX_VALIDATION.md` | 38 | `macos_home` |
 | `git:log` | 1 | `identity:names` |
 | `git:log` | 2 | `identity:names` |
 | `git:log` | 3 | `identity:names` |
 | `git:log` | 4 | `identity:names` |
 | `git:log` | 5 | `identity:names` |
 | `git:log` | 6 | `identity:names` |
-| `git:log` | 7 | `email_address` |
+| `git:log` | 7 | `identity:names` |
 | `git:log` | 8 | `email_address` |
 | `git:log` | 9 | `email_address` |
 | `git:log` | 10 | `email_address` |

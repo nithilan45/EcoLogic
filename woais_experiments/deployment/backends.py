@@ -36,15 +36,23 @@ docker run --rm -p 8080:8080 \\
 
 def cloudrun_commands(*, python: str = "python3.13") -> str:
     return f"""# Optional Cloud Run — print-only. This package never runs gcloud deploy.
-# Replace PROJECT, REGION, IMAGE.
+# Replace PROJECT, REGION, IMAGE. Credentials via env/secrets only — never bake keys into the image.
 docker build -t IMAGE -f woais_experiments/deployment/Dockerfile .
 docker push IMAGE
-gcloud run deploy ecologic-router --image IMAGE --region REGION --port 8080 --no-allow-unauthenticated
+gcloud run deploy ecologic-router --image IMAGE --region REGION --port 8080 --no-allow-unauthenticated \\
+  --command python --args -m,woais_experiments.deployment.app,--allow-api,--allow-cloud,--backend,cloudrun,--host,0.0.0.0,--port,8080 \\
+  --set-secrets=TOGETHER_API_KEY=TOGETHER_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest
 gcloud run services describe ecologic-router --region REGION --format='value(status.url)'
 
-# After YOU deploy, point the client at the URL (dry-run still uses the stub if the service was started without --allow-api)
+# After YOU deploy, dry-run client (stub if the service was started without --allow-api):
 {python} -m woais_experiments.deployment.benchmark --dry-run --backend cloudrun --base-url https://SERVICE_URL
 {python} -m woais_experiments.deployment.benchmark --allow-api --backend cloudrun --base-url https://SERVICE_URL
+
+# MEASURED_REAL_DEPLOYMENT (v2). Requires all three safety flags. No default spend limit.
+# This tool does not run the paid command automatically.
+{python} run_woais.py deployment-real --dry-run --backend local --max-queries 6 --skip-concurrency-8
+{python} run_woais.py deployment-real --allow-api --allow-cloud --max-cost-usd REPLACE_WITH_LIMIT \\
+  --backend cloudrun --base-url https://SERVICE_URL
 """
 
 
@@ -60,6 +68,8 @@ def lambda_commands(*, python: str = "python3.13") -> str:
 
 # If you already have a Function URL:
 # {python} -m woais_experiments.deployment.benchmark --allow-api --backend lambda --base-url https://FUNCTION_URL
+# {python} run_woais.py deployment-real --allow-api --allow-cloud --max-cost-usd REPLACE_WITH_LIMIT \\
+#   --backend lambda --base-url https://FUNCTION_URL
 """
 
 

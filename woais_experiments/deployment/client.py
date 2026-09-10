@@ -179,6 +179,13 @@ def merge_client_record(
             prompt_id=extra.get("prompt_id"),
             generation_mode=extra.get("generation_mode"),
             backend=extra.get("backend"),
+            measurement_type=str(extra.get("measurement_type") or MEASUREMENT_TYPE),
+            arrival_timestamp=extra.get("arrival_timestamp"),
+            query_id=extra.get("query_id") or extra.get("prompt_id"),
+            workload=extra.get("workload"),
+            serverless=extra.get("serverless"),
+            cloud_backend=extra.get("cloud_backend"),
+            region=extra.get("region"),
         )
         rec.extra["client_end_to_end_ms"] = client_e2e_ms
         rec.extra["server_body_ok"] = False
@@ -231,7 +238,10 @@ def merge_client_record(
         concurrency=body.get("concurrency") if body.get("concurrency") is not None else extra.get("concurrency"),
         generation_mode=body.get("generation_mode") or extra.get("generation_mode"),
         backend=body.get("backend") or extra.get("backend"),
+        environment_kind=body.get("environment_kind") or extra.get("environment_kind"),
+        cloud_measured=body.get("cloud_measured") if body.get("cloud_measured") is not None else extra.get("cloud_measured"),
         prompt_id=body.get("prompt_id") or extra.get("prompt_id"),
+        query_id=body.get("query_id") or body.get("prompt_id") or extra.get("query_id") or extra.get("prompt_id"),
         selected_tier=_i("selected_tier"),
         router_reason=body.get("router_reason"),
         input_tokens_source=body.get("input_tokens_source"),
@@ -241,6 +251,17 @@ def merge_client_record(
         price_source=body.get("price_source"),
         provider_name=body.get("provider_name"),
         paid_api=bool(body.get("paid_api", False)),
+        measurement_type=str(body.get("measurement_type") or extra.get("measurement_type") or MEASUREMENT_TYPE),
+        arrival_timestamp=body.get("arrival_timestamp") or extra.get("arrival_timestamp"),
+        queue_ms=_f("queue_ms"),
+        provider_latency_ms=_f("provider_latency_ms") if body.get("provider_latency_ms") is not None else _f("provider_request_ms"),
+        provider_cost=_f("provider_cost") if body.get("provider_cost") is not None else _f("realized_provider_cost"),
+        cold_start_observed=body.get("cold_start_observed"),
+        instance_id=body.get("instance_id"),
+        workload=body.get("workload") or extra.get("workload"),
+        cloud_backend=body.get("cloud_backend") or extra.get("cloud_backend"),
+        region=body.get("region") or extra.get("region"),
+        serverless=body.get("serverless") if body.get("serverless") is not None else extra.get("serverless"),
     )
     rec.extra["client_end_to_end_ms"] = client_e2e_ms
     rec.extra["server_end_to_end_ms"] = _f("end_to_end_ms")

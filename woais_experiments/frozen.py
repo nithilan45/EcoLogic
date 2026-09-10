@@ -21,8 +21,8 @@ from woais_experiments.paths import (
     get_overwrite_policy,
     get_results_root,
     get_run_meta,
+    is_absolute_path_string,
     is_frozen,
-    looks_like_home_absolute,
     public_relpath,
 )
 
@@ -110,9 +110,8 @@ class ResultExistsError(RuntimeError):
 def to_jsonable(obj: Any) -> Any:
     """JSON-safe values. Non-finite floats become strings, never silent null.
 
-    Filesystem paths inside the repo are stored repo-relative. Home-directory
-    and temp-directory absolutes are redacted so artifacts cannot deanonymize
-    an author via ``/Users/<name>``.
+    Filesystem paths inside the repo are stored repo-relative regardless of the
+    absolute parent directory. Absolute paths outside the repository are redacted.
     """
     if isinstance(obj, dict):
         return {str(k): to_jsonable(v) for k, v in obj.items()}
@@ -121,7 +120,7 @@ def to_jsonable(obj: Any) -> Any:
     if isinstance(obj, Path):
         return public_relpath(obj)
     if isinstance(obj, str):
-        if looks_like_home_absolute(obj):
+        if is_absolute_path_string(obj):
             return public_relpath(obj)
         return obj
     if isinstance(obj, float):
@@ -159,10 +158,10 @@ def _respect_existing(dest: Path) -> Path | None:
             hook(dest, True)
         return dest
     if policy == "force":
-        logging.getLogger("woais").warning("overwriting existing artifact %s", dest)
+        logging.getLogger("woais").warning("overwriting existing artifact %s", public_relpath(dest))
         return None
     raise ResultExistsError(
-        f"refusing to overwrite {dest}; pass --resume or --force on run_woais.py"
+        f"refusing to overwrite {public_relpath(dest)}; pass --resume or --force on run_woais.py"
     )
 
 

@@ -6,7 +6,7 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Any, Callable, Mapping
 
-from woais_experiments.deployment.lifecycle import ProcessLifecycle
+from woais_experiments.deployment.lifecycle import ProcessLifecycle, cold_start_observed, platform_cloud_backend, platform_instance_id, platform_region
 from woais_experiments.deployment.pricing import DeploymentPrices, load_deployment_prices
 from woais_experiments.deployment.provider import (
     MalformedProviderResponse,
@@ -15,7 +15,7 @@ from woais_experiments.deployment.provider import (
     RetryableProviderError,
     make_provider,
 )
-from woais_experiments.deployment.records import RequestRecord, utc_timestamp
+from woais_experiments.deployment.records import MEASUREMENT_TYPE, RequestRecord, utc_timestamp
 from woais_experiments.deployment.router import classify_prompt, load_production_router, model_for_tier
 from woais_experiments.latency.timing import InferenceTimer
 
@@ -40,6 +40,8 @@ class AppContext:
     max_retries: int = 2
     backend: str = "local"
     roles: dict[str, str] = field(default_factory=lambda: {"cheap": "tier1", "strong": "tier3"})
+    allow_cloud: bool = False
+    measurement_type: str = MEASUREMENT_TYPE
 
     @property
     def generation_mode(self) -> str:
@@ -50,21 +52,37 @@ class AppContext:
         return bool((self.config.get("paid") or {}).get("stream", False)) and not self.dry_run
 
     @property
+    def serverless_labeled(self) -> bool:
+        """True only for cloud backends with --allow-cloud. Local is never serverless."""
+        return bool(
+            self.allow_cloud
+            and not self.dry_run
+            and self.backend in {"cloudrun", "lambda"}
+        )
+
+    @property
     def environment_kind(self) -> str:
         if self.dry_run or not self.allow_api:
             if self.backend == "lambda":
                 return "in_process_lambda_stub"
             return "local_stub"
+        if self.backend == "local":
+            return "local_paid"
+        if self.backend == "docker":
+            return "docker_paid"
         if self.backend == "lambda":
-            return "in_process_lambda"
+            return "lambda" if self.allow_cloud else "in_process_lambda"
+        if self.backend == "cloudrun":
+            return "cloudrun" if self.allow_cloud else "remote_http"
         return "remote_http"
 
     @property
     def cloud_measured(self) -> bool:
         return bool(
             self.allow_api
+            and self.allow_cloud
             and not self.dry_run
-            and self.backend in {"http", "cloud_run", "remote"}
+            and self.backend in {"cloudrun", "lambda"}
         )
 
 
@@ -183,6 +201,10 @@ def _empty_record(*, request_id: str, prompt: str, policy: str, ctx: AppContext)
         cost_scope="final_attempt_only",
         policy=policy,
         paid_api=bool(ctx.allow_api and not ctx.dry_run),
+        measurement_type=ctx.measurement_type,
+        serverless=ctx.serverless_labeled,
+        cloud_backend=(ctx.backend if ctx.serverless_labeled else None),
+        region=platform_region(),
     )
 
 
@@ -206,6 +228,9 @@ def handle_inference(
         rec.process_id = life.process_id
         rec.request_index_in_process = life.request_index_in_process
         rec.process_uptime_s = life.process_uptime_s
+        rec.instance_id = platform_instance_id(process_id=life.process_id)
+        rec.cold_start_observed = cold_start_observed(life)
+        rec.arrival_timestamp = rec.timestamp
         timer.mark("response_end")
         rec.end_to_end_ms = timer.span("request_start", "response_end")
         return 400, rec
@@ -226,6 +251,9 @@ def handle_inference(
         rec.process_id = life.process_id
         rec.request_index_in_process = life.request_index_in_process
         rec.process_uptime_s = life.process_uptime_s
+        rec.instance_id = platform_instance_id(process_id=life.process_id)
+        rec.cold_start_observed = cold_start_observed(life)
+        rec.arrival_timestamp = rec.timestamp
         timer.mark("response_end")
         rec.end_to_end_ms = timer.span("request_start", "response_end")
         return 400, rec
@@ -242,11 +270,18 @@ def handle_inference(
     rec.setup_name = body.get("setup_name")
     rec.concurrency = body.get("concurrency")
     rec.prompt_id = body.get("prompt_id")
+    rec.query_id = body.get("query_id") or body.get("prompt_id")
+    rec.workload = body.get("workload")
+    rec.arrival_timestamp = body.get("arrival_timestamp") or rec.timestamp
     rec.lifecycle_state = life.lifecycle_state
     rec.lifecycle_basis = life.lifecycle_basis
     rec.process_id = life.process_id
     rec.request_index_in_process = life.request_index_in_process
     rec.process_uptime_s = life.process_uptime_s
+    rec.instance_id = platform_instance_id(process_id=life.process_id)
+    rec.cold_start_observed = cold_start_observed(life)
+    if not rec.cloud_backend:
+        rec.cloud_backend = platform_cloud_backend() if ctx.serverless_labeled else None
 
     try:
         model, provider_name, tier, reason, router_ms = _select_model(
@@ -280,6 +315,7 @@ def handle_inference(
     rec.retry_count = int(retry_count)
     timer.mark("response_end")
     rec.provider_request_ms = timer.span("provider_start", "response_end")
+    rec.provider_latency_ms = rec.provider_request_ms
     rec.end_to_end_ms = timer.span("request_start", "response_end")
 
     if result is None:
@@ -299,12 +335,19 @@ def handle_inference(
     rec.generation_ms = result.generation_ms
     if result.extra:
         rec.extra.update(result.extra)
+        q = result.extra.get("queue_time_ms", result.extra.get("queue_ms"))
+        if q is not None:
+            try:
+                rec.queue_ms = float(q)
+            except (TypeError, ValueError):
+                rec.queue_ms = None
 
     if rec.selected_model and rec.input_tokens is not None and rec.output_tokens is not None:
         cost, resolved = ctx.prices.realized_provider_cost(
             rec.selected_model, rec.input_tokens, rec.output_tokens
         )
         rec.realized_provider_cost = cost
+        rec.provider_cost = cost
         if resolved is not None:
             rec.price_slug = resolved.price_slug
             rec.price_source = resolved.source
@@ -346,6 +389,8 @@ def build_context(
     provider: Any = None,
     classify_fn: Callable[[str], Any] | None = None,
     models: dict[str, Any] | None = None,
+    allow_cloud: bool = False,
+    measurement_type: str | None = None,
 ) -> AppContext:
     loaded_fn, _production = load_production_router()
     serving = models if models is not None else load_serving_models(cfg)
@@ -366,4 +411,6 @@ def build_context(
         max_retries=retries,
         backend=str(backend),
         roles=roles,
+        allow_cloud=bool(allow_cloud),
+        measurement_type=str(measurement_type or MEASUREMENT_TYPE),
     )

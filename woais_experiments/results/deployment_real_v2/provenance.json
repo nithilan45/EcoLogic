@@ -1,0 +1,106 @@
+{
+  "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+  "cloud_backend": null,
+  "region": null,
+  "instance_configuration": {
+    "source": "not_provisioned_by_this_tool",
+    "backend": "local",
+    "serverless": false,
+    "note": "This runner does not deploy Cloud Run or Lambda and does not invent CPU/RAM. Recorded fields come from flags and platform env."
+  },
+  "timestamp": "2026-09-10T09:35:48.818498Z",
+  "git_commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+  "git": {
+    "available": true,
+    "commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+    "branch": "main",
+    "dirty": true,
+    "error": null
+  },
+  "model_identifiers": {
+    "tier1": {
+      "name": "google/gemma-3n-E4B-it",
+      "provider": "together"
+    },
+    "tier2": {
+      "name": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+      "provider": "together"
+    },
+    "tier3": {
+      "name": "gpt-4o",
+      "provider": "openai"
+    }
+  },
+  "pricing_config_hash": "95e7c137d7100dfdf3f54619577d4a84c312be07686cbc310b18a9de84659ef5",
+  "query_set_hash": "66cdeceab5a1a43e8247ad25c69295e6031c62978acb818599372ba5367e0e83",
+  "generation_mode": "dry_run",
+  "energy": {
+    "measured": false,
+    "status": "not_measured",
+    "note": "Estimated energy is not reported as measured energy."
+  },
+  "allow_api": false,
+  "allow_cloud": false,
+  "max_cost_usd": null,
+  "dry_run": true,
+  "base_url": null,
+  "n_prompts_frozen": 80,
+  "n_prompts_executed": 6,
+  "workloads": [
+    {
+      "name": "sequential_warm",
+      "kind": "sequential",
+      "concurrency": 1,
+      "n_requests": 6,
+      "idle_s": 0.0,
+      "optional": false,
+      "note": "one request at a time after process start (warm after first)"
+    },
+    {
+      "name": "concurrency_4",
+      "kind": "concurrent",
+      "concurrency": 4,
+      "n_requests": 6,
+      "idle_s": 0.0,
+      "optional": false,
+      "note": "four in-flight requests"
+    },
+    {
+      "name": "concurrency_8",
+      "kind": "concurrent",
+      "concurrency": 8,
+      "n_requests": 6,
+      "idle_s": 0.0,
+      "optional": true,
+      "note": "eight in-flight requests; skipped when --skip-concurrency-8"
+    },
+    {
+      "name": "burst",
+      "kind": "burst",
+      "concurrency": 6,
+      "n_requests": 6,
+      "idle_s": 0.0,
+      "optional": false,
+      "note": "simultaneous burst of 6 requests from the frozen ID list"
+    },
+    {
+      "name": "idle_then_batch",
+      "kind": "idle_gap",
+      "concurrency": 1,
+      "n_requests": 6,
+      "idle_s": 0.05,
+      "optional": false,
+      "note": "idle gap then a new batch. Cold start is labeled only if the process/container actually restarts; high latency is not a proxy."
+    }
+  ],
+  "stopped": null,
+  "cost_guard": {
+    "realized_usd": 0.0,
+    "n_costed": 0,
+    "remaining_planned": 120,
+    "limit_usd": null,
+    "estimate_usd_per_query": 0.0006625,
+    "unit_cost_usd": 0.0006625
+  },
+  "preflight_written_before_inference": true
+}

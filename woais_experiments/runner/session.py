@@ -40,7 +40,7 @@ STAGE_ORDER = (
     "external",
     "robustness",
 )
-COMMANDS = STAGE_ORDER + ("all", "validate-artifact")
+COMMANDS = STAGE_ORDER + ("all", "validate-artifact", "deployment-real")
 
 
 class PrerequisiteError(RuntimeError):
@@ -232,7 +232,7 @@ def open_session(
         run_dir = RUNS / rid
         if run_dir.exists():
             raise PrerequisiteError(
-                f"run directory exists: {run_dir}. Pass --resume or --force, "
+                f"run directory exists: {public_relpath(run_dir)}. Pass --resume or --force, "
                 "or choose a new --run-id."
             )
         run_dir.mkdir(parents=True, exist_ok=False)

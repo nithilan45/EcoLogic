@@ -58,6 +58,9 @@ workloads:
   concurrency_16_safe: true
   skip_concurrency_16_if_allow_api: true
   idle_gap_s: 2.0
+  # deployment-real (v2) uses these; v1 benchmark still uses idle_gap_s.
+  idle_gap_s_real: 20.0
+  idle_gap_s_dry_run: 0.05
 
 bootstrap:
   n_boot: 2000

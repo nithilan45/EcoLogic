@@ -23,7 +23,7 @@
   "simulated_workload_runs": 50,
   "results_dir": "woais_experiments/results",
   "package": "woais_experiments",
-  "git_commit": "24ca318a9a4b823cd9f9882b806fc0648a63e081",
+  "git_commit": "320451d4202c95b4513d59a1063f62262daf9d82",
   "config_hash": "3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4",
   "pythonhashseed": null
 }

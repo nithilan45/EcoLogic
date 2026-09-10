@@ -1,0 +1,51 @@
+{
+  "estimator": "strong_model_max_tokens_times_retries",
+  "not_measured_cost": true,
+  "strong_model": "gpt-4o",
+  "max_input_tokens_est": 201,
+  "max_output_tokens": 16,
+  "chars_per_token_estimate": 4.0,
+  "max_retries": 2,
+  "attempts_per_request": 3,
+  "n_queries": 6,
+  "n_policies": 4,
+  "n_workloads": 5,
+  "n_planned_requests": 120,
+  "n_planned_attempts": 360,
+  "unit_worst_usd": 0.0006625,
+  "worst_case_usd": 0.2385,
+  "note": "Worst-case uses the strong-model price, estimated input tokens (chars/4), max_tokens output, and every retry. This is an estimate used only for the pre-run cap, not a measured energy or cost result.",
+  "max_cost_usd": null,
+  "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+  "cloud_backend": null,
+  "region": null,
+  "instance_configuration": {
+    "source": "not_provisioned_by_this_tool",
+    "backend": "local",
+    "serverless": false,
+    "note": "This runner does not deploy Cloud Run or Lambda and does not invent CPU/RAM. Recorded fields come from flags and platform env."
+  },
+  "timestamp": "2026-09-10T09:35:48.818498Z",
+  "git_commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+  "model_identifiers": {
+    "tier1": {
+      "name": "google/gemma-3n-E4B-it",
+      "provider": "together"
+    },
+    "tier2": {
+      "name": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+      "provider": "together"
+    },
+    "tier3": {
+      "name": "gpt-4o",
+      "provider": "openai"
+    }
+  },
+  "pricing_config_hash": "95e7c137d7100dfdf3f54619577d4a84c312be07686cbc310b18a9de84659ef5",
+  "query_set_hash": "66cdeceab5a1a43e8247ad25c69295e6031c62978acb818599372ba5367e0e83",
+  "energy": {
+    "measured": false,
+    "status": "not_measured",
+    "note": "Estimated energy is not reported as measured energy."
+  }
+}

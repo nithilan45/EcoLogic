@@ -1,14 +1,21 @@
 {
   "ok": false,
   "severity": "critical",
-  "n_files_scanned": 542,
-  "n_hits": 50,
-  "n_files_requiring_review": 1,
+  "n_files_scanned": 593,
+  "n_hits": 51,
+  "n_files_requiring_review": 2,
   "files_requiring_review": [
-    "git:log"
+    "git:log",
+    "woais_experiments/POST_FIX_VALIDATION.md"
   ],
   "note": "No files were modified. Review each listed path before an anonymous release.",
   "findings": [
+    {
+      "file": "woais_experiments/POST_FIX_VALIDATION.md",
+      "line": 38,
+      "pattern": "macos_home",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
     {
       "file": "git:log",
       "line": 1,
@@ -48,7 +55,7 @@
     {
       "file": "git:log",
       "line": 7,
-      "pattern": "email_address",
+      "pattern": "identity:names",
       "excerpt": "[redacted \u2014 open the file at this line]"
     },
     {

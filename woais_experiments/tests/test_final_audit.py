@@ -276,6 +276,11 @@ class TestArtifactPathsAreNotHomeAbsolute(unittest.TestCase):
         redacted = to_jsonable(fake_home)
         self.assertEqual(redacted, "<redacted-absolute>")
         self.assertEqual(public_relpath(RESULTS / "summary.json"), "woais_experiments/results/summary.json")
+        mnt = "/mnt/data/EcoLogic-main/woais_experiments/results/foo.csv"
+        self.assertEqual(
+            public_relpath(mnt, root="/mnt/data/EcoLogic-main"),
+            "woais_experiments/results/foo.csv",
+        )
 
 
 class TestStressCostDoesNotTreatMissingAsZero(unittest.TestCase):

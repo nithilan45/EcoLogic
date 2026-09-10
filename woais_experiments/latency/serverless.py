@@ -48,11 +48,34 @@ def fit_linear_service(latency: np.ndarray, tokens: np.ndarray) -> dict:
 
 
 def flag_cold_like(residuals: np.ndarray, k: float = 2.0) -> np.ndarray:
-    mu = residuals.mean()
-    sd = residuals.std()
-    if sd == 0:
-        return np.zeros(len(residuals), dtype=bool)
-    return residuals > (mu + k * sd)
+    """Flag large positive residuals as a cold-start *proxy*.
+
+    When residual dispersion is mathematically zero or only machine-precision
+    noise, nothing is flagged. ``sd == 0`` is not required; ``np.isclose``
+    treats crumbs from a perfect linear fit as zero spread.
+    """
+    r = np.asarray(residuals, dtype=float).reshape(-1)
+    n = int(r.size)
+    if n == 0:
+        return np.zeros(0, dtype=bool)
+    finite = np.isfinite(r)
+    if not bool(finite.any()):
+        return np.zeros(n, dtype=bool)
+    work = r[finite]
+    mu = float(np.mean(work))
+    sd = float(np.std(work))
+    mag = float(np.max(np.abs(work)))
+    # Floor at 1.0 so large-|y| least-squares crumbs (eps * 1e8 ≈ 2e-8) and
+    # tiny residuals share the same "effectively zero" test.
+    atol = max(1e-9, 1e-12 * max(mag, 1.0))
+    if (not np.isfinite(sd)) or np.isclose(sd, 0.0, rtol=1e-6, atol=atol):
+        return np.zeros(n, dtype=bool)
+    if np.allclose(work, mu, rtol=1e-6, atol=max(atol, 1e-6)):
+        return np.zeros(n, dtype=bool)
+    thresh = mu + float(k) * sd
+    out = np.zeros(n, dtype=bool)
+    out[finite] = work > thresh
+    return out
 
 
 def service_model_by_tier(matrix: ItemMatrix, k: float = 2.0) -> dict:

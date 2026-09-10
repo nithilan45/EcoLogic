@@ -308,8 +308,8 @@ def run_benchmark(
                 last_setup = setup == SETUPS[-1][0] and conc == concs[-1]
                 if restart_between_phases and backend == "local" and httpd is not None and not last_setup:
                     stop_server(httpd)
-                    from woais_experiments.deployment.lifecycle import ProcessLifecycle
-                    ctx.lifecycle = ProcessLifecycle()
+                    from woais_experiments.deployment.lifecycle import keep_lifecycle_if_same_process
+                    ctx.lifecycle = keep_lifecycle_if_same_process(ctx.lifecycle)
                     httpd, _thread = start_server(ctx, host=host, port=0)
                     port = int(httpd.server_address[1])
                     url = f"http://{host}:{port}"

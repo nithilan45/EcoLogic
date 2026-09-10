@@ -67,10 +67,12 @@ def _decode(raw: bytes) -> str | None:
 
 
 def _rel(path: Path, root: Path) -> str:
-    try:
-        return str(path.resolve().relative_to(root.resolve())).replace("\\", "/")
-    except ValueError:
-        return str(path)
+    from woais_experiments.paths import relative_to_root, repo_rel
+
+    rel = relative_to_root(path, root)
+    if rel is not None:
+        return rel
+    return repo_rel(path, root=root)
 
 
 def scan_text(text: str, rules: list[tuple[str, re.Pattern[str]]], *, source: str) -> list[dict[str, Any]]:

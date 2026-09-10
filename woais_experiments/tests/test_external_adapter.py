@@ -14,6 +14,7 @@ from woais_experiments.external.adapter import (
     ROUTELLM_STRONG,
     ROUTELLM_WEAK,
     discover_sources,
+    find_routellm_csv,
     from_routellm_responses,
     load_source,
     normalize_records,
@@ -164,8 +165,8 @@ class TestRouteLLMAndDiscovery(unittest.TestCase):
     def test_discover_does_not_require_clone(self):
         found = {s.name: s for s in discover_sources()}
         self.assertTrue(found["routellm_s9_committed"].available)
-        self.assertFalse(found["routellm_gsm8k_responses"].available)
-        self.assertIn("Not downloaded", found["routellm_gsm8k_responses"].note)
+        csv_present = find_routellm_csv() is not None
+        self.assertEqual(found["routellm_gsm8k_responses"].available, csv_present)
         blob = load_source("routellm_s9_committed")
         self.assertFalse(blob["panel_available"])
         self.assertEqual(blob["n_models"], 2)

@@ -1,7 +1,15 @@
 """Measured request logs for the deployment benchmark.
 
-Every record is tagged ``measurement_type="MEASURED"``. Simulator fields are
-refused at analysis time; this module never writes them.
+v1 uses ``MEASURED``. v2 uses a *suite* tag that must match how the request
+was actually executed:
+
+- ``DRY_RUN_LOCAL`` — stub provider, no paid remote inference
+- ``MEASURED_PAID_LOCAL`` — paid provider APIs from a local/non-serverless process
+- ``MEASURED_REAL_DEPLOYMENT`` — paid inference against a non-loopback Cloud Run
+  or Lambda URL
+
+Dry-run and local stubs are never tagged ``MEASURED_REAL_DEPLOYMENT``.
+Simulator fields are refused at analysis time; this module never writes them.
 """
 
 from __future__ import annotations
@@ -11,6 +19,29 @@ from datetime import datetime, timezone
 from typing import Any
 
 MEASUREMENT_TYPE = "MEASURED"
+MEASUREMENT_TYPE_REAL = "MEASURED_REAL_DEPLOYMENT"
+MEASUREMENT_TYPE_DRY_RUN = "DRY_RUN_LOCAL"
+MEASUREMENT_TYPE_PAID_LOCAL = "MEASURED_PAID_LOCAL"
+ALLOWED_MEASUREMENT_TYPES = frozenset({
+    MEASUREMENT_TYPE,
+    MEASUREMENT_TYPE_REAL,
+    MEASUREMENT_TYPE_DRY_RUN,
+    MEASUREMENT_TYPE_PAID_LOCAL,
+})
+ALLOWED_V2_MEASUREMENT_TYPES = frozenset({
+    MEASUREMENT_TYPE_REAL,
+    MEASUREMENT_TYPE_DRY_RUN,
+    MEASUREMENT_TYPE_PAID_LOCAL,
+})
+
+
+def v2_measurement_type(*, paid: bool, serverless: bool) -> str:
+    """Suite tag from execution mode. Dry-run cannot be a real deployment."""
+    if not paid:
+        return MEASUREMENT_TYPE_DRY_RUN
+    if serverless:
+        return MEASUREMENT_TYPE_REAL
+    return MEASUREMENT_TYPE_PAID_LOCAL
 
 # JSON keys for the fields the benchmark is required to record.
 REQUIRED_REQUEST_FIELDS = (
@@ -108,12 +139,24 @@ class RequestRecord:
     price_source: str | None = None
     provider_name: str | None = None
     paid_api: bool = False
+    arrival_timestamp: str | None = None
+    queue_ms: float | None = None
+    provider_latency_ms: float | None = None
+    provider_cost: float | None = None
+    cold_start_observed: bool | None = None
+    instance_id: str | None = None
+    workload: str | None = None
+    query_id: str | None = None
+    cloud_backend: str | None = None
+    region: str | None = None
+    serverless: bool | None = None
     extra: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        if self.measurement_type != MEASUREMENT_TYPE:
+        if self.measurement_type not in ALLOWED_MEASUREMENT_TYPES:
             raise ValueError(
-                f"deployment records must be {MEASUREMENT_TYPE!r}, got {self.measurement_type!r}"
+                f"deployment records must be one of {sorted(ALLOWED_MEASUREMENT_TYPES)}, "
+                f"got {self.measurement_type!r}"
             )
 
     def to_dict(self) -> dict[str, Any]:
@@ -123,7 +166,15 @@ class RequestRecord:
             if key in extra:
                 raise ValueError(f"refusing simulator field {key!r} on a MEASURED record")
         row.update(extra)
-        row["measurement_type"] = MEASUREMENT_TYPE
+        row["measurement_type"] = self.measurement_type
+        if row.get("provider_cost") is None:
+            row["provider_cost"] = row.get("realized_provider_cost")
+        if row.get("provider_latency_ms") is None:
+            row["provider_latency_ms"] = row.get("provider_request_ms")
+        if row.get("query_id") is None:
+            row["query_id"] = row.get("prompt_id")
+        if "error" not in row:
+            row["error"] = row.get("error_type")
         return row
 
 
@@ -135,7 +186,7 @@ def assert_measured_record(row: MappingLike) -> None:
     if not isinstance(row, dict):
         raise TypeError("record must be a dict")
     mt = row.get("measurement_type")
-    if mt != MEASUREMENT_TYPE:
+    if mt not in ALLOWED_MEASUREMENT_TYPES:
         raise ValueError(
             f"refusing non-MEASURED record (measurement_type={mt!r}); "
             "deployment_real must not mix simulator outputs"

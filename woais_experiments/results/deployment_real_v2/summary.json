@@ -1,0 +1,2784 @@
+{
+  "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+  "n_records": 120,
+  "n_groups": 20,
+  "bootstrap": {
+    "n_boot": 2000,
+    "seed": 20260909,
+    "level": 0.95,
+    "method": "percentile"
+  },
+  "groups": [
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_cheap",
+      "setup": "A",
+      "workload": "burst",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 1237.2728462826342,
+      "throughput_req_s": 1237.2728462826342,
+      "p50_latency": 3.370792,
+      "p95_latency": 4.000125,
+      "p99_latency": 4.000125,
+      "mean_latency": 3.400986166666667,
+      "p50_latency_ms": 3.370792,
+      "p95_latency_ms": 4.000125,
+      "p99_latency_ms": 4.000125,
+      "mean_latency_ms": 3.400986166666667,
+      "latency_ci": {
+        "mean": {
+          "point": 3.400986166666667,
+          "lo": 3.1657496666666667,
+          "hi": 3.659104333333333,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.370792,
+          "lo": 3.045708,
+          "hi": 3.508584,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 4.000125,
+          "lo": 3.405833,
+          "hi": 4.000125,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 4.000125,
+          "lo": 3.405833,
+          "hi": 4.000125,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.004849374992772937
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_cheap",
+      "setup": "A",
+      "workload": "concurrency_4",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 881.3808335095952,
+      "throughput_req_s": 881.3808335095952,
+      "p50_latency": 2.951291,
+      "p95_latency": 3.824375,
+      "p99_latency": 3.824375,
+      "mean_latency": 3.1011458333333333,
+      "p50_latency_ms": 2.951291,
+      "p95_latency_ms": 3.824375,
+      "p99_latency_ms": 3.824375,
+      "mean_latency_ms": 3.1011458333333333,
+      "latency_ci": {
+        "mean": {
+          "point": 3.1011458333333333,
+          "lo": 2.8357569999999996,
+          "hi": 3.4209929999999997,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 2.951291,
+          "lo": 2.680292,
+          "hi": 3.232417,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 3.824375,
+          "lo": 3.134333,
+          "hi": 3.824375,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 3.824375,
+          "lo": 3.134333,
+          "hi": 3.824375,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.006807499972637743
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_cheap",
+      "setup": "A",
+      "workload": "concurrency_8",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 1218.9961046462909,
+      "throughput_req_s": 1218.9961046462909,
+      "p50_latency": 3.26475,
+      "p95_latency": 4.328875,
+      "p99_latency": 4.328875,
+      "mean_latency": 3.4307986666666666,
+      "p50_latency_ms": 3.26475,
+      "p95_latency_ms": 4.328875,
+      "p99_latency_ms": 4.328875,
+      "mean_latency_ms": 3.4307986666666666,
+      "latency_ci": {
+        "mean": {
+          "point": 3.4307986666666666,
+          "lo": 2.939833333333333,
+          "hi": 3.911479333333333,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.26475,
+          "lo": 2.44275,
+          "hi": 3.848792,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 4.328875,
+          "lo": 3.740375,
+          "hi": 4.328875,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 4.328875,
+          "lo": 3.740375,
+          "hi": 4.328875,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.004922082996927202
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_cheap",
+      "setup": "A",
+      "workload": "idle_then_batch",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 270.22209269918363,
+      "throughput_req_s": 270.22209269918363,
+      "p50_latency": 3.2085,
+      "p95_latency": 3.648167,
+      "p99_latency": 3.648167,
+      "mean_latency": 3.2684168333333337,
+      "p50_latency_ms": 3.2085,
+      "p95_latency_ms": 3.648167,
+      "p99_latency_ms": 3.648167,
+      "mean_latency_ms": 3.2684168333333337,
+      "latency_ci": {
+        "mean": {
+          "point": 3.2684168333333337,
+          "lo": 3.092048666666667,
+          "hi": 3.4485069999999998,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.2085,
+          "lo": 2.90275,
+          "hi": 3.397334,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 3.648167,
+          "lo": 3.332458,
+          "hi": 3.648167,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 3.648167,
+          "lo": 3.332458,
+          "hi": 3.648167,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 1,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.022203958011232316
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_cheap",
+      "setup": "A",
+      "workload": "sequential_warm",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 431.4025076980907,
+      "throughput_req_s": 431.4025076980907,
+      "p50_latency": 2.094584,
+      "p95_latency": 2.342084,
+      "p99_latency": 2.342084,
+      "mean_latency": 2.172416833333333,
+      "p50_latency_ms": 2.094584,
+      "p95_latency_ms": 2.342084,
+      "p99_latency_ms": 2.342084,
+      "mean_latency_ms": 2.172416833333333,
+      "latency_ci": {
+        "mean": {
+          "point": 2.172416833333333,
+          "lo": 2.0950555,
+          "hi": 2.258319833333333,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 2.094584,
+          "lo": 2.089458,
+          "hi": 2.301,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 2.342084,
+          "lo": 2.11525,
+          "hi": 2.342084,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 2.342084,
+          "lo": 2.11525,
+          "hi": 2.342084,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 1,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.01390812499448657
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_strong",
+      "setup": "B",
+      "workload": "burst",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 653.0671251298684,
+      "throughput_req_s": 653.0671251298684,
+      "p50_latency": 5.251125,
+      "p95_latency": 7.096667,
+      "p99_latency": 7.096667,
+      "mean_latency": 5.690847333333333,
+      "p50_latency_ms": 5.251125,
+      "p95_latency_ms": 7.096667,
+      "p99_latency_ms": 7.096667,
+      "mean_latency_ms": 5.690847333333333,
+      "latency_ci": {
+        "mean": {
+          "point": 5.690847333333333,
+          "lo": 5.038722333333333,
+          "hi": 6.402465333333333,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 5.251125,
+          "lo": 4.495459,
+          "hi": 6.263625,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 7.096667,
+          "lo": 6.086125,
+          "hi": 7.096667,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 7.096667,
+          "lo": 6.086125,
+          "hi": 7.096667,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 0.0004625000000000001,
+      "realized_cost_per_query_ci": {
+        "point": 0.0004625000000000001,
+        "lo": 0.00037958333333333334,
+        "hi": 0.0005620833333333333,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.0027750000000000006,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.009187416988424957
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_strong",
+      "setup": "B",
+      "workload": "concurrency_4",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 445.77076139289636,
+      "throughput_req_s": 445.77076139289636,
+      "p50_latency": 5.52925,
+      "p95_latency": 8.122042,
+      "p99_latency": 8.122042,
+      "mean_latency": 6.420159833333334,
+      "p50_latency_ms": 5.52925,
+      "p95_latency_ms": 8.122042,
+      "p99_latency_ms": 8.122042,
+      "mean_latency_ms": 6.420159833333334,
+      "latency_ci": {
+        "mean": {
+          "point": 6.420159833333334,
+          "lo": 5.508694333333334,
+          "hi": 7.345548833333335,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 5.52925,
+          "lo": 4.900083,
+          "hi": 7.403542,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 8.122042,
+          "lo": 7.146917,
+          "hi": 8.122042,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 8.122042,
+          "lo": 7.146917,
+          "hi": 8.122042,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 0.0004625000000000001,
+      "realized_cost_per_query_ci": {
+        "point": 0.0004625000000000001,
+        "lo": 0.00037958333333333334,
+        "hi": 0.0005620833333333333,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.0027750000000000006,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.013459832989610732
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_strong",
+      "setup": "B",
+      "workload": "concurrency_8",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 563.9627792236106,
+      "throughput_req_s": 563.9627792236106,
+      "p50_latency": 6.511375,
+      "p95_latency": 7.452083,
+      "p99_latency": 7.452083,
+      "mean_latency": 6.613243166666666,
+      "p50_latency_ms": 6.511375,
+      "p95_latency_ms": 7.452083,
+      "p99_latency_ms": 7.452083,
+      "mean_latency_ms": 6.613243166666666,
+      "latency_ci": {
+        "mean": {
+          "point": 6.613243166666666,
+          "lo": 6.221278166666667,
+          "hi": 7.066249833333333,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 6.511375,
+          "lo": 5.805834,
+          "hi": 7.047375,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 7.452083,
+          "lo": 6.511584,
+          "hi": 7.452083,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 7.452083,
+          "lo": 6.511584,
+          "hi": 7.452083,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 0.0004625000000000001,
+      "realized_cost_per_query_ci": {
+        "point": 0.0004625000000000001,
+        "lo": 0.00037958333333333334,
+        "hi": 0.0005620833333333333,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.0027750000000000006,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.010638999985530972
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_strong",
+      "setup": "B",
+      "workload": "idle_then_batch",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 250.162428085308,
+      "throughput_req_s": 250.162428085308,
+      "p50_latency": 3.342792,
+      "p95_latency": 3.960834,
+      "p99_latency": 3.960834,
+      "mean_latency": 3.4989863333333333,
+      "p50_latency_ms": 3.342792,
+      "p95_latency_ms": 3.960834,
+      "p99_latency_ms": 3.960834,
+      "mean_latency_ms": 3.4989863333333333,
+      "latency_ci": {
+        "mean": {
+          "point": 3.4989863333333333,
+          "lo": 3.2921045,
+          "hi": 3.7199795000000004,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.342792,
+          "lo": 3.157459,
+          "hi": 3.684541,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 3.960834,
+          "lo": 3.595375,
+          "hi": 3.960834,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 3.960834,
+          "lo": 3.595375,
+          "hi": 3.960834,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 0.0004625000000000001,
+      "realized_cost_per_query_ci": {
+        "point": 0.0004625000000000001,
+        "lo": 0.00037958333333333334,
+        "hi": 0.0005620833333333333,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.0027750000000000006,
+      "cold_start_count": 1,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.023984417028259486
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "always_strong",
+      "setup": "B",
+      "workload": "sequential_warm",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 281.37200508536,
+      "throughput_req_s": 281.37200508536,
+      "p50_latency": 3.132958,
+      "p95_latency": 3.460584,
+      "p99_latency": 3.460584,
+      "mean_latency": 3.1903958333333335,
+      "p50_latency_ms": 3.132958,
+      "p95_latency_ms": 3.460584,
+      "p99_latency_ms": 3.460584,
+      "mean_latency_ms": 3.1903958333333335,
+      "latency_ci": {
+        "mean": {
+          "point": 3.1903958333333335,
+          "lo": 3.106395666666667,
+          "hi": 3.302923833333333,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.132958,
+          "lo": 3.0775,
+          "hi": 3.211875,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 3.460584,
+          "lo": 3.1685,
+          "hi": 3.460584,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 3.460584,
+          "lo": 3.1685,
+          "hi": 3.460584,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 0.0004625000000000001,
+      "realized_cost_per_query_ci": {
+        "point": 0.0004625000000000001,
+        "lo": 0.00037958333333333334,
+        "hi": 0.0005620833333333333,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.0027750000000000006,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.021324083034414798
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "ecologic",
+      "setup": "C",
+      "workload": "burst",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 628.6726910981014,
+      "throughput_req_s": 628.6726910981014,
+      "p50_latency": 5.716542,
+      "p95_latency": 6.718125,
+      "p99_latency": 6.718125,
+      "mean_latency": 5.895263833333334,
+      "p50_latency_ms": 5.716542,
+      "p95_latency_ms": 6.718125,
+      "p99_latency_ms": 6.718125,
+      "mean_latency_ms": 5.895263833333334,
+      "latency_ci": {
+        "mean": {
+          "point": 5.895263833333334,
+          "lo": 5.594027833333334,
+          "hi": 6.259069333333333,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 5.716542,
+          "lo": 5.4575,
+          "hi": 6.083666,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 6.718125,
+          "lo": 5.858875,
+          "hi": 6.718125,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 6.718125,
+          "lo": 5.858875,
+          "hi": 6.718125,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": 0.0611245,
+      "router_overhead_ms": 0.0611245,
+      "router_overhead_ci": {
+        "point": 0.0611245,
+        "lo": 0.04920766666666667,
+        "hi": 0.07497183333333333,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 1.8363333333333334e-05,
+      "realized_cost_per_query_ci": {
+        "point": 1.8363333333333334e-05,
+        "lo": 1.2825e-05,
+        "hi": 2.4541666666666666e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00011018,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.009543917025439441
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "ecologic",
+      "setup": "C",
+      "workload": "concurrency_4",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 466.4149013220678,
+      "throughput_req_s": 466.4149013220678,
+      "p50_latency": 5.367459,
+      "p95_latency": 8.026792,
+      "p99_latency": 8.026792,
+      "mean_latency": 5.996382333333333,
+      "p50_latency_ms": 5.367459,
+      "p95_latency_ms": 8.026792,
+      "p99_latency_ms": 8.026792,
+      "mean_latency_ms": 5.996382333333333,
+      "latency_ci": {
+        "mean": {
+          "point": 5.996382333333333,
+          "lo": 5.138104666666666,
+          "hi": 7.053500333333335,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 5.367459,
+          "lo": 4.773459,
+          "hi": 6.83375,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 8.026792,
+          "lo": 6.039417,
+          "hi": 8.026792,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 8.026792,
+          "lo": 6.039417,
+          "hi": 8.026792,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": 0.08700033333333333,
+      "router_overhead_ms": 0.08700033333333333,
+      "router_overhead_ci": {
+        "point": 0.08700033333333333,
+        "lo": 0.07275033333333333,
+        "hi": 0.10254200000000001,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 1.8363333333333334e-05,
+      "realized_cost_per_query_ci": {
+        "point": 1.8363333333333334e-05,
+        "lo": 1.2825e-05,
+        "hi": 2.4541666666666666e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00011018,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.012864082993473858
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "ecologic",
+      "setup": "C",
+      "workload": "concurrency_8",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 606.3668504318891,
+      "throughput_req_s": 606.3668504318891,
+      "p50_latency": 6.238125,
+      "p95_latency": 8.279958,
+      "p99_latency": 8.279958,
+      "mean_latency": 6.8828125,
+      "p50_latency_ms": 6.238125,
+      "p95_latency_ms": 8.279958,
+      "p99_latency_ms": 8.279958,
+      "mean_latency_ms": 6.8828125,
+      "latency_ci": {
+        "mean": {
+          "point": 6.8828125,
+          "lo": 6.141965166666666,
+          "hi": 7.668826333333334,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 6.238125,
+          "lo": 5.605708,
+          "hi": 7.595292,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 8.279958,
+          "lo": 7.376542,
+          "hi": 8.279958,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 8.279958,
+          "lo": 7.376542,
+          "hi": 8.279958,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": 0.07023616666666667,
+      "router_overhead_ms": 0.07023616666666667,
+      "router_overhead_ci": {
+        "point": 0.07023616666666667,
+        "lo": 0.05947266666666667,
+        "hi": 0.0813125,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 1.8363333333333334e-05,
+      "realized_cost_per_query_ci": {
+        "point": 1.8363333333333334e-05,
+        "lo": 1.2825e-05,
+        "hi": 2.4541666666666666e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00011018,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.009895000024698675
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "ecologic",
+      "setup": "C",
+      "workload": "idle_then_batch",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 266.9588385339485,
+      "throughput_req_s": 266.9588385339485,
+      "p50_latency": 3.071041,
+      "p95_latency": 4.550417,
+      "p99_latency": 4.550417,
+      "mean_latency": 3.4020485,
+      "p50_latency_ms": 3.071041,
+      "p95_latency_ms": 4.550417,
+      "p99_latency_ms": 4.550417,
+      "mean_latency_ms": 3.4020485,
+      "latency_ci": {
+        "mean": {
+          "point": 3.4020485,
+          "lo": 3.074062166666667,
+          "hi": 3.881784833333333,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.071041,
+          "lo": 3.043375,
+          "hi": 3.525042,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 4.550417,
+          "lo": 3.15825,
+          "hi": 4.550417,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 4.550417,
+          "lo": 3.15825,
+          "hi": 4.550417,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": 0.09599266666666667,
+      "router_overhead_ms": 0.09599266666666667,
+      "router_overhead_ci": {
+        "point": 0.09599266666666667,
+        "lo": 0.08040233333333334,
+        "hi": 0.11670116666666665,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 1.8363333333333334e-05,
+      "realized_cost_per_query_ci": {
+        "point": 1.8363333333333334e-05,
+        "lo": 1.2825e-05,
+        "hi": 2.4541666666666666e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00011018,
+      "cold_start_count": 1,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.02247537497896701
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "ecologic",
+      "setup": "C",
+      "workload": "sequential_warm",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 266.43230070533167,
+      "throughput_req_s": 266.43230070533167,
+      "p50_latency": 3.301875,
+      "p95_latency": 3.703375,
+      "p99_latency": 3.703375,
+      "mean_latency": 3.358993,
+      "p50_latency_ms": 3.301875,
+      "p95_latency_ms": 3.703375,
+      "p99_latency_ms": 3.703375,
+      "mean_latency_ms": 3.358993,
+      "latency_ci": {
+        "mean": {
+          "point": 3.358993,
+          "lo": 3.189632166666667,
+          "hi": 3.5326804999999997,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.301875,
+          "lo": 3.06275,
+          "hi": 3.465291,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 3.703375,
+          "lo": 3.438333,
+          "hi": 3.703375,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 3.703375,
+          "lo": 3.438333,
+          "hi": 3.703375,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": 0.10702116666666668,
+      "router_overhead_ms": 0.10702116666666668,
+      "router_overhead_ci": {
+        "point": 0.10702116666666668,
+        "lo": 0.092063,
+        "hi": 0.11938216666666666,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 1.8363333333333334e-05,
+      "realized_cost_per_query_ci": {
+        "point": 1.8363333333333334e-05,
+        "lo": 1.2825e-05,
+        "hi": 2.4541666666666666e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00011018,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.0225197920226492
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "cost_matched_static",
+      "setup": "D",
+      "workload": "burst",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 763.9459295290236,
+      "throughput_req_s": 763.9459295290236,
+      "p50_latency": 5.437334,
+      "p95_latency": 6.13325,
+      "p99_latency": 6.13325,
+      "mean_latency": 5.463514166666666,
+      "p50_latency_ms": 5.437334,
+      "p95_latency_ms": 6.13325,
+      "p99_latency_ms": 6.13325,
+      "mean_latency_ms": 5.463514166666666,
+      "latency_ci": {
+        "mean": {
+          "point": 5.463514166666666,
+          "lo": 4.907611333333334,
+          "hi": 5.962930666666666,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 5.437334,
+          "lo": 4.376334,
+          "hi": 6.05175,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 6.13325,
+          "lo": 5.874417,
+          "hi": 6.13325,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 6.13325,
+          "lo": 5.874417,
+          "hi": 6.13325,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.007853958988562226
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "cost_matched_static",
+      "setup": "D",
+      "workload": "concurrency_4",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 486.08744745813516,
+      "throughput_req_s": 486.08744745813516,
+      "p50_latency": 4.932791,
+      "p95_latency": 8.251792,
+      "p99_latency": 8.251792,
+      "mean_latency": 5.749486166666667,
+      "p50_latency_ms": 4.932791,
+      "p95_latency_ms": 8.251792,
+      "p99_latency_ms": 8.251792,
+      "mean_latency_ms": 5.749486166666667,
+      "latency_ci": {
+        "mean": {
+          "point": 5.749486166666667,
+          "lo": 4.685458166666666,
+          "hi": 6.9184030000000005,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 4.932791,
+          "lo": 4.138958,
+          "hi": 6.410292,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 8.251792,
+          "lo": 6.308042,
+          "hi": 8.251792,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 8.251792,
+          "lo": 6.308042,
+          "hi": 8.251792,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.01234345801640302
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "cost_matched_static",
+      "setup": "D",
+      "workload": "concurrency_8",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 639.1137618510066,
+      "throughput_req_s": 639.1137618510066,
+      "p50_latency": 6.458375,
+      "p95_latency": 7.776292,
+      "p99_latency": 7.776292,
+      "mean_latency": 6.607659833333333,
+      "p50_latency_ms": 6.458375,
+      "p95_latency_ms": 7.776292,
+      "p99_latency_ms": 7.776292,
+      "mean_latency_ms": 6.607659833333333,
+      "latency_ci": {
+        "mean": {
+          "point": 6.607659833333333,
+          "lo": 6.018479500000001,
+          "hi": 7.2104721666666665,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 6.458375,
+          "lo": 5.662584,
+          "hi": 7.083958,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 7.776292,
+          "lo": 6.88925,
+          "hi": 7.776292,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 7.776292,
+          "lo": 6.88925,
+          "hi": 7.776292,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.009388000005856156
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "cost_matched_static",
+      "setup": "D",
+      "workload": "idle_then_batch",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 250.693763681267,
+      "throughput_req_s": 250.693763681267,
+      "p50_latency": 3.62675,
+      "p95_latency": 3.779625,
+      "p99_latency": 3.779625,
+      "mean_latency": 3.4885138333333336,
+      "p50_latency_ms": 3.62675,
+      "p95_latency_ms": 3.779625,
+      "p99_latency_ms": 3.779625,
+      "mean_latency_ms": 3.4885138333333336,
+      "latency_ci": {
+        "mean": {
+          "point": 3.4885138333333336,
+          "lo": 3.259222166666667,
+          "hi": 3.7055829999999994,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.62675,
+          "lo": 3.063625,
+          "hi": 3.723375,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 3.779625,
+          "lo": 3.650291,
+          "hi": 3.779625,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 3.779625,
+          "lo": 3.650291,
+          "hi": 3.779625,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 1,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.023933582997415215
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "policy": "cost_matched_static",
+      "setup": "D",
+      "workload": "sequential_warm",
+      "n": 6,
+      "success_rate": 1.0,
+      "success_rate_ci": {
+        "point": 1.0,
+        "lo": 1.0,
+        "hi": 1.0,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "throughput": 281.91128914394926,
+      "throughput_req_s": 281.91128914394926,
+      "p50_latency": 3.085916,
+      "p95_latency": 3.37075,
+      "p99_latency": 3.37075,
+      "mean_latency": 3.1510694999999997,
+      "p50_latency_ms": 3.085916,
+      "p95_latency_ms": 3.37075,
+      "p99_latency_ms": 3.37075,
+      "mean_latency_ms": 3.1510694999999997,
+      "latency_ci": {
+        "mean": {
+          "point": 3.1510694999999997,
+          "lo": 3.0758611666666664,
+          "hi": 3.2446458333333337,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p50": {
+          "point": 3.085916,
+          "lo": 3.044125,
+          "hi": 3.197167,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p95": {
+          "point": 3.37075,
+          "lo": 3.135917,
+          "hi": 3.37075,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        },
+        "p99": {
+          "point": 3.37075,
+          "lo": 3.135917,
+          "hi": 3.37075,
+          "n": 6,
+          "n_boot": 2000,
+          "level": 0.95,
+          "seed": 20260909
+        }
+      },
+      "latency_population": "successful_requests",
+      "router_overhead": null,
+      "router_overhead_ms": null,
+      "router_overhead_ci": {
+        "available": false,
+        "point": null
+      },
+      "input_tokens": 726.0,
+      "output_tokens": 96.0,
+      "mean_input_tokens": 121.0,
+      "mean_output_tokens": 16.0,
+      "realized_cost_per_query": 2.457e-05,
+      "realized_cost_per_query_ci": {
+        "point": 2.457e-05,
+        "lo": 1.8931666666666667e-05,
+        "hi": 3.134166666666667e-05,
+        "n": 6,
+        "n_boot": 2000,
+        "level": 0.95,
+        "seed": 20260909,
+        "available": true
+      },
+      "total_realized_cost": 0.00014742,
+      "cold_start_count": 0,
+      "retry_rate": 0.0,
+      "environment_kinds": [
+        "local_stub"
+      ],
+      "serverless": false,
+      "cloud_measured": false,
+      "generation_mode": "dry_run",
+      "backend": "local",
+      "energy": {
+        "measured": false,
+        "status": "not_measured",
+        "note": "Estimated energy is not reported as measured energy."
+      },
+      "phase_wall_s": 0.021283290989231318
+    }
+  ],
+  "comparison_ecologic_vs_cost_matched_static": {
+    "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+    "workloads": [
+      {
+        "workload": "burst",
+        "ecologic_cost_per_query": 1.8363333333333334e-05,
+        "static_cost_per_query": 2.457e-05,
+        "cost_savings_vs_static": 6.206666666666666e-06,
+        "ecologic_p95_ms": 6.718125,
+        "static_p95_ms": 6.13325,
+        "mean_latency_overhead_ms": 0.4317496666666676,
+        "router_decision_ms": 0.0611245,
+        "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+        "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+        "pareto_status_cost_vs_p95_latency": "tradeoff",
+        "quality_graded_in_this_run": false
+      },
+      {
+        "workload": "concurrency_4",
+        "ecologic_cost_per_query": 1.8363333333333334e-05,
+        "static_cost_per_query": 2.457e-05,
+        "cost_savings_vs_static": 6.206666666666666e-06,
+        "ecologic_p95_ms": 8.026792,
+        "static_p95_ms": 8.251792,
+        "mean_latency_overhead_ms": 0.2468961666666658,
+        "router_decision_ms": 0.08700033333333333,
+        "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+        "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+        "pareto_status_cost_vs_p95_latency": "ecologic_dominates",
+        "quality_graded_in_this_run": false
+      },
+      {
+        "workload": "concurrency_8",
+        "ecologic_cost_per_query": 1.8363333333333334e-05,
+        "static_cost_per_query": 2.457e-05,
+        "cost_savings_vs_static": 6.206666666666666e-06,
+        "ecologic_p95_ms": 8.279958,
+        "static_p95_ms": 7.776292,
+        "mean_latency_overhead_ms": 0.27515266666666705,
+        "router_decision_ms": 0.07023616666666667,
+        "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+        "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+        "pareto_status_cost_vs_p95_latency": "tradeoff",
+        "quality_graded_in_this_run": false
+      },
+      {
+        "workload": "idle_then_batch",
+        "ecologic_cost_per_query": 1.8363333333333334e-05,
+        "static_cost_per_query": 2.457e-05,
+        "cost_savings_vs_static": 6.206666666666666e-06,
+        "ecologic_p95_ms": 4.550417,
+        "static_p95_ms": 3.779625,
+        "mean_latency_overhead_ms": -0.08646533333333384,
+        "router_decision_ms": 0.09599266666666667,
+        "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+        "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+        "pareto_status_cost_vs_p95_latency": "tradeoff",
+        "quality_graded_in_this_run": false
+      },
+      {
+        "workload": "sequential_warm",
+        "ecologic_cost_per_query": 1.8363333333333334e-05,
+        "static_cost_per_query": 2.457e-05,
+        "cost_savings_vs_static": 6.206666666666666e-06,
+        "ecologic_p95_ms": 3.703375,
+        "static_p95_ms": 3.37075,
+        "mean_latency_overhead_ms": 0.20792350000000015,
+        "router_decision_ms": 0.10702116666666668,
+        "dollar_break_even_routing_overhead_usd": 6.206666666666666e-06,
+        "dollar_break_even_note": "Per-query routing fee (USD) that would erase EcoLogic's measured cost savings vs cost-matched static. Keyword router overhead in models.json is $0; this is a break-even on measured provider USD.",
+        "pareto_status_cost_vs_p95_latency": "tradeoff",
+        "quality_graded_in_this_run": false
+      }
+    ],
+    "conclusions_change_under_burst": false,
+    "quality_not_measured": true,
+    "energy_not_measured": true
+  },
+  "energy": {
+    "measured": false,
+    "status": "not_measured",
+    "note": "Estimated energy is not reported as measured energy."
+  },
+  "note": "MEASURED_REAL_DEPLOYMENT logs. local_stub / local_paid are not serverless. cold_start_observed is process/container init only.",
+  "run": {
+    "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+    "cloud_backend": null,
+    "region": null,
+    "instance_configuration": {
+      "source": "not_provisioned_by_this_tool",
+      "backend": "local",
+      "serverless": false,
+      "note": "This runner does not deploy Cloud Run or Lambda and does not invent CPU/RAM. Recorded fields come from flags and platform env."
+    },
+    "timestamp": "2026-09-10T09:35:48.818498Z",
+    "git_commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+    "git": {
+      "available": true,
+      "commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+      "branch": "main",
+      "dirty": true,
+      "error": null
+    },
+    "model_identifiers": {
+      "tier1": {
+        "name": "google/gemma-3n-E4B-it",
+        "provider": "together"
+      },
+      "tier2": {
+        "name": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+        "provider": "together"
+      },
+      "tier3": {
+        "name": "gpt-4o",
+        "provider": "openai"
+      }
+    },
+    "pricing_config_hash": "95e7c137d7100dfdf3f54619577d4a84c312be07686cbc310b18a9de84659ef5",
+    "query_set_hash": "66cdeceab5a1a43e8247ad25c69295e6031c62978acb818599372ba5367e0e83",
+    "generation_mode": "dry_run",
+    "energy": {
+      "measured": false,
+      "status": "not_measured",
+      "note": "Estimated energy is not reported as measured energy."
+    },
+    "allow_api": false,
+    "allow_cloud": false,
+    "max_cost_usd": null,
+    "dry_run": true,
+    "base_url": null,
+    "n_prompts_frozen": 80,
+    "n_prompts_executed": 6,
+    "workloads": [
+      {
+        "name": "sequential_warm",
+        "kind": "sequential",
+        "concurrency": 1,
+        "n_requests": 6,
+        "idle_s": 0.0,
+        "optional": false,
+        "note": "one request at a time after process start (warm after first)"
+      },
+      {
+        "name": "concurrency_4",
+        "kind": "concurrent",
+        "concurrency": 4,
+        "n_requests": 6,
+        "idle_s": 0.0,
+        "optional": false,
+        "note": "four in-flight requests"
+      },
+      {
+        "name": "concurrency_8",
+        "kind": "concurrent",
+        "concurrency": 8,
+        "n_requests": 6,
+        "idle_s": 0.0,
+        "optional": true,
+        "note": "eight in-flight requests; skipped when --skip-concurrency-8"
+      },
+      {
+        "name": "burst",
+        "kind": "burst",
+        "concurrency": 6,
+        "n_requests": 6,
+        "idle_s": 0.0,
+        "optional": false,
+        "note": "simultaneous burst of 6 requests from the frozen ID list"
+      },
+      {
+        "name": "idle_then_batch",
+        "kind": "idle_gap",
+        "concurrency": 1,
+        "n_requests": 6,
+        "idle_s": 0.05,
+        "optional": false,
+        "note": "idle gap then a new batch. Cold start is labeled only if the process/container actually restarts; high latency is not a proxy."
+      }
+    ],
+    "stopped": null,
+    "cost_guard": {
+      "realized_usd": 0.0,
+      "n_costed": 0,
+      "remaining_planned": 120,
+      "limit_usd": null,
+      "estimate_usd_per_query": 0.0006625,
+      "unit_cost_usd": 0.0006625
+    },
+    "preflight_written_before_inference": true
+  },
+  "phases": [
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "A",
+      "setup_name": "always_cheap",
+      "policy": "direct_cheap",
+      "workload": "sequential_warm",
+      "concurrency": 1,
+      "n": 6,
+      "phase_wall_s": 0.01390812499448657,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "A",
+      "setup_name": "always_cheap",
+      "policy": "direct_cheap",
+      "workload": "concurrency_4",
+      "concurrency": 4,
+      "n": 6,
+      "phase_wall_s": 0.006807499972637743,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "A",
+      "setup_name": "always_cheap",
+      "policy": "direct_cheap",
+      "workload": "concurrency_8",
+      "concurrency": 8,
+      "n": 6,
+      "phase_wall_s": 0.004922082996927202,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "A",
+      "setup_name": "always_cheap",
+      "policy": "direct_cheap",
+      "workload": "burst",
+      "concurrency": 6,
+      "n": 6,
+      "phase_wall_s": 0.004849374992772937,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "A",
+      "setup_name": "always_cheap",
+      "policy": "direct_cheap",
+      "workload": "idle_then_batch",
+      "concurrency": 1,
+      "n": 6,
+      "phase_wall_s": 0.022203958011232316,
+      "idle_s_before": 0.05,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "B",
+      "setup_name": "always_strong",
+      "policy": "direct_strong",
+      "workload": "sequential_warm",
+      "concurrency": 1,
+      "n": 6,
+      "phase_wall_s": 0.021324083034414798,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "B",
+      "setup_name": "always_strong",
+      "policy": "direct_strong",
+      "workload": "concurrency_4",
+      "concurrency": 4,
+      "n": 6,
+      "phase_wall_s": 0.013459832989610732,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "B",
+      "setup_name": "always_strong",
+      "policy": "direct_strong",
+      "workload": "concurrency_8",
+      "concurrency": 8,
+      "n": 6,
+      "phase_wall_s": 0.010638999985530972,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "B",
+      "setup_name": "always_strong",
+      "policy": "direct_strong",
+      "workload": "burst",
+      "concurrency": 6,
+      "n": 6,
+      "phase_wall_s": 0.009187416988424957,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "B",
+      "setup_name": "always_strong",
+      "policy": "direct_strong",
+      "workload": "idle_then_batch",
+      "concurrency": 1,
+      "n": 6,
+      "phase_wall_s": 0.023984417028259486,
+      "idle_s_before": 0.05,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "C",
+      "setup_name": "ecologic",
+      "policy": "ecologic",
+      "workload": "sequential_warm",
+      "concurrency": 1,
+      "n": 6,
+      "phase_wall_s": 0.0225197920226492,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "C",
+      "setup_name": "ecologic",
+      "policy": "ecologic",
+      "workload": "concurrency_4",
+      "concurrency": 4,
+      "n": 6,
+      "phase_wall_s": 0.012864082993473858,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "C",
+      "setup_name": "ecologic",
+      "policy": "ecologic",
+      "workload": "concurrency_8",
+      "concurrency": 8,
+      "n": 6,
+      "phase_wall_s": 0.009895000024698675,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "C",
+      "setup_name": "ecologic",
+      "policy": "ecologic",
+      "workload": "burst",
+      "concurrency": 6,
+      "n": 6,
+      "phase_wall_s": 0.009543917025439441,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "C",
+      "setup_name": "ecologic",
+      "policy": "ecologic",
+      "workload": "idle_then_batch",
+      "concurrency": 1,
+      "n": 6,
+      "phase_wall_s": 0.02247537497896701,
+      "idle_s_before": 0.05,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "D",
+      "setup_name": "cost_matched_static",
+      "policy": "static_mixture",
+      "workload": "sequential_warm",
+      "concurrency": 1,
+      "n": 6,
+      "phase_wall_s": 0.021283290989231318,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "D",
+      "setup_name": "cost_matched_static",
+      "policy": "static_mixture",
+      "workload": "concurrency_4",
+      "concurrency": 4,
+      "n": 6,
+      "phase_wall_s": 0.01234345801640302,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "D",
+      "setup_name": "cost_matched_static",
+      "policy": "static_mixture",
+      "workload": "concurrency_8",
+      "concurrency": 8,
+      "n": 6,
+      "phase_wall_s": 0.009388000005856156,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "D",
+      "setup_name": "cost_matched_static",
+      "policy": "static_mixture",
+      "workload": "burst",
+      "concurrency": 6,
+      "n": 6,
+      "phase_wall_s": 0.007853958988562226,
+      "idle_s_before": 0.0,
+      "serverless": false
+    },
+    {
+      "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+      "setup": "D",
+      "setup_name": "cost_matched_static",
+      "policy": "static_mixture",
+      "workload": "idle_then_batch",
+      "concurrency": 1,
+      "n": 6,
+      "phase_wall_s": 0.023933582997415215,
+      "idle_s_before": 0.05,
+      "serverless": false
+    }
+  ],
+  "static_mix": {
+    "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+    "assignment_policy": "query_independent_bernoulli",
+    "token_estimate_source": "chars_div_4_and_stub_output_for_matching_only",
+    "mix_fraction_strong": 0.0,
+    "cost_match_feasible": false,
+    "estimated_mean_cost_ecologic": 1.8363333333333334e-05,
+    "estimated_mean_cost_cheap": 2.457e-05,
+    "estimated_mean_cost_strong": 0.0004625000000000001,
+    "seed": 20260909,
+    "assignments": {
+      "HumanEval/102": "google/gemma-3n-E4B-it",
+      "HumanEval/105": "google/gemma-3n-E4B-it",
+      "HumanEval/118": "google/gemma-3n-E4B-it",
+      "HumanEval/121": "google/gemma-3n-E4B-it",
+      "HumanEval/126": "google/gemma-3n-E4B-it",
+      "HumanEval/128": "google/gemma-3n-E4B-it"
+    },
+    "rows": [
+      {
+        "prompt_id": "HumanEval/102",
+        "text": "def choose_num(x, y):\n    \"\"\"This function takes two positive numbers x and y and returns the\n    biggest even integer number that is in the range [x, y] inclusive. If \n    there's no such number, then the function should return -1.\n\n    For example:\n    choose_num(12, 15) = 14\n    choose_num(13, 12) = -1\n    \"\"\"",
+        "ecologic_model": "google/gemma-3n-E4B-it",
+        "ecologic_tier": 1,
+        "static_model": "google/gemma-3n-E4B-it"
+      },
+      {
+        "prompt_id": "HumanEval/105",
+        "text": "def by_length(arr):\n    \"\"\"\n    Given an array of integers, sort the integers that are between 1 and 9 inclusive,\n    reverse the resulting array, and then replace each digit by its corresponding name from\n    \"One\", \"Two\", \"Three\", \"Four\", \"Five\", \"Six\", \"Seven\", \"Eight\", \"Nine\".\n\n    For example:\n      arr = [2, 1, 1, 4, 5, 8, 2, 3]   \n            -> sort arr -> [1, 1, 2, 2, 3, 4, 5, 8] \n            -> reverse arr -> [8, 5, 4, 3, 2, 2, 1, 1]\n      return [\"Eight\", \"Five\", \"Four\", \"Three\", \"Two\", \"Two\", \"One\", \"One\"]\n    \n      If the array is empty, return an empty array:\n      arr = []\n      return []\n    \n      If the array has any strange number ignore it:\n      arr = [1, -1 , 55] \n            -> sort arr -> [-1, 1, 55]\n            -> reverse arr -> [55, 1, -1]\n      return = ['One']\n    \"\"\"",
+        "ecologic_model": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+        "ecologic_tier": 2,
+        "static_model": "google/gemma-3n-E4B-it"
+      },
+      {
+        "prompt_id": "HumanEval/118",
+        "text": "def get_closest_vowel(word):\n    \"\"\"You are given a word. Your task is to find the closest vowel that stands between \n    two consonants from the right side of the word (case sensitive).\n    \n    Vowels in the beginning and ending doesn't count. Return empty string if you didn't\n    find any vowel met the above condition. \n\n    You may assume that the given string contains English letter only.\n\n    Example:\n    get_closest_vowel(\"yogurt\") ==> \"u\"\n    get_closest_vowel(\"FULL\") ==> \"U\"\n    get_closest_vowel(\"quick\") ==> \"\"\n    get_closest_vowel(\"ab\") ==> \"\"\n    \"\"\"",
+        "ecologic_model": "google/gemma-3n-E4B-it",
+        "ecologic_tier": 1,
+        "static_model": "google/gemma-3n-E4B-it"
+      },
+      {
+        "prompt_id": "HumanEval/121",
+        "text": "def solution(lst):\n    \"\"\"Given a non-empty list of integers, return the sum of all of the odd elements that are in even positions.\n    \n\n    Examples\n    solution([5, 8, 7, 1]) ==> 12\n    solution([3, 3, 3, 3, 3]) ==> 9\n    solution([30, 13, 24, 321]) ==>0\n    \"\"\"",
+        "ecologic_model": "google/gemma-3n-E4B-it",
+        "ecologic_tier": 1,
+        "static_model": "google/gemma-3n-E4B-it"
+      },
+      {
+        "prompt_id": "HumanEval/126",
+        "text": "def is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) \u279e True\n    is_sorted([1, 2, 3, 4, 5]) \u279e True\n    is_sorted([1, 3, 2, 4, 5]) \u279e False\n    is_sorted([1, 2, 3, 4, 5, 6]) \u279e True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) \u279e True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) \u279e False\n    is_sorted([1, 2, 2, 3, 3, 4]) \u279e True\n    is_sorted([1, 2, 2, 2, 3, 4]) \u279e False\n    '''",
+        "ecologic_model": "google/gemma-3n-E4B-it",
+        "ecologic_tier": 1,
+        "static_model": "google/gemma-3n-E4B-it"
+      },
+      {
+        "prompt_id": "HumanEval/128",
+        "text": "def prod_signs(arr):\n    \"\"\"\n    You are given an array arr of integers and you need to return\n    sum of magnitudes of integers multiplied by product of all signs\n    of each number in the array, represented by 1, -1 or 0.\n    Note: return None for empty arr.\n\n    Example:\n    >>> prod_signs([1, 2, 2, -4]) == -9\n    >>> prod_signs([0, 1]) == 0\n    >>> prod_signs([]) == None\n    \"\"\"",
+        "ecologic_model": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+        "ecologic_tier": 2,
+        "static_model": "google/gemma-3n-E4B-it"
+      }
+    ],
+    "note": "Static mix is query-independent. The fraction is chosen so expected cost under token estimates matches EcoLogic. Realized cost is measured later."
+  },
+  "query_set": {
+    "n": 80,
+    "query_set_hash": "66cdeceab5a1a43e8247ad25c69295e6031c62978acb818599372ba5367e0e83",
+    "executed_n": 6,
+    "executed_ids": [
+      "HumanEval/102",
+      "HumanEval/105",
+      "HumanEval/118",
+      "HumanEval/121",
+      "HumanEval/126",
+      "HumanEval/128"
+    ],
+    "frozen_before_benchmark": true
+  },
+  "budget": {
+    "estimator": "strong_model_max_tokens_times_retries",
+    "not_measured_cost": true,
+    "strong_model": "gpt-4o",
+    "max_input_tokens_est": 201,
+    "max_output_tokens": 16,
+    "chars_per_token_estimate": 4.0,
+    "max_retries": 2,
+    "attempts_per_request": 3,
+    "n_queries": 6,
+    "n_policies": 4,
+    "n_workloads": 5,
+    "n_planned_requests": 120,
+    "n_planned_attempts": 360,
+    "unit_worst_usd": 0.0006625,
+    "worst_case_usd": 0.2385,
+    "note": "Worst-case uses the strong-model price, estimated input tokens (chars/4), max_tokens output, and every retry. This is an estimate used only for the pre-run cap, not a measured energy or cost result.",
+    "max_cost_usd": null
+  },
+  "provenance": {
+    "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+    "cloud_backend": null,
+    "region": null,
+    "instance_configuration": {
+      "source": "not_provisioned_by_this_tool",
+      "backend": "local",
+      "serverless": false,
+      "note": "This runner does not deploy Cloud Run or Lambda and does not invent CPU/RAM. Recorded fields come from flags and platform env."
+    },
+    "timestamp": "2026-09-10T09:35:48.818498Z",
+    "git_commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+    "git": {
+      "available": true,
+      "commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+      "branch": "main",
+      "dirty": true,
+      "error": null
+    },
+    "model_identifiers": {
+      "tier1": {
+        "name": "google/gemma-3n-E4B-it",
+        "provider": "together"
+      },
+      "tier2": {
+        "name": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+        "provider": "together"
+      },
+      "tier3": {
+        "name": "gpt-4o",
+        "provider": "openai"
+      }
+    },
+    "pricing_config_hash": "95e7c137d7100dfdf3f54619577d4a84c312be07686cbc310b18a9de84659ef5",
+    "query_set_hash": "66cdeceab5a1a43e8247ad25c69295e6031c62978acb818599372ba5367e0e83",
+    "generation_mode": "dry_run",
+    "energy": {
+      "measured": false,
+      "status": "not_measured",
+      "note": "Estimated energy is not reported as measured energy."
+    },
+    "allow_api": false,
+    "allow_cloud": false,
+    "max_cost_usd": null,
+    "dry_run": true,
+    "base_url": null,
+    "n_prompts_frozen": 80,
+    "n_prompts_executed": 6,
+    "workloads": [
+      {
+        "name": "sequential_warm",
+        "kind": "sequential",
+        "concurrency": 1,
+        "n_requests": 6,
+        "idle_s": 0.0,
+        "optional": false,
+        "note": "one request at a time after process start (warm after first)"
+      },
+      {
+        "name": "concurrency_4",
+        "kind": "concurrent",
+        "concurrency": 4,
+        "n_requests": 6,
+        "idle_s": 0.0,
+        "optional": false,
+        "note": "four in-flight requests"
+      },
+      {
+        "name": "concurrency_8",
+        "kind": "concurrent",
+        "concurrency": 8,
+        "n_requests": 6,
+        "idle_s": 0.0,
+        "optional": true,
+        "note": "eight in-flight requests; skipped when --skip-concurrency-8"
+      },
+      {
+        "name": "burst",
+        "kind": "burst",
+        "concurrency": 6,
+        "n_requests": 6,
+        "idle_s": 0.0,
+        "optional": false,
+        "note": "simultaneous burst of 6 requests from the frozen ID list"
+      },
+      {
+        "name": "idle_then_batch",
+        "kind": "idle_gap",
+        "concurrency": 1,
+        "n_requests": 6,
+        "idle_s": 0.05,
+        "optional": false,
+        "note": "idle gap then a new batch. Cold start is labeled only if the process/container actually restarts; high latency is not a proxy."
+      }
+    ],
+    "stopped": null,
+    "cost_guard": {
+      "realized_usd": 0.0,
+      "n_costed": 0,
+      "remaining_planned": 120,
+      "limit_usd": null,
+      "estimate_usd_per_query": 0.0006625,
+      "unit_cost_usd": 0.0006625
+    },
+    "preflight_written_before_inference": true
+  },
+  "cloud_backend": null,
+  "region": null,
+  "instance_configuration": {
+    "source": "not_provisioned_by_this_tool",
+    "backend": "local",
+    "serverless": false,
+    "note": "This runner does not deploy Cloud Run or Lambda and does not invent CPU/RAM. Recorded fields come from flags and platform env."
+  },
+  "timestamp": "2026-09-10T09:35:48.818498Z",
+  "git_commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+  "model_identifiers": {
+    "tier1": {
+      "name": "google/gemma-3n-E4B-it",
+      "provider": "together"
+    },
+    "tier2": {
+      "name": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+      "provider": "together"
+    },
+    "tier3": {
+      "name": "gpt-4o",
+      "provider": "openai"
+    }
+  },
+  "pricing_config_hash": "95e7c137d7100dfdf3f54619577d4a84c312be07686cbc310b18a9de84659ef5",
+  "query_set_hash": "66cdeceab5a1a43e8247ad25c69295e6031c62978acb818599372ba5367e0e83"
+}

@@ -18,7 +18,8 @@ from urllib.parse import urlparse
 
 from woais_experiments.deployment.config import load_deployment_config
 from woais_experiments.deployment.infer import AppContext, build_context, handle_inference
-from woais_experiments.deployment.records import MEASUREMENT_TYPE
+from woais_experiments.deployment.lifecycle import platform_cloud_backend
+from woais_experiments.deployment.records import v2_measurement_type
 
 HEALTH_PATHS = {"/health", "/healthz"}
 LIFECYCLE_PATHS = {"/lifecycle"}
@@ -46,7 +47,7 @@ class InferHandler(BaseHTTPRequestHandler):
             sys.stderr.write("%s - %s\n" % (self.address_string(), fmt % args))
 
     def _write_json(self, status: int, payload: dict[str, Any]) -> None:
-        payload.setdefault("measurement_type", MEASUREMENT_TYPE)
+        payload.setdefault("measurement_type", self.ctx.measurement_type)
         raw = json.dumps(payload, default=str).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
@@ -60,7 +61,7 @@ class InferHandler(BaseHTTPRequestHandler):
             life = self.ctx.lifecycle
             self._write_json(200, {
                 "ok": True,
-                "measurement_type": MEASUREMENT_TYPE,
+                "measurement_type": self.ctx.measurement_type,
                 "backend": self.ctx.backend,
                 "generation_mode": self.ctx.generation_mode,
                 "allow_api": self.ctx.allow_api,
@@ -73,7 +74,7 @@ class InferHandler(BaseHTTPRequestHandler):
         if path in LIFECYCLE_PATHS:
             life = self.ctx.lifecycle
             self._write_json(200, {
-                "measurement_type": MEASUREMENT_TYPE,
+                "measurement_type": self.ctx.measurement_type,
                 "process_id": life.process_id,
                 "request_count": life.request_count,
                 "process_start_monotonic": life.process_start_monotonic,
@@ -84,12 +85,12 @@ class InferHandler(BaseHTTPRequestHandler):
                 ),
             })
             return
-        self._write_json(404, {"error_type": "not_found", "measurement_type": MEASUREMENT_TYPE})
+        self._write_json(404, {"error_type": "not_found", "measurement_type": self.ctx.measurement_type})
 
     def do_POST(self) -> None:  # noqa: N802
         path = urlparse(self.path).path.rstrip("/") or "/"
         if path not in INFER_PATHS:
-            self._write_json(404, {"error_type": "not_found", "measurement_type": MEASUREMENT_TYPE})
+            self._write_json(404, {"error_type": "not_found", "measurement_type": self.ctx.measurement_type})
             return
         length_s = self.headers.get("Content-Length")
         raw_ok = True
@@ -176,9 +177,19 @@ def _lambda_context() -> AppContext:
     global _LAMBDA_CTX
     if _LAMBDA_CTX is None:
         allow = os.environ.get("ECOLOGIC_DEPLOY_ALLOW_API", "").strip() in {"1", "true", "TRUE", "yes"}
+        allow_cloud = os.environ.get("ECOLOGIC_DEPLOY_ALLOW_CLOUD", "").strip() in {"1", "true", "TRUE", "yes"}
         dry = not allow
         cfg = load_deployment_config(os.environ.get("ECOLOGIC_DEPLOY_CONFIG"))
-        _LAMBDA_CTX = build_context(cfg, allow_api=allow, dry_run=dry, backend="lambda")
+        paid = bool(allow) and not dry
+        serverless = bool(paid and allow_cloud and platform_cloud_backend())
+        _LAMBDA_CTX = build_context(
+            cfg,
+            allow_api=allow,
+            dry_run=dry,
+            backend="lambda",
+            allow_cloud=allow_cloud,
+            measurement_type=v2_measurement_type(paid=paid, serverless=serverless),
+        )
     return _LAMBDA_CTX
 
 
@@ -192,7 +203,7 @@ def lambda_handler(event: dict[str, Any], context: Any = None) -> dict[str, Any]
         "statusCode": int(status),
         "headers": {"Content-Type": "application/json"},
         "body": json.dumps(payload, default=str),
-        "measurement_type": MEASUREMENT_TYPE,
+        "measurement_type": rec.measurement_type,
     }
 
 
@@ -203,6 +214,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--port", type=int, default=None)
     p.add_argument("--backend", default="local", choices=("local", "docker", "cloudrun", "lambda"))
     p.add_argument("--allow-api", action="store_true", help="Permit paid provider calls")
+    p.add_argument("--allow-cloud", action="store_true", help="Permit serverless labels on Cloud Run / Lambda")
     p.add_argument("--dry-run", action="store_true", help="Stub provider; no paid HTTP")
     return p
 
@@ -213,21 +225,30 @@ def main(argv: list[str] | None = None) -> int:
         print("error: --allow-api and --dry-run are mutually exclusive", file=sys.stderr)
         return 2
     dry_run = not args.allow_api
+    allow_cloud = bool(args.allow_cloud) or os.environ.get("ECOLOGIC_DEPLOY_ALLOW_CLOUD", "").strip() in {
+        "1", "true", "TRUE", "yes",
+    }
     cfg = load_deployment_config(args.config)
     listen = cfg.get("listen") or {}
     host = args.host or os.environ.get("HOST") or str(listen.get("host") or "0.0.0.0")
     port = int(args.port or os.environ.get("PORT") or listen.get("port") or 8080)
+    paid = bool(args.allow_api) and not dry_run
+    serverless = bool(paid and allow_cloud and platform_cloud_backend())
+    measurement_type = v2_measurement_type(paid=paid, serverless=serverless)
     ctx = build_context(
         cfg,
         allow_api=bool(args.allow_api),
         dry_run=dry_run,
         backend=str(args.backend),
+        allow_cloud=allow_cloud,
+        measurement_type=measurement_type,
     )
     httpd = InferHTTPServer((host, port), ctx)
     bound = httpd.server_address
     print(
         f"EcoLogic deploy listening on http://{bound[0]}:{bound[1]} "
-        f"mode={ctx.generation_mode} measurement_type={MEASUREMENT_TYPE}",
+        f"mode={ctx.generation_mode} measurement_type={ctx.measurement_type} "
+        f"serverless={ctx.serverless_labeled}",
         flush=True,
     )
     try:

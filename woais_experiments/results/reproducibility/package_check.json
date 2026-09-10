@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "n_warnings": 6,
+  "n_warnings": 7,
   "n_critical": 0,
   "critical": [],
   "warnings": [
@@ -14,6 +14,14 @@
       "paths": [
         "woais_experiments/results/hash_check_after.json",
         "woais_experiments/results/hash_check_before.json"
+      ]
+    },
+    {
+      "path": "woais_experiments/results/external_router/accounting_flips.csv",
+      "reason": "duplicate_output",
+      "paths": [
+        "woais_experiments/results/external_router/accounting_flips.csv",
+        "woais_experiments/results/external_router/ranking_flips.csv"
       ]
     },
     {
@@ -58,6 +66,13 @@
       "paths": [
         "woais_experiments/results/hash_check_after.json",
         "woais_experiments/results/hash_check_before.json"
+      ]
+    },
+    {
+      "sha256": "8844810fe8434332d5e67cc4dda9a825ba6e48f27a30f2b06762adaa94399b40",
+      "paths": [
+        "woais_experiments/results/external_router/accounting_flips.csv",
+        "woais_experiments/results/external_router/ranking_flips.csv"
       ]
     },
     {

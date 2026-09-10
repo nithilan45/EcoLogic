@@ -1,0 +1,98 @@
+{
+  "protocol": "heldout_v1",
+  "experiment_id": "heldout_v1",
+  "historical_stage12_n364_not_used": true,
+  "split_manifest_sha256": "caa1105bfdb067ddc00b0fc652dbf7e170138e94eb1b97903711c3dcd6b7b785",
+  "dataset_sha256": "102892c3c7d95032ecc2cce3a0c8b7868b6195ceb114ef2b4492bc87bfe8eba4",
+  "seed": 20260910,
+  "split_seed": 20260910,
+  "n": {
+    "train": 720,
+    "val": 237,
+    "test": 243,
+    "total": 1200
+  },
+  "selection_criterion": "On validation only: maximize quality_advantage versus the in-sample cost-matched static hull. If that advantage is undefined, maximize validation quality and break ties by lower realized USD. Candidates are logistic, boosted tree, length threshold, and the frozen production EcoLogic heuristic. Baselines are not selected. The test split is not used for fitting, thresholding, or selection.",
+  "selected_method": "logistic",
+  "cheap_tier": 2,
+  "strong_tier": 3,
+  "train_mean_usd_by_tier": {
+    "1": 0.0011695088194444445,
+    "2": 0.000149898125,
+    "3": 0.0015191562499999999
+  },
+  "logistic": {
+    "C": 0.01,
+    "degenerate": false,
+    "max_features": 512,
+    "ngram_range": [
+      1,
+      2
+    ],
+    "val_quality": 0.890295358649789,
+    "val_cost": 0.00017060991561181435,
+    "val_quality_advantage": 0.0,
+    "selected_on": "validation",
+    "test_used": false
+  },
+  "tree": {
+    "max_depth": 2,
+    "learning_rate": 0.05,
+    "max_iter": 120,
+    "degenerate": false,
+    "val_quality": 0.890295358649789,
+    "val_cost": 0.00017060991561181435,
+    "val_quality_advantage": 0.0,
+    "selected_on": "validation",
+    "test_used": false
+  },
+  "threshold": {
+    "tau": 4.720276660778544,
+    "cheap": 2,
+    "strong": 3,
+    "feature": "log_n_words",
+    "val_quality": 0.9029535864978903,
+    "val_cost": 0.00019386244725738396,
+    "val_quality_advantage": null,
+    "selected_on": "validation",
+    "test_used": false
+  },
+  "ecologic_heuristic": {
+    "kind": "frozen_production_classify_prompt_local_nlp",
+    "fitted": false,
+    "val_quality": 0.8649789029535865,
+    "val_cost": 0.0009361879746835442,
+    "val_quality_advantage": null,
+    "selected_on": "validation",
+    "test_used": false
+  },
+  "cost_matched_static": {
+    "weights": {
+      "2": 1.0
+    },
+    "feasible": true,
+    "kind": "always_2",
+    "note": "",
+    "frozen_from": "validation_hull_at_selected_router_val_cost",
+    "val_router_cost": 0.00017060991561181435,
+    "val_router_quality": 0.890295358649789,
+    "test_used": false
+  },
+  "random_matched_mix": {
+    "weights": {
+      "1": 0.0,
+      "2": 1.0,
+      "3": 0.0
+    },
+    "frozen_from": "selected_router_validation_mix",
+    "test_used": false
+  },
+  "test_ids_hash": "34e3e56880b45c805d3e0c05e1061ee532c22dc8078e59741831ebf86a25a173",
+  "test_metrics_inspected": false,
+  "preprocessing": {
+    "tfidf_fit_on": "train",
+    "scaler_fit_on": "train",
+    "dense_lexicons": "frozen_production (not redesigned on this panel)"
+  },
+  "config_sha256": "082df0eb5ddba145cc8054b3b6143945d16224f700a7dbcd96579cf64e448aeb"
+}

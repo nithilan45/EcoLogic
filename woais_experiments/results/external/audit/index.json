@@ -17,9 +17,9 @@
     {
       "name": "routellm_gsm8k_responses",
       "kind": "panel",
-      "available": false,
-      "path": null,
-      "note": "Optional local RouteLLM GSM8K CSV. Searched ROUTELLM_RESPONSES, ROUTELLM_DATA, /tmp/routellm_chk, and woais_experiments/data/routellm/. Not downloaded.",
+      "available": true,
+      "path": "woais_experiments/data/routellm/gsm8k_responses.csv",
+      "note": "Optional local RouteLLM GSM8K CSV. Searched ROUTELLM_RESPONSES, ROUTELLM_DATA, /tmp/routellm_chk, and woais_experiments/data/routellm/. Present on disk.",
       "extra": {}
     },
     {
@@ -276,10 +276,48 @@
       }
     },
     "routellm_gsm8k_responses": {
-      "available": false,
+      "schema_version": "1.0",
+      "dataset": "routellm_gsm8k",
+      "usd_available": false,
+      "n_queries": 1319,
+      "n_models": 2,
+      "models": [
+        "mistralai/Mixtral-8x7B-Instruct-v0.1",
+        "gpt-4-1106-preview"
+      ],
+      "canonical_columns": [
+        "query_id",
+        "dataset",
+        "model",
+        "quality",
+        "input_tokens",
+        "output_tokens",
+        "realized_cost",
+        "latency_ms"
+      ],
+      "notes": [
+        "RouteLLM wide CSV melted to long format. Response text was not tokenized (no download, no tiktoken/transformers). Cost is present only if the file already carries token or cost columns."
+      ],
+      "has_router_assignment": false,
+      "mean_quality_by_model": {
+        "mistralai/Mixtral-8x7B-Instruct-v0.1": 0.6383623957543594,
+        "gpt-4-1106-preview": 0.8567096285064443
+      },
+      "router": null,
+      "skipped": [
+        "naive accounting (needs realized_cost)",
+        "cost-matching (needs realized_cost)",
+        "oracle frontier (needs realized_cost)",
+        "bootstrap vs cost-matched static"
+      ],
+      "reason": "realized_cost missing for at least one model; quality-only report",
+      "source": "woais_experiments/data/routellm/gsm8k_responses.csv",
+      "long_n_rows": 2638,
+      "available": true,
       "kind": "panel",
-      "note": "Optional local RouteLLM GSM8K CSV. Searched ROUTELLM_RESPONSES, ROUTELLM_DATA, /tmp/routellm_chk, and woais_experiments/data/routellm/. Not downloaded.",
-      "path": null
+      "saved": {
+        "json": "woais_experiments/results/external/audit/routellm_gsm8k_responses.json"
+      }
     },
     "ecologic_stage12": {
       "schema_version": "1.0",
@@ -1786,6 +1824,9 @@
   "saved": {
     "routellm_s9_committed": {
       "json": "woais_experiments/results/external/audit/routellm_s9_committed.json"
+    },
+    "routellm_gsm8k_responses": {
+      "json": "woais_experiments/results/external/audit/routellm_gsm8k_responses.json"
     },
     "ecologic_stage12": {
       "json": "woais_experiments/results/external/audit/ecologic_stage12.json",

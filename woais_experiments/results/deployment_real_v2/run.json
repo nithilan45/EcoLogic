@@ -1,0 +1,48 @@
+{
+  "generation_mode": "dry_run",
+  "serverless": false,
+  "paid": false,
+  "n_records": 120,
+  "stopped": null,
+  "real_command": "python run_woais.py deployment-real --allow-api --allow-cloud --max-cost-usd REPLACE_WITH_LIMIT --backend cloudrun --base-url https://YOUR_CLOUD_RUN_URL",
+  "git": {
+    "available": true,
+    "commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+    "branch": "main",
+    "dirty": true,
+    "error": null
+  },
+  "note": "Local and loopback results are not labeled serverless. MEASURED_REAL_DEPLOYMENT serverless labels require Cloud Run or Lambda with --allow-api --allow-cloud --max-cost-usd and a non-loopback --base-url.",
+  "measurement_type": "MEASURED_REAL_DEPLOYMENT",
+  "cloud_backend": null,
+  "region": null,
+  "instance_configuration": {
+    "source": "not_provisioned_by_this_tool",
+    "backend": "local",
+    "serverless": false,
+    "note": "This runner does not deploy Cloud Run or Lambda and does not invent CPU/RAM. Recorded fields come from flags and platform env."
+  },
+  "timestamp": "2026-09-10T09:35:48.818498Z",
+  "git_commit": "320451d4202c95b4513d59a1063f62262daf9d82",
+  "model_identifiers": {
+    "tier1": {
+      "name": "google/gemma-3n-E4B-it",
+      "provider": "together"
+    },
+    "tier2": {
+      "name": "ServiceNow-AI/Apriel-1.6-15b-Thinker",
+      "provider": "together"
+    },
+    "tier3": {
+      "name": "gpt-4o",
+      "provider": "openai"
+    }
+  },
+  "pricing_config_hash": "95e7c137d7100dfdf3f54619577d4a84c312be07686cbc310b18a9de84659ef5",
+  "query_set_hash": "66cdeceab5a1a43e8247ad25c69295e6031c62978acb818599372ba5367e0e83",
+  "energy": {
+    "measured": false,
+    "status": "not_measured",
+    "note": "Estimated energy is not reported as measured energy."
+  }
+}
