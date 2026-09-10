@@ -1,0 +1,7 @@
+{
+  "config": "multimodal_mathvista",
+  "split": "test",
+  "task_name_query_counts": {
+    "mathvista": 100
+  }
+}

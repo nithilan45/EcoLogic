@@ -368,5 +368,65 @@
       }
     ],
     "note": "Correction identity was already validated on RouteLLM GSM8K in Stage 9. This package does not re-tokenize or re-score that release."
+  },
+  "adapter": {
+    "downloaded": false,
+    "discovered": [
+      {
+        "name": "routellm_s9_committed",
+        "kind": "summary",
+        "available": true,
+        "path": "stage7_10/s9_static_baselines.json",
+        "note": "Committed Stage 9 JSON (aggregates only). Per-query GSM8K responses are not in this repository and are not downloaded.",
+        "extra": {}
+      },
+      {
+        "name": "routellm_gsm8k_responses",
+        "kind": "panel",
+        "available": false,
+        "path": null,
+        "note": "Optional local RouteLLM GSM8K CSV. Searched ROUTELLM_RESPONSES, ROUTELLM_DATA, /tmp/routellm_chk, and woais_experiments/data/routellm/. Not downloaded.",
+        "extra": {}
+      },
+      {
+        "name": "ecologic_stage12",
+        "kind": "panel",
+        "available": true,
+        "path": "raw_results/graded.jsonl",
+        "note": "Frozen EcoLogic Stage 1\u20132 item matrix, n=364, models=['Qwen/Qwen3.5-9B', 'openai/gpt-oss-20b', 'gpt-4o']",
+        "extra": {
+          "n": 364,
+          "n_models": 3
+        }
+      },
+      {
+        "name": "ecologic_stage7",
+        "kind": "panel",
+        "available": true,
+        "path": "stage7_10/s7_test_samples.csv.gz",
+        "note": "Frozen Stage 7 test matrix (sample_idx=0), n=364",
+        "extra": {
+          "n": 364,
+          "n_models": 3
+        }
+      }
+    ],
+    "saved": {
+      "routellm_s9_committed": {
+        "json": "woais_experiments/results/external/audit/routellm_s9_committed.json"
+      },
+      "ecologic_stage12": {
+        "json": "woais_experiments/results/external/audit/ecologic_stage12.json",
+        "per_query_csv": "woais_experiments/results/external/audit/ecologic_stage12_per_query.csv",
+        "oracle_csv": "woais_experiments/results/external/audit/ecologic_stage12_oracle.csv"
+      },
+      "ecologic_stage7": {
+        "json": "woais_experiments/results/external/audit/ecologic_stage7.json",
+        "per_query_csv": "woais_experiments/results/external/audit/ecologic_stage7_per_query.csv",
+        "oracle_csv": "woais_experiments/results/external/audit/ecologic_stage7_oracle.csv"
+      }
+    },
+    "n_boot": 2000,
+    "note": "No remote fetches. RouteLLM per-query GSM8K is audited only if a local CSV already exists; otherwise the committed Stage 9 summary is recorded."
   }
 }

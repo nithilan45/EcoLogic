@@ -46,7 +46,10 @@ def market_from_panel(
     cost: np.ndarray,
     quality: np.ndarray,
 ) -> StaticMarket:
-    """Unconditional means over queries (axis 0). `cost`/`quality` shape (n, M)."""
+    """Unconditional in-sample means over the same panel being scored.
+
+    This is an in-sample static comparator / hull, not an OOS-trained router.
+    """
     cost = np.asarray(cost, dtype=float)
     quality = np.asarray(quality, dtype=float)
     if cost.shape != quality.shape or cost.ndim != 2:

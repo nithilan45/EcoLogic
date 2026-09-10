@@ -1,0 +1,124 @@
+# EcoLogic systems stress tests.
+#
+# Two modes, never mixed:
+#   simulated  → measurement_type = SIMULATED, woais_experiments/results/stress/simulated/
+#   measured   → measurement_type = MEASURED,  woais_experiments/results/stress/measured/
+#
+# Paid MEASURED runs require BOTH --allow-api and --max-cost-usd.
+# Default measured path is dry-run against the local stub (still MEASURED).
+
+seed: 20260909
+
+n_requests: 16
+n_requests_measured: 6
+
+timeout_s: 8.0
+max_concurrency: 8
+max_concurrency_paid: 2
+
+profiles: all
+multipliers: [1, 2, 5, 10, 25, 50]
+
+# 1x offered rates (req/s). Multipliers scale these. Absolute values are
+# environment knobs, not a claim about production capacity.
+rates_1x:
+  low: 8.0
+  medium: 24.0
+  high: 64.0
+
+replay_timestamps_s:
+  - 0.00
+  - 0.12
+  - 0.25
+  - 0.31
+  - 0.48
+  - 0.52
+  - 0.70
+  - 0.91
+  - 1.05
+  - 1.20
+  - 1.33
+  - 1.48
+  - 1.61
+  - 1.80
+  - 1.95
+  - 2.10
+  - 2.22
+  - 2.40
+  - 2.55
+  - 2.71
+  - 2.88
+  - 3.01
+  - 3.18
+  - 3.35
+  - 3.50
+  - 3.66
+  - 3.80
+  - 3.95
+  - 4.12
+  - 4.28
+  - 4.40
+  - 4.55
+
+sla:
+  p95_latency_s: 1.5
+  failure_rate: 0.05
+  queue_growth_min_slope: 0.05
+  queue_growth_min_r2: 0.30
+
+cost:
+  estimate_usd_per_query: 0.002
+
+policies:
+  - always_cheap
+  - always_strong
+  - ecologic
+  - cost_matched_static
+
+# SIMULATED catalog: cheap is fast/cheap, strong is slow/costly so saturation
+# appears as load increases. Quality is synthetic, not a live grade.
+simulator:
+  simulated: true
+  catalog:
+    source: synthetic
+    cheap_model: cheap
+    strong_model: strong
+    models:
+      cheap:
+        service_s: 0.05
+        cost: 0.001
+        quality: 0.72
+      strong:
+        service_s: 0.25
+        cost: 0.012
+        quality: 0.93
+  serverless:
+    max_instances: 1
+    max_concurrency_per_instance: 1
+    idle_timeout_s: 10.0
+    cold_start_delay_s: 0.0
+    first_request_cold: false
+    scale_to_zero: true
+    queue_discipline: fifo
+  router:
+    max_concurrency: 4
+  sla:
+    max_e2e_s: 2.0
+  policies:
+    always_cheap:
+      type: always_cheap
+      router_overhead_s: 0.0
+      router_cost_usd: 0.0
+    always_strong:
+      type: always_strong
+      router_overhead_s: 0.0
+      router_cost_usd: 0.0
+    ecologic:
+      type: ecologic
+      router_overhead_s: 0.002
+      router_cost_usd: 0.0
+    cost_matched_static:
+      type: cost_matched_static
+      router_overhead_s: 0.0
+      router_cost_usd: 0.0
+      match_to: ecologic

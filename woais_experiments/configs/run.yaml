@@ -1,0 +1,40 @@
+schema_version: "1.0"
+name: woais_offline
+# Paid provider calls (Together / OpenAI / Anthropic) stay off unless
+# `python run_woais.py --allow-api …` is passed AND this is true.
+api_calls: false
+write_outside_woais_experiments: false
+
+seeds:
+  random_policy: 20260905
+  monte_carlo: 20260909
+  arrival: 20260909
+
+bootstrap:
+  n_random_sims: 2000
+  n_perm: 199
+  n_bootstrap_robustness: 50
+  n_grid_oracle: 17
+  n_grid_external: 9
+
+paths:
+  experiment_json: experiment.json
+  models_json: models.json
+  serverless_json: serverless.json
+  workload_yaml: workload_simulator.yaml
+
+python:
+  min_major: 3
+  min_minor: 10
+
+stages:
+  audit:
+    require_frozen_hashes: true
+  accounting: {}
+  static: {}
+  oracle: {}
+  latency: {}
+  workload: {}
+  external:
+    download: false
+  robustness: {}

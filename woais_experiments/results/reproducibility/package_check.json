@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "n_warnings": 6,
+  "n_critical": 0,
+  "critical": [],
+  "warnings": [
+    {
+      "path": ".env.example",
+      "reason": "env_template"
+    },
+    {
+      "path": "woais_experiments/results/hash_check_after.json",
+      "reason": "duplicate_output",
+      "paths": [
+        "woais_experiments/results/hash_check_after.json",
+        "woais_experiments/results/hash_check_before.json"
+      ]
+    },
+    {
+      "path": "woais_experiments/results/accounting/framework/sign_flip_length_biased_per_query.csv",
+      "reason": "duplicate_output",
+      "paths": [
+        "woais_experiments/results/accounting/framework/sign_flip_length_biased_per_query.csv",
+        "woais_experiments/results/accounting/framework/naive_underestimates_per_query.csv"
+      ]
+    },
+    {
+      "path": "woais_experiments/results/accounting/framework/sign_flip_short_to_cheap_per_query.csv",
+      "reason": "duplicate_output",
+      "paths": [
+        "woais_experiments/results/accounting/framework/sign_flip_short_to_cheap_per_query.csv",
+        "woais_experiments/results/accounting/framework/naive_overestimates_per_query.csv"
+      ]
+    },
+    {
+      "path": "woais_experiments/results/accounting/framework/naive_overestimates_per_query.json",
+      "reason": "duplicate_output",
+      "paths": [
+        "woais_experiments/results/accounting/framework/naive_overestimates_per_query.json",
+        "woais_experiments/results/accounting/framework/sign_flip_short_to_cheap_per_query.json"
+      ]
+    },
+    {
+      "path": "woais_experiments/results/accounting/framework/naive_underestimates_per_query.json",
+      "reason": "duplicate_output",
+      "paths": [
+        "woais_experiments/results/accounting/framework/naive_underestimates_per_query.json",
+        "woais_experiments/results/accounting/framework/sign_flip_length_biased_per_query.json"
+      ]
+    }
+  ],
+  "notebooks": [],
+  "checkpoints": [],
+  "large_unfrozen": [],
+  "duplicates": [
+    {
+      "sha256": "a3c0e8d349c11fc7a583491e1d6e36171dd6c80c3963734012528e4589485932",
+      "paths": [
+        "woais_experiments/results/hash_check_after.json",
+        "woais_experiments/results/hash_check_before.json"
+      ]
+    },
+    {
+      "sha256": "65af392dfbbee06bb97a54dda2620d7ecdf76ede063b6b4371e36087c387c9db",
+      "paths": [
+        "woais_experiments/results/accounting/framework/sign_flip_length_biased_per_query.csv",
+        "woais_experiments/results/accounting/framework/naive_underestimates_per_query.csv"
+      ]
+    },
+    {
+      "sha256": "c9e9c666e51cf710b15db1e62643992697d100ea4c4f245068736b7616e9371b",
+      "paths": [
+        "woais_experiments/results/accounting/framework/sign_flip_short_to_cheap_per_query.csv",
+        "woais_experiments/results/accounting/framework/naive_overestimates_per_query.csv"
+      ]
+    },
+    {
+      "sha256": "4a08569c52d812e2ae77db1a12a53dd3c4de69381d82e1833a292acaeeb6f249",
+      "paths": [
+        "woais_experiments/results/accounting/framework/naive_overestimates_per_query.json",
+        "woais_experiments/results/accounting/framework/sign_flip_short_to_cheap_per_query.json"
+      ]
+    },
+    {
+      "sha256": "bc2a2880ddd0949a7af0f8630727f8057c1233b908513e46335e95aebc96b65d",
+      "paths": [
+        "woais_experiments/results/accounting/framework/naive_underestimates_per_query.json",
+        "woais_experiments/results/accounting/framework/sign_flip_length_biased_per_query.json"
+      ]
+    }
+  ],
+  "note": "Frozen hashed files are treated as required. Warnings are not automatic deletions."
+}

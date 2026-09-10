@@ -78,14 +78,21 @@ def load() -> tuple[dict, dict, dict, list[str]]:
     bench_of = {}
     for r in rows:
         key = (r["tier"], r["item_id"])
-        correct[key] = bool(r.get("correct"))
-        tokens[key] = int(r.get("total_tokens") or 0)
-        usd[key] = float(r.get("usd") or 0.0)
+        tok = r.get("total_tokens")
+        usd_v = r.get("usd")
+        if tok is None or usd_v is None or r.get("correct") is None:
+            continue
+        correct[key] = bool(r["correct"])
+        tokens[key] = int(tok)
+        usd[key] = float(usd_v)
         bench_of[r["item_id"]] = r["benchmark"]
 
     # only items with a successful response from all three tiers are comparable
-    item_ids = sorted({i for (_, i) in correct}, key=lambda x: (bench_of[x], x))
-    complete = [i for i in item_ids if all((t, i) in correct for t in TIERS)]
+    item_ids = sorted({i for (_, i) in correct}, key=lambda x: (bench_of.get(x, ""), x))
+    complete = [
+        i for i in item_ids
+        if all((t, i) in correct and (t, i) in usd and (t, i) in tokens for t in TIERS)
+    ]
     return correct, tokens, usd, complete, bench_of, rows
 
 

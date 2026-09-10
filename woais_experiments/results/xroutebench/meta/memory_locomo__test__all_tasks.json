@@ -1,0 +1,7 @@
+{
+  "config": "memory_locomo",
+  "split": "test",
+  "task_name_query_counts": {
+    "locomo": 314
+  }
+}

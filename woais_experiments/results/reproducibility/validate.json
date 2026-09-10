@@ -1,0 +1,156 @@
+{
+  "ok": false,
+  "critical": [
+    "anonymity_scan",
+    "clean_clone_skipped"
+  ],
+  "frozen_hashes": {
+    "ok": true,
+    "n_files": 67,
+    "n_mismatches": 0,
+    "n_missing": 0
+  },
+  "reconstruction": {
+    "ok": true,
+    "n_failed": 0
+  },
+  "external_smoke": {
+    "ok": true,
+    "available": true,
+    "n_items": 1307,
+    "mean_edge_matched_cost_pp": 0.5662705656589415,
+    "source": "RouteLLM released GSM8K responses (Ong et al., ICLR 2025)",
+    "detail": "re-tabulated committed RouteLLM GSM8K table; no download"
+  },
+  "secret_scan": {
+    "ok": true,
+    "n_hits": 0,
+    "findings": []
+  },
+  "anonymity_scan": {
+    "ok": false,
+    "n_hits": 50,
+    "n_files_requiring_review": 1,
+    "files_requiring_review": [
+      "git:log"
+    ]
+  },
+  "package_check": {
+    "ok": true,
+    "n_critical": 0,
+    "n_warnings": 6,
+    "critical": [],
+    "warnings": [
+      {
+        "path": ".env.example",
+        "reason": "env_template"
+      },
+      {
+        "path": "woais_experiments/results/hash_check_after.json",
+        "reason": "duplicate_output",
+        "paths": [
+          "woais_experiments/results/hash_check_after.json",
+          "woais_experiments/results/hash_check_before.json"
+        ]
+      },
+      {
+        "path": "woais_experiments/results/accounting/framework/sign_flip_length_biased_per_query.csv",
+        "reason": "duplicate_output",
+        "paths": [
+          "woais_experiments/results/accounting/framework/sign_flip_length_biased_per_query.csv",
+          "woais_experiments/results/accounting/framework/naive_underestimates_per_query.csv"
+        ]
+      },
+      {
+        "path": "woais_experiments/results/accounting/framework/sign_flip_short_to_cheap_per_query.csv",
+        "reason": "duplicate_output",
+        "paths": [
+          "woais_experiments/results/accounting/framework/sign_flip_short_to_cheap_per_query.csv",
+          "woais_experiments/results/accounting/framework/naive_overestimates_per_query.csv"
+        ]
+      },
+      {
+        "path": "woais_experiments/results/accounting/framework/naive_overestimates_per_query.json",
+        "reason": "duplicate_output",
+        "paths": [
+          "woais_experiments/results/accounting/framework/naive_overestimates_per_query.json",
+          "woais_experiments/results/accounting/framework/sign_flip_short_to_cheap_per_query.json"
+        ]
+      },
+      {
+        "path": "woais_experiments/results/accounting/framework/naive_underestimates_per_query.json",
+        "reason": "duplicate_output",
+        "paths": [
+          "woais_experiments/results/accounting/framework/naive_underestimates_per_query.json",
+          "woais_experiments/results/accounting/framework/sign_flip_length_biased_per_query.json"
+        ]
+      }
+    ]
+  },
+  "clean_clone": {
+    "ok": false,
+    "skipped": true,
+    "exercised": false,
+    "error": null,
+    "checks_ok": null
+  },
+  "environment": {
+    "captured_utc": "2026-09-10T04:41:32Z",
+    "python": {
+      "version": "3.13.2",
+      "implementation": "CPython",
+      "executable": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
+      "version_full": "3.13.2 (v3.13.2:4f8bb3947cf, Feb  4 2025, 11:51:10) [Clang 15.0.0 (clang-1500.3.9.4)]"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "25.5.0",
+      "machine": "arm64",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O"
+    },
+    "dependencies": {
+      "numpy": "2.5.2",
+      "scipy": "1.18.0",
+      "matplotlib": "3.11.1",
+      "sklearn": "1.9.0",
+      "yaml": "6.0.3",
+      "httpx": "0.28.1",
+      "datasets": "5.0.1",
+      "pandas": "3.0.3"
+    },
+    "git": {
+      "available": true,
+      "commit": "24ca318a9a4b823cd9f9882b806fc0648a63e081",
+      "branch": "main",
+      "dirty": true,
+      "error": null
+    },
+    "random_seeds": {
+      "random_policy": 20260905,
+      "monte_carlo": 20260909,
+      "arrival": 20260909
+    },
+    "config_hash": "3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4",
+    "frozen_manifest_sha256": "144b59ee2e34ae288df06efaaa3b34954ca4cccba4dc14e25c9493c73ee0d16a",
+    "artifact_hashes": {
+      "woais_experiments/EXISTING_RESULTS_SHA256.txt": "144b59ee2e34ae288df06efaaa3b34954ca4cccba4dc14e25c9493c73ee0d16a",
+      "woais_experiments/requirements-lock.txt": "833d4dd20e7f15f10fe32c8fab533523826c286f909c01a2074a445730f48f31",
+      "woais_experiments/results/accounting/stage12.json": "6f4d6227a522953d03414ad9c107e021b32398087e2590ccceb097dcc563d12b",
+      "woais_experiments/results/routing/stage12_policies.json": "ac0a877a586453c7ae2689bf4177059b05d9f50eb1f726bd20a475efb7dd1130",
+      "woais_experiments/results/external/routellm_tables.json": "6b8757033e7ae408d5922d334864ca05ac4b3b2f450a13380f1d52a583b42956"
+    },
+    "paid_api_key_names_present": [],
+    "cwd_is_repo": true
+  },
+  "clone_environment": null,
+  "written": {
+    "environment.json": "woais_experiments/results/reproducibility/environment.json",
+    "result_provenance.json": "woais_experiments/results/reproducibility/result_provenance.json",
+    "secret_scan.json": "woais_experiments/results/reproducibility/secret_scan.json",
+    "anonymity_scan.json": "woais_experiments/results/reproducibility/anonymity_scan.json",
+    "ANONYMITY_REPORT.md": "woais_experiments/results/reproducibility/ANONYMITY_REPORT.md",
+    "package_check.json": "woais_experiments/results/reproducibility/package_check.json",
+    "clean_clone.json": "woais_experiments/results/reproducibility/clean_clone.json",
+    "validate.json": "woais_experiments/results/reproducibility/validate.json"
+  }
+}

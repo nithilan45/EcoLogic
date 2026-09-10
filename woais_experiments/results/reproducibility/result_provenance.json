@@ -1,0 +1,122 @@
+{
+  "ok": true,
+  "records": [
+    {
+      "result_name": "accounting/stage12.json",
+      "raw_inputs": [
+        "raw_results/graded.jsonl",
+        "raw_results/routing.json",
+        "woais_experiments/configs/experiment.json",
+        "woais_experiments/configs/models.json"
+      ],
+      "input_hashes": {
+        "raw_results/graded.jsonl": "90285af1edbd22c240039ba200cc972752e4c00fd84f7de8c370d27068be6a35",
+        "raw_results/routing.json": "8aa77ee79a23a5517ca593bfb08a1ae39263448b77d9be486eaeffefbbe2d27c",
+        "woais_experiments/configs/experiment.json": "ae4a588b8fca25919b87f56fa4d582a4fe79c11e0e4814a1f666ad97146a14a8",
+        "woais_experiments/configs/models.json": "1b85a24fa6466fcf3c3c5f38521d328ac0e58373ca06e3251f25b8b5a98368ce"
+      },
+      "script_used": "woais_experiments/reproducibility/reproduce_tables.py",
+      "config_used": "woais_experiments/configs/experiment.json",
+      "output_hash": "6f4d6227a522953d03414ad9c107e021b32398087e2590ccceb097dcc563d12b",
+      "timestamp": "2026-09-10T04:41:33Z",
+      "traced_to_raw": true,
+      "matches_recomputed": true,
+      "detail": "ok",
+      "stored_path": "woais_experiments/results/accounting/stage12.json"
+    },
+    {
+      "result_name": "routing/stage12_policies.json",
+      "raw_inputs": [
+        "raw_results/graded.jsonl",
+        "raw_results/routing.json",
+        "woais_experiments/configs/experiment.json",
+        "woais_experiments/results/accounting/stage12.json"
+      ],
+      "input_hashes": {
+        "raw_results/graded.jsonl": "90285af1edbd22c240039ba200cc972752e4c00fd84f7de8c370d27068be6a35",
+        "raw_results/routing.json": "8aa77ee79a23a5517ca593bfb08a1ae39263448b77d9be486eaeffefbbe2d27c",
+        "woais_experiments/configs/experiment.json": "ae4a588b8fca25919b87f56fa4d582a4fe79c11e0e4814a1f666ad97146a14a8",
+        "woais_experiments/results/accounting/stage12.json": "6f4d6227a522953d03414ad9c107e021b32398087e2590ccceb097dcc563d12b"
+      },
+      "script_used": "woais_experiments/reproducibility/reproduce_tables.py",
+      "config_used": "woais_experiments/configs/experiment.json",
+      "output_hash": "ac0a877a586453c7ae2689bf4177059b05d9f50eb1f726bd20a475efb7dd1130",
+      "timestamp": "2026-09-10T04:41:33Z",
+      "traced_to_raw": true,
+      "matches_recomputed": true,
+      "detail": "ok",
+      "stored_path": "woais_experiments/results/routing/stage12_policies.json"
+    },
+    {
+      "result_name": "external/routellm_tables.json",
+      "raw_inputs": [
+        "stage7_10/s9_static_baselines.json"
+      ],
+      "input_hashes": {
+        "stage7_10/s9_static_baselines.json": "985f3ae8ed4d7bb41ed251317dcbfb06fc129ea23ef1cac3d8ca0d667ea0ab17"
+      },
+      "script_used": "woais_experiments/reproducibility/reproduce_tables.py",
+      "config_used": "stage7_10/s9_static_baselines.json",
+      "output_hash": "6b8757033e7ae408d5922d334864ca05ac4b3b2f450a13380f1d52a583b42956",
+      "timestamp": "2026-09-10T04:41:33Z",
+      "traced_to_raw": true,
+      "matches_recomputed": true,
+      "detail": "ok",
+      "stored_path": "woais_experiments/results/external/routellm_tables.json"
+    },
+    {
+      "result_name": "accounting/framework/stage12_ecologic_aggregate.json",
+      "raw_inputs": [
+        "woais_experiments/results/accounting/framework/stage12_ecologic_per_query.json",
+        "woais_experiments/results/accounting/framework/stage12_ecologic_aggregate.json"
+      ],
+      "input_hashes": {
+        "woais_experiments/results/accounting/framework/stage12_ecologic_per_query.json": "9096c77fa388875e72520fa39620d9a49aedae03f6482f6a3996a537662c716a",
+        "woais_experiments/results/accounting/framework/stage12_ecologic_aggregate.json": "428c92905e7b2aa7e05bdfaaf5208f07c40040b70050fecbf69fbfa8469b17d4"
+      },
+      "script_used": "woais_experiments/reproducibility/reproduce_tables.py",
+      "config_used": null,
+      "output_hash": "428c92905e7b2aa7e05bdfaaf5208f07c40040b70050fecbf69fbfa8469b17d4",
+      "timestamp": "2026-09-10T04:41:33Z",
+      "traced_to_raw": true,
+      "matches_recomputed": true,
+      "detail": "ok",
+      "stored_path": "woais_experiments/results/accounting/framework/stage12_ecologic_aggregate.json"
+    },
+    {
+      "result_name": "accounting/framework/stage12_always_t2_aggregate.json",
+      "raw_inputs": [
+        "woais_experiments/results/accounting/framework/stage12_always_t2_per_query.json",
+        "woais_experiments/results/accounting/framework/stage12_always_t2_aggregate.json"
+      ],
+      "input_hashes": {
+        "woais_experiments/results/accounting/framework/stage12_always_t2_per_query.json": "04ae15523c4449684651807d9a05e58a2e7800c2dd915557913751dc5e1134d7",
+        "woais_experiments/results/accounting/framework/stage12_always_t2_aggregate.json": "9d8ff339d67e25bb0b8dbc5b20e1cc1708bbe98ae6139c1c3610f051bf37f509"
+      },
+      "script_used": "woais_experiments/reproducibility/reproduce_tables.py",
+      "config_used": null,
+      "output_hash": "9d8ff339d67e25bb0b8dbc5b20e1cc1708bbe98ae6139c1c3610f051bf37f509",
+      "timestamp": "2026-09-10T04:41:33Z",
+      "traced_to_raw": true,
+      "matches_recomputed": true,
+      "detail": "ok",
+      "stored_path": "woais_experiments/results/accounting/framework/stage12_always_t2_aggregate.json"
+    }
+  ],
+  "note": "Stored experimental tables were not modified. A table fails if it cannot be traced to raw query-level files or if recomputation disagrees beyond tolerance.",
+  "environment": {
+    "python": {
+      "version": "3.13.2",
+      "implementation": "CPython",
+      "executable": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
+      "version_full": "3.13.2 (v3.13.2:4f8bb3947cf, Feb  4 2025, 11:51:10) [Clang 15.0.0 (clang-1500.3.9.4)]"
+    },
+    "git_commit": "24ca318a9a4b823cd9f9882b806fc0648a63e081",
+    "seeds": {
+      "random_policy": 20260905,
+      "monte_carlo": 20260909,
+      "arrival": 20260909
+    },
+    "config_hash": "3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4"
+  }
+}

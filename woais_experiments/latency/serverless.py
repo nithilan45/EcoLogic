@@ -63,8 +63,13 @@ def service_model_by_tier(matrix: ItemMatrix, k: float = 2.0) -> dict:
         fit = fit_linear_service(lat, tok)
         flags = flag_cold_like(fit["residuals"], k=k)
         rec = {key: val for key, val in fit.items() if key != "residuals"}
-        rec["cold_like_frac"] = float(flags.mean())
+        rec["residual_outlier_frac"] = float(flags.mean())
+        rec["cold_like_frac"] = rec["residual_outlier_frac"]
         rec["cold_like_n"] = int(flags.sum())
+        rec["cold_like_note"] = (
+            "residual_outlier_frac is a proxy from latency~tokens residuals, "
+            "not a labeled cold-start measurement"
+        )
         rec["mean_residual_when_flagged"] = (
             float(fit["residuals"][flags].mean()) if flags.any() else None
         )
@@ -95,6 +100,7 @@ def simulate_fcfs(
     wait = np.zeros(n)
     cold = np.zeros(n, dtype=bool)
     start = np.zeros(n)
+    extra_s = np.zeros(n)
 
     for i in range(n):
         k = int(np.argmin(next_free))
@@ -108,16 +114,17 @@ def simulate_fcfs(
             elif ready - last_finish[k] >= idle_timeout_s:
                 extra = cold_penalty_s
                 cold[i] = True
+        extra_s[i] = extra
         begin = ready + extra
         finish = begin + s[i]
         start[i] = begin
-        wait[i] = begin - a[i]
+        wait[i] = ready - a[i]
         sojourn[i] = finish - a[i]
         next_free[k] = finish
         last_finish[k] = finish
 
     horizon = float(max(a[-1], next_free.max())) if n else 0.0
-    busy = float(s.sum())
+    busy = float((s + extra_s).sum())
     util = busy / (n_servers * horizon) if horizon > 0 else 0.0
     return {
         "n": n,
@@ -129,9 +136,18 @@ def simulate_fcfs(
         "p95_sojourn_s": float(np.quantile(sojourn, 0.95)) if n else 0.0,
         "p99_sojourn_s": float(np.quantile(sojourn, 0.99)) if n else 0.0,
         "mean_wait_s": float(wait.mean()) if n else 0.0,
+        "mean_queue_wait_s": float(wait.mean()) if n else 0.0,
+        "mean_cold_s": float(extra_s.mean()) if n else 0.0,
         "cold_frac": float(cold.mean()) if n else 0.0,
         "utilization": util,
         "mean_service_s": float(s.mean()) if n else 0.0,
+        "mean_wall_clock_s": float(s.mean()) if n else 0.0,
+        "honesty": (
+            "SIMULATED FCFS on historical HTTP round-trip times. Those times already "
+            "include provider queueing, so adding simulated wait double-counts delay. "
+            "Not a deployment measurement. mean_wait_s is queue wait only; cold is "
+            "mean_cold_s; utilization includes cold busy time."
+        ),
     }
 
 
@@ -154,4 +170,6 @@ def replay_policy(
     service = np.array([matrix.latency_s[(assign[i], i)] for i in items], dtype=float)
     result = simulate_fcfs(service, arrivals, **sim_kwargs)
     result["mean_service_s"] = float(service.mean())
+    result["mean_wall_clock_s"] = float(service.mean())
+    result["service_time_is_http_rtt"] = True
     return result

@@ -1,0 +1,110 @@
+{
+  "measurement_type": "MEASURED",
+  "cells": {
+    "steady_high|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/steady_high__1x__always_cheap.jsonl",
+      "n_records": 4,
+      "seed": 1711831489
+    },
+    "steady_high|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/steady_high__1x__always_strong.jsonl",
+      "n_records": 4,
+      "seed": 1711831489
+    },
+    "steady_high|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/steady_high__1x__ecologic.jsonl",
+      "n_records": 4,
+      "seed": 1711831489
+    },
+    "steady_high|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/steady_high__1x__cost_matched_static.jsonl",
+      "n_records": 4,
+      "seed": 1711831489
+    },
+    "steady_high|2|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/steady_high__2x__always_cheap.jsonl",
+      "n_records": 4,
+      "seed": 1430929243
+    },
+    "steady_high|2|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/steady_high__2x__always_strong.jsonl",
+      "n_records": 4,
+      "seed": 1430929243
+    },
+    "steady_high|2|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/steady_high__2x__ecologic.jsonl",
+      "n_records": 4,
+      "seed": 1430929243
+    },
+    "steady_high|2|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/steady_high__2x__cost_matched_static.jsonl",
+      "n_records": 4,
+      "seed": 1430929243
+    },
+    "poisson|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/poisson__1x__always_cheap.jsonl",
+      "n_records": 4,
+      "seed": 1783273239
+    },
+    "poisson|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/poisson__1x__always_strong.jsonl",
+      "n_records": 4,
+      "seed": 1783273239
+    },
+    "poisson|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/poisson__1x__ecologic.jsonl",
+      "n_records": 4,
+      "seed": 1783273239
+    },
+    "poisson|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/poisson__1x__cost_matched_static.jsonl",
+      "n_records": 4,
+      "seed": 1783273239
+    },
+    "poisson|2|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/poisson__2x__always_cheap.jsonl",
+      "n_records": 4,
+      "seed": 1860139611
+    },
+    "poisson|2|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/poisson__2x__always_strong.jsonl",
+      "n_records": 4,
+      "seed": 1860139611
+    },
+    "poisson|2|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/poisson__2x__ecologic.jsonl",
+      "n_records": 4,
+      "seed": 1860139611
+    },
+    "poisson|2|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/measured/requests/poisson__2x__cost_matched_static.jsonl",
+      "n_records": 4,
+      "seed": 1860139611
+    }
+  },
+  "stopped": false,
+  "cost": {
+    "realized_usd": 0.0038366799999999986,
+    "n_costed": 64,
+    "remaining_planned": 0,
+    "limit_usd": null,
+    "estimate_usd_per_query": 0.002,
+    "unit_cost_usd": 5.994812499999998e-05
+  }
+}

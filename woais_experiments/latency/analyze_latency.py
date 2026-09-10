@@ -257,7 +257,9 @@ def _jsonable(obj: Any) -> Any:
     if isinstance(obj, (np.floating, np.integer, np.bool_)):
         return obj.item()
     if isinstance(obj, float) and not np.isfinite(obj):
-        return None
+        if np.isnan(obj):
+            return None
+        return "Infinity" if obj > 0 else "-Infinity"
     return obj
 
 

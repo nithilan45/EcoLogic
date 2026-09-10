@@ -2,5 +2,10 @@
 numpy>=2.0
 scipy>=1.11
 matplotlib>=3.8
+PyYAML>=6.0
 # Optional: lets tests import benchmark/api.py and router_v2/calibrate.py
 httpx>=0.28
+# Ablation logistic / shallow tree (train-only fit; no provider APIs).
+scikit-learn>=1.3
+# xRouteBench public download (Hugging Face datasets). No inference APIs.
+datasets>=3.0

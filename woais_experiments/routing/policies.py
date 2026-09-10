@@ -18,6 +18,7 @@ from woais_experiments.accounting.costs import (
 )
 from woais_experiments.frozen import ItemMatrix
 from woais_experiments.statistics.inference import matched_cost_fraction, mcnemar, mixture_accuracy
+from woais_experiments.statistics.paired_tests import benjamini_hochberg
 from woais_experiments.statistics.regret import decompose_regret
 
 import numpy as np
@@ -165,16 +166,50 @@ def evaluate_policies(
     cost_of,
     *,
     vs: str = "ecologic",
+    cost_kind: str = "usd",
+    cost_unit: str = "USD",
+    cost_provenance: str = "stored_call_usd",
+    overhead_per_query: float | None = None,
 ) -> dict:
+    if overhead_per_query is None:
+        if cost_kind == "usd":
+            from woais_experiments.accounting.per_query_cost import load_router_overhead
+            overhead_per_query = float(load_router_overhead("ecologic_keyword").cost_usd)
+        else:
+            overhead_per_query = 0.0
     stats = {}
     for name, assign in policies.items():
-        stats[name] = evaluate_assignment(matrix, assign, cost_of, name=name)
+        oh = float(overhead_per_query) if str(name).startswith("ecologic") else 0.0
+        stats[name] = evaluate_assignment(
+            matrix, assign, cost_of, name=name,
+            overhead_per_query=oh,
+            cost_kind=cost_kind,
+            cost_unit=cost_unit,
+            cost_provenance=cost_provenance,
+        )
     ref = stats[vs]["outcomes"]
     tests = {}
     for name, s in stats.items():
         if name == vs:
             continue
-        tests[name] = mcnemar(ref, s["outcomes"])
+        row = mcnemar(ref, s["outcomes"])
+        row["p_raw"] = row["p_value"]
+        row["accuracy_delta"] = s["accuracy"] - stats[vs]["accuracy"]
+        row["effect_size"] = row["accuracy_delta"]
+        row["peer_role"] = s.get("role") or (
+            "hindsight_oracle" if str(name).startswith("oracle") else "deployable_or_baseline"
+        )
+        tests[name] = row
+    deployable = [n for n in tests if not str(n).startswith("oracle")]
+    oracles = [n for n in tests if str(n).startswith("oracle")]
+    if deployable:
+        bh = benjamini_hochberg([tests[n]["p_raw"] for n in deployable])
+        for i, name in enumerate(deployable):
+            tests[name]["p_adjusted"] = bh["p_adjusted"][i]
+            tests[name]["bh_family"] = "mcnemar_vs_" + vs + "_deployable"
+    for name in oracles:
+        tests[name]["p_adjusted"] = None
+        tests[name]["bh_family"] = "upper_bound_excluded_from_fdr"
     cleaned = {k: drop_outcomes(v) for k, v in stats.items()}
     return {"policies": cleaned, "mcnemar_vs": tests}
 

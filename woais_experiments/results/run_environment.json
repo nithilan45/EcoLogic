@@ -1,0 +1,23 @@
+{
+  "git": {
+    "available": true,
+    "commit": "24ca318a9a4b823cd9f9882b806fc0648a63e081",
+    "branch": "main",
+    "dirty": true,
+    "error": null
+  },
+  "python": "3.13.2",
+  "platform": "darwin",
+  "pythonhashseed": null,
+  "config_hash": "3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4",
+  "seeds": {
+    "random_policy": 20260905,
+    "monte_carlo": 20260909,
+    "arrival": 20260909
+  },
+  "api_calls": false,
+  "overwrite_policy": "replace",
+  "results_dir": "woais_experiments/results",
+  "package": "woais_experiments",
+  "note": "Prefer run_woais.py for forbid/resume overwrite policy."
+}

@@ -1,0 +1,13 @@
+{
+  "config": "timeseries",
+  "split": "train",
+  "task_name_query_counts": {
+    "anomaly-detection": 103,
+    "causality-analysis": 50,
+    "event-prediction": 288,
+    "inductive-reasoning": 80,
+    "noise-understanding": 69,
+    "pattern-recognition": 296,
+    "similarity-analysis": 90
+  }
+}

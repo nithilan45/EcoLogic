@@ -1,0 +1,313 @@
+{
+  "ok": false,
+  "severity": "critical",
+  "n_files_scanned": 542,
+  "n_hits": 50,
+  "n_files_requiring_review": 1,
+  "files_requiring_review": [
+    "git:log"
+  ],
+  "note": "No files were modified. Review each listed path before an anonymous release.",
+  "findings": [
+    {
+      "file": "git:log",
+      "line": 1,
+      "pattern": "identity:names",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 2,
+      "pattern": "identity:names",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 3,
+      "pattern": "identity:names",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 4,
+      "pattern": "identity:names",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 5,
+      "pattern": "identity:names",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 6,
+      "pattern": "identity:names",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 7,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 8,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 9,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 10,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 11,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 12,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 13,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 14,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 15,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 16,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 17,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 18,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 19,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 20,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 21,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 22,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 23,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 24,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 25,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 26,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 27,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 28,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 29,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 30,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 31,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 32,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 33,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 34,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 35,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 36,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 37,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 38,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 39,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 40,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 41,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 42,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 43,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 44,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 45,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 46,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 47,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 48,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 49,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    },
+    {
+      "file": "git:log",
+      "line": 50,
+      "pattern": "email_address",
+      "excerpt": "[redacted \u2014 open the file at this line]"
+    }
+  ]
+}

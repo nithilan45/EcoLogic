@@ -1,0 +1,974 @@
+{
+  "measurement_type": "SIMULATED",
+  "cells": {
+    "steady_low|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1893271848
+    },
+    "steady_low|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1893271848
+    },
+    "steady_low|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1893271848
+    },
+    "steady_low|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1893271848
+    },
+    "steady_low|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1200429426
+    },
+    "steady_low|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1200429426
+    },
+    "steady_low|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1200429426
+    },
+    "steady_low|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1200429426
+    },
+    "steady_low|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 10167522
+    },
+    "steady_low|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 10167522
+    },
+    "steady_low|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 10167522
+    },
+    "steady_low|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 10167522
+    },
+    "steady_low|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1290273945
+    },
+    "steady_low|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1290273945
+    },
+    "steady_low|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1290273945
+    },
+    "steady_low|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_low__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1290273945
+    },
+    "steady_medium|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1950601600
+    },
+    "steady_medium|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1950601600
+    },
+    "steady_medium|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1950601600
+    },
+    "steady_medium|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1950601600
+    },
+    "steady_medium|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1186302088
+    },
+    "steady_medium|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1186302088
+    },
+    "steady_medium|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1186302088
+    },
+    "steady_medium|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1186302088
+    },
+    "steady_medium|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1358852997
+    },
+    "steady_medium|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1358852997
+    },
+    "steady_medium|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1358852997
+    },
+    "steady_medium|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1358852997
+    },
+    "steady_medium|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 497747050
+    },
+    "steady_medium|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 497747050
+    },
+    "steady_medium|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 497747050
+    },
+    "steady_medium|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_medium__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 497747050
+    },
+    "steady_high|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1711831489
+    },
+    "steady_high|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1711831489
+    },
+    "steady_high|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1711831489
+    },
+    "steady_high|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1711831489
+    },
+    "steady_high|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 12190879
+    },
+    "steady_high|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 12190879
+    },
+    "steady_high|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 12190879
+    },
+    "steady_high|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 12190879
+    },
+    "steady_high|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1097206986
+    },
+    "steady_high|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1097206986
+    },
+    "steady_high|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1097206986
+    },
+    "steady_high|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1097206986
+    },
+    "steady_high|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 458807899
+    },
+    "steady_high|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 458807899
+    },
+    "steady_high|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 458807899
+    },
+    "steady_high|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/steady_high__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 458807899
+    },
+    "poisson|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1783273239
+    },
+    "poisson|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1783273239
+    },
+    "poisson|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1783273239
+    },
+    "poisson|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1783273239
+    },
+    "poisson|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 810433064
+    },
+    "poisson|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 810433064
+    },
+    "poisson|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 810433064
+    },
+    "poisson|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 810433064
+    },
+    "poisson|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 475385375
+    },
+    "poisson|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 475385375
+    },
+    "poisson|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 475385375
+    },
+    "poisson|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 475385375
+    },
+    "poisson|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1949379401
+    },
+    "poisson|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1949379401
+    },
+    "poisson|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1949379401
+    },
+    "poisson|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/poisson__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1949379401
+    },
+    "bursty_on_off|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1271143030
+    },
+    "bursty_on_off|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1271143030
+    },
+    "bursty_on_off|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1271143030
+    },
+    "bursty_on_off|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1271143030
+    },
+    "bursty_on_off|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 232417171
+    },
+    "bursty_on_off|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 232417171
+    },
+    "bursty_on_off|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 232417171
+    },
+    "bursty_on_off|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 232417171
+    },
+    "bursty_on_off|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1573585539
+    },
+    "bursty_on_off|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1573585539
+    },
+    "bursty_on_off|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1573585539
+    },
+    "bursty_on_off|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1573585539
+    },
+    "bursty_on_off|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1065669092
+    },
+    "bursty_on_off|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1065669092
+    },
+    "bursty_on_off|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1065669092
+    },
+    "bursty_on_off|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/bursty_on_off__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1065669092
+    },
+    "sudden_spike|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 886570865
+    },
+    "sudden_spike|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 886570865
+    },
+    "sudden_spike|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 886570865
+    },
+    "sudden_spike|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 886570865
+    },
+    "sudden_spike|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 344695312
+    },
+    "sudden_spike|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 344695312
+    },
+    "sudden_spike|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 344695312
+    },
+    "sudden_spike|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 344695312
+    },
+    "sudden_spike|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 399569475
+    },
+    "sudden_spike|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 399569475
+    },
+    "sudden_spike|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 399569475
+    },
+    "sudden_spike|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 399569475
+    },
+    "sudden_spike|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1076889356
+    },
+    "sudden_spike|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1076889356
+    },
+    "sudden_spike|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1076889356
+    },
+    "sudden_spike|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/sudden_spike__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1076889356
+    },
+    "ramp_up|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 721329661
+    },
+    "ramp_up|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 721329661
+    },
+    "ramp_up|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 721329661
+    },
+    "ramp_up|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 721329661
+    },
+    "ramp_up|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 469280
+    },
+    "ramp_up|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 469280
+    },
+    "ramp_up|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 469280
+    },
+    "ramp_up|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 469280
+    },
+    "ramp_up|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1432206029
+    },
+    "ramp_up|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1432206029
+    },
+    "ramp_up|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1432206029
+    },
+    "ramp_up|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1432206029
+    },
+    "ramp_up|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 692405602
+    },
+    "ramp_up|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 692405602
+    },
+    "ramp_up|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 692405602
+    },
+    "ramp_up|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_up__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 692405602
+    },
+    "ramp_down|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1386502746
+    },
+    "ramp_down|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1386502746
+    },
+    "ramp_down|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1386502746
+    },
+    "ramp_down|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1386502746
+    },
+    "ramp_down|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 2003460263
+    },
+    "ramp_down|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 2003460263
+    },
+    "ramp_down|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 2003460263
+    },
+    "ramp_down|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 2003460263
+    },
+    "ramp_down|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1264277782
+    },
+    "ramp_down|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1264277782
+    },
+    "ramp_down|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1264277782
+    },
+    "ramp_down|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1264277782
+    },
+    "ramp_down|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 1493619152
+    },
+    "ramp_down|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 1493619152
+    },
+    "ramp_down|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 1493619152
+    },
+    "ramp_down|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/ramp_down__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 1493619152
+    },
+    "periodic_bursts|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 732596460
+    },
+    "periodic_bursts|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 732596460
+    },
+    "periodic_bursts|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 732596460
+    },
+    "periodic_bursts|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 732596460
+    },
+    "periodic_bursts|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 374388170
+    },
+    "periodic_bursts|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 374388170
+    },
+    "periodic_bursts|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 374388170
+    },
+    "periodic_bursts|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 374388170
+    },
+    "periodic_bursts|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 837381964
+    },
+    "periodic_bursts|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 837381964
+    },
+    "periodic_bursts|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 837381964
+    },
+    "periodic_bursts|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 837381964
+    },
+    "periodic_bursts|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 592960712
+    },
+    "periodic_bursts|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 592960712
+    },
+    "periodic_bursts|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 592960712
+    },
+    "periodic_bursts|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/periodic_bursts__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 592960712
+    },
+    "replay|1|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__1x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 330457822
+    },
+    "replay|1|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__1x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 330457822
+    },
+    "replay|1|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__1x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 330457822
+    },
+    "replay|1|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__1x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 330457822
+    },
+    "replay|5|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__5x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 2070136061
+    },
+    "replay|5|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__5x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 2070136061
+    },
+    "replay|5|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__5x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 2070136061
+    },
+    "replay|5|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__5x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 2070136061
+    },
+    "replay|25|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__25x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 758684448
+    },
+    "replay|25|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__25x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 758684448
+    },
+    "replay|25|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__25x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 758684448
+    },
+    "replay|25|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__25x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 758684448
+    },
+    "replay|50|always_cheap": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__50x__always_cheap.jsonl",
+      "n_records": 12,
+      "seed": 2039369052
+    },
+    "replay|50|always_strong": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__50x__always_strong.jsonl",
+      "n_records": 12,
+      "seed": 2039369052
+    },
+    "replay|50|ecologic": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__50x__ecologic.jsonl",
+      "n_records": 12,
+      "seed": 2039369052
+    },
+    "replay|50|cost_matched_static": {
+      "status": "complete",
+      "jsonl": "stress/simulated/requests/replay__50x__cost_matched_static.jsonl",
+      "n_records": 12,
+      "seed": 2039369052
+    }
+  },
+  "stopped": false,
+  "cost": {
+    "realized_usd": 10.95099999999991,
+    "n_costed": 1920,
+    "remaining_planned": 0,
+    "limit_usd": null,
+    "estimate_usd_per_query": 0.002,
+    "unit_cost_usd": 0.005703645833333286
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "config": "multimodal_geometry3k",
+  "split": "test",
+  "task_name_query_counts": {
+    "geometry3k": 61
+  }
+}

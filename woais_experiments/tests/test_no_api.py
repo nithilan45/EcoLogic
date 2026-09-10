@@ -19,6 +19,12 @@ class TestNoApiCalls(unittest.TestCase):
         for banned in ("run_benchmark", "s7_run", "run_pool", "quality_benchmark_harness"):
             self.assertNotIn(banned, src)
 
+    def test_run_woais_cli_never_calls_chat(self):
+        from woais_experiments.runner import cli
+        src = inspect.getsource(cli)
+        self.assertNotIn("chat(", src)
+        self.assertNotIn("httpx", src)
+
     def test_hash_manifest_lives_in_package(self):
         self.assertTrue((REPO / "woais_experiments" / "EXISTING_RESULTS_SHA256.txt").exists())
 

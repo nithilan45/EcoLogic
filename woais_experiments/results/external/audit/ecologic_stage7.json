@@ -1,0 +1,4132 @@
+{
+  "schema_version": "1.0",
+  "dataset": "ecologic_stage7",
+  "n_queries": 364,
+  "n_models": 3,
+  "models": [
+    "Qwen/Qwen3.5-9B",
+    "openai/gpt-oss-20b",
+    "gpt-4o"
+  ],
+  "canonical_columns": [
+    "query_id",
+    "dataset",
+    "model",
+    "quality",
+    "input_tokens",
+    "output_tokens",
+    "realized_cost",
+    "latency_ms"
+  ],
+  "notes": [
+    "from ItemMatrix n=364 models=['Qwen/Qwen3.5-9B', 'openai/gpt-oss-20b', 'gpt-4o']"
+  ],
+  "has_router_assignment": false,
+  "accounting": {
+    "per_query_n": 364,
+    "naive_vs_realized": {
+      "available": false,
+      "reason": "no router_assignment"
+    }
+  },
+  "static_baselines": {
+    "catalog": {
+      "n_models": 3,
+      "models": [
+        "Qwen/Qwen3.5-9B",
+        "openai/gpt-oss-20b",
+        "gpt-4o"
+      ],
+      "mean_cost": {
+        "Qwen/Qwen3.5-9B": 0.0013168326098901082,
+        "openai/gpt-oss-20b": 0.00012777445054945052,
+        "gpt-4o": 0.0013908379120879128
+      },
+      "mean_quality": {
+        "Qwen/Qwen3.5-9B": 0.8351648351648352,
+        "openai/gpt-oss-20b": 0.9258241758241759,
+        "gpt-4o": 0.8983516483516484
+      },
+      "always_cheapest": {
+        "weights": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "cost": 0.00012777445054945052,
+        "quality": 0.9258241758241759,
+        "kind": "always_cheapest",
+        "feasible": true,
+        "note": ""
+      },
+      "always_most_expensive": {
+        "weights": {
+          "gpt-4o": 1.0
+        },
+        "cost": 0.0013908379120879128,
+        "quality": 0.8983516483516484,
+        "kind": "always_most_expensive",
+        "feasible": true,
+        "note": ""
+      },
+      "always_each": {
+        "Qwen/Qwen3.5-9B": {
+          "weights": {
+            "Qwen/Qwen3.5-9B": 1.0
+          },
+          "cost": 0.0013168326098901082,
+          "quality": 0.8351648351648352,
+          "kind": "always_Qwen/Qwen3.5-9B",
+          "feasible": true,
+          "note": ""
+        },
+        "openai/gpt-oss-20b": {
+          "weights": {
+            "openai/gpt-oss-20b": 1.0
+          },
+          "cost": 0.00012777445054945052,
+          "quality": 0.9258241758241759,
+          "kind": "always_openai/gpt-oss-20b",
+          "feasible": true,
+          "note": ""
+        },
+        "gpt-4o": {
+          "weights": {
+            "gpt-4o": 1.0
+          },
+          "cost": 0.0013908379120879128,
+          "quality": 0.8983516483516484,
+          "kind": "always_gpt-4o",
+          "feasible": true,
+          "note": ""
+        }
+      },
+      "pairwise_random": [
+        {
+          "weights": {
+            "Qwen/Qwen3.5-9B": 0.5,
+            "openai/gpt-oss-20b": 0.5
+          },
+          "cost": 0.0007223035302197794,
+          "quality": 0.8804945054945055,
+          "kind": "pairwise[Qwen/Qwen3.5-9B,openai/gpt-oss-20b]_f=0.5",
+          "feasible": true,
+          "note": ""
+        },
+        {
+          "weights": {
+            "Qwen/Qwen3.5-9B": 0.5,
+            "gpt-4o": 0.5
+          },
+          "cost": 0.0013538352609890106,
+          "quality": 0.8667582417582418,
+          "kind": "pairwise[Qwen/Qwen3.5-9B,gpt-4o]_f=0.5",
+          "feasible": true,
+          "note": ""
+        },
+        {
+          "weights": {
+            "openai/gpt-oss-20b": 0.5,
+            "gpt-4o": 0.5
+          },
+          "cost": 0.0007593061813186817,
+          "quality": 0.9120879120879122,
+          "kind": "pairwise[openai/gpt-oss-20b,gpt-4o]_f=0.5",
+          "feasible": true,
+          "note": ""
+        }
+      ],
+      "uniform_mixture": {
+        "weights": {
+          "Qwen/Qwen3.5-9B": 0.3333333333333333,
+          "openai/gpt-oss-20b": 0.3333333333333333,
+          "gpt-4o": 0.3333333333333333
+        },
+        "cost": 0.0009451483241758238,
+        "quality": 0.8864468864468864,
+        "kind": "uniform_1/N",
+        "feasible": true,
+        "note": ""
+      },
+      "hull_vertices": [
+        {
+          "weights": {
+            "openai/gpt-oss-20b": 1.0
+          },
+          "cost": 0.00012777445054945052,
+          "quality": 0.9258241758241759,
+          "kind": "always_openai/gpt-oss-20b",
+          "feasible": true,
+          "note": ""
+        }
+      ],
+      "hull_model_names": [
+        "openai/gpt-oss-20b"
+      ],
+      "pairwise_undominated": [
+        "openai/gpt-oss-20b"
+      ]
+    },
+    "n_models": 3,
+    "models": [
+      "Qwen/Qwen3.5-9B",
+      "openai/gpt-oss-20b",
+      "gpt-4o"
+    ]
+  },
+  "cost_matching": null,
+  "oracle_frontier": {
+    "n_queries": 364,
+    "n_models": 3,
+    "models": [
+      "Qwen/Qwen3.5-9B",
+      "openai/gpt-oss-20b",
+      "gpt-4o"
+    ],
+    "min_total_cost": 0.040629530000000004,
+    "max_total_cost": 0.74417971,
+    "unconstrained_oracle": {
+      "total_cost": 0.06049884,
+      "total_quality": 356.0,
+      "mean_quality": 0.978021978021978,
+      "feasible": true,
+      "method": "unconstrained_oracle",
+      "note": "",
+      "fractional": false,
+      "lp_mean_quality": null,
+      "model_mix": {
+        "0": 6,
+        "1": 339,
+        "2": 19
+      }
+    },
+    "cheapest_assignment": {
+      "total_cost": 0.040629530000000004,
+      "total_quality": 338.0,
+      "mean_quality": 0.9285714285714286,
+      "feasible": true,
+      "method": "cheapest",
+      "note": "",
+      "fractional": false,
+      "lp_mean_quality": null,
+      "model_mix": {
+        "0": 1,
+        "1": 353,
+        "2": 10
+      }
+    },
+    "router": null,
+    "gaps_at_router_cost": null,
+    "method": "approx",
+    "sweep": [
+      {
+        "budget": 0.040629530000000004,
+        "static_frontier_quality": null,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9285714285714286,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": false,
+        "oracle_cost": 0.040629530000000004,
+        "router_realized_cost": null,
+        "static_expected_cost": null,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.928571",
+        "oracle_lp_quality": 0.9285714285714286,
+        "oracle_mix": {
+          "0": 1,
+          "1": 353,
+          "2": 10
+        },
+        "static_mix": null,
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.06049884,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.12857330250000001,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.216517075,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.3044608475,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.39240462000000004,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.48034839250000005,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.568292165,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.6562359375000001,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.74417971,
+        "static_frontier_quality": 0.9258241758241759,
+        "learned_router_quality": null,
+        "oracle_quality": 0.978021978021978,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.06049883999999999,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.046509899999999986,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.978022",
+        "oracle_lp_quality": 0.978021978021978,
+        "oracle_mix": {
+          "0": 6,
+          "1": 339,
+          "2": 19
+        },
+        "static_mix": {
+          "openai/gpt-oss-20b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      }
+    ],
+    "method_selected": "approx"
+  },
+  "bootstrap": {
+    "available": false,
+    "reason": "no router_assignment"
+  },
+  "per_query": [
+    {
+      "query_id": "gsm8k-test/1023",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1035",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1051",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1059",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1064",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/108",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1094",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1099",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1118",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1120",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1132",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1134",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/115",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1163",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1164",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1167",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1171",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1175",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1179",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1202",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1234",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1244",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1252",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1274",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1294",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/130",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1309",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/1315",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/149",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/151",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/2",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/202",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/237",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/251",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/252",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/253",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/258",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/266",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/270",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/275",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/276",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/284",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/287",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/304",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/322",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/364",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/37",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/384",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/432",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/460",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/461",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/487",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/49",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/495",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/502",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/504",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/509",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/512",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/524",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/546",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/548",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/561",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/57",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/577",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/594",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/595",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/596",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/608",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/618",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/630",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/633",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/644",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/651",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/69",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/692",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/696",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/699",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/713",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/720",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/729",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/734",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/744",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/747",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/770",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/794",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/809",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/852",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/855",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/856",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/866",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/897",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/93",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/933",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/935",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/946",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/949",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/956",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/986",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/991",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "gsm8k-test/998",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/104",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/105",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/11",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/112",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/118",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/125",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/127",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/128",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/143",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/145",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/146",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/150",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/151",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/181",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/185",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/188",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/19",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/192",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/193",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/198",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/20",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/203",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/210",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/213",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/223",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/236",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/246",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/249",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/25",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/261",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/263",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/267",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/270",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/276",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/279",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/294",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/311",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/314",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/319",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/323",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/328",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/331",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/338",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/344",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/347",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/356",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/358",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/362",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/363",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/364",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/369",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/376",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/4",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/404",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/424",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/433",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/442",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/447",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/450",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/458",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/459",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/464",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/466",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/469",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/476",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/494",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/496",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/5",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/504",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/511",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/515",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/518",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/522",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/525",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/529",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/53",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/531",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/533",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/549",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/551",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/554",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/557",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/563",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/567",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/571",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/577",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/580",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/583",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/597",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/60",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/601",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/613",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/615",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/621",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/626",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/630",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/638",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/649",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/65",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/657",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/66",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/667",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/683",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/687",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/692",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/699",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/7",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/700",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/702",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/713",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/718",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/723",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/731",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/732",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/736",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/737",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/747",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/750",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/753",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/77",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/777",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/788",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/792",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/799",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/808",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/811",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/814",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/815",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/819",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/82",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/820",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/824",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/827",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/828",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/830",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/833",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/841",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/844",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/849",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/85",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/850",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/871",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/882",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/884",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/885",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/892",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/902",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/907",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/92",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/920",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/921",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/922",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/93",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/931",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/944",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/945",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/95",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/951",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/952",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/953",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/957",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/969",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/974",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mbpp/98",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/abstract_algebra/94",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/anatomy/122",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/business_ethics/44",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/clinical_knowledge/102",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/clinical_knowledge/92",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/college_mathematics/81",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/college_medicine/169",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/college_medicine/17",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/college_medicine/41",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/college_physics/84",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/conceptual_physics/101",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/conceptual_physics/230",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/conceptual_physics/46",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/econometrics/11",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/econometrics/98",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/electrical_engineering/29",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/electrical_engineering/83",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/elementary_mathematics/174",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/elementary_mathematics/4",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_chemistry/54",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_chemistry/72",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_computer_science/86",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_geography/136",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_government_and_politics/1",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_government_and_politics/102",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_government_and_politics/96",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_macroeconomics/231",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_macroeconomics/298",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_macroeconomics/330",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_macroeconomics/374",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_macroeconomics/381",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_mathematics/62",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_microeconomics/237",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_physics/25",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_physics/76",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_psychology/161",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_psychology/293",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_psychology/402",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_psychology/458",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_psychology/480",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_statistics/48",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_us_history/180",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/high_school_world_history/38",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/human_aging/147",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/human_aging/200",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/human_aging/54",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/human_sexuality/21",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/logical_fallacies/117",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/logical_fallacies/34",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/management/67",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/marketing/24",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/marketing/72",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/medical_genetics/5",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/medical_genetics/92",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/miscellaneous/2",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/miscellaneous/201",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/miscellaneous/32",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/miscellaneous/592",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_disputes/198",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_disputes/278",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_scenarios/128",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_scenarios/169",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_scenarios/241",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_scenarios/284",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_scenarios/314",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_scenarios/375",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_scenarios/476",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/moral_scenarios/566",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/nutrition/52",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/philosophy/178",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/prehistory/172",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/prehistory/215",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/prehistory/224",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/prehistory/34",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_accounting/217",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_accounting/36",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/1043",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/111",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/136",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/1396",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/162",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/285",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/434",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/547",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/874",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_law/92",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_medicine/181",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_psychology/0",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_psychology/113",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_psychology/115",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_psychology/287",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_psychology/393",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/professional_psychology/57",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/public_relations/63",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/security_studies/14",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/security_studies/237",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/sociology/100",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/sociology/71",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/virology/102",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    },
+    {
+      "query_id": "mmlu/virology/19",
+      "dataset": "ecologic_stage7",
+      "selected_model": null,
+      "quality": null,
+      "realized_cost": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "latency_ms": null
+    }
+  ],
+  "usd_available": true,
+  "source": "stage7_10/s7_test_samples.csv.gz",
+  "long_n_rows": 1092,
+  "available": true,
+  "kind": "panel"
+}

@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import logging
+import os
+import sys
 import json
 from pathlib import Path
 
@@ -16,10 +19,12 @@ from woais_experiments.accounting.costs import (
     drop_outcomes,
     evaluate_assignment,
     paper_energy_rates,
+    subst_energy_rates,
 )
 from woais_experiments.accounting.per_query_cost import load_price_table, load_router_overhead
 from woais_experiments.accounting.tokens import corr_tokens_vs_latency, token_dispersion
 from woais_experiments.external.routellm import summarize_generalization, summarize_s9
+from woais_experiments.external.run_external_audit import run_discovered as run_external_adapter_audit
 from woais_experiments.figures.plot import (
     plot_accuracy_vs_cost,
     plot_latency_cdf,
@@ -39,8 +44,11 @@ from woais_experiments.latency.latency_frontier import from_item_matrix, save_fr
 from woais_experiments.latency.serverless import poisson_arrivals, replay_policy, service_model_by_tier
 from woais_experiments.latency.timing import seconds_to_ms
 from woais_experiments.latency.wallclock import latency_by_tier_benchmark, latency_per_output_token, policy_latency
-from woais_experiments.paths import CONFIGS, PACKAGE, RESULTS
+from woais_experiments.paths import CONFIGS, PACKAGE, RESULTS, get_results_root, public_relpath, repo_rel
+from woais_experiments.runner.config import config_hash, load_run_config
+from woais_experiments.runner.gitinfo import git_snapshot
 from woais_experiments.routing.oracle import sweep_item_matrix
+from woais_experiments.routing.robustness import run_stage12 as run_robustness_stage12
 from woais_experiments.routing.policies import (
     accuracy_optimal_static_mixture,
     build_stage12_policies,
@@ -68,7 +76,7 @@ def _jsonable(obj):
     if isinstance(obj, (np.floating, np.integer)):
         return obj.item()
     if isinstance(obj, Path):
-        return str(obj)
+        return public_relpath(obj)
     return obj
 
 
@@ -92,16 +100,43 @@ def _require_hashes(tag: str) -> dict:
 def run_accounting(matrix, routing, policies, exp: dict) -> dict:
     usd = cost_fn_usd(matrix)
     energy = cost_fn_energy(matrix, paper_energy_rates())
-    usd_table = evaluate_policies(matrix, policies, usd, vs="ecologic")
+    usd_table = evaluate_policies(
+        matrix, policies, usd, vs="ecologic",
+        cost_kind="usd", cost_unit="USD",
+        cost_provenance="stored_call_usd",
+    )
     energy_table = evaluate_policies(
         matrix,
         {k: v for k, v in policies.items() if k != "oracle_usd"},
         energy,
         vs="ecologic",
+        cost_kind="modelled_energy",
+        cost_unit="J",
+        cost_provenance="tokens/1000 * paper_energy_per_1k (not metered)",
+        overhead_per_query=0.0,
     )
+    energy_table["cost_kind"] = "modelled_energy"
+    energy_table["cost_unit"] = "J"
+    energy_table["cost_provenance"] = "tokens/1000 * paper_energy_per_1k (not metered)"
     # align energy oracle
     energy_table["policies"]["oracle_energy"] = drop_outcomes(
-        evaluate_assignment(matrix, policies["oracle_energy"], energy, name="oracle_energy")
+        evaluate_assignment(
+            matrix, policies["oracle_energy"], energy, name="oracle_energy",
+            cost_kind="modelled_energy", cost_unit="J",
+            cost_provenance="tokens/1000 * paper_energy_per_1k (not metered)",
+        )
+    )
+
+    subst = cost_fn_energy(matrix, subst_energy_rates())
+    subst_table = evaluate_policies(
+        matrix,
+        {k: v for k, v in policies.items() if k != "oracle_usd"},
+        subst,
+        vs="ecologic",
+        cost_kind="modelled_energy",
+        cost_unit="J",
+        cost_provenance="tokens/1000 * subst_energy_per_1k (not metered)",
+        overhead_per_query=0.0,
     )
 
     accounting = {}
@@ -136,6 +171,20 @@ def run_accounting(matrix, routing, policies, exp: dict) -> dict:
         "token_dispersion": token_dispersion(matrix),
         "corr_tokens_latency": corr_tokens_vs_latency(matrix),
         "reproduction_vs_published": reproduction,
+        "energy_is_modelled": True,
+        "energy_rate_table": "paper_energy_per_1k",
+        "energy_note": (
+            "axis_energy.cost is tokens/1000 × paper_energy_per_1k from "
+            "configs/models.json; joules were never metered. Those rates are "
+            "the paper coefficients for retired Gemma/Apriel slugs, not "
+            "measured Qwen/gpt-oss power. axis_energy_subst_rates uses "
+            "subst_energy_per_1k for the models that were actually called."
+        ),
+        "axis_energy_subst_rates": {
+            name: subst_table["policies"][name]["cost"]
+            for name in ("ecologic", "always_t1", "always_t2", "frontier", "random")
+            if name in subst_table["policies"]
+        },
     }
     write_result("accounting/stage12.json", _jsonable(payload))
     return payload
@@ -376,10 +425,23 @@ def run_serverless(matrix, policies, exp: dict, srv: dict) -> dict:
     return payload
 
 
-def run_external() -> dict:
+def run_external(exp: dict | None = None) -> dict:
     s9 = summarize_s9()
     gen = summarize_generalization()
-    payload = {"s9_static_baselines": s9, "s9_cost_correction": gen}
+    n_boot = int((exp or {}).get("n_random_sims", 2000))
+    seed = int((exp or {}).get("monte_carlo_seed", 20260909))
+    adapter = run_external_adapter_audit(n_boot=n_boot, seed=seed, n_grid=9)
+    payload = {
+        "s9_static_baselines": s9,
+        "s9_cost_correction": gen,
+        "adapter": {
+            "downloaded": False,
+            "discovered": adapter.get("discovered"),
+            "saved": adapter.get("saved"),
+            "n_boot": n_boot,
+            "note": adapter.get("note"),
+        },
+    }
     write_result("external/routellm_tables.json", _jsonable(payload))
     return payload
 
@@ -406,7 +468,7 @@ def run_per_query_accounting(matrix, policies) -> None:
     panel, eco = panel_from_item_matrix(matrix, policies["ecologic"])
     _, t2 = panel_from_item_matrix(matrix, policies["always_t2"])
     export_framework_tables(
-        RESULTS / "accounting" / "framework",
+        get_results_root() / "accounting" / "framework",
         prices=prices,
         overhead=overhead,
         stage12=(panel, eco, t2),
@@ -423,6 +485,16 @@ def run_breakeven(matrix, policies, exp: dict) -> dict:
     return payload
 
 
+def run_robustness(matrix, policies, exp: dict) -> dict:
+    return run_robustness_stage12(
+        matrix,
+        policies["ecologic"],
+        n_perm=199,
+        n_bootstrap=50,
+        seed=int(exp["monte_carlo_seed"]),
+    )
+
+
 def _fmt_break_even(value) -> str:
     if value is None:
         return "n/a"
@@ -431,7 +503,10 @@ def _fmt_break_even(value) -> str:
     return f"{value:.6g}"
 
 
-def write_report(accounting, routing_out, latency, serverless, external, s7, workloads, breakeven=None) -> None:
+def write_report(
+    accounting, routing_out, latency, serverless, external, s7, workloads,
+    breakeven=None, robustness=None,
+) -> None:
     usd = accounting["axis_usd"]["policies"]
     naive_eco = accounting["naive_vs_true"]["usd"]["ecologic"]
     regret = routing_out["regret_ecologic_vs_oracle_usd"]
@@ -479,8 +554,9 @@ def write_report(accounting, routing_out, latency, serverless, external, s7, wor
         f"Always-Tier-2 dominates the router on accuracy, dollars, **and** wall-clock "
         f"latency: {100*usd['always_t2']['accuracy']:.1f}% vs "
         f"{100*usd['ecologic']['accuracy']:.1f}% at 1/{ratio:.2f} of the cost and "
-        f"{eco_l['mean']/t2_l['mean']:.1f}× lower mean service time "
-        f"({t2_l['mean']:.1f}s vs {eco_l['mean']:.1f}s).",
+        f"{eco_l['mean']/t2_l['mean']:.1f}× lower mean wall-clock HTTP RTT "
+        f"({t2_l['mean']:.1f}s vs {eco_l['mean']:.1f}s). That RTT is not exclusive "
+        "service time (it includes provider queueing).",
         "",
         "The accuracy-optimal query-independent mixture at the router's realised "
         f"budget is **always Tier 2** (mix weight 1.0, accuracy "
@@ -500,15 +576,17 @@ def write_report(accounting, routing_out, latency, serverless, external, s7, wor
         "",
         "## Serverless-style queueing (model, not measurement)",
         "",
-        "Service times are stored `latency_s` values. Arrival traces are synthetic "
+        "Service times in the queueing model are stored `latency_s` HTTP round trips, "
+        "not exclusive compute service. Arrival traces are synthetic "
         "Poisson processes over the frozen items. Cold-start extras are sensitivity "
         f"knobs; TTFT was never recorded. Linear latency-vs-tokens R² is {r2}, "
-        "so most wall-clock time is explained by completion length, not a residual cold-start.",
+        "so most wall-clock time is explained by completion length, not a residual cold-start. "
+        "Simulated sojourn **double-counts** historical provider delay already inside `latency_s`.",
         "",
         "At equal offered traffic (arrival rate = 0.8 × Always-Tier-2's 1-server "
         "capacity):",
         "",
-        "| Policy | Mean service (s) | Utilisation | p95 sojourn (s) |",
+        "| Policy | Mean HTTP RTT (s) | Utilisation | p95 sojourn (s, SIMULATED) |",
         "|---|---:|---:|---:|",
     ]
     for name in ("ecologic", "always_t1", "always_t2", "frontier", "random"):
@@ -520,9 +598,9 @@ def write_report(accounting, routing_out, latency, serverless, external, s7, wor
     lines += [
         "",
         "Routing most queries to the long-reasoning Tier 1 replica saturates a "
-        "serverless worker that Always-Tier-2 would keep at ~80% utilisation. "
-        "This is a capacity result, not a quality result, and it uses only "
-        "already-measured round-trips.",
+        "SIMULATED serverless worker that Always-Tier-2 would keep at ~80% utilisation. "
+        "This is a modelled capacity result, not a measured cloud deployment, and it "
+        "replays already-recorded HTTP round-trips.",
         "",
     ]
     if breakeven is not None:
@@ -589,14 +667,39 @@ def write_report(accounting, routing_out, latency, serverless, external, s7, wor
             f"neutral={counts['neutral']}, dominated={counts['dominated']}.",
             "",
         ]
+    if robustness:
+        sm = robustness["summary"]
+        n_flag = sm["n_hull_flips"]
+        n_rev = sm["n_hull_claim_reversed"]
+        boot_rate = sm.get("bootstrap_flip_rate")
+        boot_s = "n/a" if boot_rate is None else f"{100*boot_rate:.1f}%"
+        survived = sm["primary_conclusion_survives_hull_perturbations"]
+        lines += [
+            "## Robustness of the EcoLogic-vs-static conclusion",
+            "",
+            f"Primary claim: EcoLogic is **{robustness['baseline_status']}** vs the "
+            "quality-matched static hull on realized USD. "
+            f"Hull-status labels changed in {n_flag} non-bootstrap scenarios "
+            f"({n_rev} reversed the claim to beneficial"
+            f"{'' if not sm.get('n_hull_significance_changed') else f'; {sm['n_hull_significance_changed']} lost p<0.05 vs Always-T2 while remaining dominated'}). "
+            f"Bootstrap resample flip rate (status ≠ baseline): {boot_s}. "
+            "Significance is a paired sign-flip p-value vs Always-T2 quality, "
+            "not CI overlap. "
+            f"The domination claim **{'survives' if survived else 'does not survive'}** "
+            "as a beneficial reversal under the hull perturbations. "
+            "Tidy table: `routing/robustness.csv`.",
+            "",
+        ]
     lines += [
         "## RouteLLM (committed Stage 9 JSON, not re-run)",
         "",
         f"n = {s9['n_items']}. Mean edge vs cost-matched mixture = "
         f"{s9['mean_edge_matched_cost_pp']:+.2f} pp; "
         f"{s9['n_interior_beating_matched_cost']}/{s9['n_interior']} interior "
-        f"points positive; {s9['n_interior_significant_p05']} significant at p<0.05; "
-        f"sign-test p = {s9['sign_test_p']:.3g}.",
+        f"points positive; {s9['n_interior_significant_p05']} interior McNemar "
+        f"p_raw<0.05 (unadjusted across the dependent sweep). The sweep-wide "
+        f"sign count is descriptive, not a Type-I-controlled test "
+        f"(p = {s9['sign_test_p']:.3g}; interior points share items).",
         "",
         f"Stage 7 test-set latency compact table available: {s7.get('available')}. "
         f"Stage 1–2 mix: {workloads['stage12_mix']['counts']}.",
@@ -606,8 +709,31 @@ def write_report(accounting, routing_out, latency, serverless, external, s7, wor
 
 
 def run() -> dict:
+    logging.getLogger("woais").warning(
+        "run_offline replaces files under %s (policy=replace). "
+        "Use python run_woais.py for timestamped runs that refuse silent overwrite.",
+        repo_rel(get_results_root()),
+    )
     _require_hashes("before")
     exp, srv = _load_cfg()
+    env = {
+        "git": git_snapshot(),
+        "python": sys.version.split()[0],
+        "platform": sys.platform,
+        "pythonhashseed": os.environ.get("PYTHONHASHSEED"),
+        "config_hash": config_hash(load_run_config()),
+        "seeds": {
+            "random_policy": exp.get("random_policy_seed"),
+            "monte_carlo": exp.get("monte_carlo_seed"),
+            "arrival": exp.get("arrival_seed"),
+        },
+        "api_calls": False,
+        "overwrite_policy": "replace",
+        "results_dir": repo_rel(get_results_root()),
+        "package": repo_rel(PACKAGE),
+        "note": "Prefer run_woais.py for forbid/resume overwrite policy.",
+    }
+    write_result("run_environment.json", _jsonable(env))
     matrix = load_stage12_matrix()
     routing = load_stage12_routing()
     policies = build_stage12_policies(matrix, routing, seed=exp["random_policy_seed"])
@@ -617,12 +743,13 @@ def run() -> dict:
     routing_out = run_routing(matrix, policies, accounting, exp)
     oracle_bounds = run_oracle_bounds(matrix, policies)
     breakeven = run_breakeven(matrix, policies, exp)
+    robustness = run_robustness(matrix, policies, exp)
     latency = run_latency(matrix, policies)
     latency_frontier = run_latency_frontier(matrix, policies, exp)
     workloads = run_workloads(matrix)
     simulated_workloads = run_simulated_workloads()
     serverless = run_serverless(matrix, policies, exp, srv)
-    external = run_external()
+    external = run_external(exp)
     s7 = run_s7_latency_spotcheck()
 
     plot_accuracy_vs_cost(
@@ -636,6 +763,7 @@ def run() -> dict:
     write_report(
         accounting, routing_out, latency, serverless, external, s7, workloads,
         breakeven=breakeven,
+        robustness=robustness,
     )
 
     summary = {
@@ -667,14 +795,23 @@ def run() -> dict:
             r["net_savings"] for r in breakeven["rows"]
             if r["router"] == "ecologic" and r["axis"] == "usd"
         ),
+        "robustness_baseline_status": robustness["baseline_status"],
+        "robustness_n_hull_flips": robustness["summary"]["n_hull_flips"],
+        "robustness_n_claim_reversed": robustness["summary"]["n_hull_claim_reversed"],
+        "robustness_claim_survives": robustness["summary"][
+            "primary_conclusion_survives_hull_perturbations"
+        ],
         "latency_frontier_p50_ms": {
             "direct_cheap": latency_frontier["direct_cheap_p50_ms"],
             "direct_strong": latency_frontier["direct_strong_p50_ms"],
             "router_plus_selected": latency_frontier["router_plus_selected_p50_ms"],
         },
         "simulated_workload_runs": simulated_workloads["n_runs"],
-        "results_dir": str(RESULTS),
-        "package": str(PACKAGE),
+        "results_dir": repo_rel(RESULTS),
+        "package": repo_rel(PACKAGE),
+        "git_commit": env["git"].get("commit"),
+        "config_hash": env["config_hash"],
+        "pythonhashseed": env["pythonhashseed"],
     }
     write_result("summary.json", _jsonable(summary))
     _require_hashes("after")

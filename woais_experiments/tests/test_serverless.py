@@ -33,6 +33,11 @@ class TestServerlessModel(unittest.TestCase):
         self.assertEqual(out["cold_frac"], 1.0)
         # first: 3 cold + 1 service = 4; second: idle 20-(0+4)=16 > 5, +3 cold +1 = 4
         self.assertAlmostEqual(out["mean_sojourn_s"], 4.0, places=9)
+        self.assertAlmostEqual(out["mean_wait_s"], 0.0, places=9)
+        self.assertAlmostEqual(out["mean_queue_wait_s"], 0.0, places=9)
+        self.assertAlmostEqual(out["mean_cold_s"], 3.0, places=9)
+        # utilization includes cold busy time: busy=(1+3)*2, horizon=24
+        self.assertAlmostEqual(out["utilization"], 8.0 / 24.0, places=9)
 
     def test_two_servers_avoid_the_backlog(self):
         service = np.array([5.0, 5.0])

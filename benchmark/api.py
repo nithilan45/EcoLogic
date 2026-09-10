@@ -84,10 +84,23 @@ def message_fields(payload: dict) -> tuple[str, str]:
 
 
 def usage_and_cost(model: str, payload: dict) -> dict:
-    usage = payload.get("usage") or {}
-    pt = int(usage.get("prompt_tokens") or 0)
-    ct = int(usage.get("completion_tokens") or 0)
-    tt = int(usage.get("total_tokens") or (pt + ct))
+    usage = payload.get("usage")
+    finish = (payload["choices"][0].get("finish_reason") if payload.get("choices") else None)
+    empty = {
+        "prompt_tokens": None,
+        "completion_tokens": None,
+        "total_tokens": None,
+        "usd": None,
+        "finish_reason": finish,
+        "usage_complete": False,
+    }
+    if not isinstance(usage, dict):
+        return empty
+    if usage.get("prompt_tokens") is None or usage.get("completion_tokens") is None:
+        return empty
+    pt = int(usage["prompt_tokens"])
+    ct = int(usage["completion_tokens"])
+    tt = int(usage["total_tokens"]) if usage.get("total_tokens") is not None else pt + ct
     rates = RATES_PER_MILLION.get(model)
     usd = None
     if rates:
@@ -97,7 +110,8 @@ def usage_and_cost(model: str, payload: dict) -> dict:
         "completion_tokens": ct,
         "total_tokens": tt,
         "usd": usd,
-        "finish_reason": (payload["choices"][0].get("finish_reason") if payload.get("choices") else None),
+        "finish_reason": finish,
+        "usage_complete": True,
     }
 
 
@@ -175,9 +189,10 @@ async def chat(
         "http_status": None,
         "retries": retries,
         "error": last_err,
-        "prompt_tokens": 0,
-        "completion_tokens": 0,
-        "total_tokens": 0,
+        "prompt_tokens": None,
+        "completion_tokens": None,
+        "total_tokens": None,
         "usd": None,
         "finish_reason": None,
+        "usage_complete": False,
     }

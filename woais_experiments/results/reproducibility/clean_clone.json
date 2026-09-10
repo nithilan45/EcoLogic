@@ -1,0 +1,7 @@
+{
+  "ok": false,
+  "skipped": true,
+  "exercised": false,
+  "detail": "clean-clone was not run. skipped is not a pass; a publication artifact must exercise the venv install without --skip-clone",
+  "checks": null
+}

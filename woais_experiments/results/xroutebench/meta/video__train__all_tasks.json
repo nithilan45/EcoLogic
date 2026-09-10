@@ -1,0 +1,9 @@
+{
+  "config": "video",
+  "split": "train",
+  "task_name_query_counts": {
+    "charades_ego_activity": 67,
+    "charades_ego_object": 67,
+    "charades_ego_verb": 67
+  }
+}

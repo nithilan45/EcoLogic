@@ -3,6 +3,9 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+# Hugging Face cache for xRouteBench (downloaded parquet; results live under
+# woais_experiments/results/xroutebench/).
+woais_experiments/data/xroutebench/hf_cache/
 raw_results/*.parquet
 benchmark/*.parquet
 benchmark/*.jsonl.gz
@@ -14,3 +17,5 @@ stage7_10/*.jsonl.gz
 # ...but keep the reviewable audit sample of raw generations (see
 # stage7_10/s7_export_audit_sample.py).
 !stage7_10/*_audit_sample.jsonl.gz
+# Timestamped experiment runs (canonical tables stay under woais_experiments/results/).
+woais_experiments/results/runs/

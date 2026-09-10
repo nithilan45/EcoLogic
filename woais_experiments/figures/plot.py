@@ -15,15 +15,16 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-from woais_experiments.paths import RESULTS
+from woais_experiments.frozen import write_result_bytes
 
 
 def _save(fig, relpath: str) -> Path:
-    dest = RESULTS / relpath
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(dest, dpi=160, bbox_inches="tight")
+    import io
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=160, bbox_inches="tight")
     plt.close(fig)
-    return dest
+    return write_result_bytes(relpath, buf.getvalue())
 
 
 def plot_accuracy_vs_cost(policies: dict, *, cost_key: str = "cost", title: str, relpath: str) -> Path:

@@ -1,0 +1,1857 @@
+{
+  "measurement_type": "MEASURED",
+  "n_cells": 16,
+  "cells": [
+    {
+      "measurement_type": "MEASURED",
+      "profile": "steady_high",
+      "multiplier": 1.0,
+      "policy": "always_cheap",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 64.0,
+      "throughput_per_s": 76.3748071610347,
+      "horizon_s": 0.05237329099327326,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.0025632287142798305,
+      "queue_wait_s_p95": 0.004019874962978065,
+      "service_time_s_mean": 0.001206125,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.004777509981067851,
+      "p50_latency_s": 0.005498290993273258,
+      "p95_latency_s": 0.006672499992419034,
+      "p99_latency_s": 0.006672499992419034,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 5.3599999999999995e-06,
+      "total_cost": 2.1439999999999998e-05,
+      "quality_mean": null,
+      "strong_model_fraction": 0.0,
+      "utilization": 0.01151469553588787,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": 0.0,
+        "intercept": -0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.006672499992419034,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": 0.0,
+          "intercept": -0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.0,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "steady_high",
+      "multiplier": 1.0,
+      "policy": "always_strong",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 64.0,
+      "throughput_per_s": 77.52795601706285,
+      "horizon_s": 0.05159429198829457,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.0007485727546736598,
+      "queue_wait_s_p95": 0.0018037079717032611,
+      "service_time_s_mean": 0.0012066454999999999,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.0031687084992881864,
+      "p50_latency_s": 0.003103916998952627,
+      "p95_latency_s": 0.004719291988294572,
+      "p99_latency_s": 0.004719291988294572,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 0.00018,
+      "total_cost": 0.00072,
+      "quality_mean": null,
+      "strong_model_fraction": 1.0,
+      "utilization": 0.011693594906523351,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": 0.0,
+        "intercept": -0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.004719291988294572,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": 0.0,
+          "intercept": -0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.0,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "steady_high",
+      "multiplier": 1.0,
+      "policy": "ecologic",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 64.0,
+      "throughput_per_s": 75.64433704089872,
+      "horizon_s": 0.05287904100259766,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.0016598747606622055,
+      "queue_wait_s_p95": 0.003712875011842698,
+      "service_time_s_mean": 0.0012625625,
+      "router_decision_s_mean": 1.9094e-05,
+      "end_to_end_s_mean": 0.003967937242123298,
+      "p50_latency_s": 0.004268874996341765,
+      "p95_latency_s": 0.00600404100259766,
+      "p99_latency_s": 0.00600404100259766,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 4.8299999999999995e-06,
+      "total_cost": 1.9319999999999998e-05,
+      "quality_mean": null,
+      "strong_model_fraction": 0.0,
+      "utilization": 0.01193821291064996,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": 0.0,
+        "intercept": -0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.00600404100259766,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": 0.0,
+          "intercept": -0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.0,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "steady_high",
+      "multiplier": 1.0,
+      "policy": "cost_matched_static",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 64.0,
+      "throughput_per_s": 75.83657219614983,
+      "horizon_s": 0.0527449999935925,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.001648666730034165,
+      "queue_wait_s_p95": 0.003384249983355403,
+      "service_time_s_mean": 0.0012657395,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.004093062743777409,
+      "p50_latency_s": 0.005175874975975603,
+      "p95_latency_s": 0.005869999993592501,
+      "p99_latency_s": 0.005869999993592501,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 4.9602500000000005e-05,
+      "total_cost": 0.00019841000000000002,
+      "quality_mean": null,
+      "strong_model_fraction": 0.25,
+      "utilization": 0.011998668121658574,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": 0.0,
+        "intercept": -0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.005869999993592501,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": 0.0,
+          "intercept": -0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.0,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "steady_high",
+      "multiplier": 2.0,
+      "policy": "always_cheap",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 128.0,
+      "throughput_per_s": 143.51491785547242,
+      "horizon_s": 0.027871666999999434,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.0011569479829631746,
+      "queue_wait_s_p95": 0.0019822079921141267,
+      "service_time_s_mean": 0.0012879897499999998,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.003892749984515831,
+      "p50_latency_s": 0.004434166999999434,
+      "p95_latency_s": 0.004576499981340021,
+      "p99_latency_s": 0.004576499981340021,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 5.3599999999999995e-06,
+      "total_cost": 2.1439999999999998e-05,
+      "quality_mean": null,
+      "strong_model_fraction": 0.0,
+      "utilization": 0.023105717896242554,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": 0.0,
+        "intercept": -0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.004576499981340021,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": 0.0,
+          "intercept": -0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 0.6858748574806467,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "steady_high",
+      "multiplier": 2.0,
+      "policy": "always_strong",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 128.0,
+      "throughput_per_s": 57.49263825172672,
+      "horizon_s": 0.06957412499468774,
+      "queue_depth_mean": 1.5,
+      "queue_depth_max": 3,
+      "queue_wait_s_mean": 0.015069781729835086,
+      "queue_wait_s_p95": 0.03785383398644626,
+      "service_time_s_mean": 0.0015164165,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.05743261473253369,
+      "p50_latency_s": 0.06115587498061359,
+      "p95_latency_s": 0.06860170897562057,
+      "p99_latency_s": 0.06860170897562057,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 0.00018,
+      "total_cost": 0.00072,
+      "quality_mean": null,
+      "strong_model_fraction": 1.0,
+      "utilization": 0.010897848159181192,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": 128.00000000000003,
+        "intercept": -1.1102230246251565e-16,
+        "r2": 1.0,
+        "persistent_growth": true,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 3.0,
+        "occupancy_mean": 1.5,
+        "occupancy_max": 3.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": true,
+        "reasons": [
+          "queue_grows_persistently"
+        ],
+        "p95_latency_s": 0.06860170897562057,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": 128.00000000000003,
+          "intercept": -1.1102230246251565e-16,
+          "r2": 1.0,
+          "persistent_growth": true,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 3.0,
+          "occupancy_mean": 1.5,
+          "occupancy_max": 3.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 14.5364408783724,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "steady_high",
+      "multiplier": 2.0,
+      "policy": "ecologic",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 128.0,
+      "throughput_per_s": 97.45074930178,
+      "horizon_s": 0.04104637500131503,
+      "queue_depth_mean": 0.75,
+      "queue_depth_max": 2,
+      "queue_wait_s_mean": 0.00936942725093104,
+      "queue_wait_s_p95": 0.021450667001772672,
+      "service_time_s_mean": 0.0049000829999999995,
+      "router_decision_s_mean": 3.6948e-05,
+      "end_to_end_s_mean": 0.018766968758427538,
+      "p50_latency_s": 0.024863541999366134,
+      "p95_latency_s": 0.030340208031702787,
+      "p99_latency_s": 0.030340208031702787,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 4.8299999999999995e-06,
+      "total_cost": 1.9319999999999998e-05,
+      "quality_mean": null,
+      "strong_model_fraction": 0.0,
+      "utilization": 0.05968959499886424,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": 89.60000000000001,
+        "intercept": -0.30000000000000004,
+        "r2": 0.8909090909090909,
+        "persistent_growth": true,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 2.0,
+        "occupancy_mean": 0.75,
+        "occupancy_max": 2.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": true,
+        "reasons": [
+          "queue_grows_persistently"
+        ],
+        "p95_latency_s": 0.030340208031702787,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": 89.60000000000001,
+          "intercept": -0.30000000000000004,
+          "r2": 0.8909090909090909,
+          "persistent_growth": true,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 2.0,
+          "occupancy_mean": 0.75,
+          "occupancy_max": 2.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 5.05329794026657,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "steady_high",
+      "multiplier": 2.0,
+      "policy": "cost_matched_static",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 128.0,
+      "throughput_per_s": 146.14630626296284,
+      "horizon_s": 0.027369833027478307,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.0010255522647639737,
+      "queue_wait_s_p95": 0.0019037920283153653,
+      "service_time_s_mean": 0.001266344,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.003544854000210762,
+      "p50_latency_s": 0.0039323330274783075,
+      "p95_latency_s": 0.004385082982480526,
+      "p99_latency_s": 0.004385082982480526,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 4.9602500000000005e-05,
+      "total_cost": 0.00019841000000000002,
+      "quality_mean": null,
+      "strong_model_fraction": 0.25,
+      "utilization": 0.023133937257283174,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": 0.0,
+        "intercept": -0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.004385082982480526,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": 0.0,
+          "intercept": -0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 0.7470328768768549,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "poisson",
+      "multiplier": 1.0,
+      "policy": "always_cheap",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 90.10995330525509,
+      "throughput_per_s": 102.53398057495701,
+      "horizon_s": 0.039011457251245774,
+      "queue_depth_mean": 0.25,
+      "queue_depth_max": 1,
+      "queue_wait_s_mean": 0.0019525396436090893,
+      "queue_wait_s_p95": 0.0035751242687466177,
+      "service_time_s_mean": 0.001262979,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.004264362398172853,
+      "p50_latency_s": 0.0057187976730386225,
+      "p95_latency_s": 0.00598870725682998,
+      "p99_latency_s": 0.00598870725682998,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 5.3599999999999995e-06,
+      "total_cost": 2.1439999999999998e-05,
+      "quality_mean": null,
+      "strong_model_fraction": 0.0,
+      "utilization": 0.01618728303157233,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": -9.619441247581236,
+        "intercept": 0.5677054161234495,
+        "r2": 0.07977507135845052,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.25,
+        "occupancy_max": 1.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.00598870725682998,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": -9.619441247581236,
+          "intercept": 0.5677054161234495,
+          "r2": 0.07977507135845052,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.25,
+          "occupancy_max": 1.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.0,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "poisson",
+      "multiplier": 1.0,
+      "policy": "always_strong",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 90.10995330525509,
+      "throughput_per_s": 107.31749071921618,
+      "horizon_s": 0.03727258225283647,
+      "queue_depth_mean": 0.25,
+      "queue_depth_max": 1,
+      "queue_wait_s_mean": 0.001713570390931455,
+      "queue_wait_s_p95": 0.004222790259728822,
+      "service_time_s_mean": 0.00123842675,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.0042186954031802094,
+      "p50_latency_s": 0.0039799226746293215,
+      "p95_latency_s": 0.007236707271868977,
+      "p99_latency_s": 0.007236707271868977,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 0.00018,
+      "total_cost": 0.00072,
+      "quality_mean": null,
+      "strong_model_fraction": 1.0,
+      "utilization": 0.016613106406194258,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": -9.619441247581236,
+        "intercept": 0.5677054161234495,
+        "r2": 0.07977507135845052,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.25,
+        "occupancy_max": 1.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.007236707271868977,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": -9.619441247581236,
+          "intercept": 0.5677054161234495,
+          "r2": 0.07977507135845052,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.25,
+          "occupancy_max": 1.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.0,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "poisson",
+      "multiplier": 1.0,
+      "policy": "ecologic",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 90.10995330525509,
+      "throughput_per_s": 98.96407558541028,
+      "horizon_s": 0.04041870725653196,
+      "queue_depth_mean": 0.25,
+      "queue_depth_max": 1,
+      "queue_wait_s_mean": 0.0023753201329252994,
+      "queue_wait_s_p95": 0.00468746368497186,
+      "service_time_s_mean": 0.001264427,
+      "router_decision_s_mean": 1.688525e-05,
+      "end_to_end_s_mean": 0.004598830631804777,
+      "p50_latency_s": 0.006030915261572841,
+      "p95_latency_s": 0.0071260476783248095,
+      "p99_latency_s": 0.0071260476783248095,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 4.8299999999999995e-06,
+      "total_cost": 1.9319999999999998e-05,
+      "quality_mean": null,
+      "strong_model_fraction": 0.0,
+      "utilization": 0.015641606150029196,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": -9.619441247581236,
+        "intercept": 0.5677054161234495,
+        "r2": 0.07977507135845052,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.25,
+        "occupancy_max": 1.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.0071260476783248095,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": -9.619441247581236,
+          "intercept": 0.5677054161234495,
+          "r2": 0.07977507135845052,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.25,
+          "occupancy_max": 1.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.0,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "poisson",
+      "multiplier": 1.0,
+      "policy": "cost_matched_static",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 90.10995330525509,
+      "throughput_per_s": 98.5563580919729,
+      "horizon_s": 0.04058591528176392,
+      "queue_depth_mean": 0.25,
+      "queue_depth_max": 1,
+      "queue_wait_s_mean": 0.002795580914463972,
+      "queue_wait_s_p95": 0.005119957277412209,
+      "service_time_s_mean": 0.0012615834999999999,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.005030236928943669,
+      "p50_latency_s": 0.007293255703556767,
+      "p95_latency_s": 0.007562373313913736,
+      "p99_latency_s": 0.007562373313913736,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 4.9602500000000005e-05,
+      "total_cost": 0.00019841000000000002,
+      "quality_mean": null,
+      "strong_model_fraction": 0.25,
+      "utilization": 0.01554213439861556,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": -9.619441247581236,
+        "intercept": 0.5677054161234495,
+        "r2": 0.07977507135845052,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.25,
+        "occupancy_max": 1.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.007562373313913736,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": -9.619441247581236,
+          "intercept": 0.5677054161234495,
+          "r2": 0.07977507135845052,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.25,
+          "occupancy_max": 1.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.0,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "poisson",
+      "multiplier": 2.0,
+      "policy": "always_cheap",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 40.35000347690452,
+      "throughput_per_s": 49.91992573965195,
+      "horizon_s": 0.08012832432606677,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.003956000207034207,
+      "queue_wait_s_p95": 0.004609240326969424,
+      "service_time_s_mean": 0.001264594,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.0063073234369934415,
+      "p50_latency_s": 0.006670231988975955,
+      "p95_latency_s": 0.006964782302672515,
+      "p99_latency_s": 0.006964782302672515,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 5.3599999999999995e-06,
+      "total_cost": 2.1439999999999998e-05,
+      "quality_mean": null,
+      "strong_model_fraction": 0.0,
+      "utilization": 0.007891054821351176,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": -0.0,
+        "intercept": 0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.006964782302672515,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": -0.0,
+          "intercept": 0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.1629859340226296,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "poisson",
+      "multiplier": 2.0,
+      "policy": "always_strong",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 40.35000347690452,
+      "throughput_per_s": 48.31553018903978,
+      "horizon_s": 0.08278911530825729,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.003751791157918318,
+      "queue_wait_s_p95": 0.005119605979273273,
+      "service_time_s_mean": 0.0012787395,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.007123031161534867,
+      "p50_latency_s": 0.008410314970972194,
+      "p95_latency_s": 0.008439679335664724,
+      "p99_latency_s": 0.008439679335664724,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 0.00018,
+      "total_cost": 0.00072,
+      "quality_mean": null,
+      "strong_model_fraction": 1.0,
+      "utilization": 0.007722872114520953,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": -0.0,
+        "intercept": 0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.008439679335664724,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": -0.0,
+          "intercept": 0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 1.166231964151987,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "poisson",
+      "multiplier": 2.0,
+      "policy": "ecologic",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 40.35000347690452,
+      "throughput_per_s": 49.502939549852265,
+      "horizon_s": 0.08080328231764446,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.0035225004422667315,
+      "queue_wait_s_p95": 0.0038026383229081973,
+      "service_time_s_mean": 0.00126930175,
+      "router_decision_s_mean": 2.692725e-05,
+      "end_to_end_s_mean": 0.006271927431151538,
+      "p50_latency_s": 0.00637059911391577,
+      "p95_latency_s": 0.006453846345051889,
+      "p99_latency_s": 0.006453846345051889,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 4.8299999999999995e-06,
+      "total_cost": 1.9319999999999998e-05,
+      "quality_mean": null,
+      "strong_model_fraction": 0.0,
+      "utilization": 0.007854270975096462,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": -0.0,
+        "intercept": 0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.006453846345051889,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": -0.0,
+          "intercept": 0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 0.9056698237765732,
+      "cost_inflation_vs_1x": 1.0
+    },
+    {
+      "measurement_type": "MEASURED",
+      "profile": "poisson",
+      "multiplier": 2.0,
+      "policy": "cost_matched_static",
+      "n_scheduled": 4,
+      "n_completed": 4,
+      "arrival_rate_per_s": 40.35000347690452,
+      "throughput_per_s": 49.559929316782345,
+      "horizon_s": 0.08071036531211297,
+      "queue_depth_mean": 0.0,
+      "queue_depth_max": 0,
+      "queue_wait_s_mean": 0.0035794789029008588,
+      "queue_wait_s_p95": 0.003978262302793328,
+      "service_time_s_mean": 0.0012521770000000002,
+      "router_decision_s_mean": null,
+      "end_to_end_s_mean": 0.0060158436709738215,
+      "p50_latency_s": 0.006360929339520399,
+      "p95_latency_s": 0.006422564969254835,
+      "p99_latency_s": 0.006422564969254835,
+      "failure_rate": 0.0,
+      "timeout_rate": 0.0,
+      "retry_rate": 0.0,
+      "cost_per_query": 4.9602500000000005e-05,
+      "total_cost": 0.00019841000000000002,
+      "quality_mean": null,
+      "strong_model_fraction": 0.25,
+      "utilization": 0.007757225451512572,
+      "capacity": 8,
+      "failures": {
+        "n": 4,
+        "n_ok": 4,
+        "n_failed": 0,
+        "failure_rate": 0.0,
+        "timeout_rate": 0.0,
+        "retry_rate": 0.0,
+        "cost_cap_stop_rate": 0.0,
+        "counts": {
+          "ok": 4,
+          "timeout": 0,
+          "http_429": 0,
+          "http_5xx": 0,
+          "http_4xx": 0,
+          "connection_error": 0,
+          "malformed_response": 0,
+          "cost_cap_stop": 0,
+          "other_error": 0
+        }
+      },
+      "queue_growth": {
+        "slope_per_s": -0.0,
+        "intercept": 0.0,
+        "r2": 0.0,
+        "persistent_growth": false,
+        "n": 4,
+        "occupancy_first": 0.0,
+        "occupancy_last": 0.0,
+        "occupancy_mean": 0.0,
+        "occupancy_max": 0.0,
+        "thresholds": {
+          "min_slope": 0.05,
+          "min_r2": 0.3
+        }
+      },
+      "saturation": {
+        "saturated": false,
+        "reasons": [],
+        "p95_latency_s": 0.006422564969254835,
+        "sla_p95_s": 1.5,
+        "p95_exceeds_sla": false,
+        "failure_rate": 0.0,
+        "failure_rate_threshold": 0.05,
+        "failure_rate_exceeds_threshold": false,
+        "queue_growth": {
+          "slope_per_s": -0.0,
+          "intercept": 0.0,
+          "r2": 0.0,
+          "persistent_growth": false,
+          "n": 4,
+          "occupancy_first": 0.0,
+          "occupancy_last": 0.0,
+          "occupancy_mean": 0.0,
+          "occupancy_max": 0.0,
+          "thresholds": {
+            "min_slope": 0.05,
+            "min_r2": 0.3
+          }
+        },
+        "environment_only": true,
+        "note": "Saturation is reported only for this tested environment, load profile, policy, and backend. It is not a universal EcoLogic capacity limit."
+      },
+      "environment_only": true,
+      "latency_inflation_vs_1x": 0.8492790163424213,
+      "cost_inflation_vs_1x": 1.0
+    }
+  ],
+  "inflation_note": "latency_inflation_vs_1x and cost_inflation_vs_1x are ratios to the 1x cell of the same profile and policy.",
+  "saturation_points": [
+    {
+      "profile": "poisson",
+      "policy": "always_cheap",
+      "saturation_multiplier": null,
+      "n_levels_tested": 2,
+      "unsaturated_multipliers": [
+        1.0,
+        2.0
+      ],
+      "environment_only": true,
+      "note": "No saturation among tested levels"
+    },
+    {
+      "profile": "poisson",
+      "policy": "always_strong",
+      "saturation_multiplier": null,
+      "n_levels_tested": 2,
+      "unsaturated_multipliers": [
+        1.0,
+        2.0
+      ],
+      "environment_only": true,
+      "note": "No saturation among tested levels"
+    },
+    {
+      "profile": "poisson",
+      "policy": "cost_matched_static",
+      "saturation_multiplier": null,
+      "n_levels_tested": 2,
+      "unsaturated_multipliers": [
+        1.0,
+        2.0
+      ],
+      "environment_only": true,
+      "note": "No saturation among tested levels"
+    },
+    {
+      "profile": "poisson",
+      "policy": "ecologic",
+      "saturation_multiplier": null,
+      "n_levels_tested": 2,
+      "unsaturated_multipliers": [
+        1.0,
+        2.0
+      ],
+      "environment_only": true,
+      "note": "No saturation among tested levels"
+    },
+    {
+      "profile": "steady_high",
+      "policy": "always_cheap",
+      "saturation_multiplier": null,
+      "n_levels_tested": 2,
+      "unsaturated_multipliers": [
+        1.0,
+        2.0
+      ],
+      "environment_only": true,
+      "note": "No saturation among tested levels"
+    },
+    {
+      "profile": "steady_high",
+      "policy": "always_strong",
+      "saturation_multiplier": 2.0,
+      "n_levels_tested": 2,
+      "unsaturated_multipliers": [
+        1.0
+      ],
+      "environment_only": true,
+      "note": "first saturated level in this environment: 2.0x"
+    },
+    {
+      "profile": "steady_high",
+      "policy": "cost_matched_static",
+      "saturation_multiplier": null,
+      "n_levels_tested": 2,
+      "unsaturated_multipliers": [
+        1.0,
+        2.0
+      ],
+      "environment_only": true,
+      "note": "No saturation among tested levels"
+    },
+    {
+      "profile": "steady_high",
+      "policy": "ecologic",
+      "saturation_multiplier": 2.0,
+      "n_levels_tested": 2,
+      "unsaturated_multipliers": [
+        1.0
+      ],
+      "environment_only": true,
+      "note": "first saturated level in this environment: 2.0x"
+    }
+  ],
+  "max_sustainable_throughput": {
+    "max_sustainable_throughput_per_s": 146.14630626296284,
+    "profile": "steady_high",
+    "policy": "cost_matched_static",
+    "multiplier": 2.0,
+    "environment_only": true,
+    "note": "Maximum among unsaturated cells in this run; not a universal limit."
+  },
+  "pareto_under_load": [
+    {
+      "profile": "poisson",
+      "multiplier": 1.0,
+      "policies": [
+        "always_cheap",
+        "always_strong",
+        "ecologic",
+        "cost_matched_static"
+      ],
+      "undominated": [
+        "always_cheap",
+        "ecologic"
+      ],
+      "ecologic_pareto_efficient": true,
+      "quality_axis": "negative_p95_latency",
+      "cost_axis": "cost_per_query",
+      "points": [
+        {
+          "policy": "always_cheap",
+          "cost_per_query": 5.3599999999999995e-06,
+          "quality_mean": null,
+          "p95_latency_s": 0.00598870725682998
+        },
+        {
+          "policy": "always_strong",
+          "cost_per_query": 0.00018,
+          "quality_mean": null,
+          "p95_latency_s": 0.007236707271868977
+        },
+        {
+          "policy": "ecologic",
+          "cost_per_query": 4.8299999999999995e-06,
+          "quality_mean": null,
+          "p95_latency_s": 0.0071260476783248095
+        },
+        {
+          "policy": "cost_matched_static",
+          "cost_per_query": 4.9602500000000005e-05,
+          "quality_mean": null,
+          "p95_latency_s": 0.007562373313913736
+        }
+      ],
+      "environment_only": true,
+      "note": "EcoLogic is Pareto-efficient under this load if it is not strictly dominated in (cost, quality). Quality is mean correctness when logged, otherwise \u2212p95 latency. Not a universal claim."
+    },
+    {
+      "profile": "poisson",
+      "multiplier": 2.0,
+      "policies": [
+        "always_cheap",
+        "always_strong",
+        "ecologic",
+        "cost_matched_static"
+      ],
+      "undominated": [
+        "ecologic",
+        "cost_matched_static"
+      ],
+      "ecologic_pareto_efficient": true,
+      "quality_axis": "negative_p95_latency",
+      "cost_axis": "cost_per_query",
+      "points": [
+        {
+          "policy": "always_cheap",
+          "cost_per_query": 5.3599999999999995e-06,
+          "quality_mean": null,
+          "p95_latency_s": 0.006964782302672515
+        },
+        {
+          "policy": "always_strong",
+          "cost_per_query": 0.00018,
+          "quality_mean": null,
+          "p95_latency_s": 0.008439679335664724
+        },
+        {
+          "policy": "ecologic",
+          "cost_per_query": 4.8299999999999995e-06,
+          "quality_mean": null,
+          "p95_latency_s": 0.006453846345051889
+        },
+        {
+          "policy": "cost_matched_static",
+          "cost_per_query": 4.9602500000000005e-05,
+          "quality_mean": null,
+          "p95_latency_s": 0.006422564969254835
+        }
+      ],
+      "environment_only": true,
+      "note": "EcoLogic is Pareto-efficient under this load if it is not strictly dominated in (cost, quality). Quality is mean correctness when logged, otherwise \u2212p95 latency. Not a universal claim."
+    },
+    {
+      "profile": "steady_high",
+      "multiplier": 1.0,
+      "policies": [
+        "always_cheap",
+        "always_strong",
+        "ecologic",
+        "cost_matched_static"
+      ],
+      "undominated": [
+        "always_strong",
+        "ecologic",
+        "cost_matched_static"
+      ],
+      "ecologic_pareto_efficient": true,
+      "quality_axis": "negative_p95_latency",
+      "cost_axis": "cost_per_query",
+      "points": [
+        {
+          "policy": "always_cheap",
+          "cost_per_query": 5.3599999999999995e-06,
+          "quality_mean": null,
+          "p95_latency_s": 0.006672499992419034
+        },
+        {
+          "policy": "always_strong",
+          "cost_per_query": 0.00018,
+          "quality_mean": null,
+          "p95_latency_s": 0.004719291988294572
+        },
+        {
+          "policy": "ecologic",
+          "cost_per_query": 4.8299999999999995e-06,
+          "quality_mean": null,
+          "p95_latency_s": 0.00600404100259766
+        },
+        {
+          "policy": "cost_matched_static",
+          "cost_per_query": 4.9602500000000005e-05,
+          "quality_mean": null,
+          "p95_latency_s": 0.005869999993592501
+        }
+      ],
+      "environment_only": true,
+      "note": "EcoLogic is Pareto-efficient under this load if it is not strictly dominated in (cost, quality). Quality is mean correctness when logged, otherwise \u2212p95 latency. Not a universal claim."
+    },
+    {
+      "profile": "steady_high",
+      "multiplier": 2.0,
+      "policies": [
+        "always_cheap",
+        "always_strong",
+        "ecologic",
+        "cost_matched_static"
+      ],
+      "undominated": [
+        "always_cheap",
+        "ecologic",
+        "cost_matched_static"
+      ],
+      "ecologic_pareto_efficient": true,
+      "quality_axis": "negative_p95_latency",
+      "cost_axis": "cost_per_query",
+      "points": [
+        {
+          "policy": "always_cheap",
+          "cost_per_query": 5.3599999999999995e-06,
+          "quality_mean": null,
+          "p95_latency_s": 0.004576499981340021
+        },
+        {
+          "policy": "always_strong",
+          "cost_per_query": 0.00018,
+          "quality_mean": null,
+          "p95_latency_s": 0.06860170897562057
+        },
+        {
+          "policy": "ecologic",
+          "cost_per_query": 4.8299999999999995e-06,
+          "quality_mean": null,
+          "p95_latency_s": 0.030340208031702787
+        },
+        {
+          "policy": "cost_matched_static",
+          "cost_per_query": 4.9602500000000005e-05,
+          "quality_mean": null,
+          "p95_latency_s": 0.004385082982480526
+        }
+      ],
+      "environment_only": true,
+      "note": "EcoLogic is Pareto-efficient under this load if it is not strictly dominated in (cost, quality). Quality is mean correctness when logged, otherwise \u2212p95 latency. Not a universal claim."
+    }
+  ],
+  "ecologic_pareto_efficient_all_tested_loads": true,
+  "environment_only": true,
+  "disclaimer": "Saturation, sustainable throughput, and Pareto-efficiency are for this tested environment only. They are not universal EcoLogic limits.",
+  "git": {
+    "available": true,
+    "commit": "24ca318a9a4b823cd9f9882b806fc0648a63e081",
+    "branch": "main",
+    "dirty": true,
+    "error": null
+  },
+  "mode": "measured",
+  "paid_api": false,
+  "dry_run": true,
+  "n_requests": 4,
+  "profiles": [
+    "steady_high",
+    "poisson"
+  ],
+  "multipliers_requested": [
+    1.0,
+    2.0
+  ],
+  "multipliers_executed": [
+    1.0,
+    2.0
+  ],
+  "stopped_on_cost_cap": false,
+  "stop_reason": null,
+  "cost": {
+    "realized_usd": 0.0038366799999999986,
+    "n_costed": 64,
+    "remaining_planned": 0,
+    "limit_usd": null,
+    "estimate_usd_per_query": 0.002,
+    "unit_cost_usd": 5.994812499999998e-05
+  },
+  "capacity": 8,
+  "seed": 20260909
+}

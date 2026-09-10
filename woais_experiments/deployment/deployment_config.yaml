@@ -1,0 +1,86 @@
+# Real deployment benchmark (MEASURED). Never mixed with simulator outputs.
+# No paid provider HTTP unless the process is started with --allow-api.
+
+measurement_type: MEASURED
+
+listen:
+  host: 127.0.0.1
+  port: 8765
+
+# Product serving slugs from backend/main.py MODELS.
+models:
+  tier1:
+    name: google/gemma-3n-E4B-it
+    provider: together
+  tier2:
+    name: ServiceNow-AI/Apriel-1.6-15b-Thinker
+    provider: together
+  tier3:
+    name: gpt-4o
+    provider: openai
+
+roles:
+  cheap: tier1
+  strong: tier3
+
+# T1/T2 product slugs are not in configs/models.json. Do not invent Together
+# list prices. Alias them onto committed eval-stack rates and label the source.
+price_alias:
+  google/gemma-3n-E4B-it: Qwen/Qwen3.5-9B
+  ServiceNow-AI/Apriel-1.6-15b-Thinker: openai/gpt-oss-20b
+
+# Optional operator overrides (USD / 1M tokens). Empty = use models.json + aliases.
+prices_usd_per_million: {}
+
+router_overhead_name: ecologic_keyword
+
+stub:
+  sleep_s: 0.001
+  output_tokens: 16
+  chars_per_token: 4.0
+
+paid:
+  timeout_s: 30
+  max_tokens: 64
+  temperature: 0.0
+  stream: false
+
+retries:
+  max_retries: 2
+  client_max_retries: 2
+
+client:
+  timeout_s: 30
+
+workloads:
+  concurrency: [1, 2, 4, 8, 16]
+  max_concurrency: 16
+  concurrency_16_safe: true
+  skip_concurrency_16_if_allow_api: true
+  idle_gap_s: 2.0
+
+bootstrap:
+  n_boot: 2000
+  seed: 20260909
+  level: 0.95
+
+seeds:
+  static_mix: 20260909
+
+prompts:
+  - id: t1_photo
+    text: "What is photosynthesis?"
+  - id: t1_capital
+    text: "What is the capital of France?"
+  - id: t1_define
+    text: "Define latency in computer networks."
+  - id: t2_compare
+    text: "Compare REST and GraphQL for a public HTTP API."
+  - id: t2_analyze
+    text: "Analyze the tradeoffs of pessimistic versus optimistic locking."
+  - id: t2_steps
+    text: "Explain step by step how TCP establishes a connection."
+  - id: t3_code
+    text: "Write a Python function that parses a JSON string into a dict."
+  - id: t3_debug
+    text: "Debug this Python function that raises KeyError on missing JSON keys."

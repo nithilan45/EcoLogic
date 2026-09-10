@@ -106,10 +106,26 @@ def _message_fields(payload: dict) -> tuple[str, str]:
 
 
 def _usage_and_cost(model: str, payload: dict) -> dict:
-    usage = payload.get("usage") or {}
-    prompt_tokens = int(usage.get("prompt_tokens") or 0)
-    completion_tokens = int(usage.get("completion_tokens") or 0)
-    total_tokens = int(usage.get("total_tokens") or (prompt_tokens + completion_tokens))
+    usage = payload.get("usage")
+    empty = {
+        "prompt_tokens": None,
+        "completion_tokens": None,
+        "total_tokens": None,
+        "estimated_usd": None,
+        "usage_raw": usage if isinstance(usage, dict) else {},
+        "usage_complete": False,
+    }
+    if not isinstance(usage, dict):
+        return empty
+    if usage.get("prompt_tokens") is None or usage.get("completion_tokens") is None:
+        return empty
+    prompt_tokens = int(usage["prompt_tokens"])
+    completion_tokens = int(usage["completion_tokens"])
+    total_tokens = (
+        int(usage["total_tokens"])
+        if usage.get("total_tokens") is not None
+        else prompt_tokens + completion_tokens
+    )
     rates = FALLBACK_RATES_PER_MILLION.get(model, {"input": None, "output": None})
     estimated_usd = None
     if rates["input"] is not None and rates["output"] is not None:
@@ -123,6 +139,7 @@ def _usage_and_cost(model: str, payload: dict) -> dict:
         "total_tokens": total_tokens,
         "estimated_usd": estimated_usd,
         "usage_raw": usage,
+        "usage_complete": True,
     }
 
 

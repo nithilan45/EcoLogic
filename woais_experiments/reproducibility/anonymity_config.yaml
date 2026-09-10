@@ -1,0 +1,77 @@
+# Double-blind anonymity patterns. Fill identities before an anonymous release.
+# The scanner never deletes files. Hits are listed in ANONYMITY_REPORT.md for
+# manual review. This file itself is excluded from the scan.
+
+severity: critical
+
+scan_git_metadata: true
+scan_pdfs: true
+
+# Literal strings to search (case-insensitive unless noted).
+identities:
+  names:
+    - ELAbundio
+    - Arjun
+  emails:
+    - arjun_s@mit.edu
+  usernames:
+    - ELAbundio
+    - arjun_s
+  github_usernames: []
+  schools:
+    - Massachusetts Institute of Technology
+  companies: []
+  institutional_domains:
+    - mit.edu
+  acknowledgments_phrases:
+    - "I would like to thank"
+    - "we thank our advisor"
+    - "this work was supported by"
+    - "the authors thank"
+
+# Extra regexes (Python). Do not capture secrets here; anonymity only.
+# Add machine hostnames here before an anonymous camera-ready upload.
+path_patterns:
+  - name: macos_home
+    regex: '/Users/[A-Za-z0-9._-]+'
+  - name: linux_home
+    regex: '/home/[A-Za-z0-9._-]+'
+  - name: windows_home
+    regex: '(?i)C:\\Users\\[A-Za-z0-9._-]+'
+  - name: email_address
+    regex: '[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}'
+
+exclude_globs:
+  - '**/.git/objects/**'
+  - '**/.git/hooks/**'
+  - '**/__pycache__/**'
+  - '**/.venv/**'
+  - '**/venv/**'
+  - 'woais_experiments/reproducibility/anonymity_config.yaml'
+  - 'woais_experiments/results/reproducibility/**'
+  - 'woais_experiments/results/runs/**'
+  - 'woais_experiments/results/_stress_unittest/**'
+  # Frozen eval dumps contain benchmark prompts, not author identity.
+  - 'raw_results/**'
+  - 'router_v2/**'
+  - 'stage7_10/**'
+  - 'quality_benchmark_results.json'
+  - 'quality_benchmark_report.md'
+  - 'benchmark/**'
+
+exclude_suffixes:
+  - .pyc
+  - .pyo
+  - .png
+  - .jpg
+  - .jpeg
+  - .gif
+  - .webp
+  - .pkl
+  - .npz
+  - .npy
+  - .gz
+  - .zip
+  - .so
+  - .dylib
+  - .woff

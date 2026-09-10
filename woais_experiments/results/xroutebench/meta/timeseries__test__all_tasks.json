@@ -1,0 +1,13 @@
+{
+  "config": "timeseries",
+  "split": "test",
+  "task_name_query_counts": {
+    "anomaly-detection": 14,
+    "causality-analysis": 7,
+    "event-prediction": 36,
+    "inductive-reasoning": 10,
+    "noise-understanding": 10,
+    "pattern-recognition": 38,
+    "similarity-analysis": 12
+  }
+}

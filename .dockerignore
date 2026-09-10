@@ -1,0 +1,13 @@
+.git
+**/.git
+**/__pycache__
+**/*.pyc
+woais_experiments/results
+woais_experiments/data
+raw_results
+stage7_10
+router_v2
+benchmark
+.env
+.venv
+venv

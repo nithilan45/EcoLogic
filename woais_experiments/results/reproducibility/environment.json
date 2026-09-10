@@ -1,0 +1,48 @@
+{
+  "captured_utc": "2026-09-10T04:41:32Z",
+  "python": {
+    "version": "3.13.2",
+    "implementation": "CPython",
+    "executable": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13",
+    "version_full": "3.13.2 (v3.13.2:4f8bb3947cf, Feb  4 2025, 11:51:10) [Clang 15.0.0 (clang-1500.3.9.4)]"
+  },
+  "platform": {
+    "system": "Darwin",
+    "release": "25.5.0",
+    "machine": "arm64",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O"
+  },
+  "dependencies": {
+    "numpy": "2.5.2",
+    "scipy": "1.18.0",
+    "matplotlib": "3.11.1",
+    "sklearn": "1.9.0",
+    "yaml": "6.0.3",
+    "httpx": "0.28.1",
+    "datasets": "5.0.1",
+    "pandas": "3.0.3"
+  },
+  "git": {
+    "available": true,
+    "commit": "24ca318a9a4b823cd9f9882b806fc0648a63e081",
+    "branch": "main",
+    "dirty": true,
+    "error": null
+  },
+  "random_seeds": {
+    "random_policy": 20260905,
+    "monte_carlo": 20260909,
+    "arrival": 20260909
+  },
+  "config_hash": "3383f9d559b8ee32acbb465f48a034674fe23fb1642e3d271a260ddf9b02c0f4",
+  "frozen_manifest_sha256": "144b59ee2e34ae288df06efaaa3b34954ca4cccba4dc14e25c9493c73ee0d16a",
+  "artifact_hashes": {
+    "woais_experiments/EXISTING_RESULTS_SHA256.txt": "144b59ee2e34ae288df06efaaa3b34954ca4cccba4dc14e25c9493c73ee0d16a",
+    "woais_experiments/requirements-lock.txt": "833d4dd20e7f15f10fe32c8fab533523826c286f909c01a2074a445730f48f31",
+    "woais_experiments/results/accounting/stage12.json": "6f4d6227a522953d03414ad9c107e021b32398087e2590ccceb097dcc563d12b",
+    "woais_experiments/results/routing/stage12_policies.json": "ac0a877a586453c7ae2689bf4177059b05d9f50eb1f726bd20a475efb7dd1130",
+    "woais_experiments/results/external/routellm_tables.json": "6b8757033e7ae408d5922d334864ca05ac4b3b2f450a13380f1d52a583b42956"
+  },
+  "paid_api_key_names_present": [],
+  "cwd_is_repo": true
+}

@@ -1,0 +1,7 @@
+router,dataset,budget,axis,unit,raw_router_savings,router_overhead,net_savings,break_even_overhead,percentage_of_break_even_used,status,routing_is_beneficial,routing_is_neutral,routing_is_dominated,status_ci,break_even_lo,break_even_hi,net_lo,net_hi,numeric_verified,numeric_abs_err
+ecologic,stage12,0.0007877658516483516,usd,USD/query,-0.000673065576923077,0.0,-0.000673065576923077,-0.000673065576923077,,dominated,false,false,true,dominated,-0.0007972997252747253,-0.0005576026923076922,-0.0007972997252747253,-0.0005576026923076922,true,0.0
+always_t1,stage12,0.0009182128021978022,usd,USD/query,-0.0008035125274725275,0.0,-0.0008035125274725275,-0.0008035125274725275,,dominated,false,false,true,dominated,-0.0009240879395604397,-0.0006901853846153846,-0.0009240879395604397,-0.0006901853846153846,true,0.0
+always_t2,stage12,0.00011470027472527475,usd,USD/query,0.0,0.0,0.0,0.0,0.0,neutral,false,true,false,neutral,0.0,0.0,0.0,0.0,true,6.776263578034403e-20
+frontier,stage12,0.0017488873626373626,usd,USD/query,-0.0016341870879120878,0.0,-0.0016341870879120878,-0.0016341870879120878,,dominated,false,false,true,neutral,-0.0017434667582417584,0.0,-0.0017434667582417584,0.0,true,0.0
+random,stage12,0.0009967277747252748,usd,USD/query,-0.0008820275000000001,0.0,-0.0008820275000000001,-0.0008820275000000001,,dominated,false,false,true,neutral,-0.0010145867582417583,inf,-0.0010145867582417583,inf,true,0.0
+oracle_usd,stage12,0.00012918313186813187,usd,USD/query,inf,0.0,inf,inf,0.0,beneficial,true,false,false,beneficial,inf,inf,inf,inf,true,0.0

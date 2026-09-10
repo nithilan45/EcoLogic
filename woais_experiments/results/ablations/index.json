@@ -1,0 +1,29 @@
+{
+  "n_variants": 15,
+  "n_test": 91,
+  "variants": [
+    "always_cheap",
+    "always_strong",
+    "full",
+    "logistic",
+    "no_complexity",
+    "no_confidence",
+    "no_length",
+    "no_lexical",
+    "no_semantic",
+    "oracle",
+    "random_matched_rate",
+    "single_strongest_family",
+    "static_mixture_matched_rate",
+    "threshold_only",
+    "tree"
+  ],
+  "paths": {
+    "summary_csv": "woais_experiments/results/ablations/summary.csv",
+    "query_level_csv": "woais_experiments/results/ablations/query_level.csv",
+    "configs_json": "woais_experiments/results/ablations/configs.json"
+  },
+  "select_ablation_on_test": false,
+  "test_queries_identical": true,
+  "negative_results_preserved": true
+}

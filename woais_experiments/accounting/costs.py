@@ -7,8 +7,8 @@ from collections import defaultdict
 from typing import Callable, Iterable
 
 from woais_experiments.frozen import ItemMatrix
-from woais_experiments.paths import CONFIGS, ensure_legacy_imports
-from woais_experiments.statistics.inference import mcnemar, wilson_dict
+from woais_experiments.paths import CONFIGS
+from woais_experiments.statistics.inference import wilson_dict
 
 TIERS = (1, 2, 3)
 
@@ -18,54 +18,26 @@ def _models_config() -> dict:
 
 
 def paper_energy_rates() -> dict[int, float]:
-    """Prefer `benchmark.api.MODELS`; fall back to the copied config if httpx is absent."""
-    try:
-        ensure_legacy_imports()
-        from api import MODELS
-        return {t: float(MODELS[t]["paper_energy_per_1k"]) for t in TIERS}
-    except Exception:
-        cfg = _models_config()["eval_models"]
-        return {int(t): float(cfg[str(t)]["paper_energy_per_1k"]) for t in TIERS}
+    """Committed paper J/1k rates from `configs/models.json` only."""
+    cfg = _models_config()["eval_models"]
+    return {int(t): float(cfg[str(t)]["paper_energy_per_1k"]) for t in TIERS}
 
 
 def subst_energy_rates() -> dict[int, float]:
-    try:
-        ensure_legacy_imports()
-        from api import MODELS
-        return {t: float(MODELS[t]["subst_energy_per_1k"]) for t in TIERS}
-    except Exception:
-        cfg = _models_config()["eval_models"]
-        return {int(t): float(cfg[str(t)]["subst_energy_per_1k"]) for t in TIERS}
+    cfg = _models_config()["eval_models"]
+    return {int(t): float(cfg[str(t)]["subst_energy_per_1k"]) for t in TIERS}
 
 
 def usd_rates_per_million() -> dict[str, dict[str, float]]:
-    try:
-        ensure_legacy_imports()
-        from api import RATES_PER_MILLION
-        return dict(RATES_PER_MILLION)
-    except Exception:
-        return dict(_models_config()["usd_per_million"])
+    return dict(_models_config()["usd_per_million"])
 
 
 def usd_from_tokens(model: str, prompt_tokens: int, completion_tokens: int) -> float | None:
-    """USD from published $/1M rates. Uses `api.usage_and_cost` when importable."""
-    try:
-        ensure_legacy_imports()
-        from api import usage_and_cost
-        payload = {
-            "usage": {
-                "prompt_tokens": prompt_tokens,
-                "completion_tokens": completion_tokens,
-                "total_tokens": prompt_tokens + completion_tokens,
-            },
-            "choices": [{"finish_reason": "stop"}],
-        }
-        return usage_and_cost(model, payload)["usd"]
-    except Exception:
-        rates = usd_rates_per_million().get(model)
-        if not rates:
-            return None
-        return prompt_tokens / 1_000_000 * rates["input"] + completion_tokens / 1_000_000 * rates["output"]
+    """USD from committed $/1M input and output rates in `configs/models.json`."""
+    rates = usd_rates_per_million().get(model)
+    if not rates:
+        return None
+    return prompt_tokens / 1_000_000 * rates["input"] + completion_tokens / 1_000_000 * rates["output"]
 
 
 def energy_j(total_tokens: float, rate_per_1k: float) -> float:
@@ -87,13 +59,18 @@ def evaluate_assignment(
     cost_of: Callable[[int, str], float],
     *,
     name: str,
+    overhead_per_query: float = 0.0,
+    cost_kind: str = "usd",
+    cost_unit: str = "USD",
+    cost_provenance: str = "stored_call_usd",
 ) -> dict:
     items = matrix.item_ids
     outcomes = [bool(matrix.correct[(assign[i], i)]) for i in items]
     k = sum(outcomes)
     n = len(items)
     acc = wilson_dict(k, n)
-    total_cost = sum(cost_of(assign[i], i) for i in items)
+    inference_cost = sum(cost_of(assign[i], i) for i in items)
+    total_cost = inference_cost + float(overhead_per_query) * n
     total_tokens = sum(matrix.tokens[(assign[i], i)] for i in items)
     lat = [matrix.latency_s[(assign[i], i)] for i in items]
     mix: dict[int, int] = defaultdict(int)
@@ -112,7 +89,17 @@ def evaluate_assignment(
         "correct": k,
         "n": n,
         "cost": total_cost,
+        "inference_cost": inference_cost,
+        "router_overhead_per_query": float(overhead_per_query),
         "cost_per_item": total_cost / n if n else 0.0,
+        "cost_kind": cost_kind,
+        "cost_unit": cost_unit,
+        "cost_provenance": cost_provenance,
+        "role": (
+            "hindsight_oracle"
+            if str(name).startswith("oracle")
+            else "deployable_or_baseline"
+        ),
         "tokens": total_tokens,
         "latency_mean_s": sum(lat) / n if n else 0.0,
         "latency_p50_s": _percentile(lat, 50),

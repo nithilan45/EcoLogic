@@ -1,0 +1,1783 @@
+{
+  "schema_version": "1.0",
+  "usd_available": true,
+  "dataset": "xroutebench/llmrouter_generic/test",
+  "n_queries": 3729,
+  "n_models": 18,
+  "models": [
+    "qwen2.5-7b-instruct",
+    "gemma-2-9b-it",
+    "llama-3-8b-instruct-lite",
+    "qwen2.5-7b-instruct-turbo",
+    "mistral-7b-instruct-v0.3",
+    "qwen3-next-80b-a3b-instruct",
+    "llama3-70b-instruct",
+    "mixtral-8x7b-instruct-v0.1",
+    "mixtral-8x22b-instruct-v0.1",
+    "gpt-oss-20b",
+    "mistral-small-3-24b-instruct",
+    "llama-4-maverick",
+    "rnj-1-instruct",
+    "gpt-oss-120b",
+    "qwen3-coder-next",
+    "deepseek-v3.1",
+    "llama-3.3-70b-instruct-turbo",
+    "cogito-v2-1-671b"
+  ],
+  "canonical_columns": [
+    "query_id",
+    "dataset",
+    "model",
+    "quality",
+    "input_tokens",
+    "output_tokens",
+    "realized_cost",
+    "latency_ms"
+  ],
+  "notes": [
+    "query_id_scheme=task_name::task_id_or_query+disambiguate",
+    "complete-case: 18 models on 3729 queries",
+    "realized_cost from published xRouteBench prices \u00d7 tokens only; EcoLogic models.json was not used",
+    "token_num is never split or used as a token substitute"
+  ],
+  "has_router_assignment": false,
+  "naive_aggregate_cost": 3.2850723434086e-05,
+  "exact_realized_cost": 3.234866988468758e-05,
+  "relative_accounting_error": 0.015520067786034951,
+  "accounting": {
+    "policy": "unconstrained_oracle",
+    "naive_vs_realized": {
+      "n": 3729,
+      "realized_inference_mean": 3.234866988468758e-05,
+      "naive_inference_mean": 3.2850723434086e-05,
+      "realized_minus_naive": -5.020535493984187e-07,
+      "covariance_sum": -5.020535493983983e-07,
+      "identity": "realized = naive + sum_m Cov(1{t=m}, c_m)",
+      "abs_residual": 2.0328790734103208e-20,
+      "reconciles": true,
+      "per_model": {
+        "qwen2.5-7b-instruct": {
+          "fraction": 0.018235451863770447,
+          "unconditional_mean": 3.93673370876909e-05,
+          "conditional_mean": 4.687352941176471e-05,
+          "cov_assignment_cost": 1.36878808805848e-07
+        },
+        "gemma-2-9b-it": {
+          "fraction": 0.1300616787342451,
+          "unconditional_mean": 2.1887744703673872e-05,
+          "conditional_mean": 2.3610103092783506e-05,
+          "cov_assignment_cost": 2.2401282346960473e-07
+        },
+        "llama-3-8b-instruct-lite": {
+          "fraction": 0.08340037543577367,
+          "unconditional_mean": 1.704513274336287e-05,
+          "conditional_mean": 2.267073954983923e-05,
+          "cov_assignment_cost": 4.6917771971417525e-07
+        },
+        "qwen2.5-7b-instruct-turbo": {
+          "fraction": 0.0010726736390453205,
+          "unconditional_mean": 5.9102654867256726e-05,
+          "conditional_mean": 7.792500000000001e-05,
+          "cov_assignment_cost": 2.019023344890681e-08
+        },
+        "mistral-7b-instruct-v0.3": {
+          "fraction": 0.004022526146419952,
+          "unconditional_mean": 5.0397264682220394e-05,
+          "conditional_mean": 5.6186666666666675e-05,
+          "cov_assignment_cost": 2.328802085457049e-08
+        },
+        "qwen3-next-80b-a3b-instruct": {
+          "fraction": 0.002413515687851971,
+          "unconditional_mean": 0.0004580420756234924,
+          "conditional_mean": 0.0003696,
+          "cov_assignment_cost": -2.1345633698348715e-07
+        },
+        "llama3-70b-instruct": {
+          "fraction": 0.006972378653794583,
+          "unconditional_mean": 0.00015819123089300116,
+          "conditional_mean": 0.00019464230769230772,
+          "cov_assignment_cost": 2.541507097833143e-07
+        },
+        "mixtral-8x7b-instruct-v0.1": {
+          "fraction": 0.0013408420488066506,
+          "unconditional_mean": 0.0001672231697506033,
+          "conditional_mean": 0.00018228,
+          "cov_assignment_cost": 2.018883112013494e-08
+        },
+        "mixtral-8x22b-instruct-v0.1": {
+          "fraction": 0.0013408420488066506,
+          "unconditional_mean": 0.00033765374094931697,
+          "conditional_mean": 0.0005493599999999999,
+          "cov_assignment_cost": 2.838646541307104e-07
+        },
+        "gpt-oss-20b": {
+          "fraction": 0.6489675516224189,
+          "unconditional_mean": 1.4489487798337391e-05,
+          "conditional_mean": 8.191611570247935e-06,
+          "cov_assignment_cost": -4.087117316164228e-06
+        },
+        "mistral-small-3-24b-instruct": {
+          "fraction": 0.012603915258782515,
+          "unconditional_mean": 6.348104049342986e-05,
+          "conditional_mean": 9.193617021276593e-05,
+          "cov_assignment_cost": 3.58646043660176e-07
+        },
+        "llama-4-maverick": {
+          "fraction": 0.008313220702601234,
+          "unconditional_mean": 0.00032568788415124664,
+          "conditional_mean": 0.00024837838709677423,
+          "cov_assignment_cost": -6.426909114209321e-07
+        },
+        "rnj-1-instruct": {
+          "fraction": 0.02333065164923572,
+          "unconditional_mean": 4.9797184231697515e-05,
+          "conditional_mean": 5.0736206896551734e-05,
+          "cov_assignment_cost": 2.19080106844509e-08
+        },
+        "gpt-oss-120b": {
+          "fraction": 0.03459372485921158,
+          "unconditional_mean": 5.259686242960582e-05,
+          "conditional_mean": 4.864418604651163e-05,
+          "cov_assignment_cost": -1.3673779925426352e-07
+        },
+        "qwen3-coder-next": {
+          "fraction": 0.0008045052292839903,
+          "unconditional_mean": 0.0003695196031107536,
+          "conditional_mean": 0.0005225,
+          "cov_assignment_cost": 1.23073529275339e-07
+        },
+        "deepseek-v3.1": {
+          "fraction": 0.0056315366049879325,
+          "unconditional_mean": 0.00031410297666934785,
+          "conditional_mean": 0.00024412857142857146,
+          "cov_assignment_cost": -3.9406342452569475e-07
+        },
+        "llama-3.3-70b-instruct-turbo": {
+          "fraction": 0.0053633681952266025,
+          "unconditional_mean": 0.00027539256637168144,
+          "conditional_mean": 0.000329648,
+          "cov_assignment_cost": 2.9099186714035197e-07
+        },
+        "cogito-v2-1-671b": {
+          "fraction": 0.011531241619737195,
+          "unconditional_mean": 0.00045768034325556424,
+          "conditional_mean": 0.0006957848837209303,
+          "cov_assignment_cost": 2.745640986862624e-06
+        }
+      },
+      "mix_fractions": {
+        "qwen2.5-7b-instruct": 0.018235451863770447,
+        "gemma-2-9b-it": 0.1300616787342451,
+        "llama-3-8b-instruct-lite": 0.08340037543577367,
+        "qwen2.5-7b-instruct-turbo": 0.0010726736390453205,
+        "mistral-7b-instruct-v0.3": 0.004022526146419952,
+        "qwen3-next-80b-a3b-instruct": 0.002413515687851971,
+        "llama3-70b-instruct": 0.006972378653794583,
+        "mixtral-8x7b-instruct-v0.1": 0.0013408420488066506,
+        "mixtral-8x22b-instruct-v0.1": 0.0013408420488066506,
+        "gpt-oss-20b": 0.6489675516224189,
+        "mistral-small-3-24b-instruct": 0.012603915258782515,
+        "llama-4-maverick": 0.008313220702601234,
+        "rnj-1-instruct": 0.02333065164923572,
+        "gpt-oss-120b": 0.03459372485921158,
+        "qwen3-coder-next": 0.0008045052292839903,
+        "deepseek-v3.1": 0.0056315366049879325,
+        "llama-3.3-70b-instruct-turbo": 0.0053633681952266025,
+        "cogito-v2-1-671b": 0.011531241619737195
+      }
+    },
+    "relative_accounting_error": {
+      "naive_aggregate_cost": 3.2850723434086e-05,
+      "exact_realized_cost": 3.234866988468758e-05,
+      "relative_accounting_error": 0.015520067786034951,
+      "definition": "(naive_aggregate_cost - exact_realized_cost) / exact_realized_cost",
+      "available": true
+    },
+    "router_naive_vs_realized": {
+      "available": false,
+      "status": "skipped",
+      "reason": "published xRouteBench execution tables have no router_score / router_assignment; a performance-argmax policy is the unconstrained oracle, not a learned router"
+    },
+    "router_relative_accounting_error": {
+      "available": false,
+      "status": "skipped",
+      "reason": "published xRouteBench execution tables have no router_score / router_assignment; a performance-argmax policy is the unconstrained oracle, not a learned router"
+    }
+  },
+  "cost_matched_static": {
+    "oracle": {
+      "router_quality": 0.9292880475843895,
+      "router_realized_cost": 3.234866988468766e-05,
+      "static_quality_at_same_cost": 0.7195420347129897,
+      "static_mix_at_same_cost": {
+        "gpt-oss-20b": 0.5313457760037821,
+        "gpt-oss-120b": 0.468654223996218
+      },
+      "static_cost_matched": 3.234866988468766e-05,
+      "same_cost_feasible": true,
+      "same_cost_note": "interpolation t=0.468654 between hull vertices",
+      "quality_advantage": 0.20974601287139982,
+      "static_quality_at_budget": 0.7195420347129897,
+      "static_mix_at_budget": {
+        "gpt-oss-20b": 0.5313457760037821,
+        "gpt-oss-120b": 0.468654223996218
+      },
+      "router_cost_at_same_quality": 3.234866988468766e-05,
+      "static_cost_at_same_quality": null,
+      "static_mix_at_same_quality": null,
+      "same_quality_feasible": false,
+      "cost_savings": null,
+      "relative_regret": -0.4785547529157372,
+      "relative_regret_denominator": 0.43829052285754105,
+      "hull_models": [
+        "gpt-oss-20b",
+        "gpt-oss-120b",
+        "cogito-v2-1-671b"
+      ],
+      "quality_advantage_definition": "router_quality - static_quality_at_same_cost",
+      "cost_savings_definition": "static_cost_at_same_quality - router_realized_cost (>0 if router is cheaper)",
+      "relative_regret_definition": "(static_quality_at_same_cost - router_quality) / (max_q - min_q)",
+      "catalog": {
+        "n_models": 18,
+        "models": [
+          "qwen2.5-7b-instruct",
+          "gemma-2-9b-it",
+          "llama-3-8b-instruct-lite",
+          "qwen2.5-7b-instruct-turbo",
+          "mistral-7b-instruct-v0.3",
+          "qwen3-next-80b-a3b-instruct",
+          "llama3-70b-instruct",
+          "mixtral-8x7b-instruct-v0.1",
+          "mixtral-8x22b-instruct-v0.1",
+          "gpt-oss-20b",
+          "mistral-small-3-24b-instruct",
+          "llama-4-maverick",
+          "rnj-1-instruct",
+          "gpt-oss-120b",
+          "qwen3-coder-next",
+          "deepseek-v3.1",
+          "llama-3.3-70b-instruct-turbo",
+          "cogito-v2-1-671b"
+        ],
+        "mean_cost": {
+          "qwen2.5-7b-instruct": 3.93673370876909e-05,
+          "gemma-2-9b-it": 2.1887744703673872e-05,
+          "llama-3-8b-instruct-lite": 1.704513274336287e-05,
+          "qwen2.5-7b-instruct-turbo": 5.9102654867256726e-05,
+          "mistral-7b-instruct-v0.3": 5.0397264682220394e-05,
+          "qwen3-next-80b-a3b-instruct": 0.0004580420756234924,
+          "llama3-70b-instruct": 0.00015819123089300116,
+          "mixtral-8x7b-instruct-v0.1": 0.0001672231697506033,
+          "mixtral-8x22b-instruct-v0.1": 0.00033765374094931697,
+          "gpt-oss-20b": 1.4489487798337391e-05,
+          "mistral-small-3-24b-instruct": 6.348104049342986e-05,
+          "llama-4-maverick": 0.00032568788415124664,
+          "rnj-1-instruct": 4.9797184231697515e-05,
+          "gpt-oss-120b": 5.259686242960582e-05,
+          "qwen3-coder-next": 0.0003695196031107536,
+          "deepseek-v3.1": 0.00031410297666934785,
+          "llama-3.3-70b-instruct-turbo": 0.00027539256637168144,
+          "cogito-v2-1-671b": 0.00045768034325556424
+        },
+        "mean_quality": {
+          "qwen2.5-7b-instruct": 0.5754722487178285,
+          "gemma-2-9b-it": 0.6236944594420665,
+          "llama-3-8b-instruct-lite": 0.49323871872935304,
+          "qwen2.5-7b-instruct-turbo": 0.5712794492940585,
+          "mistral-7b-instruct-v0.3": 0.3671026025695619,
+          "qwen3-next-80b-a3b-instruct": 0.7251205839450073,
+          "llama3-70b-instruct": 0.6449846791339982,
+          "mixtral-8x7b-instruct-v0.1": 0.4058237805474422,
+          "mixtral-8x22b-instruct-v0.1": 0.6189297852420644,
+          "gpt-oss-20b": 0.6975916538413445,
+          "mistral-small-3-24b-instruct": 0.6784973925076074,
+          "llama-4-maverick": 0.6415386766597134,
+          "rnj-1-instruct": 0.5133549461487512,
+          "gpt-oss-120b": 0.7444287028803442,
+          "qwen3-coder-next": 0.6597285608091471,
+          "deepseek-v3.1": 0.7028947449740197,
+          "llama-3.3-70b-instruct-turbo": 0.7127928007448153,
+          "cogito-v2-1-671b": 0.805393125427103
+        },
+        "always_cheapest": {
+          "weights": {
+            "gpt-oss-20b": 1.0
+          },
+          "cost": 1.4489487798337391e-05,
+          "quality": 0.6975916538413445,
+          "kind": "always_cheapest",
+          "feasible": true,
+          "note": ""
+        },
+        "always_most_expensive": {
+          "weights": {
+            "qwen3-next-80b-a3b-instruct": 1.0
+          },
+          "cost": 0.0004580420756234924,
+          "quality": 0.7251205839450073,
+          "kind": "always_most_expensive",
+          "feasible": true,
+          "note": ""
+        },
+        "always_each": {
+          "qwen2.5-7b-instruct": {
+            "weights": {
+              "qwen2.5-7b-instruct": 1.0
+            },
+            "cost": 3.93673370876909e-05,
+            "quality": 0.5754722487178285,
+            "kind": "always_qwen2.5-7b-instruct",
+            "feasible": true,
+            "note": ""
+          },
+          "gemma-2-9b-it": {
+            "weights": {
+              "gemma-2-9b-it": 1.0
+            },
+            "cost": 2.1887744703673872e-05,
+            "quality": 0.6236944594420665,
+            "kind": "always_gemma-2-9b-it",
+            "feasible": true,
+            "note": ""
+          },
+          "llama-3-8b-instruct-lite": {
+            "weights": {
+              "llama-3-8b-instruct-lite": 1.0
+            },
+            "cost": 1.704513274336287e-05,
+            "quality": 0.49323871872935304,
+            "kind": "always_llama-3-8b-instruct-lite",
+            "feasible": true,
+            "note": ""
+          },
+          "qwen2.5-7b-instruct-turbo": {
+            "weights": {
+              "qwen2.5-7b-instruct-turbo": 1.0
+            },
+            "cost": 5.9102654867256726e-05,
+            "quality": 0.5712794492940585,
+            "kind": "always_qwen2.5-7b-instruct-turbo",
+            "feasible": true,
+            "note": ""
+          },
+          "mistral-7b-instruct-v0.3": {
+            "weights": {
+              "mistral-7b-instruct-v0.3": 1.0
+            },
+            "cost": 5.0397264682220394e-05,
+            "quality": 0.3671026025695619,
+            "kind": "always_mistral-7b-instruct-v0.3",
+            "feasible": true,
+            "note": ""
+          },
+          "qwen3-next-80b-a3b-instruct": {
+            "weights": {
+              "qwen3-next-80b-a3b-instruct": 1.0
+            },
+            "cost": 0.0004580420756234924,
+            "quality": 0.7251205839450073,
+            "kind": "always_qwen3-next-80b-a3b-instruct",
+            "feasible": true,
+            "note": ""
+          },
+          "llama3-70b-instruct": {
+            "weights": {
+              "llama3-70b-instruct": 1.0
+            },
+            "cost": 0.00015819123089300116,
+            "quality": 0.6449846791339982,
+            "kind": "always_llama3-70b-instruct",
+            "feasible": true,
+            "note": ""
+          },
+          "mixtral-8x7b-instruct-v0.1": {
+            "weights": {
+              "mixtral-8x7b-instruct-v0.1": 1.0
+            },
+            "cost": 0.0001672231697506033,
+            "quality": 0.4058237805474422,
+            "kind": "always_mixtral-8x7b-instruct-v0.1",
+            "feasible": true,
+            "note": ""
+          },
+          "mixtral-8x22b-instruct-v0.1": {
+            "weights": {
+              "mixtral-8x22b-instruct-v0.1": 1.0
+            },
+            "cost": 0.00033765374094931697,
+            "quality": 0.6189297852420644,
+            "kind": "always_mixtral-8x22b-instruct-v0.1",
+            "feasible": true,
+            "note": ""
+          },
+          "gpt-oss-20b": {
+            "weights": {
+              "gpt-oss-20b": 1.0
+            },
+            "cost": 1.4489487798337391e-05,
+            "quality": 0.6975916538413445,
+            "kind": "always_gpt-oss-20b",
+            "feasible": true,
+            "note": ""
+          },
+          "mistral-small-3-24b-instruct": {
+            "weights": {
+              "mistral-small-3-24b-instruct": 1.0
+            },
+            "cost": 6.348104049342986e-05,
+            "quality": 0.6784973925076074,
+            "kind": "always_mistral-small-3-24b-instruct",
+            "feasible": true,
+            "note": ""
+          },
+          "llama-4-maverick": {
+            "weights": {
+              "llama-4-maverick": 1.0
+            },
+            "cost": 0.00032568788415124664,
+            "quality": 0.6415386766597134,
+            "kind": "always_llama-4-maverick",
+            "feasible": true,
+            "note": ""
+          },
+          "rnj-1-instruct": {
+            "weights": {
+              "rnj-1-instruct": 1.0
+            },
+            "cost": 4.9797184231697515e-05,
+            "quality": 0.5133549461487512,
+            "kind": "always_rnj-1-instruct",
+            "feasible": true,
+            "note": ""
+          },
+          "gpt-oss-120b": {
+            "weights": {
+              "gpt-oss-120b": 1.0
+            },
+            "cost": 5.259686242960582e-05,
+            "quality": 0.7444287028803442,
+            "kind": "always_gpt-oss-120b",
+            "feasible": true,
+            "note": ""
+          },
+          "qwen3-coder-next": {
+            "weights": {
+              "qwen3-coder-next": 1.0
+            },
+            "cost": 0.0003695196031107536,
+            "quality": 0.6597285608091471,
+            "kind": "always_qwen3-coder-next",
+            "feasible": true,
+            "note": ""
+          },
+          "deepseek-v3.1": {
+            "weights": {
+              "deepseek-v3.1": 1.0
+            },
+            "cost": 0.00031410297666934785,
+            "quality": 0.7028947449740197,
+            "kind": "always_deepseek-v3.1",
+            "feasible": true,
+            "note": ""
+          },
+          "llama-3.3-70b-instruct-turbo": {
+            "weights": {
+              "llama-3.3-70b-instruct-turbo": 1.0
+            },
+            "cost": 0.00027539256637168144,
+            "quality": 0.7127928007448153,
+            "kind": "always_llama-3.3-70b-instruct-turbo",
+            "feasible": true,
+            "note": ""
+          },
+          "cogito-v2-1-671b": {
+            "weights": {
+              "cogito-v2-1-671b": 1.0
+            },
+            "cost": 0.00045768034325556424,
+            "quality": 0.805393125427103,
+            "kind": "always_cogito-v2-1-671b",
+            "feasible": true,
+            "note": ""
+          }
+        },
+        "pairwise_random": "omitted (153 pairs); m=18 > 12",
+        "uniform_mixture": {
+          "weights": {
+            "qwen2.5-7b-instruct": 0.05555555555555555,
+            "gemma-2-9b-it": 0.05555555555555555,
+            "llama-3-8b-instruct-lite": 0.05555555555555555,
+            "qwen2.5-7b-instruct-turbo": 0.05555555555555555,
+            "mistral-7b-instruct-v0.3": 0.05555555555555555,
+            "qwen3-next-80b-a3b-instruct": 0.05555555555555555,
+            "llama3-70b-instruct": 0.05555555555555555,
+            "mixtral-8x7b-instruct-v0.1": 0.05555555555555555,
+            "mixtral-8x22b-instruct-v0.1": 0.05555555555555555,
+            "gpt-oss-20b": 0.05555555555555555,
+            "mistral-small-3-24b-instruct": 0.05555555555555555,
+            "llama-4-maverick": 0.05555555555555555,
+            "rnj-1-instruct": 0.05555555555555555,
+            "gpt-oss-120b": 0.05555555555555555,
+            "qwen3-coder-next": 0.05555555555555555,
+            "deepseek-v3.1": 0.05555555555555555,
+            "llama-3.3-70b-instruct-turbo": 0.05555555555555555,
+            "cogito-v2-1-671b": 0.05555555555555555
+          },
+          "cost": 0.00017953657221179346,
+          "quality": 0.6212148284230126,
+          "kind": "uniform_1/N",
+          "feasible": true,
+          "note": ""
+        },
+        "hull_vertices": [
+          {
+            "weights": {
+              "gpt-oss-20b": 1.0
+            },
+            "cost": 1.4489487798337391e-05,
+            "quality": 0.6975916538413445,
+            "kind": "always_gpt-oss-20b",
+            "feasible": true,
+            "note": ""
+          },
+          {
+            "weights": {
+              "gpt-oss-120b": 1.0
+            },
+            "cost": 5.259686242960582e-05,
+            "quality": 0.7444287028803442,
+            "kind": "always_gpt-oss-120b",
+            "feasible": true,
+            "note": ""
+          },
+          {
+            "weights": {
+              "cogito-v2-1-671b": 1.0
+            },
+            "cost": 0.00045768034325556424,
+            "quality": 0.805393125427103,
+            "kind": "always_cogito-v2-1-671b",
+            "feasible": true,
+            "note": ""
+          }
+        ],
+        "hull_model_names": [
+          "gpt-oss-20b",
+          "gpt-oss-120b",
+          "cogito-v2-1-671b"
+        ],
+        "pairwise_undominated": [
+          "gpt-oss-20b",
+          "gpt-oss-120b",
+          "cogito-v2-1-671b"
+        ]
+      },
+      "min_cost_at_router_quality": {
+        "weights": {
+          "cogito-v2-1-671b": 1.0
+        },
+        "cost": 0.00045768034325556424,
+        "quality": 0.805393125427103,
+        "kind": "quality_infeasible",
+        "feasible": false,
+        "note": "target quality exceeds every static policy"
+      },
+      "max_quality_at_router_cost": {
+        "weights": {
+          "gpt-oss-20b": 0.5313457760037821,
+          "gpt-oss-120b": 0.468654223996218
+        },
+        "cost": 3.234866988468766e-05,
+        "quality": 0.7195420347129897,
+        "kind": "hull_edge:always_gpt-oss-20b+always_gpt-oss-120b",
+        "feasible": true,
+        "note": "interpolation t=0.468654 between hull vertices"
+      },
+      "max_quality_at_router_budget": {
+        "weights": {
+          "gpt-oss-20b": 0.5313457760037821,
+          "gpt-oss-120b": 0.468654223996218
+        },
+        "cost": 3.234866988468766e-05,
+        "quality": 0.7195420347129897,
+        "kind": "hull_edge:always_gpt-oss-20b+always_gpt-oss-120b",
+        "feasible": true,
+        "note": "interpolation t=0.468654 between hull vertices"
+      }
+    },
+    "router": {
+      "available": false,
+      "status": "skipped",
+      "reason": "published xRouteBench execution tables have no router_score / router_assignment; a performance-argmax policy is the unconstrained oracle, not a learned router"
+    }
+  },
+  "static_baselines": {
+    "catalog": {
+      "n_models": 18,
+      "models": [
+        "qwen2.5-7b-instruct",
+        "gemma-2-9b-it",
+        "llama-3-8b-instruct-lite",
+        "qwen2.5-7b-instruct-turbo",
+        "mistral-7b-instruct-v0.3",
+        "qwen3-next-80b-a3b-instruct",
+        "llama3-70b-instruct",
+        "mixtral-8x7b-instruct-v0.1",
+        "mixtral-8x22b-instruct-v0.1",
+        "gpt-oss-20b",
+        "mistral-small-3-24b-instruct",
+        "llama-4-maverick",
+        "rnj-1-instruct",
+        "gpt-oss-120b",
+        "qwen3-coder-next",
+        "deepseek-v3.1",
+        "llama-3.3-70b-instruct-turbo",
+        "cogito-v2-1-671b"
+      ],
+      "mean_cost": {
+        "qwen2.5-7b-instruct": 3.93673370876909e-05,
+        "gemma-2-9b-it": 2.1887744703673872e-05,
+        "llama-3-8b-instruct-lite": 1.704513274336287e-05,
+        "qwen2.5-7b-instruct-turbo": 5.9102654867256726e-05,
+        "mistral-7b-instruct-v0.3": 5.0397264682220394e-05,
+        "qwen3-next-80b-a3b-instruct": 0.0004580420756234924,
+        "llama3-70b-instruct": 0.00015819123089300116,
+        "mixtral-8x7b-instruct-v0.1": 0.0001672231697506033,
+        "mixtral-8x22b-instruct-v0.1": 0.00033765374094931697,
+        "gpt-oss-20b": 1.4489487798337391e-05,
+        "mistral-small-3-24b-instruct": 6.348104049342986e-05,
+        "llama-4-maverick": 0.00032568788415124664,
+        "rnj-1-instruct": 4.9797184231697515e-05,
+        "gpt-oss-120b": 5.259686242960582e-05,
+        "qwen3-coder-next": 0.0003695196031107536,
+        "deepseek-v3.1": 0.00031410297666934785,
+        "llama-3.3-70b-instruct-turbo": 0.00027539256637168144,
+        "cogito-v2-1-671b": 0.00045768034325556424
+      },
+      "mean_quality": {
+        "qwen2.5-7b-instruct": 0.5754722487178285,
+        "gemma-2-9b-it": 0.6236944594420665,
+        "llama-3-8b-instruct-lite": 0.49323871872935304,
+        "qwen2.5-7b-instruct-turbo": 0.5712794492940585,
+        "mistral-7b-instruct-v0.3": 0.3671026025695619,
+        "qwen3-next-80b-a3b-instruct": 0.7251205839450073,
+        "llama3-70b-instruct": 0.6449846791339982,
+        "mixtral-8x7b-instruct-v0.1": 0.4058237805474422,
+        "mixtral-8x22b-instruct-v0.1": 0.6189297852420644,
+        "gpt-oss-20b": 0.6975916538413445,
+        "mistral-small-3-24b-instruct": 0.6784973925076074,
+        "llama-4-maverick": 0.6415386766597134,
+        "rnj-1-instruct": 0.5133549461487512,
+        "gpt-oss-120b": 0.7444287028803442,
+        "qwen3-coder-next": 0.6597285608091471,
+        "deepseek-v3.1": 0.7028947449740197,
+        "llama-3.3-70b-instruct-turbo": 0.7127928007448153,
+        "cogito-v2-1-671b": 0.805393125427103
+      },
+      "always_cheapest": {
+        "weights": {
+          "gpt-oss-20b": 1.0
+        },
+        "cost": 1.4489487798337391e-05,
+        "quality": 0.6975916538413445,
+        "kind": "always_cheapest",
+        "feasible": true,
+        "note": ""
+      },
+      "always_most_expensive": {
+        "weights": {
+          "qwen3-next-80b-a3b-instruct": 1.0
+        },
+        "cost": 0.0004580420756234924,
+        "quality": 0.7251205839450073,
+        "kind": "always_most_expensive",
+        "feasible": true,
+        "note": ""
+      },
+      "always_each": {
+        "qwen2.5-7b-instruct": {
+          "weights": {
+            "qwen2.5-7b-instruct": 1.0
+          },
+          "cost": 3.93673370876909e-05,
+          "quality": 0.5754722487178285,
+          "kind": "always_qwen2.5-7b-instruct",
+          "feasible": true,
+          "note": ""
+        },
+        "gemma-2-9b-it": {
+          "weights": {
+            "gemma-2-9b-it": 1.0
+          },
+          "cost": 2.1887744703673872e-05,
+          "quality": 0.6236944594420665,
+          "kind": "always_gemma-2-9b-it",
+          "feasible": true,
+          "note": ""
+        },
+        "llama-3-8b-instruct-lite": {
+          "weights": {
+            "llama-3-8b-instruct-lite": 1.0
+          },
+          "cost": 1.704513274336287e-05,
+          "quality": 0.49323871872935304,
+          "kind": "always_llama-3-8b-instruct-lite",
+          "feasible": true,
+          "note": ""
+        },
+        "qwen2.5-7b-instruct-turbo": {
+          "weights": {
+            "qwen2.5-7b-instruct-turbo": 1.0
+          },
+          "cost": 5.9102654867256726e-05,
+          "quality": 0.5712794492940585,
+          "kind": "always_qwen2.5-7b-instruct-turbo",
+          "feasible": true,
+          "note": ""
+        },
+        "mistral-7b-instruct-v0.3": {
+          "weights": {
+            "mistral-7b-instruct-v0.3": 1.0
+          },
+          "cost": 5.0397264682220394e-05,
+          "quality": 0.3671026025695619,
+          "kind": "always_mistral-7b-instruct-v0.3",
+          "feasible": true,
+          "note": ""
+        },
+        "qwen3-next-80b-a3b-instruct": {
+          "weights": {
+            "qwen3-next-80b-a3b-instruct": 1.0
+          },
+          "cost": 0.0004580420756234924,
+          "quality": 0.7251205839450073,
+          "kind": "always_qwen3-next-80b-a3b-instruct",
+          "feasible": true,
+          "note": ""
+        },
+        "llama3-70b-instruct": {
+          "weights": {
+            "llama3-70b-instruct": 1.0
+          },
+          "cost": 0.00015819123089300116,
+          "quality": 0.6449846791339982,
+          "kind": "always_llama3-70b-instruct",
+          "feasible": true,
+          "note": ""
+        },
+        "mixtral-8x7b-instruct-v0.1": {
+          "weights": {
+            "mixtral-8x7b-instruct-v0.1": 1.0
+          },
+          "cost": 0.0001672231697506033,
+          "quality": 0.4058237805474422,
+          "kind": "always_mixtral-8x7b-instruct-v0.1",
+          "feasible": true,
+          "note": ""
+        },
+        "mixtral-8x22b-instruct-v0.1": {
+          "weights": {
+            "mixtral-8x22b-instruct-v0.1": 1.0
+          },
+          "cost": 0.00033765374094931697,
+          "quality": 0.6189297852420644,
+          "kind": "always_mixtral-8x22b-instruct-v0.1",
+          "feasible": true,
+          "note": ""
+        },
+        "gpt-oss-20b": {
+          "weights": {
+            "gpt-oss-20b": 1.0
+          },
+          "cost": 1.4489487798337391e-05,
+          "quality": 0.6975916538413445,
+          "kind": "always_gpt-oss-20b",
+          "feasible": true,
+          "note": ""
+        },
+        "mistral-small-3-24b-instruct": {
+          "weights": {
+            "mistral-small-3-24b-instruct": 1.0
+          },
+          "cost": 6.348104049342986e-05,
+          "quality": 0.6784973925076074,
+          "kind": "always_mistral-small-3-24b-instruct",
+          "feasible": true,
+          "note": ""
+        },
+        "llama-4-maverick": {
+          "weights": {
+            "llama-4-maverick": 1.0
+          },
+          "cost": 0.00032568788415124664,
+          "quality": 0.6415386766597134,
+          "kind": "always_llama-4-maverick",
+          "feasible": true,
+          "note": ""
+        },
+        "rnj-1-instruct": {
+          "weights": {
+            "rnj-1-instruct": 1.0
+          },
+          "cost": 4.9797184231697515e-05,
+          "quality": 0.5133549461487512,
+          "kind": "always_rnj-1-instruct",
+          "feasible": true,
+          "note": ""
+        },
+        "gpt-oss-120b": {
+          "weights": {
+            "gpt-oss-120b": 1.0
+          },
+          "cost": 5.259686242960582e-05,
+          "quality": 0.7444287028803442,
+          "kind": "always_gpt-oss-120b",
+          "feasible": true,
+          "note": ""
+        },
+        "qwen3-coder-next": {
+          "weights": {
+            "qwen3-coder-next": 1.0
+          },
+          "cost": 0.0003695196031107536,
+          "quality": 0.6597285608091471,
+          "kind": "always_qwen3-coder-next",
+          "feasible": true,
+          "note": ""
+        },
+        "deepseek-v3.1": {
+          "weights": {
+            "deepseek-v3.1": 1.0
+          },
+          "cost": 0.00031410297666934785,
+          "quality": 0.7028947449740197,
+          "kind": "always_deepseek-v3.1",
+          "feasible": true,
+          "note": ""
+        },
+        "llama-3.3-70b-instruct-turbo": {
+          "weights": {
+            "llama-3.3-70b-instruct-turbo": 1.0
+          },
+          "cost": 0.00027539256637168144,
+          "quality": 0.7127928007448153,
+          "kind": "always_llama-3.3-70b-instruct-turbo",
+          "feasible": true,
+          "note": ""
+        },
+        "cogito-v2-1-671b": {
+          "weights": {
+            "cogito-v2-1-671b": 1.0
+          },
+          "cost": 0.00045768034325556424,
+          "quality": 0.805393125427103,
+          "kind": "always_cogito-v2-1-671b",
+          "feasible": true,
+          "note": ""
+        }
+      },
+      "pairwise_random": "omitted (omitted (153 pairs); m=18 > 12 pairs); m=18 > 12",
+      "uniform_mixture": {
+        "weights": {
+          "qwen2.5-7b-instruct": 0.05555555555555555,
+          "gemma-2-9b-it": 0.05555555555555555,
+          "llama-3-8b-instruct-lite": 0.05555555555555555,
+          "qwen2.5-7b-instruct-turbo": 0.05555555555555555,
+          "mistral-7b-instruct-v0.3": 0.05555555555555555,
+          "qwen3-next-80b-a3b-instruct": 0.05555555555555555,
+          "llama3-70b-instruct": 0.05555555555555555,
+          "mixtral-8x7b-instruct-v0.1": 0.05555555555555555,
+          "mixtral-8x22b-instruct-v0.1": 0.05555555555555555,
+          "gpt-oss-20b": 0.05555555555555555,
+          "mistral-small-3-24b-instruct": 0.05555555555555555,
+          "llama-4-maverick": 0.05555555555555555,
+          "rnj-1-instruct": 0.05555555555555555,
+          "gpt-oss-120b": 0.05555555555555555,
+          "qwen3-coder-next": 0.05555555555555555,
+          "deepseek-v3.1": 0.05555555555555555,
+          "llama-3.3-70b-instruct-turbo": 0.05555555555555555,
+          "cogito-v2-1-671b": 0.05555555555555555
+        },
+        "cost": 0.00017953657221179346,
+        "quality": 0.6212148284230126,
+        "kind": "uniform_1/N",
+        "feasible": true,
+        "note": ""
+      },
+      "hull_vertices": [
+        {
+          "weights": {
+            "gpt-oss-20b": 1.0
+          },
+          "cost": 1.4489487798337391e-05,
+          "quality": 0.6975916538413445,
+          "kind": "always_gpt-oss-20b",
+          "feasible": true,
+          "note": ""
+        },
+        {
+          "weights": {
+            "gpt-oss-120b": 1.0
+          },
+          "cost": 5.259686242960582e-05,
+          "quality": 0.7444287028803442,
+          "kind": "always_gpt-oss-120b",
+          "feasible": true,
+          "note": ""
+        },
+        {
+          "weights": {
+            "cogito-v2-1-671b": 1.0
+          },
+          "cost": 0.00045768034325556424,
+          "quality": 0.805393125427103,
+          "kind": "always_cogito-v2-1-671b",
+          "feasible": true,
+          "note": ""
+        }
+      ],
+      "hull_model_names": [
+        "gpt-oss-20b",
+        "gpt-oss-120b",
+        "cogito-v2-1-671b"
+      ],
+      "pairwise_undominated": [
+        "gpt-oss-20b",
+        "gpt-oss-120b",
+        "cogito-v2-1-671b"
+      ]
+    },
+    "n_models": 18,
+    "models": [
+      "qwen2.5-7b-instruct",
+      "gemma-2-9b-it",
+      "llama-3-8b-instruct-lite",
+      "qwen2.5-7b-instruct-turbo",
+      "mistral-7b-instruct-v0.3",
+      "qwen3-next-80b-a3b-instruct",
+      "llama3-70b-instruct",
+      "mixtral-8x7b-instruct-v0.1",
+      "mixtral-8x22b-instruct-v0.1",
+      "gpt-oss-20b",
+      "mistral-small-3-24b-instruct",
+      "llama-4-maverick",
+      "rnj-1-instruct",
+      "gpt-oss-120b",
+      "qwen3-coder-next",
+      "deepseek-v3.1",
+      "llama-3.3-70b-instruct-turbo",
+      "cogito-v2-1-671b"
+    ]
+  },
+  "oracle_frontier": {
+    "n_queries": 3729,
+    "n_models": 18,
+    "models": [
+      "qwen2.5-7b-instruct",
+      "gemma-2-9b-it",
+      "llama-3-8b-instruct-lite",
+      "qwen2.5-7b-instruct-turbo",
+      "mistral-7b-instruct-v0.3",
+      "qwen3-next-80b-a3b-instruct",
+      "llama3-70b-instruct",
+      "mixtral-8x7b-instruct-v0.1",
+      "mixtral-8x22b-instruct-v0.1",
+      "gpt-oss-20b",
+      "mistral-small-3-24b-instruct",
+      "llama-4-maverick",
+      "rnj-1-instruct",
+      "gpt-oss-120b",
+      "qwen3-coder-next",
+      "deepseek-v3.1",
+      "llama-3.3-70b-instruct-turbo",
+      "cogito-v2-1-671b"
+    ],
+    "min_total_cost": 0.038991300000000007,
+    "max_total_cost": 2.1442348300000003,
+    "unconstrained_oracle": {
+      "total_cost": 0.12062819,
+      "total_quality": 3465.315129442189,
+      "mean_quality": 0.9292880475843897,
+      "feasible": true,
+      "method": "unconstrained_oracle",
+      "note": "",
+      "fractional": false,
+      "lp_mean_quality": null,
+      "model_mix": {
+        "0": 68,
+        "1": 485,
+        "2": 311,
+        "3": 4,
+        "4": 15,
+        "5": 9,
+        "6": 26,
+        "7": 5,
+        "8": 5,
+        "9": 2420,
+        "10": 47,
+        "11": 31,
+        "12": 87,
+        "13": 129,
+        "14": 3,
+        "15": 21,
+        "16": 20,
+        "17": 43
+      }
+    },
+    "cheapest_assignment": {
+      "total_cost": 0.038991300000000007,
+      "total_quality": 2563.8153510794505,
+      "mean_quality": 0.6875342856206625,
+      "feasible": true,
+      "method": "cheapest",
+      "note": "",
+      "fractional": false,
+      "lp_mean_quality": null,
+      "model_mix": {
+        "1": 345,
+        "2": 282,
+        "9": 3095,
+        "12": 1,
+        "13": 6
+      }
+    },
+    "router": null,
+    "gaps_at_router_cost": null,
+    "method": "approx",
+    "sweep": [
+      {
+        "budget": 0.038991300000000007,
+        "static_frontier_quality": null,
+        "learned_router_quality": null,
+        "oracle_quality": 0.6875342856206625,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": false,
+        "oracle_cost": 0.038991300000000007,
+        "router_realized_cost": null,
+        "static_expected_cost": null,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.687534",
+        "oracle_lp_quality": 0.6875342856206625,
+        "oracle_mix": {
+          "1": 345,
+          "2": 282,
+          "9": 3095,
+          "12": 1,
+          "13": 6
+        },
+        "static_mix": null,
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.12062819,
+        "static_frontier_quality": 0.7195420347129895,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.12062818999999998,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "gpt-oss-20b": 0.5313457760037841,
+          "gpt-oss-120b": 0.46865422399621587
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.30214674125,
+        "static_frontier_quality": 0.7487072748489839,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.30214674125,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "gpt-oss-120b": 0.9298185435061243,
+          "cogito-v2-1-671b": 0.07018145649387579
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.5653021825,
+        "static_frontier_quality": 0.7593279445425556,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.5653021825,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "gpt-oss-120b": 0.75560759800876,
+          "cogito-v2-1-671b": 0.24439240199124002
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 0.8284576237500001,
+        "static_frontier_quality": 0.7699486142361271,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 0.8284576237500001,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "gpt-oss-120b": 0.5813966525113956,
+          "cogito-v2-1-671b": 0.41860334748860434
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 1.091613065,
+        "static_frontier_quality": 0.7805692839296989,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 1.091613065,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "gpt-oss-120b": 0.40718570701403145,
+          "cogito-v2-1-671b": 0.5928142929859685
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 1.35476850625,
+        "static_frontier_quality": 0.7911899536232705,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 1.35476850625,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "gpt-oss-120b": 0.2329747615166674,
+          "cogito-v2-1-671b": 0.7670252384833326
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 1.6179239475,
+        "static_frontier_quality": 0.8018106233168422,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 1.6179239475,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "gpt-oss-120b": 0.05876381601930292,
+          "cogito-v2-1-671b": 0.9412361839806971
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 1.8810793887500001,
+        "static_frontier_quality": 0.805393125427103,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 1.7066899999999992,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "cogito-v2-1-671b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      },
+      {
+        "budget": 2.1442348300000003,
+        "static_frontier_quality": 0.805393125427103,
+        "learned_router_quality": null,
+        "oracle_quality": 0.9292880475843898,
+        "router_feasible": false,
+        "oracle_feasible": true,
+        "static_feasible": true,
+        "oracle_cost": 0.12062818999999994,
+        "router_realized_cost": null,
+        "static_expected_cost": 1.7066899999999992,
+        "oracle_method": "approx",
+        "oracle_note": "selected greedy; LP mean quality=0.929288",
+        "oracle_lp_quality": 0.9292880475843898,
+        "oracle_mix": {
+          "0": 68,
+          "1": 485,
+          "2": 311,
+          "3": 4,
+          "4": 15,
+          "5": 9,
+          "6": 26,
+          "7": 5,
+          "8": 5,
+          "9": 2420,
+          "10": 47,
+          "11": 31,
+          "12": 87,
+          "13": 129,
+          "14": 3,
+          "15": 21,
+          "16": 20,
+          "17": 43
+        },
+        "static_mix": {
+          "cogito-v2-1-671b": 1.0
+        },
+        "router_vs_static_gap": null,
+        "oracle_vs_router_gap": null,
+        "fraction_of_available_routing_value_captured": null
+      }
+    ],
+    "method_selected": "approx"
+  },
+  "router_frontier": {
+    "available": false,
+    "status": "skipped",
+    "reason": "published xRouteBench execution tables have no router_score / router_assignment; a performance-argmax policy is the unconstrained oracle, not a learned router"
+  },
+  "bootstrap": {
+    "oracle_vs_static": {
+      "available": true,
+      "quality_advantage": {
+        "point": 0.20974601287139982,
+        "lo": 0.19945227057498316,
+        "hi": 0.21997158395858718,
+        "n_boot": 200,
+        "n_finite": 200,
+        "level": 0.95,
+        "seed": 20260909
+      },
+      "cost_savings": {
+        "point": null,
+        "lo": null,
+        "hi": null,
+        "n_boot": 200,
+        "n_finite": 0,
+        "level": 0.95,
+        "seed": 20260909
+      },
+      "p_quality_advantage_le_zero": 0.0,
+      "significant_05_quality": true,
+      "n_boot_quality": 200,
+      "n_boot_cost": 0,
+      "definition": "Percentile bootstrap over queries. Market means and the hull are recomputed on each resample. significant_05_quality iff CI lo > 0."
+    },
+    "router_vs_static": {
+      "available": false,
+      "status": "skipped",
+      "reason": "published xRouteBench execution tables have no router_score / router_assignment; a performance-argmax policy is the unconstrained oracle, not a learned router"
+    }
+  },
+  "source": "huggingface:ulab-ai/xRouteBench/llmrouter_generic/test",
+  "long_n_rows": 67122,
+  "n_boot": 200,
+  "combo_key": "llmrouter_generic__test__all",
+  "config": "llmrouter_generic",
+  "split": "test",
+  "subset": "all",
+  "dataset_repo": "ulab-ai/xRouteBench",
+  "paid_model_apis": false,
+  "downloaded": true,
+  "query_id_scheme": "task_name::task_id_or_query+disambiguate",
+  "missing_fields": {
+    "n_rows": 67122,
+    "source_columns": {
+      "query_id": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "task_id": {
+        "source_column": "task_id",
+        "column_present": true,
+        "n_present": 20322,
+        "n_missing": 46800,
+        "fraction_present": 0.3027621346205417
+      },
+      "task_name": {
+        "source_column": "task_name",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "embedding_id": {
+        "source_column": "embedding_id",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "model_name": {
+        "source_column": "model_name",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "performance": {
+        "source_column": "performance",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "metric": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "input_tokens": {
+        "source_column": "input_tokens",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "output_tokens": {
+        "source_column": "output_tokens",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "token_num": {
+        "source_column": "token_num",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "response_time": {
+        "source_column": "response_time",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "latency_ms": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "cost": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "realized_cost": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "router_score": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "router_win_rate": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "p_strong": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "router_assignment": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "routed_model": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "input_price_per_1m": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "input_usd_per_million": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "output_price_per_1m": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "output_usd_per_million": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      }
+    },
+    "canonical": {
+      "query_id": {
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "dataset": {
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "model": {
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "quality": {
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "input_tokens": {
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "output_tokens": {
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "realized_cost": {
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "latency_ms": {
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "router_score": {
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      },
+      "router_assignment": {
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      }
+    },
+    "embedding_id_ignored": false,
+    "embedding_id_not_used_as_primary_id": true,
+    "token_num_not_used_for_cost": true,
+    "token_num": {
+      "token_num": {
+        "source_column": "token_num",
+        "column_present": true,
+        "n_present": 67122,
+        "n_missing": 0,
+        "fraction_present": 1.0
+      },
+      "total_tokens": {
+        "source_column": null,
+        "column_present": false,
+        "n_present": 0,
+        "n_missing": 67122,
+        "fraction_present": 0.0
+      }
+    },
+    "models_with_published_price": 67122,
+    "models_without_published_price": 0,
+    "ecologic_models_json_used": false
+  },
+  "selection_notes": [
+    "complete-case: 18 models on 3729 queries"
+  ],
+  "source_models": [
+    "cogito-v2-1-671b",
+    "deepseek-v3.1",
+    "gemma-2-9b-it",
+    "gpt-oss-120b",
+    "gpt-oss-20b",
+    "llama-3-8b-instruct-lite",
+    "llama-3.3-70b-instruct-turbo",
+    "llama-4-maverick",
+    "llama3-70b-instruct",
+    "mistral-7b-instruct-v0.3",
+    "mistral-small-3-24b-instruct",
+    "mixtral-8x22b-instruct-v0.1",
+    "mixtral-8x7b-instruct-v0.1",
+    "qwen2.5-7b-instruct",
+    "qwen2.5-7b-instruct-turbo",
+    "qwen3-coder-next",
+    "qwen3-next-80b-a3b-instruct",
+    "rnj-1-instruct"
+  ],
+  "n_source_queries": 3729,
+  "n_source_models": 18,
+  "task_name_query_counts": {
+    "aime_2020_2024": 12,
+    "arc_challenge": 500,
+    "boolq": 50,
+    "commonsense_qa": 50,
+    "gsm8k": 500,
+    "hellaswag": 50,
+    "human_eval": 16,
+    "math": 500,
+    "mbpp": 500,
+    "mmlu": 500,
+    "mmlu_pro": 500,
+    "openbook_qa": 500,
+    "squad": 50
+  },
+  "status": "ok"
+}

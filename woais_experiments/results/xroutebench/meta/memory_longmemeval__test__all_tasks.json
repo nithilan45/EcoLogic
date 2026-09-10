@@ -1,0 +1,7 @@
+{
+  "config": "memory_longmemeval",
+  "split": "test",
+  "task_name_query_counts": {
+    "longmemeval": 101
+  }
+}

@@ -271,5 +271,22 @@ class TestStage12Smoke(unittest.TestCase):
             Path(tmp, "probe.csv").write_text(csv_text)
 
 
+class TestNoFittingImports(unittest.TestCase):
+    def test_breakeven_does_not_import_sklearn_or_torch(self):
+        import woais_experiments.accounting.breakeven as be
+
+        src = Path(be.__file__).read_text()
+        for banned in ("sklearn", "torch", "xgboost", "GradientBoosting"):
+            self.assertNotIn(banned, src)
+
+    def test_raw_savings_bootstrap_uses_raw_replicates(self):
+        import inspect
+        import woais_experiments.accounting.breakeven as be
+        src = inspect.getsource(be.analyze_assignment)
+        self.assertIn("boot_raw_usd", src)
+        compact = "".join(src.split())
+        self.assertIn('_ci_payload(raw_s,row["raw_router_savings"]', compact)
+
+
 if __name__ == "__main__":
     unittest.main()

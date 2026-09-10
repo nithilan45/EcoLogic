@@ -1,0 +1,19 @@
+{
+  "config": "llmrouter_generic",
+  "split": "train",
+  "task_name_query_counts": {
+    "aime_2020_2024": 70,
+    "arc_challenge": 449,
+    "boolq": 400,
+    "commonsense_qa": 400,
+    "gsm8k": 450,
+    "hellaswag": 400,
+    "human_eval": 132,
+    "math": 450,
+    "mbpp": 337,
+    "mmlu": 450,
+    "mmlu_pro": 63,
+    "openbook_qa": 450,
+    "squad": 400
+  }
+}

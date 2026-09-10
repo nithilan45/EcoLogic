@@ -1,0 +1,22 @@
+{
+  "measurement_type": "MEASURED",
+  "mode": "measured",
+  "paid_api": false,
+  "n_cells": 16,
+  "stopped_on_cost_cap": false,
+  "git": {
+    "available": true,
+    "commit": "24ca318a9a4b823cd9f9882b806fc0648a63e081",
+    "branch": "main",
+    "dirty": true,
+    "error": null
+  },
+  "cost": {
+    "realized_usd": 0.0038366799999999986,
+    "n_costed": 64,
+    "remaining_planned": 0,
+    "limit_usd": null,
+    "estimate_usd_per_query": 0.002,
+    "unit_cost_usd": 5.994812499999998e-05
+  }
+}

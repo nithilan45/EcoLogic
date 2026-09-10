@@ -6,6 +6,8 @@ import csv
 import gzip
 import hashlib
 import json
+import logging
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable, Iterator
@@ -15,7 +17,13 @@ from woais_experiments.paths import (
     RESULTS,
     ROOT,
     assert_inside_results,
+    get_artifact_hook,
+    get_overwrite_policy,
+    get_results_root,
+    get_run_meta,
     is_frozen,
+    looks_like_home_absolute,
+    public_relpath,
 )
 
 WRITE_MODES = set("wa+x")
@@ -95,29 +103,117 @@ def open_frozen(path: Path, mode: str = "r", **kwargs):
     return open(path, mode, **kwargs)
 
 
-def write_result(relpath: str | Path, data: Any, *, json_indent: int = 2) -> Path:
-    dest = RESULTS / relpath if not isinstance(relpath, Path) else relpath
-    dest = assert_inside_results(dest)
+class ResultExistsError(RuntimeError):
+    """Refusing to clobber an existing artifact (runner overwrite policy)."""
+
+
+def to_jsonable(obj: Any) -> Any:
+    """JSON-safe values. Non-finite floats become strings, never silent null.
+
+    Filesystem paths inside the repo are stored repo-relative. Home-directory
+    and temp-directory absolutes are redacted so artifacts cannot deanonymize
+    an author via ``/Users/<name>``.
+    """
+    if isinstance(obj, dict):
+        return {str(k): to_jsonable(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [to_jsonable(v) for v in obj]
+    if isinstance(obj, Path):
+        return public_relpath(obj)
+    if isinstance(obj, str):
+        if looks_like_home_absolute(obj):
+            return public_relpath(obj)
+        return obj
+    if isinstance(obj, float):
+        if math.isnan(obj):
+            return None
+        if math.isinf(obj):
+            return "Infinity" if obj > 0 else "-Infinity"
+        return obj
+    return obj
+
+
+def _destination(relpath: str | Path) -> Path:
+    if isinstance(relpath, Path) and relpath.is_absolute():
+        return relpath
+    return get_results_root() / relpath
+
+
+def _stamp_payload(data: Any) -> Any:
+    meta = get_run_meta()
+    if not meta or not isinstance(data, dict) or "woais_run" in data:
+        return data
+    return {**data, "woais_run": dict(meta)}
+
+
+def _respect_existing(dest: Path) -> Path | None:
+    """Return dest to keep, or None to write. Raises if overwrite is forbidden."""
+    if not dest.exists():
+        return None
+    policy = get_overwrite_policy()
+    if policy == "replace":
+        return None
+    if policy == "resume":
+        hook = get_artifact_hook()
+        if hook is not None:
+            hook(dest, True)
+        return dest
+    if policy == "force":
+        logging.getLogger("woais").warning("overwriting existing artifact %s", dest)
+        return None
+    raise ResultExistsError(
+        f"refusing to overwrite {dest}; pass --resume or --force on run_woais.py"
+    )
+
+
+def write_result(
+    relpath: str | Path,
+    data: Any,
+    *,
+    json_indent: int = 2,
+    clobber: bool = False,
+) -> Path:
+    dest = assert_inside_results(_destination(relpath))
+    if not clobber:
+        kept = _respect_existing(dest)
+        if kept is not None:
+            return kept
     dest.parent.mkdir(parents=True, exist_ok=True)
+    payload = _stamp_payload(data)
     tmp = dest.with_name(dest.name + ".tmp")
     if dest.suffix == ".json" or str(dest).endswith(".json"):
-        tmp.write_text(json.dumps(data, indent=json_indent) + "\n")
-    elif isinstance(data, str):
-        tmp.write_text(data if data.endswith("\n") else data + "\n")
-    elif isinstance(data, bytes):
-        tmp.write_bytes(data)
+        payload = to_jsonable(payload)
+        tmp.write_text(
+            json.dumps(payload, indent=json_indent, default=str, allow_nan=False) + "\n"
+        )
+    elif isinstance(payload, str):
+        tmp.write_text(payload if payload.endswith("\n") else payload + "\n")
+    elif isinstance(payload, bytes):
+        tmp.write_bytes(payload)
     else:
-        tmp.write_text(json.dumps(data, indent=json_indent) + "\n")
+        payload = to_jsonable(payload)
+        tmp.write_text(
+            json.dumps(payload, indent=json_indent, default=str, allow_nan=False) + "\n"
+        )
     tmp.replace(dest)
+    hook = get_artifact_hook()
+    if hook is not None:
+        hook(dest, False)
     return dest
 
 
 def write_result_bytes(relpath: str, payload: bytes) -> Path:
-    dest = assert_inside_results(RESULTS / relpath)
+    dest = assert_inside_results(_destination(relpath))
+    kept = _respect_existing(dest)
+    if kept is not None:
+        return kept
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_name(dest.name + ".tmp")
     tmp.write_bytes(payload)
     tmp.replace(dest)
+    hook = get_artifact_hook()
+    if hook is not None:
+        hook(dest, False)
     return dest
 
 
@@ -174,12 +270,12 @@ def _normalize_call(row: dict) -> dict:
         "correct": _as_bool(row.get("correct")),
         "gradable": _as_bool(row.get("gradable")),
         "truncated": _as_bool(row.get("truncated")),
-        "prompt_tokens": _as_int(row.get("prompt_tokens")) or 0,
-        "completion_tokens": _as_int(row.get("completion_tokens")) or 0,
-        "total_tokens": _as_int(row.get("total_tokens")) or 0,
-        "usd": _as_float(row.get("usd")) or 0.0,
+        "prompt_tokens": _as_int(row.get("prompt_tokens")),
+        "completion_tokens": _as_int(row.get("completion_tokens")),
+        "total_tokens": _as_int(row.get("total_tokens")),
+        "usd": _as_float(row.get("usd")),
         "latency_s": _as_float(row.get("latency_s")),
-        "retries": _as_int(row.get("retries")) or 0,
+        "retries": _as_int(row.get("retries")),
         "finish_reason": row.get("finish_reason"),
         "sample_idx": _as_int(row.get("sample_idx")),
         "temperature": _as_float(row.get("temperature")),
@@ -231,10 +327,29 @@ class ItemMatrix:
     usd: dict[tuple[int, str], float]
     latency_s: dict[tuple[int, str], float]
     model_of: dict[int, str] = field(default_factory=dict)
+    n_dropped_incomplete: int = 0
 
     @property
     def n(self) -> int:
         return len(self.item_ids)
+
+
+def _call_is_complete(row: dict) -> bool:
+    """Refuse to invent $0 / 0s / incorrect for missing measurements."""
+    if row.get("tier") is None or row.get("item_id") is None:
+        return False
+    if row.get("correct") is None:
+        return False
+    for key in (
+        "usd",
+        "latency_s",
+        "total_tokens",
+        "prompt_tokens",
+        "completion_tokens",
+    ):
+        if row.get(key) is None:
+            return False
+    return True
 
 
 def matrix_from_calls(calls: list[dict], tiers: tuple[int, ...] = (1, 2, 3)) -> ItemMatrix:
@@ -242,24 +357,37 @@ def matrix_from_calls(calls: list[dict], tiers: tuple[int, ...] = (1, 2, 3)) -> 
     pt, ct = {}, {}
     bench_of: dict[str, str] = {}
     model_of: dict[int, str] = {}
+    n_dropped = 0
     for r in calls:
         t, i = r["tier"], r["item_id"]
         if t is None or i is None:
+            n_dropped += 1
+            continue
+        if not _call_is_complete(r):
+            n_dropped += 1
             continue
         key = (int(t), str(i))
         correct[key] = bool(r["correct"])
-        tokens[key] = int(r["total_tokens"] or 0)
-        pt[key] = int(r["prompt_tokens"] or 0)
-        ct[key] = int(r["completion_tokens"] or 0)
-        usd[key] = float(r["usd"] or 0.0)
-        lat[key] = float(r["latency_s"] or 0.0)
+        tokens[key] = int(r["total_tokens"])
+        pt[key] = int(r["prompt_tokens"])
+        ct[key] = int(r["completion_tokens"])
+        usd[key] = float(r["usd"])
+        lat[key] = float(r["latency_s"])
         if r.get("benchmark"):
             bench_of[str(i)] = r["benchmark"]
         if r.get("model"):
             model_of[int(t)] = r["model"]
     item_ids = sorted({i for (_, i) in correct}, key=lambda x: (bench_of.get(x, ""), x))
     complete = [i for i in item_ids if all((t, i) in correct for t in tiers)]
-    return ItemMatrix(complete, bench_of, correct, tokens, pt, ct, usd, lat, model_of)
+    if n_dropped:
+        logging.getLogger("woais").warning(
+            "dropped %s incomplete calls (missing usd/latency/tokens/correct; not zero-filled)",
+            n_dropped,
+        )
+    return ItemMatrix(
+        complete, bench_of, correct, tokens, pt, ct, usd, lat, model_of,
+        n_dropped_incomplete=n_dropped,
+    )
 
 
 def load_stage12_matrix() -> ItemMatrix:

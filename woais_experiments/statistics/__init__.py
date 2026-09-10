@@ -1,3 +1,23 @@
+from woais_experiments.statistics.bootstrap import (
+    DEFAULT_LEVEL,
+    DEFAULT_N_BOOT,
+    DEFAULT_SEED,
+    SIGNIFICANCE_NOTE,
+    paired_bootstrap,
+    paired_bootstrap_effects,
+    paired_bootstrap_mean,
+    paired_bootstrap_median,
+)
+from woais_experiments.statistics.effect_sizes import (
+    cliffs_delta,
+    cohens_dz,
+    finite_pairs,
+    hodges_lehmann_paired,
+    matched_pairs_rank_biserial,
+    mean_paired_difference,
+    median_paired_difference,
+    pair_by_query_id,
+)
 from woais_experiments.statistics.inference import (
     matched_cost_fraction,
     mcnemar,
@@ -6,15 +26,43 @@ from woais_experiments.statistics.inference import (
     wilson,
     wilson_dict,
 )
+from woais_experiments.statistics.paired_tests import (
+    apply_bh,
+    benjamini_hochberg,
+    compare_many,
+    paired_comparison,
+    paired_permutation_test,
+    wilcoxon_signed_rank,
+)
 from woais_experiments.statistics.regret import decompose_regret, population_cov
 
 __all__ = [
+    "DEFAULT_N_BOOT",
+    "SIGNIFICANCE_NOTE",
+    "apply_bh",
+    "benjamini_hochberg",
+    "cliffs_delta",
+    "cohens_dz",
+    "compare_many",
     "decompose_regret",
+    "finite_pairs",
+    "hodges_lehmann_paired",
     "matched_cost_fraction",
+    "matched_pairs_rank_biserial",
     "mcnemar",
+    "mean_paired_difference",
+    "median_paired_difference",
     "mixture_accuracy",
     "mixture_cost",
+    "pair_by_query_id",
+    "paired_bootstrap",
+    "paired_bootstrap_effects",
+    "paired_bootstrap_mean",
+    "paired_bootstrap_median",
+    "paired_comparison",
+    "paired_permutation_test",
     "population_cov",
+    "wilcoxon_signed_rank",
     "wilson",
     "wilson_dict",
 ]

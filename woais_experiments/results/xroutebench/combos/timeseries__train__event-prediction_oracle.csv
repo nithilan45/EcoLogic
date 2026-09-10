@@ -1,0 +1,11 @@
+budget,static_frontier_quality,learned_router_quality,oracle_quality,router_feasible,oracle_feasible,static_feasible,oracle_cost,router_realized_cost,static_expected_cost,oracle_method,oracle_lp_quality,router_vs_static_gap,oracle_vs_router_gap,fraction_of_available_routing_value_captured
+0.0173476,0.46875,,0.46875,False,True,True,0.0173476,,0.01734760000000002,approx,0.46875,,,
+0.04966129,0.5301895790342848,,1.0,False,True,True,0.04966129,,0.04966129,approx,1.0,,,
+0.0798523125,0.5594864666605882,,1.0,False,True,True,0.04966129,,0.0798523125,approx,1.0,,,
+0.14235702499999997,0.6151514329133692,,1.0,False,True,True,0.04966129,,0.14235702499999997,approx,1.0,,,
+0.20486173749999995,0.6708163991661502,,1.0,False,True,True,0.04966129,,0.20486173749999995,approx,1.0,,,
+0.26736645,0.7264813654189313,,1.0,False,True,True,0.04966129,,0.26736645,approx,1.0,,,
+0.3298711625,0.7821463316717124,,1.0,False,True,True,0.04966129,,0.3298711625,approx,1.0,,,
+0.39237587499999993,0.7951388888888888,,1.0,False,True,True,0.04966129,,0.3444601600000002,approx,1.0,,,
+0.45488058749999993,0.7951388888888888,,1.0,False,True,True,0.04966129,,0.3444601600000002,approx,1.0,,,
+0.5173852999999999,0.7951388888888888,,1.0,False,True,True,0.04966129,,0.3444601600000002,approx,1.0,,,

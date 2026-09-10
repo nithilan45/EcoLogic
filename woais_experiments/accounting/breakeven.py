@@ -223,6 +223,8 @@ def analytic_usd_threshold(
         weights = quality_matched_static(market, router_quality, eps=eps).weights
     else:
         raw = float(matched.cost) - float(router_cost)
+        if abs(raw) <= eps:
+            raw = 0.0
         note = matched.note
         static_cost = float(matched.cost)
         weights = dict(matched.weights)
@@ -541,6 +543,8 @@ def _axis_row(
     extra: Mapping[str, Any] | None = None,
     eps: float = STATUS_EPS,
 ) -> dict[str, Any]:
+    if raw is not None and math.isfinite(raw) and abs(raw) <= eps:
+        raw = 0.0
     net = _net(raw, overhead)
     status = None if raw is None else classify_status(net, eps=eps)
     row = {
@@ -739,10 +743,13 @@ def analyze_assignment(
 
     boot_usd: list[float] = []
     boot_net_usd: list[float] = []
+    boot_raw_usd: list[float] = []
     boot_lat: list[float] = []
     boot_net_lat: list[float] = []
+    boot_raw_lat: list[float] = []
     boot_tok: list[float] = []
     boot_net_tok: list[float] = []
+    boot_raw_tok: list[float] = []
     if n_boot > 0 and n > 1:
         rng = np.random.default_rng(seed)
         lat_oh = 0.0 if overhead_latency_ms is None else float(overhead_latency_ms)
@@ -761,17 +768,20 @@ def analyze_assignment(
             )
             boot_usd.append(float(sample["usd"]["break_even_overhead"]))
             boot_net_usd.append(float(sample["usd"]["net_savings"]))
+            boot_raw_usd.append(float(sample["usd"]["raw_router_savings"]))
             if sample["latency_ms"]["break_even_overhead"] is not None:
                 boot_lat.append(float(sample["latency_ms"]["break_even_overhead"]))
                 boot_net_lat.append(float(_net(sample["latency_ms"]["raw_router_savings"], lat_oh)))
+                boot_raw_lat.append(float(sample["latency_ms"]["raw_router_savings"]))
             if sample["tokens"]["break_even_overhead"] is not None:
                 boot_tok.append(float(sample["tokens"]["break_even_overhead"]))
                 boot_net_tok.append(float(_net(sample["tokens"]["raw_router_savings"], overhead_tokens)))
+                boot_raw_tok.append(float(sample["tokens"]["raw_router_savings"]))
 
-    def _attach(row: dict[str, Any], be_s: list[float], net_s: list[float]) -> None:
+    def _attach(row: dict[str, Any], be_s: list[float], net_s: list[float], raw_s: list[float]) -> None:
         be_ci = _ci_payload(be_s, row["break_even_overhead"], n_boot=n_boot, seed=seed, level=level)
         net_ci = _ci_payload(net_s, row["net_savings"], n_boot=n_boot, seed=seed, level=level)
-        raw_ci = _ci_payload(be_s, row["raw_router_savings"], n_boot=n_boot, seed=seed, level=level)
+        raw_ci = _ci_payload(raw_s, row["raw_router_savings"], n_boot=n_boot, seed=seed, level=level)
         row["ci"] = {
             "break_even_overhead": be_ci,
             "net_savings": net_ci,
@@ -782,13 +792,16 @@ def analyze_assignment(
         row["net_lo"] = net_ci["lo"]
         row["net_hi"] = net_ci["hi"]
         row["status_ci"] = classify_status_ci(net_ci["lo"], net_ci["hi"])
+        row["status_ci_is_not_a_hypothesis_test"] = True
+        row["status_point"] = classify_status(row.get("net_savings"))
+        row["ci_flags_are_not_hypothesis_tests"] = True
         row["routing_is_beneficial_ci"] = row["status_ci"] == "beneficial"
         row["routing_is_neutral_ci"] = row["status_ci"] == "neutral"
         row["routing_is_dominated_ci"] = row["status_ci"] == "dominated"
 
-    _attach(point["usd"], boot_usd, boot_net_usd)
-    _attach(point["latency_ms"], boot_lat, boot_net_lat)
-    _attach(point["tokens"], boot_tok, boot_net_tok)
+    _attach(point["usd"], boot_usd, boot_net_usd, boot_raw_usd)
+    _attach(point["latency_ms"], boot_lat, boot_net_lat, boot_raw_lat)
+    _attach(point["tokens"], boot_tok, boot_net_tok, boot_raw_tok)
     point["n_boot"] = int(n_boot)
     point["seed"] = int(seed)
     point["level"] = float(level)
@@ -982,7 +995,9 @@ def _jsonable(obj: Any) -> Any:
     if isinstance(obj, (np.floating, np.integer, np.bool_)):
         return obj.item()
     if isinstance(obj, float) and not math.isfinite(obj):
-        return None
+        if math.isnan(obj):
+            return None
+        return "Infinity" if obj > 0 else "-Infinity"
     return obj
 
 
