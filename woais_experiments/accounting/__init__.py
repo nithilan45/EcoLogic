@@ -3,6 +3,12 @@ from woais_experiments.accounting.aggregate_cost import (
     naive_mean,
     realized_total,
 )
+from woais_experiments.accounting.breakeven import (
+    analyze_assignment,
+    classify_status,
+    run_stage12,
+    table_from_policies,
+)
 from woais_experiments.accounting.cost_decomposition import (
     compare_policies,
     decompose_naive_vs_realized,
@@ -27,6 +33,8 @@ from woais_experiments.accounting.per_query_cost import (
 __all__ = [
     "QueryCostRecord",
     "aggregate",
+    "analyze_assignment",
+    "classify_status",
     "compare_policies",
     "cost_fn_energy",
     "cost_fn_usd",
@@ -41,5 +49,7 @@ __all__ = [
     "paper_energy_rates",
     "realized_cost",
     "realized_total",
+    "run_stage12",
+    "table_from_policies",
     "usd_from_tokens",
 ]

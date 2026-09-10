@@ -1,0 +1,107 @@
+# SIMULATED workload generator. Not a measured cloud deployment.
+# Every operational knob is listed. Missing keys fail closed (no implicit defaults).
+simulated: true
+label: SIMULATED
+seed: 20260909
+n_requests: 64
+record_per_request: true
+shared_arrivals_across_policies: true
+
+catalog:
+  source: empirical_stage12
+  cheap_model: t2
+  strong_model: t3
+  models:
+    t1:
+      service_s: 0.0   # ignored when source is empirical_stage12
+      cost: 0.0
+    t2:
+      service_s: 0.0
+      cost: 0.0
+    t3:
+      service_s: 0.0
+      cost: 0.0
+
+arrivals:
+  process: poisson
+  start_s: 0.0
+  rate_per_s: 0.4
+  interarrival_s: 2.5
+  timestamps_s: []
+  on_off:
+    lambda_on_per_s: 1.2
+    lambda_off_per_s: 0.05
+    mean_on_s: 2.0
+    mean_off_s: 6.0
+    initial_state: "ON"
+
+router:
+  max_concurrency: 8
+
+serverless:
+  max_instances: 2
+  max_concurrency_per_instance: 1
+  idle_timeout_s: 8.0
+  cold_start_delay_s: 3.0
+  first_request_cold: true
+  scale_to_zero: true
+  queue_discipline: fifo
+
+sla:
+  max_e2e_s: 30.0
+
+policy_order:
+  - always_cheap
+  - always_strong
+  - ecologic
+  - cost_matched_static
+  - oracle
+
+policies:
+  always_cheap:
+    type: always_cheap
+    router_overhead_s: 0.0
+    router_cost_usd: 0.0
+  always_strong:
+    type: always_strong
+    router_overhead_s: 0.0
+    router_cost_usd: 0.0
+  ecologic:
+    type: ecologic
+    router_overhead_s: 0.005
+    router_cost_usd: 0.0
+  cost_matched_static:
+    type: cost_matched_static
+    router_overhead_s: 0.0
+    router_cost_usd: 0.0
+    match_to: ecologic
+  oracle:
+    type: oracle
+    router_overhead_s: 0.0
+    router_cost_usd: 0.0
+
+sweep:
+  mode: ofat
+  burstiness_sets_process: on_off
+  factors:
+    arrivals.rate_per_s:
+      - 0.2
+      - 0.4
+      - 0.8
+    arrivals.on_off.mean_off_s:
+      - 2.0
+      - 6.0
+    serverless.cold_start_delay_s:
+      - 0.5
+      - 3.0
+      - 10.0
+    serverless.max_concurrency_per_instance:
+      - 1
+      - 2
+    serverless.max_instances:
+      - 1
+      - 2
+    policies.ecologic.router_overhead_s:
+      - 0.0
+      - 0.005
+      - 0.05

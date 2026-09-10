@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 
 from woais_experiments.accounting.aggregate_cost import panel_from_item_matrix
+from woais_experiments.accounting.breakeven import run_stage12 as run_breakeven_stage12
 from woais_experiments.accounting.cost_decomposition import export_framework_tables
 from woais_experiments.accounting.costs import (
     cost_fn_energy,
@@ -33,9 +34,13 @@ from woais_experiments.frozen import (
     verify_frozen_hashes,
     write_result,
 )
+from woais_experiments.latency.analyze_latency import summarize
+from woais_experiments.latency.latency_frontier import from_item_matrix, save_frontier
 from woais_experiments.latency.serverless import poisson_arrivals, replay_policy, service_model_by_tier
+from woais_experiments.latency.timing import seconds_to_ms
 from woais_experiments.latency.wallclock import latency_by_tier_benchmark, latency_per_output_token, policy_latency
 from woais_experiments.paths import CONFIGS, PACKAGE, RESULTS
+from woais_experiments.routing.oracle import sweep_item_matrix
 from woais_experiments.routing.policies import (
     accuracy_optimal_static_mixture,
     build_stage12_policies,
@@ -50,6 +55,7 @@ from woais_experiments.statistics.regret import (
 )
 from woais_experiments.workloads.arrivals import open_loop_trace
 from woais_experiments.workloads.frozen_sets import pool_sizes, resample_by_benchmark, stage12_item_mix
+from woais_experiments.workloads.run_workload_sweep import run_and_save
 
 
 def _jsonable(obj):
@@ -194,6 +200,32 @@ def run_routing(matrix, policies, accounting_payload, exp: dict) -> dict:
     return payload
 
 
+def run_oracle_bounds(matrix, policies) -> dict:
+    payload = sweep_item_matrix(
+        matrix,
+        cost_fn_usd(matrix),
+        policies["ecologic"],
+        method="approx",
+        n_grid=17,
+        relpath="routing/oracle_budget_sweep",
+    )
+    gaps = payload.get("gaps_at_router_cost") or {}
+    return {
+        "n_queries": payload["n_queries"],
+        "method": payload["method"],
+        "n_budgets": len(payload["sweep"]),
+        "router_quality": gaps.get("learned_router_quality"),
+        "static_frontier_quality": gaps.get("static_frontier_quality"),
+        "oracle_quality": gaps.get("oracle_quality"),
+        "router_vs_static_gap": gaps.get("router_vs_static_gap"),
+        "oracle_vs_router_gap": gaps.get("oracle_vs_router_gap"),
+        "fraction_of_available_routing_value_captured": gaps.get(
+            "fraction_of_available_routing_value_captured"
+        ),
+        "saved": payload.get("saved"),
+    }
+
+
 def run_latency(matrix, policies) -> dict:
     by_tb = latency_by_tier_benchmark(matrix)
     per_tok = latency_per_output_token(matrix)
@@ -209,6 +241,42 @@ def run_latency(matrix, policies) -> dict:
     return payload
 
 
+def run_latency_frontier(matrix, policies, exp: dict) -> dict:
+    """Cheap vs strong vs routed end-to-end from frozen latency_s. No inferred TTFT."""
+    seed = int(exp["monte_carlo_seed"])
+    n_boot = int(exp["n_random_sims"])
+    payload = from_item_matrix(
+        matrix,
+        policies["ecologic"],
+        cheap_tier=2,
+        strong_tier=3,
+        n_boot=n_boot,
+        seed=seed,
+    )
+    payload["by_tier_legacy_end_to_end_ms"] = {
+        str(t): summarize(
+            [seconds_to_ms(matrix.latency_s[(t, i)]) for i in matrix.item_ids],
+            n_boot=n_boot,
+            seed=seed,
+        )
+        for t in (1, 2, 3)
+    }
+    saved = save_frontier(payload, relpath="latency/frontier")
+    cheap = payload["policies"]["direct_cheap"]
+    strong = payload["policies"]["direct_strong"]
+    routed = payload["policies"]["router_plus_selected"]
+    return {
+        "cheap_name": payload["cheap_name"],
+        "strong_name": payload["strong_name"],
+        "n_queries": payload["n_queries"],
+        "direct_cheap_p50_ms": cheap["p50"],
+        "direct_strong_p50_ms": strong["p50"],
+        "router_plus_selected_p50_ms": routed["p50"],
+        "router_overhead_n_measured": payload["router_overhead"]["n_measured"],
+        "saved": saved,
+    }
+
+
 def run_workloads(matrix) -> dict:
     payload = {
         "stage12_mix": stage12_item_mix(matrix),
@@ -222,6 +290,18 @@ def run_workloads(matrix) -> dict:
     }
     write_result("workloads/frozen.json", _jsonable(payload))
     return payload
+
+
+def run_simulated_workloads() -> dict:
+    """YAML-driven DES. Outputs are labeled SIMULATED; not cloud measurements."""
+    payload = run_and_save()
+    return {
+        "SIMULATED": True,
+        "n_runs": payload["n_runs"],
+        "n_snapshots": payload["n_snapshots"],
+        "disclaimer": payload["disclaimer"],
+        "saved": payload.get("saved"),
+    }
 
 
 def run_serverless(matrix, policies, exp: dict, srv: dict) -> dict:
@@ -333,7 +413,25 @@ def run_per_query_accounting(matrix, policies) -> None:
     )
 
 
-def write_report(accounting, routing_out, latency, serverless, external, s7, workloads) -> None:
+def run_breakeven(matrix, policies, exp: dict) -> dict:
+    payload = run_breakeven_stage12(
+        matrix,
+        policies,
+        n_boot=int(exp["n_random_sims"]),
+        seed=int(exp["monte_carlo_seed"]),
+    )
+    return payload
+
+
+def _fmt_break_even(value) -> str:
+    if value is None:
+        return "n/a"
+    if isinstance(value, float) and not np.isfinite(value):
+        return "+inf" if value > 0 else "-inf"
+    return f"{value:.6g}"
+
+
+def write_report(accounting, routing_out, latency, serverless, external, s7, workloads, breakeven=None) -> None:
     usd = accounting["axis_usd"]["policies"]
     naive_eco = accounting["naive_vs_true"]["usd"]["ecologic"]
     regret = routing_out["regret_ecologic_vs_oracle_usd"]
@@ -426,6 +524,72 @@ def write_report(accounting, routing_out, latency, serverless, external, s7, wor
         "This is a capacity result, not a quality result, and it uses only "
         "already-measured round-trips.",
         "",
+    ]
+    if breakeven is not None:
+        def _be(router: str, axis: str) -> dict:
+            return next(
+                r for r in breakeven["rows"]
+                if r["router"] == router and r["axis"] == axis
+            )
+
+        eco_usd = _be("ecologic", "usd")
+        eco_lat = _be("ecologic", "latency_ms")
+        eco_tok = _be("ecologic", "tokens")
+        t2_usd = _be("always_t2", "usd")
+        ora_usd = _be("oracle_usd", "usd")
+        counts = breakeven["status_counts"]["usd"]
+        lines += [
+            "## Router overhead break-even vs cost-matched static",
+            "",
+            "Maximum per-query router overhead (USD, latency, tokens) before a "
+            "query-dependent assignment stops beating the cheapest static mix at "
+            "the same quality. Analytic hull interpolation is checked by inverting "
+            "the equal-cost envelope; percentile bootstrap CIs resample queries.",
+            "",
+            "| Router | Axis | Raw savings | Overhead | Net | Break-even | % of break-even used | Status |",
+            "|---|---|---:|---:|---:|---:|---:|---|",
+        ]
+        for router, label in (
+            ("ecologic", "EcoLogic"),
+            ("always_t2", "Always-T2"),
+            ("oracle_usd", "Oracle"),
+        ):
+            for axis in ("usd", "latency_ms", "tokens"):
+                row = _be(router, axis)
+                pct = row["percentage_of_break_even_used"]
+                pct_s = "n/a" if pct is None else (
+                    "inf" if isinstance(pct, float) and not np.isfinite(pct) else f"{pct:.1f}"
+                )
+                lines.append(
+                    f"| {label} | {axis} | {_fmt_break_even(row['raw_router_savings'])} | "
+                    f"{_fmt_break_even(row['router_overhead'])} | "
+                    f"{_fmt_break_even(row['net_savings'])} | "
+                    f"{_fmt_break_even(row['break_even_overhead'])} | {pct_s} | "
+                    f"{row['status']} |"
+                )
+        lines += [
+            "",
+            f"EcoLogic vs quality-matched static is **{eco_usd['status']}** on USD "
+            f"(raw savings {_fmt_break_even(eco_usd['raw_router_savings'])} $/query; "
+            f"keyword overhead {_fmt_break_even(eco_usd['router_overhead'])}; "
+            f"net {_fmt_break_even(eco_usd['net_savings'])}). "
+            f"Latency overhead is unmeasured in frozen logs and treated as 0 "
+            f"(break-even {_fmt_break_even(eco_lat['break_even_overhead'])} ms; "
+            f"status {eco_lat['status']}). Token overhead in config is 0 "
+            f"(break-even {_fmt_break_even(eco_tok['break_even_overhead'])} tokens; "
+            f"status {eco_tok['status']}).",
+            "",
+            f"Always-T2 is the hull vertex, so USD status is **{t2_usd['status']}** "
+            f"with break-even {_fmt_break_even(t2_usd['break_even_overhead'])}. "
+            f"The unconstrained oracle sits above the static hull "
+            f"(USD status **{ora_usd['status']}**, break-even "
+            f"{_fmt_break_even(ora_usd['break_even_overhead'])}).",
+            "",
+            f"USD status counts: beneficial={counts['beneficial']}, "
+            f"neutral={counts['neutral']}, dominated={counts['dominated']}.",
+            "",
+        ]
+    lines += [
         "## RouteLLM (committed Stage 9 JSON, not re-run)",
         "",
         f"n = {s9['n_items']}. Mean edge vs cost-matched mixture = "
@@ -451,8 +615,12 @@ def run() -> dict:
     accounting = run_accounting(matrix, routing, policies, exp)
     run_per_query_accounting(matrix, policies)
     routing_out = run_routing(matrix, policies, accounting, exp)
+    oracle_bounds = run_oracle_bounds(matrix, policies)
+    breakeven = run_breakeven(matrix, policies, exp)
     latency = run_latency(matrix, policies)
+    latency_frontier = run_latency_frontier(matrix, policies, exp)
     workloads = run_workloads(matrix)
+    simulated_workloads = run_simulated_workloads()
     serverless = run_serverless(matrix, policies, exp, srv)
     external = run_external()
     s7 = run_s7_latency_spotcheck()
@@ -465,7 +633,10 @@ def run() -> dict:
     )
     plot_latency_cdf(matrix, "figures/latency_cdf_by_tier.png")
     plot_naive_vs_true(accounting["naive_vs_true"]["usd"], "figures/naive_vs_true_usd.png")
-    write_report(accounting, routing_out, latency, serverless, external, s7, workloads)
+    write_report(
+        accounting, routing_out, latency, serverless, external, s7, workloads,
+        breakeven=breakeven,
+    )
 
     summary = {
         "n_items": matrix.n,
@@ -485,6 +656,23 @@ def run() -> dict:
         "regret_identity_ecologic_usd_reconciles": routing_out["regret_ecologic_vs_oracle_usd"][
             "reconciles"
         ],
+        "oracle_fraction_captured_at_ecologic_usd": oracle_bounds[
+            "fraction_of_available_routing_value_captured"
+        ],
+        "breakeven_ecologic_usd_status": next(
+            r["status"] for r in breakeven["rows"]
+            if r["router"] == "ecologic" and r["axis"] == "usd"
+        ),
+        "breakeven_ecologic_usd_net_savings": next(
+            r["net_savings"] for r in breakeven["rows"]
+            if r["router"] == "ecologic" and r["axis"] == "usd"
+        ),
+        "latency_frontier_p50_ms": {
+            "direct_cheap": latency_frontier["direct_cheap_p50_ms"],
+            "direct_strong": latency_frontier["direct_strong_p50_ms"],
+            "router_plus_selected": latency_frontier["router_plus_selected_p50_ms"],
+        },
+        "simulated_workload_runs": simulated_workloads["n_runs"],
         "results_dir": str(RESULTS),
         "package": str(PACKAGE),
     }

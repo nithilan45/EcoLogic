@@ -8,6 +8,13 @@
   },
   "routellm_mean_edge_matched_cost_pp": 0.5662705656589415,
   "regret_identity_ecologic_usd_reconciles": true,
+  "oracle_fraction_captured_at_ecologic_usd": -1.333333333333335,
+  "latency_frontier_p50_ms": {
+    "direct_cheap": 4190.0,
+    "direct_strong": 1000.0,
+    "router_plus_selected": 11890.0
+  },
+  "simulated_workload_runs": 50,
   "results_dir": "/Users/Arjun/cursor/EcoLogic/woais_experiments/results",
   "package": "/Users/Arjun/cursor/EcoLogic/woais_experiments"
 }

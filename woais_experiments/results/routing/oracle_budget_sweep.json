@@ -1,0 +1,572 @@
+{
+  "n_queries": 364,
+  "n_models": 3,
+  "models": [
+    "Qwen/Qwen3.5-9B",
+    "openai/gpt-oss-20b",
+    "gpt-4o"
+  ],
+  "min_total_cost": 0.03669509,
+  "max_total_cost": 0.7570364199999999,
+  "unconstrained_oracle": {
+    "total_cost": 0.04702266,
+    "total_quality": 351.0,
+    "mean_quality": 0.9642857142857143,
+    "feasible": true,
+    "method": "unconstrained_oracle",
+    "note": "",
+    "fractional": false,
+    "lp_mean_quality": null,
+    "model_mix": {
+      "0": 9,
+      "1": 343,
+      "2": 12
+    }
+  },
+  "cheapest_assignment": {
+    "total_cost": 0.03669509,
+    "total_quality": 338.0,
+    "mean_quality": 0.9285714285714286,
+    "feasible": true,
+    "method": "cheapest",
+    "note": "",
+    "fractional": false,
+    "lp_mean_quality": null,
+    "model_mix": {
+      "0": 5,
+      "1": 356,
+      "2": 3
+    }
+  },
+  "router": {
+    "quality": 0.8681318681318682,
+    "realized_cost": 0.28674677,
+    "mix": {
+      "Qwen/Qwen3.5-9B": 274,
+      "openai/gpt-oss-20b": 87,
+      "gpt-4o": 3
+    }
+  },
+  "gaps_at_router_cost": {
+    "budget": 0.28674677,
+    "static_frontier_quality": 0.9230769230769231,
+    "learned_router_quality": 0.8681318681318682,
+    "oracle_quality": 0.9642857142857143,
+    "router_feasible": true,
+    "oracle_feasible": true,
+    "static_feasible": true,
+    "oracle_cost": 0.04702266,
+    "router_realized_cost": 0.28674677,
+    "static_expected_cost": 0.04175089999999999,
+    "oracle_method": "approx",
+    "oracle_note": "selected greedy; LP mean quality=0.964286",
+    "oracle_lp_quality": 0.9642857142857143,
+    "oracle_mix": {
+      "0": 9,
+      "1": 343,
+      "2": 12
+    },
+    "static_mix": {
+      "openai/gpt-oss-20b": 1.0
+    },
+    "router_vs_static_gap": -0.05494505494505497,
+    "oracle_vs_router_gap": 0.09615384615384615,
+    "fraction_of_available_routing_value_captured": -1.333333333333335
+  },
+  "method": "approx",
+  "sweep": [
+    {
+      "budget": 0.03669509,
+      "static_frontier_quality": null,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9285714285714286,
+      "router_feasible": false,
+      "oracle_feasible": true,
+      "static_feasible": false,
+      "oracle_cost": 0.03669509,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": null,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.928571",
+      "oracle_lp_quality": 0.9285714285714286,
+      "oracle_mix": {
+        "0": 5,
+        "1": 356,
+        "2": 3
+      },
+      "static_mix": null,
+      "router_vs_static_gap": null,
+      "oracle_vs_router_gap": null,
+      "fraction_of_available_routing_value_captured": null
+    },
+    {
+      "budget": 0.04702266,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": false,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": null,
+      "oracle_vs_router_gap": null,
+      "fraction_of_available_routing_value_captured": null
+    },
+    {
+      "budget": 0.08171642312499999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": false,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": null,
+      "oracle_vs_router_gap": null,
+      "fraction_of_available_routing_value_captured": null
+    },
+    {
+      "budget": 0.12673775625,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": false,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": null,
+      "oracle_vs_router_gap": null,
+      "fraction_of_available_routing_value_captured": null
+    },
+    {
+      "budget": 0.17175908937499995,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": false,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": null,
+      "oracle_vs_router_gap": null,
+      "fraction_of_available_routing_value_captured": null
+    },
+    {
+      "budget": 0.21678042249999996,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": false,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": null,
+      "oracle_vs_router_gap": null,
+      "fraction_of_available_routing_value_captured": null
+    },
+    {
+      "budget": 0.26180175562499997,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": false,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": null,
+      "oracle_vs_router_gap": null,
+      "fraction_of_available_routing_value_captured": null
+    },
+    {
+      "budget": 0.28674677,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.3068230887499999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.3518444218749999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.39686575499999993,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.44188708812499994,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.48690842124999995,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.5319297543749999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.5769510874999999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.6219724206249999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.6669937537499999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.7120150868749999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    },
+    {
+      "budget": 0.7570364199999999,
+      "static_frontier_quality": 0.9230769230769231,
+      "learned_router_quality": 0.8681318681318682,
+      "oracle_quality": 0.9642857142857143,
+      "router_feasible": true,
+      "oracle_feasible": true,
+      "static_feasible": true,
+      "oracle_cost": 0.04702266,
+      "router_realized_cost": 0.28674677,
+      "static_expected_cost": 0.04175089999999999,
+      "oracle_method": "approx",
+      "oracle_note": "selected greedy; LP mean quality=0.964286",
+      "oracle_lp_quality": 0.9642857142857143,
+      "oracle_mix": {
+        "0": 9,
+        "1": 343,
+        "2": 12
+      },
+      "static_mix": {
+        "openai/gpt-oss-20b": 1.0
+      },
+      "router_vs_static_gap": -0.05494505494505497,
+      "oracle_vs_router_gap": 0.09615384615384615,
+      "fraction_of_available_routing_value_captured": -1.333333333333335
+    }
+  ],
+  "cost_axis": "<lambda>"
+}
