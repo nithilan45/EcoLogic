@@ -1,0 +1,36 @@
+{
+  "note": "Eval-stack rates copied from benchmark/api.py. Product slugs in backend/main.py differ for tiers 1-2.",
+  "eval_models": {
+    "1": {
+      "provider": "together",
+      "model": "Qwen/Qwen3.5-9B",
+      "paper_energy_per_1k": 0.5,
+      "subst_energy_per_1k": 1.1
+    },
+    "2": {
+      "provider": "together",
+      "model": "openai/gpt-oss-20b",
+      "paper_energy_per_1k": 1.5,
+      "subst_energy_per_1k": 2.0
+    },
+    "3": {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "paper_energy_per_1k": 60.0,
+      "subst_energy_per_1k": 60.0
+    }
+  },
+  "usd_per_million": {
+    "Qwen/Qwen3.5-9B": {"input": 0.17, "output": 0.25},
+    "openai/gpt-oss-20b": {"input": 0.05, "output": 0.20},
+    "gpt-4o": {"input": 2.50, "output": 10.00}
+  },
+  "routellm": {
+    "weak": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+    "strong": "gpt-4-1106-preview",
+    "usd_per_million": {
+      "gpt-4-1106-preview": {"in": 10.0, "out": 30.0},
+      "mistralai/Mixtral-8x7B-Instruct-v0.1": {"in": 0.6, "out": 0.6}
+    }
+  }
+}

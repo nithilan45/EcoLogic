@@ -1,0 +1,9 @@
+{
+  "honesty": "TTFT, cold-start, and idle-timeout were never measured. Service time is wall-clock latency_s including provider queueing. Cold-start extras and idle timeouts are sensitivity parameters, not observations.",
+  "residual_cold_k": 2.0,
+  "n_servers": [1, 2, 4],
+  "idle_timeout_s": [0.5, 2.0, 10.0, 60.0],
+  "cold_start_penalty_s": [0.0, 2.0, 5.0, 15.0],
+  "arrival_rates_relative_to_mean_service": [0.2, 0.5, 0.8, 0.95],
+  "trace_horizon_requests": 2000
+}

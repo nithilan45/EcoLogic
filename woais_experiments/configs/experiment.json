@@ -1,0 +1,42 @@
+{
+  "name": "woais_offline_v1",
+  "api_calls": false,
+  "write_outside_woais_experiments": false,
+  "random_policy_seed": 20260905,
+  "monte_carlo_seed": 20260909,
+  "n_random_sims": 2000,
+  "arrival_seed": 20260909,
+  "published_stage12": {
+    "n_items": 364,
+    "ecologic_correct": 316,
+    "always_t2_correct": 336,
+    "always_t1_correct": 319,
+    "frontier_correct": 333,
+    "oracle_correct": 351,
+    "random_correct": 330,
+    "ecologic_usd": 0.28674677,
+    "always_t2_usd": 0.0417509,
+    "always_t1_usd": 0.33422946,
+    "frontier_usd": 0.636595,
+    "oracle_usd": 0.04702266,
+    "random_usd": 0.36280891,
+    "cost_ratio_ecologic_over_t2": 6.868038054269489,
+    "ecologic_energy_J": 688.953,
+    "always_t2_energy_J": 393.8595,
+    "frontier_energy_J": 6065.88
+  },
+  "published_stage8": {
+    "n_items": 360,
+    "R_naive": -0.24962321759259273,
+    "correction": 0.533592662037037,
+    "R_true": 0.2839694444444445
+  },
+  "published_stage9": {
+    "n_items": 1307,
+    "n_interior": 9,
+    "n_interior_beating_matched_cost": 8,
+    "n_interior_significant": 0,
+    "mean_router_edge_matched_cost_pp": 0.5662705656589415,
+    "sign_test_p": 0.0390625
+  }
+}
