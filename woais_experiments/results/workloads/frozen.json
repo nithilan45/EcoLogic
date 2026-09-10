@@ -1,0 +1,60 @@
+{
+  "stage12_mix": {
+    "n": 364,
+    "counts": {
+      "gsm8k": 100,
+      "humaneval": 164,
+      "mmlu": 100
+    },
+    "fractions": {
+      "gsm8k": 0.27472527472527475,
+      "humaneval": 0.45054945054945056,
+      "mmlu": 0.27472527472527475
+    },
+    "source": "raw_results/benchmark_items.json (read-only; not rebuilt)"
+  },
+  "frozen_pool_sizes": {
+    "stage12": {
+      "n": 364,
+      "path": "raw_results/benchmark_items.json"
+    },
+    "v2_train": {
+      "n": 840,
+      "path": "router_v2/train_pool.json"
+    },
+    "v2_calibration": {
+      "n": 360,
+      "path": "router_v2/calibration_pool.json"
+    },
+    "s7_train": {
+      "n": 3500,
+      "path": "stage7_10/s7_train_pool.json"
+    },
+    "s7_calibration": {
+      "n": 1500,
+      "path": "stage7_10/s7_calibration_pool.json"
+    },
+    "s7_test": {
+      "n": 364,
+      "path": "stage7_10/s7_test_set.json"
+    }
+  },
+  "synthetic_mixes": {
+    "code_heavy": {
+      "humaneval": 0.7,
+      "mmlu": 0.15,
+      "gsm8k": 0.15
+    },
+    "math_heavy": {
+      "humaneval": 0.1,
+      "mmlu": 0.2,
+      "gsm8k": 0.7
+    },
+    "balanced": {
+      "humaneval": 0.3333333333333333,
+      "mmlu": 0.3333333333333333,
+      "gsm8k": 0.3333333333333333
+    }
+  },
+  "note": "Synthetic mixes resample frozen items; they do not call APIs."
+}

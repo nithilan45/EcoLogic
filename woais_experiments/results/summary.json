@@ -1,0 +1,13 @@
+{
+  "n_items": 364,
+  "always_t2_dominates_ecologic_on_usd": true,
+  "cost_ratio_ecologic_over_t2": 6.868038054269489,
+  "ecologic_vs_always_t2_mean_latency_s": {
+    "ecologic": 36.1967032967033,
+    "always_t2": 6.413214285714285
+  },
+  "routellm_mean_edge_matched_cost_pp": 0.5662705656589415,
+  "regret_identity_ecologic_usd_reconciles": true,
+  "results_dir": "/Users/Arjun/cursor/EcoLogic/woais_experiments/results",
+  "package": "/Users/Arjun/cursor/EcoLogic/woais_experiments"
+}
