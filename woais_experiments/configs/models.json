@@ -25,6 +25,18 @@
     "openai/gpt-oss-20b": {"input": 0.05, "output": 0.20},
     "gpt-4o": {"input": 2.50, "output": 10.00}
   },
+  "router_overhead": {
+    "none": {
+      "cost_usd": 0.0,
+      "tokens": 0,
+      "note": "No billed router step."
+    },
+    "ecologic_keyword": {
+      "cost_usd": 0.0,
+      "tokens": 0,
+      "note": "Production classify_prompt_local_nlp is local; it is not a priced API call."
+    }
+  },
   "routellm": {
     "weak": "mistralai/Mixtral-8x7B-Instruct-v0.1",
     "strong": "gpt-4-1106-preview",

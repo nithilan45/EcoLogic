@@ -22,4 +22,5 @@ class TestOfflineSuite(unittest.TestCase):
         self.assertTrue((RESULTS / "figures" / "accuracy_vs_usd.png").exists())
         self.assertTrue((RESULTS / "figures" / "latency_cdf_by_tier.png").exists())
         self.assertTrue((RESULTS / "REPORT.md").exists())
+        self.assertTrue((RESULTS / "accounting" / "framework" / "sign_flip_comparison.json").exists())
         self.assertTrue(verify_frozen_hashes()["ok"])

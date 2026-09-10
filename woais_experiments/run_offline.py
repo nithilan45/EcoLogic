@@ -7,6 +7,8 @@ from pathlib import Path
 
 import numpy as np
 
+from woais_experiments.accounting.aggregate_cost import panel_from_item_matrix
+from woais_experiments.accounting.cost_decomposition import export_framework_tables
 from woais_experiments.accounting.costs import (
     cost_fn_energy,
     cost_fn_usd,
@@ -14,6 +16,7 @@ from woais_experiments.accounting.costs import (
     evaluate_assignment,
     paper_energy_rates,
 )
+from woais_experiments.accounting.per_query_cost import load_price_table, load_router_overhead
 from woais_experiments.accounting.tokens import corr_tokens_vs_latency, token_dispersion
 from woais_experiments.external.routellm import summarize_generalization, summarize_s9
 from woais_experiments.figures.plot import (
@@ -317,6 +320,19 @@ def run_s7_latency_spotcheck() -> dict:
     return payload
 
 
+def run_per_query_accounting(matrix, policies) -> None:
+    prices = load_price_table()
+    overhead = load_router_overhead("ecologic_keyword")
+    panel, eco = panel_from_item_matrix(matrix, policies["ecologic"])
+    _, t2 = panel_from_item_matrix(matrix, policies["always_t2"])
+    export_framework_tables(
+        RESULTS / "accounting" / "framework",
+        prices=prices,
+        overhead=overhead,
+        stage12=(panel, eco, t2),
+    )
+
+
 def write_report(accounting, routing_out, latency, serverless, external, s7, workloads) -> None:
     usd = accounting["axis_usd"]["policies"]
     naive_eco = accounting["naive_vs_true"]["usd"]["ecologic"]
@@ -433,6 +449,7 @@ def run() -> dict:
     policies = build_stage12_policies(matrix, routing, seed=exp["random_policy_seed"])
 
     accounting = run_accounting(matrix, routing, policies, exp)
+    run_per_query_accounting(matrix, policies)
     routing_out = run_routing(matrix, policies, accounting, exp)
     latency = run_latency(matrix, policies)
     workloads = run_workloads(matrix)
