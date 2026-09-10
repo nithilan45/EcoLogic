@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "label": "sign_flip_length_biased",
+  "n": 6,
+  "realized_inference_total": 0.007279,
+  "realized_inference_mean": 0.0012131666666666666,
+  "router_overhead_total": 0.0,
+  "router_overhead_mean": 0.0,
+  "realized_total": 0.007279,
+  "realized_mean": 0.0012131666666666666,
+  "mix_fractions": {
+    "gpt-4o": 0.16666666666666666,
+    "openai/gpt-oss-20b": 0.8333333333333334
+  },
+  "unconditional_model_means": {
+    "openai/gpt-oss-20b": 0.001006,
+    "gpt-4o": 0.00125
+  },
+  "naive_inference_mean": 0.0010466666666666667,
+  "naive_inference_total": 0.00628,
+  "naive_mean_with_overhead": 0.0010466666666666667,
+  "naive_minus_realized_inference_mean": -0.00016649999999999998,
+  "extra": {
+    "case": "policy A (length-biased)",
+    "comparison": {
+      "policy_a": "length_biased",
+      "policy_b": "short_to_cheap",
+      "naive_a": 0.0010466666666666667,
+      "naive_b": 0.001128,
+      "realized_a": 0.0012131666666666666,
+      "realized_b": 0.0006285,
+      "naive_prefers": "length_biased",
+      "realized_prefers": "short_to_cheap",
+      "sign_flip": true
+    }
+  }
+}

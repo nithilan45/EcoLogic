@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "label": "naive_overestimates",
+  "n": 6,
+  "realized_inference_total": 0.003771,
+  "realized_inference_mean": 0.0006285,
+  "router_overhead_total": 0.0,
+  "router_overhead_mean": 0.0,
+  "realized_total": 0.003771,
+  "realized_mean": 0.0006285,
+  "mix_fractions": {
+    "gpt-4o": 0.5,
+    "openai/gpt-oss-20b": 0.5
+  },
+  "unconditional_model_means": {
+    "openai/gpt-oss-20b": 0.001006,
+    "gpt-4o": 0.00125
+  },
+  "naive_inference_mean": 0.001128,
+  "naive_inference_total": 0.006768000000000001,
+  "naive_mean_with_overhead": 0.001128,
+  "naive_minus_realized_inference_mean": 0.0004995,
+  "extra": {
+    "case": "router sends only short cheap-model completions to cheap"
+  }
+}

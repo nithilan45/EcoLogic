@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "label": "stage12_ecologic",
+  "n": 364,
+  "realized_inference_total": 0.28674677,
+  "realized_inference_mean": 0.0007877658516483516,
+  "router_overhead_total": 0.0,
+  "router_overhead_mean": 0.0,
+  "realized_total": 0.28674677,
+  "realized_mean": 0.0007877658516483516,
+  "mix_fractions": {
+    "Qwen/Qwen3.5-9B": 0.7527472527472527,
+    "gpt-4o": 0.008241758241758242,
+    "openai/gpt-oss-20b": 0.23901098901098902
+  },
+  "unconditional_model_means": {
+    "Qwen/Qwen3.5-9B": 0.0009182128021978022,
+    "openai/gpt-oss-20b": 0.00011470027472527472,
+    "gpt-4o": 0.0017488873626373626
+  },
+  "naive_inference_mean": 0.0007330106972285956,
+  "naive_inference_total": 0.2668158937912088,
+  "naive_mean_with_overhead": 0.0007330106972285956,
+  "naive_minus_realized_inference_mean": -5.4755154419756035e-05,
+  "extra": {
+    "case": "frozen Stage 1\u20132 EcoLogic keyword routing"
+  }
+}

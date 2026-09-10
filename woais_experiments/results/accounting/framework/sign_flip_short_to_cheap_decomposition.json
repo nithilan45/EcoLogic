@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "n": 6,
+  "models": [
+    "openai/gpt-oss-20b",
+    "gpt-4o"
+  ],
+  "mix_fractions": {
+    "gpt-4o": 0.5,
+    "openai/gpt-oss-20b": 0.5
+  },
+  "unconditional_model_means": {
+    "openai/gpt-oss-20b": 0.001006,
+    "gpt-4o": 0.00125
+  },
+  "realized_inference_mean": 0.0006285,
+  "realized_inference_total": 0.003771,
+  "naive_inference_mean": 0.001128,
+  "naive_inference_total": 0.006768000000000001,
+  "router_overhead_mean": 0.0,
+  "realized_mean": 0.0006285,
+  "naive_mean_with_overhead": 0.001128,
+  "covariance_sum": -0.0004994999999999999,
+  "realized_minus_naive": -0.0004995,
+  "identity": "realized_inference = naive + sum_m Cov(1{t=m}, c_m)",
+  "identity_rhs": 0.0006285000000000002,
+  "abs_residual": 1.0842021724855044e-19,
+  "reconciles": true,
+  "atol": 1e-12,
+  "naive_underestimates_realized": false,
+  "naive_overestimates_realized": true,
+  "per_model": {
+    "openai/gpt-oss-20b": {
+      "fraction": 0.5,
+      "unconditional_mean": 0.001006,
+      "conditional_mean": 7.000000000000001e-06,
+      "mean_shift": -0.0009989999999999999,
+      "cov_assignment_cost": -0.0004994999999999999,
+      "within_model_variance": 9.980009999999998e-07,
+      "within_model_cv": 0.9930417495029821,
+      "naive_contrib": 0.000503,
+      "realized_contrib": 3.5000000000000004e-06
+    },
+    "gpt-4o": {
+      "fraction": 0.5,
+      "unconditional_mean": 0.00125,
+      "conditional_mean": 0.00125,
+      "mean_shift": 0.0,
+      "cov_assignment_cost": 0.0,
+      "within_model_variance": 0.0,
+      "within_model_cv": 0.0,
+      "naive_contrib": 0.000625,
+      "realized_contrib": 0.000625
+    }
+  },
+  "heterogeneity_needed": true,
+  "n_models_selected": 2,
+  "extra": {
+    "case": "policy B (short to cheap)",
+    "comparison": {
+      "policy_a": "length_biased",
+      "policy_b": "short_to_cheap",
+      "naive_a": 0.0010466666666666667,
+      "naive_b": 0.001128,
+      "realized_a": 0.0012131666666666666,
+      "realized_b": 0.0006285,
+      "naive_prefers": "length_biased",
+      "realized_prefers": "short_to_cheap",
+      "sign_flip": true
+    }
+  }
+}

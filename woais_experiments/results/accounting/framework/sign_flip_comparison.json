@@ -1,0 +1,11 @@
+{
+  "policy_a": "length_biased",
+  "policy_b": "short_to_cheap",
+  "naive_a": 0.0010466666666666667,
+  "naive_b": 0.001128,
+  "realized_a": 0.0012131666666666666,
+  "realized_b": 0.0006285,
+  "naive_prefers": "length_biased",
+  "realized_prefers": "short_to_cheap",
+  "sign_flip": true
+}

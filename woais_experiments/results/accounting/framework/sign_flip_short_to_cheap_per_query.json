@@ -1,0 +1,80 @@
+[
+  {
+    "query_id": "q0",
+    "selected_model": "openai/gpt-oss-20b",
+    "input_tokens": 100,
+    "output_tokens": 10,
+    "input_price_per_token": 5.0000000000000004e-08,
+    "output_price_per_token": 2.0000000000000002e-07,
+    "router_overhead_cost": 0.0,
+    "router_overhead_tokens": 0.0,
+    "latency_ms": 0.0,
+    "inference_cost": 7.000000000000001e-06,
+    "realized_cost": 7.000000000000001e-06
+  },
+  {
+    "query_id": "q1",
+    "selected_model": "openai/gpt-oss-20b",
+    "input_tokens": 100,
+    "output_tokens": 10,
+    "input_price_per_token": 5.0000000000000004e-08,
+    "output_price_per_token": 2.0000000000000002e-07,
+    "router_overhead_cost": 0.0,
+    "router_overhead_tokens": 0.0,
+    "latency_ms": 0.0,
+    "inference_cost": 7.000000000000001e-06,
+    "realized_cost": 7.000000000000001e-06
+  },
+  {
+    "query_id": "q2",
+    "selected_model": "openai/gpt-oss-20b",
+    "input_tokens": 100,
+    "output_tokens": 10,
+    "input_price_per_token": 5.0000000000000004e-08,
+    "output_price_per_token": 2.0000000000000002e-07,
+    "router_overhead_cost": 0.0,
+    "router_overhead_tokens": 0.0,
+    "latency_ms": 0.0,
+    "inference_cost": 7.000000000000001e-06,
+    "realized_cost": 7.000000000000001e-06
+  },
+  {
+    "query_id": "q3",
+    "selected_model": "gpt-4o",
+    "input_tokens": 100,
+    "output_tokens": 100,
+    "input_price_per_token": 2.5e-06,
+    "output_price_per_token": 1e-05,
+    "router_overhead_cost": 0.0,
+    "router_overhead_tokens": 0.0,
+    "latency_ms": 0.0,
+    "inference_cost": 0.00125,
+    "realized_cost": 0.00125
+  },
+  {
+    "query_id": "q4",
+    "selected_model": "gpt-4o",
+    "input_tokens": 100,
+    "output_tokens": 100,
+    "input_price_per_token": 2.5e-06,
+    "output_price_per_token": 1e-05,
+    "router_overhead_cost": 0.0,
+    "router_overhead_tokens": 0.0,
+    "latency_ms": 0.0,
+    "inference_cost": 0.00125,
+    "realized_cost": 0.00125
+  },
+  {
+    "query_id": "q5",
+    "selected_model": "gpt-4o",
+    "input_tokens": 100,
+    "output_tokens": 100,
+    "input_price_per_token": 2.5e-06,
+    "output_price_per_token": 1e-05,
+    "router_overhead_cost": 0.0,
+    "router_overhead_tokens": 0.0,
+    "latency_ms": 0.0,
+    "inference_cost": 0.00125,
+    "realized_cost": 0.00125
+  }
+]

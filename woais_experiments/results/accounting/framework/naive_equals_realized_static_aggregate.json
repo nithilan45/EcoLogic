@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "label": "naive_equals_realized_static",
+  "n": 6,
+  "realized_inference_total": 0.006036,
+  "realized_inference_mean": 0.001006,
+  "router_overhead_total": 0.0,
+  "router_overhead_mean": 0.0,
+  "realized_total": 0.006036,
+  "realized_mean": 0.001006,
+  "mix_fractions": {
+    "openai/gpt-oss-20b": 1.0
+  },
+  "unconditional_model_means": {
+    "openai/gpt-oss-20b": 0.001006,
+    "gpt-4o": 0.00125
+  },
+  "naive_inference_mean": 0.001006,
+  "naive_inference_total": 0.006036,
+  "naive_mean_with_overhead": 0.001006,
+  "naive_minus_realized_inference_mean": 0.0,
+  "extra": {
+    "case": "static always-cheap, heterogeneous tokens"
+  }
+}

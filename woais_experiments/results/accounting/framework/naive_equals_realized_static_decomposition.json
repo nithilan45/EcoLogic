@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "n": 6,
+  "models": [
+    "openai/gpt-oss-20b",
+    "gpt-4o"
+  ],
+  "mix_fractions": {
+    "openai/gpt-oss-20b": 1.0
+  },
+  "unconditional_model_means": {
+    "openai/gpt-oss-20b": 0.001006,
+    "gpt-4o": 0.00125
+  },
+  "realized_inference_mean": 0.001006,
+  "realized_inference_total": 0.006036,
+  "naive_inference_mean": 0.001006,
+  "naive_inference_total": 0.006036,
+  "router_overhead_mean": 0.0,
+  "realized_mean": 0.001006,
+  "naive_mean_with_overhead": 0.001006,
+  "covariance_sum": 0.0,
+  "realized_minus_naive": 0.0,
+  "identity": "realized_inference = naive + sum_m Cov(1{t=m}, c_m)",
+  "identity_rhs": 0.001006,
+  "abs_residual": 0.0,
+  "reconciles": true,
+  "atol": 1e-12,
+  "naive_underestimates_realized": false,
+  "naive_overestimates_realized": false,
+  "per_model": {
+    "openai/gpt-oss-20b": {
+      "fraction": 1.0,
+      "unconditional_mean": 0.001006,
+      "conditional_mean": 0.001006,
+      "mean_shift": 0.0,
+      "cov_assignment_cost": 0.0,
+      "within_model_variance": 9.980009999999998e-07,
+      "within_model_cv": 0.9930417495029821,
+      "naive_contrib": 0.001006,
+      "realized_contrib": 0.001006
+    },
+    "gpt-4o": {
+      "fraction": 0.0,
+      "unconditional_mean": 0.00125,
+      "conditional_mean": null,
+      "mean_shift": null,
+      "cov_assignment_cost": 0.0,
+      "within_model_variance": 0.0,
+      "within_model_cv": 0.0,
+      "naive_contrib": 0.0,
+      "realized_contrib": null
+    }
+  },
+  "heterogeneity_needed": true,
+  "n_models_selected": 1,
+  "extra": {
+    "case": "static always-cheap, heterogeneous tokens"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "n": 8,
+  "models": [
+    "openai/gpt-oss-20b",
+    "gpt-4o"
+  ],
+  "mix_fractions": {
+    "gpt-4o": 0.5,
+    "openai/gpt-oss-20b": 0.5
+  },
+  "unconditional_model_means": {
+    "openai/gpt-oss-20b": 8.000000000000001e-06,
+    "gpt-4o": 0.0004
+  },
+  "realized_inference_mean": 0.000204,
+  "realized_inference_total": 0.001632,
+  "naive_inference_mean": 0.000204,
+  "naive_inference_total": 0.001632,
+  "router_overhead_mean": 0.0,
+  "realized_mean": 0.000204,
+  "naive_mean_with_overhead": 0.000204,
+  "covariance_sum": 0.0,
+  "realized_minus_naive": 0.0,
+  "identity": "realized_inference = naive + sum_m Cov(1{t=m}, c_m)",
+  "identity_rhs": 0.000204,
+  "abs_residual": 0.0,
+  "reconciles": true,
+  "atol": 1e-12,
+  "naive_underestimates_realized": false,
+  "naive_overestimates_realized": false,
+  "per_model": {
+    "openai/gpt-oss-20b": {
+      "fraction": 0.5,
+      "unconditional_mean": 8.000000000000001e-06,
+      "conditional_mean": 8.000000000000001e-06,
+      "mean_shift": 0.0,
+      "cov_assignment_cost": 0.0,
+      "within_model_variance": 0.0,
+      "within_model_cv": 0.0,
+      "naive_contrib": 4.000000000000001e-06,
+      "realized_contrib": 4.000000000000001e-06
+    },
+    "gpt-4o": {
+      "fraction": 0.5,
+      "unconditional_mean": 0.0004,
+      "conditional_mean": 0.0004,
+      "mean_shift": 0.0,
+      "cov_assignment_cost": 0.0,
+      "within_model_variance": 0.0,
+      "within_model_cv": 0.0,
+      "naive_contrib": 0.0002,
+      "realized_contrib": 0.0002
+    }
+  },
+  "heterogeneity_needed": false,
+  "n_models_selected": 2,
+  "extra": {
+    "case": "homogeneous tokens, mixed assignment"
+  }
+}

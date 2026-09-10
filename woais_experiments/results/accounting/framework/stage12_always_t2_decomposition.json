@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "n": 364,
+  "models": [
+    "Qwen/Qwen3.5-9B",
+    "openai/gpt-oss-20b",
+    "gpt-4o"
+  ],
+  "mix_fractions": {
+    "openai/gpt-oss-20b": 1.0
+  },
+  "unconditional_model_means": {
+    "Qwen/Qwen3.5-9B": 0.0009182128021978022,
+    "openai/gpt-oss-20b": 0.00011470027472527472,
+    "gpt-4o": 0.0017488873626373626
+  },
+  "realized_inference_mean": 0.00011470027472527472,
+  "realized_inference_total": 0.0417509,
+  "naive_inference_mean": 0.00011470027472527472,
+  "naive_inference_total": 0.0417509,
+  "router_overhead_mean": 0.0,
+  "realized_mean": 0.00011470027472527472,
+  "naive_mean_with_overhead": 0.00011470027472527472,
+  "covariance_sum": 0.0,
+  "realized_minus_naive": 0.0,
+  "identity": "realized_inference = naive + sum_m Cov(1{t=m}, c_m)",
+  "identity_rhs": 0.00011470027472527472,
+  "abs_residual": 0.0,
+  "reconciles": true,
+  "atol": 1e-12,
+  "naive_underestimates_realized": false,
+  "naive_overestimates_realized": false,
+  "per_model": {
+    "Qwen/Qwen3.5-9B": {
+      "fraction": 0.0,
+      "unconditional_mean": 0.0009182128021978022,
+      "conditional_mean": null,
+      "mean_shift": null,
+      "cov_assignment_cost": 0.0,
+      "within_model_variance": 1.382706516762477e-06,
+      "within_model_cv": 1.280624072542835,
+      "naive_contrib": 0.0,
+      "realized_contrib": null
+    },
+    "openai/gpt-oss-20b": {
+      "fraction": 1.0,
+      "unconditional_mean": 0.00011470027472527472,
+      "conditional_mean": 0.00011470027472527475,
+      "mean_shift": 2.710505431213761e-20,
+      "cov_assignment_cost": 0.0,
+      "within_model_variance": 4.966210820047399e-08,
+      "within_model_cv": 1.9428895741571701,
+      "naive_contrib": 0.00011470027472527472,
+      "realized_contrib": 0.00011470027472527475
+    },
+    "gpt-4o": {
+      "fraction": 0.0,
+      "unconditional_mean": 0.0017488873626373626,
+      "conditional_mean": null,
+      "mean_shift": null,
+      "cov_assignment_cost": 0.0,
+      "within_model_variance": 1.4666680271479898e-06,
+      "within_model_cv": 0.6924749581944483,
+      "naive_contrib": 0.0,
+      "realized_contrib": null
+    }
+  },
+  "heterogeneity_needed": true,
+  "n_models_selected": 1,
+  "extra": {
+    "case": "frozen Stage 1\u20132 always Tier 2"
+  }
+}
