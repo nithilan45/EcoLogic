@@ -1,0 +1,14 @@
+{
+  "source": "/Users/nithilankarthik/Desktop/EcoLogic/stage7_10/s7_ceiling.json",
+  "n_train": 3500,
+  "n_calibration": 1500,
+  "logistic_mean_calib_auc": 0.681642039359188,
+  "logistic_mean_calib_auc_4dp": 0.6816,
+  "gb_mean_calib_auc": 0.6546987140302999,
+  "rf_mean_calib_auc": 0.6702714327773408,
+  "knn_mean_calib_auc": 0.6521062203542187,
+  "rf_mean_train_auc": 0.9998699858595974,
+  "best_nonlinear": "random forest",
+  "auc_lift_over_linear": -0.011370606581847187,
+  "verdict": "ceiling is structural: no stronger learner beats the linear head by >= 0.02 AUC on held-out data"
+}

@@ -1,0 +1,51 @@
+# Reconstruction checks
+passed: 49  failed: 0
+- PASS `stage12_n` — n=364
+- PASS `stage12_complete_tiers` — incomplete=0
+- PASS `stage12_ecologic_usd` — 0.28674677 vs stored 0.28674677
+- PASS `stage12_ecologic_correct` — 316 vs stored 316
+- PASS `stage12_always_t1_usd` — 0.33422946 vs stored 0.33422946
+- PASS `stage12_always_t1_correct` — 319 vs stored 319
+- PASS `stage12_mcnemar_always_t1` — b=0 c=3 p=0.25 vs stored p=0.25
+- PASS `stage12_always_t2_usd` — 0.04175090 vs stored 0.04175090
+- PASS `stage12_always_t2_correct` — 336 vs stored 336
+- PASS `stage12_mcnemar_always_t2` — b=5 c=25 p=0.0003249142319 vs stored p=0.0003249142319
+- PASS `stage12_frontier_usd` — 0.63659500 vs stored 0.63659500
+- PASS `stage12_frontier_correct` — 333 vs stored 333
+- PASS `stage12_mcnemar_frontier` — b=11 c=28 p=0.009475304279 vs stored p=0.009475304279
+- PASS `stage12_oracle_usd` — 0.04702266 vs stored 0.04702266
+- PASS `stage12_oracle_correct` — 351 vs stored 351
+- PASS `stage12_mcnemar_oracle` — b=0 c=35 p=5.820766091e-11 vs stored p=5.820766091e-11
+- PASS `stage12_ratio` — ratio=6.868038054269495
+- PASS `boot_t2_dom_ge_95` — 1.0
+- PASS `lob_all_t2_dom` — []
+- PASS `mix_t2_always_cheaper` — 21/21
+- PASS `routellm_n_interior` — n_int=9
+- PASS `routellm_mean_cost_edge` — 0.5662705656589415
+- PASS `routellm_n_win` — 8
+- PASS `routellm_n_sig` — 0
+- PASS `routellm_sign_p` — p=0.0390625
+- PASS `routellm_lost_range` — lost 0.0888–0.2968
+- PASS `routellm_audit_mean` — audit JSON matches reconstructed mean
+- PASS `s8_reconciles` — residual=2.220446049250313e-16
+- PASS `s8_sign_flip` — naive=-0.24962321759259273 true=0.2839694444444445
+- PASS `s8_correction_vs_true` — correction/|R_true|=1.879
+- PASS `s9_identity_residual` — 8.673617379884035e-19
+- PASS `s9_any_sign_flip` — RouteLLM sign flip present
+- PASS `s9_max_misest` — 6.305405742092525
+- PASS `s9_one_flip` — n_flip=1
+- PASS `eco_usd_identity` — resid=1.0842021724855044e-19
+- PASS `eco_naive_under` — under=6.95%
+- PASS `heldout_null_quality` — logistic=0.8888888888888888 cheap=0.8888888888888888 cms=0.8888888888888888
+- PASS `heldout_null_cost` — logistic=0.0001526452674897119 cms=0.0001526452674897119
+- PASS `heldout_selected` — logistic selected
+- PASS `heldout_n` — 243
+- PASS `heldout_adv_zero` — adv=0.0
+- PASS `stage5_n` — 364
+- PASS `stage5_mcnemar_p1` — p=1.0
+- PASS `ceiling_logistic_auc` — 0.681642039359188
+- PASS `ceiling_lift_negative` — -0.011370606581847187
+- PASS `t1_flip_n` — 72
+- PASS `t1_flip_frac` — 0.1978021978021978
+- PASS `t1_within_share` — 0.4697114923799483
+- PASS `t3_flip_n` — 5

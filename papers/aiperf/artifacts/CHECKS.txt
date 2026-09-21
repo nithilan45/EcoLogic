@@ -1,0 +1,12 @@
+AIPerf analysis reconstruction checks
+n=364
+policy latency method: per-query selected-tier latency_s
+EcoLogic mix T1/T2/T3: 274/87/3
+EcoLogic realized mean 36.196703s vs mix-weighted 33.513503s
+Always-T2 3D-dominates EcoLogic: True
+2D deployable Pareto front: ['always_t2', 'frontier']
+router_decision measured: 0/364
+per-tier wall-clock vs stage12_wallclock.json: OK
+frontier_per_query.csv mix+mean vs per-query policy: OK
+mismatches (0):
+none

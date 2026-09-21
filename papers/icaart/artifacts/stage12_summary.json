@@ -1,0 +1,19 @@
+{
+  "source_reconstructed": "raw_results/graded.jsonl + raw_results/routing.json (raw)",
+  "source_stored_checksum": "/Users/nithilankarthik/Desktop/EcoLogic/raw_results/analysis_cost.json",
+  "n": 364,
+  "ecologic_acc_pct": 86.8,
+  "ecologic_correct": 316,
+  "ecologic_usd": 0.28674677000000004,
+  "always_t2_acc_pct": 92.3,
+  "always_t2_correct": 336,
+  "always_t2_usd": 0.041750899999999966,
+  "mcnemar_t2_p": 0.00032491423189640045,
+  "mcnemar_t2_b": 5,
+  "mcnemar_t2_c": 25,
+  "cost_ratio_eco_over_t2": 6.868038054269495,
+  "accuracy_gap_t2_minus_eco_pp": 5.494505494505497,
+  "headline_eco_usd_4dp": 0.2867,
+  "headline_t2_usd_4dp": 0.0418,
+  "in_sample_caveat": true
+}

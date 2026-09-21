@@ -1,0 +1,46 @@
+{
+  "holm": {
+    "oracle": 2.9103830456733704e-10,
+    "always_t2": 0.001299656927585602,
+    "random": 0.019832253456115723,
+    "frontier": 0.019832253456115723,
+    "always_t1": 0.25
+  },
+  "cohens_g_vs_t2": 0.33333333333333337,
+  "bootstrap": {
+    "n_boot": 10000,
+    "frac_t2_dominates_quality_and_cost": 1.0,
+    "acc_gap_t2_minus_eco_p50": 0.054945054945054944,
+    "acc_gap_t2_minus_eco_p025": 0.027472527472527472,
+    "acc_gap_t2_minus_eco_p975": 0.08516483516483517,
+    "cost_gap_t2_minus_eco_p50": -0.24482742000000007,
+    "cost_gap_t2_minus_eco_p025": -0.29000131000000023,
+    "cost_gap_t2_minus_eco_p975": -0.20281412999999993
+  },
+  "oracle_confusion": {
+    "n": 364,
+    "agreement": 0.2445054945054945,
+    "n_agree": 89,
+    "n_disagree": 275,
+    "disagree_t2_right_eco_wrong": 25,
+    "cells": {
+      "eco1_ora1": 6,
+      "eco1_ora2": 257,
+      "eco1_ora3": 11,
+      "eco2_ora1": 3,
+      "eco2_ora2": 83,
+      "eco2_ora3": 1,
+      "eco3_ora1": 0,
+      "eco3_ora2": 3,
+      "eco3_ora3": 0
+    }
+  },
+  "usd_per_correct": {
+    "ecologic": 0.0009074264873417723,
+    "always_t2": 0.00012425863095238084
+  },
+  "mix_n_cells": 21,
+  "mix_n_t2_cheaper": 21,
+  "n_lob": 7,
+  "n_lob_t2_dominates": 7
+}

@@ -1,0 +1,110 @@
+THREE-PAPER DIFFERENTIATION CONTRACT
+====================================
+These three manuscripts share a codebase (EcoLogic) but MUST NOT be dual-submission clones.
+Each paper has a different research question, primary axis, unique experiments, and
+forbidden overlap. If a result is listed as another paper's HEADLINE, do not put it
+in a main table or abstract here.
+
+Shared one-paragraph system description (allowed in all three, not as the claim):
+  EcoLogic is a deployed 3-tier Q&A router (Qwen3.5-9B / gpt-oss-20b / gpt-4o)
+  evaluated on 364 objectively graded items (HumanEval 164, MMLU 100, GSM8K 100).
+  Substitutes were used because original Together AI slugs were retired.
+  Energy rates are ASSUMED (0.5 / 1.5 / 60 J per 1k tokens), not metered.
+  Keyword router on n=364 is IN-SAMPLE. Learned held-out protocol exists separately.
+
+Do NOT invent numbers. Every digit must be reconstructed from committed files.
+Do NOT modify frozen trees: raw_results/, router_v2/, stage7_10/.
+New analysis outputs go only under papers/<venue>/artifacts/.
+
+Author line: "Anonymous Author(s)" pending user fill-in.
+Never claim a paid Cloud Run/Lambda measurement (deployment_real_v2 is a local stub).
+Never claim joules were physically measured.
+Never claim the held-out learned router beats Always-Tier-2 (it equals it: quality 0.8889).
+
+--------------------------------------------------------------------------
+PAPER A — ICAART 2027 (CORE B conference)
+Dir: papers/icaart/
+RQ: Does looking at the query beat a cost-matched query-independent policy,
+    and can an audit protocol distinguish routers that earn their complexity
+    from those that do not?
+PRIMARY AXIS: measured USD + accuracy (McNemar, Wilson CIs).
+UNIQUE EXPERIMENTS (must appear as main results):
+  - RouteLLM on its own GSM8K data, cost-matched mixture vs call-fraction matching
+    (n=1307, stage7_10/s9_static_baselines.json, woais_experiments RouteLLM tables)
+  - Pre-registered learned router + ceiling AUC (logistic vs GB/RF/kNN)
+  - Temp-0 regeneration noise / variance decomposition
+  - Exact naive-vs-true cost identity as an EVALUATION bias, illustrated on
+    RouteLLM (not as a green-SE story)
+FORBIDDEN (do not put in abstract, title, or Table 1):
+  - Modelled joules as the headline metric
+  - Wall-clock latency p50/p90, serverless DES, queueing
+  - "Green software" / sustainability architecture language
+  - Energy rate ±5× sweep as a main experiment
+FORMAT: SciTePress, double-blind, 10k–50k characters excluding whitespace
+        (target ~12 pages / ~25–40k chars). Regular research paper.
+TITLE DIRECTION: "Does Looking at the Query Help? An Audit Protocol for LLM Routers"
+
+--------------------------------------------------------------------------
+PAPER B — GREENS 2027 @ ICSE (green software workshop)
+Dir: papers/greens/
+RQ: Do software systems that advertise energy-saving LLM routing actually
+    reduce energy versus the cheapest competent static policy, and is that
+    conclusion robust to the (unmetered) energy-rate model?
+PRIMARY AXIS: modelled energy (J) WITH explicit sensitivity; contrast to USD
+              as a measurement-method result for sustainability reporting.
+UNIQUE EXPERIMENTS (must appear as main results):
+  - Policy energy table (EcoLogic 689 J vs Always-T2 394 J vs frontier 6066 J)
+  - ±5× rate-sensitivity band as a FIRST-CLASS experiment
+  - Per-benchmark energy mix and the joules-vs-dollars headline gap
+    (88.6% modelled saving vs frontier vs 55.0% in USD) as a green-reporting failure
+  - Architectural reading: query-conditioned 3-tier routing as a sustainability
+    anti-pattern when the middle tier dominates; implications for green SE metrics
+FORBIDDEN:
+  - RouteLLM GSM8K operating-point table as a main experiment (one sentence max)
+  - Latency distributions, p90, serverless simulation
+  - "Audit protocol / looking at the query" as the paper's identity
+  - Pre-registration / AUC ceiling as a long section
+FORMAT: IEEE IEEEtran 10pt conference, SINGLE-anonymous (names on page 1 as
+        Anonymous Author for now), max 8 pages emerging research.
+        \documentclass[10pt,conference]{IEEEtran}
+TITLE DIRECTION: "Green by Default? A Deployed Energy-Saving LLM Router Uses
+                 More Energy than Ignoring the Query"
+
+--------------------------------------------------------------------------
+PAPER C — AIPerf 2027 @ ICSE (performance engineering workshop)
+Dir: papers/aiperf/
+RQ: On the cost–latency–accuracy frontier of LLM serving, does query-conditioned
+    assignment improve the Pareto set over static single-tier policies?
+PRIMARY AXIS: wall-clock HTTP latency (latency_s) + measured USD.
+UNIQUE EXPERIMENTS (must appear as main results):
+  - Per-tier latency distributions (mean/p50/p90/p99) from
+    woais_experiments/results/latency/stage12_wallclock.json
+    T1 mean ~42.5s / T2 ~6.4s / T3 ~1.14s — T1 is the slow outlier
+  - Policy-level end-to-end latency of EcoLogic vs Always-T2 vs Always-T3
+  - Latency-per-output-token and tokens-vs-latency correlation if present
+  - Cost–latency Pareto / latency frontier CSV
+    (woais_experiments/results/latency/frontier_per_query.csv)
+  - Serverless/DES results ONLY if labelled SIMULATED, never as measurement
+FORBIDDEN:
+  - Energy/joules as Table 1
+  - RouteLLM GSM8K
+  - Green SE / sustainability framing
+  - AUC ceiling / temp-0 generation-noise paper
+FORMAT: IEEE IEEEtran 10pt conference, up to 8 pages research paper.
+        Follow ICSE workshop IEEE formatting.
+TITLE DIRECTION: "Routing Is Not Free: Latency and Cost of Query-Conditioned
+                 LLM Assignment"
+
+--------------------------------------------------------------------------
+OUTPUTS EACH AGENT MUST WRITE
+  papers/<venue>/PLAN.md          research plan (RQ, claims, threats)
+  papers/<venue>/analysis.py      scripts that rebuild tables from committed files
+  papers/<venue>/artifacts/       csv/json/png produced by analysis.py
+  papers/<venue>/main.tex         complete compilable paper
+  papers/<venue>/refs.bib         bibliography
+  papers/<venue>/NUMBERS.md       every reported number → source path
+  papers/<venue>/build.sh         pdflatex/bibtex commands
+
+Be rigorous: McNemar where paired, Wilson CIs, pre-registration cited when used,
+limitations section that would survive a hostile reviewer. No new paid API calls.
+Offline analysis of committed artifacts only.

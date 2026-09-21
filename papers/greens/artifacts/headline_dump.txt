@@ -1,0 +1,175 @@
+# Auto-extracted headline (see NUMBERS.md for provenance)
+{
+  "n": 364,
+  "energy_model": "tokens/1000 * assumed J/1k; NOT metered",
+  "paper_rates_J_per_1k": {
+    "1": 0.5,
+    "2": 1.5,
+    "3": 60.0
+  },
+  "policies_rounded": {
+    "ecologic": {
+      "acc_pct": 86.8,
+      "energy_J": 689,
+      "tokens": 1161679,
+      "usd": 0.2867,
+      "mix": {
+        "1": 274,
+        "2": 87,
+        "3": 3
+      }
+    },
+    "always_t2": {
+      "acc_pct": 92.3,
+      "energy_J": 394,
+      "tokens": 262573,
+      "usd": 0.0418
+    },
+    "always_t1": {
+      "acc_pct": 87.6,
+      "energy_J": 677,
+      "tokens": 1354186,
+      "usd": 0.3342
+    },
+    "frontier": {
+      "acc_pct": 91.5,
+      "energy_J": 6066,
+      "tokens": 101098,
+      "usd": 0.6366
+    },
+    "oracle": {
+      "acc_pct": 96.4,
+      "energy_J": 386,
+      "tokens": 295402,
+      "usd": 0.0702
+    }
+  },
+  "always_t2_acc_advantage_pp": 5.5,
+  "eco_energy_over_always_t2": 1.7492,
+  "always_t2_energy_over_eco": 0.5717,
+  "mcnemar_eco_vs_always_t2": {
+    "eco_only": 5,
+    "other_only": 25,
+    "p_value": 0.0003249142318964005
+  },
+  "mcnemar_eco_vs_always_t1": {
+    "eco_only": 0,
+    "other_only": 3,
+    "p_value": 0.25
+  },
+  "mcnemar_eco_vs_frontier": {
+    "eco_only": 11,
+    "other_only": 28,
+    "p_value": 0.009475304279476404
+  },
+  "mcnemar_eco_vs_oracle": {
+    "eco_only": 0,
+    "other_only": 35,
+    "p_value": 5.820766091346741e-11
+  },
+  "joules_vs_dollars_vs_frontier": {
+    "modelled_J_saving_pct": 88.6,
+    "measured_usd_saving_pct": 55.0,
+    "residual_cost_J_x": 0.114,
+    "residual_cost_usd_x": 0.45,
+    "residual_ratio_usd_over_J": 3.97
+  },
+  "token_inflation_eco_over_frontier": 11.49,
+  "sensitivity_27": {
+    "n_combinations": 27,
+    "savings_vs_frontier_min_pct": -164.55098023699745,
+    "savings_vs_frontier_max_pct": 98.76988466636332,
+    "n_sign_flips_vs_frontier": 3,
+    "n_eco_uses_more_energy_than_always_t2": 19,
+    "n_eco_uses_less_energy_than_always_t2": 8,
+    "savings_vs_t2_min_pct": -3729.2215879012674,
+    "savings_vs_t2_max_pct": 71.24837664192434
+  },
+  "substitute_rates_energy_J": {
+    "ecologic": 1379.5199999999998,
+    "always_t1": 1489.6045999999994,
+    "always_t2": 525.146,
+    "frontier": 6065.879999999994,
+    "random": 2875.541199999999,
+    "oracle": 549.5147999999998
+  },
+  "wrapped": {
+    "agreement_raw": 0.5302197802197802,
+    "energy_J": 3419.121000000001,
+    "energy_J_rounded": 3419,
+    "acc_pct": 89.6,
+    "usd": 0.44,
+    "mix": {
+      "1": 137,
+      "2": 53,
+      "3": 174
+    }
+  },
+  "robustness": {
+    "bootstrap_frac_t2_dominates": 0.9999,
+    "n_lob": 7,
+    "n_lob_t2_dominates": 7,
+    "mix_n_cells": 21,
+    "mix_n_t2_less_energy": 21,
+    "mix_n_t2_less_tokens": 21,
+    "j_per_correct": {
+      "ecologic": 2.180231012658229,
+      "always_t2": 1.1722008928571424,
+      "frontier": 18.215855855855835
+    },
+    "holm": {
+      "oracle": 2.3283064365386963e-10,
+      "always_t2": 0.0009747426956892016,
+      "frontier": 0.01895060855895281,
+      "always_t1": 0.25
+    },
+    "token_ratio_eco_over_t2": 4.424213456829149
+  }
+}
+
+# Per-benchmark EcoLogic energy
+{
+  "humaneval": {
+    "n": 164,
+    "correct": 140,
+    "acc": 0.8536585365853658,
+    "energy_J": 352.443,
+    "tokens": 595294,
+    "usd": 0.1473219
+  },
+  "mmlu": {
+    "n": 100,
+    "correct": 83,
+    "acc": 0.83,
+    "energy_J": 161.06499999999997,
+    "tokens": 304398,
+    "usd": 0.07413340999999998
+  },
+  "gsm8k": {
+    "n": 100,
+    "correct": 93,
+    "acc": 0.93,
+    "energy_J": 175.44500000000002,
+    "tokens": 261987,
+    "usd": 0.06529146000000002
+  }
+}
+
+# EcoLogic energy by chosen tier
+{
+  "1": {
+    "n": 274,
+    "energy_J": 550.6800000000002,
+    "tokens": 1101360
+  },
+  "2": {
+    "n": 87,
+    "energy_J": 89.25299999999999,
+    "tokens": 59502
+  },
+  "3": {
+    "n": 3,
+    "energy_J": 49.02,
+    "tokens": 817
+  }
+}

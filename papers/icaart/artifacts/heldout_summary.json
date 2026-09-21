@@ -1,0 +1,17 @@
+{
+  "source": "/Users/nithilankarthik/Desktop/EcoLogic/woais_experiments/results/heldout/final_test_results.csv",
+  "config_source": "/Users/nithilankarthik/Desktop/EcoLogic/woais_experiments/results/heldout/frozen_config.json",
+  "n_test": 243,
+  "n_train": 720,
+  "n_val": 237,
+  "selected_method": "logistic",
+  "logistic_quality": 0.8888888888888888,
+  "logistic_quality_4dp": 0.8889,
+  "always_cheap_quality": 0.8888888888888888,
+  "cost_matched_static_quality": 0.8888888888888888,
+  "logistic_usd": 0.0001526452674897119,
+  "identical_to_static": true,
+  "verdict": "NULL",
+  "heuristic_quality": 0.8600823045267489,
+  "oracle_quality": 0.9423868312757202
+}

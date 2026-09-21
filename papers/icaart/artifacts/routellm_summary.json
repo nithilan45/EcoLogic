@@ -1,0 +1,18 @@
+{
+  "source": "/Users/nithilankarthik/Desktop/EcoLogic/stage7_10/s9_static_baselines.json",
+  "audit_source": "/Users/nithilankarthik/Desktop/EcoLogic/woais_experiments/results/external/audit/routellm_s9_committed.json",
+  "n_items": 1307,
+  "n_interior": 9,
+  "mean_edge_call_fraction_pp": 0.755673076804248,
+  "mean_edge_cost_matched_pp": 0.5662705656589415,
+  "mean_edge_cost_matched_pp_2dp": 0.57,
+  "n_win_cost_matched": 8,
+  "n_sig_p05": 0,
+  "sign_test_p": 0.0390625,
+  "sign_test_p_3dp": 0.039,
+  "lost_min_interior_pp": 0.08881327163146047,
+  "lost_max_interior_pp": 0.29681047144238804,
+  "always_weak_pct": 63.733741392501905,
+  "always_strong_pct": 85.76893649579189,
+  "naive_random_residual_usd": 5.4509847451981314e-05
+}

@@ -1,0 +1,19 @@
+{
+  "source": "/Users/nithilankarthik/Desktop/EcoLogic/stage7_10/s7_generation_variance.json",
+  "k": 3,
+  "temperature": 0.0,
+  "n_items": 364,
+  "t1_n_flip": 72,
+  "t1_flip_pct": 19.78021978021978,
+  "t1_flip_pct_1dp": 19.8,
+  "t1_within_share": 0.4697114923799483,
+  "t1_within_share_pct": 46.97114923799483,
+  "t1_within_share_pct_0dp": 47,
+  "t3_flip_pct": 1.3736263736263736,
+  "t3_flip_pct_1dp": 1.4,
+  "learned_stage7_sampling_plus_gen_pp": 2.69519033651199,
+  "learned_policy_keys": [
+    "learned_s7",
+    "learned_s5"
+  ]
+}

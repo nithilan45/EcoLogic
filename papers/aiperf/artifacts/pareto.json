@@ -1,0 +1,11 @@
+{
+  "objective": "minimize USD and mean HTTP RTT; accuracy shown as bubble, not an axis of the 2D hull",
+  "deployable_2d_front": [
+    "always_t2",
+    "frontier"
+  ],
+  "always_t2_dominates_ecologic_usd_and_latency": true,
+  "always_t2_dominates_ecologic_3d_usd_latency_accuracy": true,
+  "always_t3_faster_costlier_than_ecologic": true,
+  "note": "Always-T3 is the low-latency vertex; Always-T2 is the low-USD vertex. EcoLogic is strictly interior to Always-T2 on both 2D axes and on accuracy."
+}

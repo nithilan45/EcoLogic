@@ -1,0 +1,12 @@
+{
+  "source": "/Users/nithilankarthik/Desktop/EcoLogic/router_v2/final_test_set_results.json",
+  "learned_accuracy": 0.9203296703296703,
+  "always_t2_accuracy": 0.9230769230769231,
+  "learned_acc_pct_1dp": 92.0,
+  "always_t2_acc_pct_1dp": 92.3,
+  "mcnemar_p": 1.0,
+  "s1_met": false,
+  "s2_met": false,
+  "verdict": "NEITHER",
+  "note": "Stage 5 one-shot on frozen n=364; S2 used modelled energy, not reported as a USD result here."
+}

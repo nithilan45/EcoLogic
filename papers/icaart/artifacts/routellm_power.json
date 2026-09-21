@@ -1,0 +1,9 @@
+{
+  "n_items": 1307,
+  "mean_cost_matched_edge_pp": 0.5662705656589415,
+  "n_implied_se": 9,
+  "median_implied_mc_se_pp": 0.4270273011381369,
+  "z_star_80pct_alpha05": 2.801585218112968,
+  "n_items_for_80pct_power_at_mean_edge": 5834,
+  "note": "SE implied from Monte Carlo two-sided p and |edge| at each interior threshold; points share items so n80 is a lower bound on independent items."
+}

@@ -1,0 +1,61 @@
+{
+  "method": "per_query_selected_tier_latency_s",
+  "n": 364,
+  "mix_counts": {
+    "1": 274,
+    "2": 87,
+    "3": 3
+  },
+  "mix_frac": {
+    "1": 0.7527472527472527,
+    "2": 0.23901098901098902,
+    "3": 0.008241758241758242
+  },
+  "realized_mean_s": 36.19670329670329,
+  "mix_weighted_mean_s": 33.51350259630479,
+  "mix_weighted_minus_realized_s": -2.6832007003985012,
+  "relative_bias_mix_weighted": -0.07412831711231782,
+  "t1_share_of_latency_mass": 0.9618954734509247,
+  "n_slower_than_always_t2": 261,
+  "frac_slower_than_always_t2": 0.717032967032967,
+  "n_slower_than_always_t3": 361,
+  "mean_paired_delta_vs_t2_s": 29.783489010989012,
+  "p50_paired_delta_vs_t2_s": 6.265000000000001,
+  "routed_t1": {
+    "n": 274,
+    "mean": 46.25383211678833,
+    "p50": 16.89,
+    "p90": 181.54,
+    "p95": 196.94,
+    "p99": 224.04,
+    "min": 2.58,
+    "max": 268.88,
+    "std": 62.397239480484224
+  },
+  "unconditional_t1": {
+    "n": 364,
+    "mean": 42.47277472527472,
+    "p50": 18.01,
+    "p90": 166.58,
+    "p95": 194.44,
+    "p99": 221.03,
+    "min": 2.58,
+    "max": 268.88,
+    "std": 56.87098599639851
+  },
+  "items_not_sent_to_t1_their_t1_latency": {
+    "n": 90,
+    "mean": 30.96155555555555,
+    "p50": 19.09,
+    "p90": 66.28,
+    "p95": 74.85,
+    "p99": 194.63,
+    "min": 5.23,
+    "max": 201.58,
+    "std": 32.72438653294441
+  },
+  "honesty": "latency_s is full HTTP round-trip. TTFT was not recorded. Router decision span was not recorded on this panel (n_measured=0).",
+  "n_faster_than_always_t2": 16,
+  "n_tie_always_t2": 87,
+  "sign_test_slower_than_t2_p": 1.6574524602713878e-15
+}
